@@ -23,41 +23,44 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private Integer			id;
+	private Integer	id;
 
 	@NotBlank
-	@Column(nullable = false)
-	private String			firstName;
+	@Column(nullable = false, length = 40)
+	private String	firstName;
 
 	@NotBlank
-	@Column(nullable = false)
-	private String			lastName;
+	@Column(nullable = false, length = 40)
+	private String	lastName;
 
-	@Column(nullable = false)
-	private String			email;
+	@NotBlank
+	@Column(nullable = false, length = 128)
+	private String	email;
 
+	@NotBlank
 	@Column(nullable = false, length = 30)
-	private String			login;
+	private String	login;
 
+	@NotBlank
 	@Column(nullable = false, length = 256)
-	private String			password;
+	private String	password;
 
 	@Column(nullable = false)
-	private int				role_id;
+	private int		role_id;
 
-	@Column(nullable = false)
-	private  String	locale	= "en_GB"; //$NON-NLS-1$
+	@Column(nullable = false, length = 10)
+	private String	locale	= "en_GB";		//$NON-NLS-1$
 
 	@Column(nullable = true)
-	private String			defaultTestProject_id;
+	private Integer	defaultTestProject_id;
 
 	@Column(nullable = false)
-	private boolean			active	= true;
+	private boolean	active	= true;
 
 	/**
 	 * @return the defaultTestProject_id
 	 */
-	public String getDefaultTestProject_id() {
+	public Integer getDefaultTestProject_id() {
 		return this.defaultTestProject_id;
 	}
 
@@ -136,7 +139,7 @@ public class User implements Serializable {
 	 * @param _defaultTestProject_id
 	 *            the defaultTestProject_id to set
 	 */
-	public void setDefaultTestProject_id(final String _defaultTestProject_id) {
+	public void setDefaultTestProject_id(final Integer _defaultTestProject_id) {
 		this.defaultTestProject_id = _defaultTestProject_id;
 	}
 
@@ -173,7 +176,8 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param _locale the locale to set
+	 * @param _locale
+	 *            the locale to set
 	 */
 	public void setLocale(final String _locale) {
 		this.locale = _locale;

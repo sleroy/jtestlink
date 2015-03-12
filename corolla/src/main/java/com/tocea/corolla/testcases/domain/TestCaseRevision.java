@@ -18,6 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.tocea.corolla.attachments.domain.Attachment;
 import com.tocea.corolla.customfields.domain.CustomField;
@@ -36,33 +39,44 @@ public class TestCaseRevision {
 	@JoinColumn(name = "OWNER_ID")
 	private TestCase	owner;
 
+	@NotNull
 	@Column(nullable = false)
 	private Date		modificationTime;
 
+	@NotNull
 	@Column(nullable = false)
 	private int			version;
 
+	@NotNull
 	@Column(nullable = false)
 	private int			revision;
 
+	@NotNull
+	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String					reference;
 
+	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String					type;
 
+	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String					status;
 
+	@NotBlank
 	@Column(nullable = false, length = 32)
 	private String					criticity;
 
+	@NotBlank
 	@Column(nullable = false, length = 32)
 	private String					importance;
 
+	@NotBlank
 	@Column(nullable = false, length = 256)
 	private String					modificationReason;
 
+	@NotNull
 	@Column(nullable = false, length = 256)
 	private String					tags;
 

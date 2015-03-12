@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity()
 @Table(name = "test_datasets")
 public class TestDataSet implements Serializable {
@@ -18,11 +20,15 @@ public class TestDataSet implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer				id;
+
+	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String				name;
 
+	@NotBlank
 	@Column(nullable = false, length = 512)
 	private String				url;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id")
 	private TestCaseRevision	owner;

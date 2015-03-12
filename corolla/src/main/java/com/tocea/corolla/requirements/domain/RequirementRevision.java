@@ -18,6 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.google.common.collect.Lists;
 import com.tocea.corolla.attachments.domain.Attachment;
@@ -37,12 +40,14 @@ public class RequirementRevision {
 	@Column(name = "ID")
 	private Integer					id;
 
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id")
+	@JoinColumn(name = "owner_id", nullable = false)
 	private Requirement				owner;
 
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "updater_id")
+	@JoinColumn(name = "updater_id", nullable = false)
 	private User					updater;
 
 	@Column(nullable = false)
@@ -51,39 +56,46 @@ public class RequirementRevision {
 	@Column(nullable = false)
 	private int						revision;
 
+	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String					reference;
 
 	@Column(nullable = false)
 	private Date					modificationTime;
 
+	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String					type;
 
+	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String					status;
 
+	@NotBlank
 	@Column(nullable = false, length = 64)
 	private String					criticity;
 
+	@NotBlank
 	@Column(nullable = false, length = 256)
 	private String					modificationReason;
 
+	@NotBlank
 	@Column(nullable = false, length = 256)
 	private String					tags;
+
 	@ManyToMany
 	@JoinTable(name = "requirements_revision_components", joinColumns = { @JoinColumn(name = "req_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "component_id", referencedColumnName = "id") })
 	private List<ProductVersion>	componentVersions	= Lists.newArrayList();
 
 	@Lob
 	@Column(nullable = false)
-	private String				description;
+	private String					description;
 
 	@OneToMany(mappedBy = "requirement_owner", fetch = FetchType.LAZY)
-	private List<Attachment>	attachments;
+	private List<Attachment>		attachments;
 
 	@OneToMany(mappedBy = "requirementOwner")
-	private List<CustomField>	customFields;
+	private List<CustomField>		customFields;
 
 	/**
 	 * @return the attachments

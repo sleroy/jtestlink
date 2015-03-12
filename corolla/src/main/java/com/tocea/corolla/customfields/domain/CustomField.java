@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.tocea.corolla.products.domain.Product;
 import com.tocea.corolla.products.domain.ProductComponent;
 import com.tocea.corolla.requirements.domain.RequirementRevision;
@@ -22,13 +24,15 @@ public class CustomField {
 
 	@Id
 	@GeneratedValue
-	private Integer				id;
+	private Integer	id;
 
+	@NotBlank
 	@Column(nullable = false, length = 64)
-	private String				name;
+	private String	name;
 
+	@NotBlank
 	@Column(nullable = false, length = 256)
-	private String				value;
+	private String	value;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "POWNER_ID")
@@ -130,6 +134,19 @@ public class CustomField {
 	 */
 	public void setValue(final String _value) {
 		this.value = _value;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CustomField [id=" + this.id + ", name=" + this.name + ", value=" + this.value
+				+ ", productOwner=" + this.productOwner + ", componentOwner="
+				+ this.componentOwner + ", requirementOwner=" + this.requirementOwner
+				+ "]";
 	}
 
 }

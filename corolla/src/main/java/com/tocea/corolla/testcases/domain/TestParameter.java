@@ -12,6 +12,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity()
 @Table(name = "test_parameters")
 public class TestParameter implements Serializable {
@@ -19,9 +21,12 @@ public class TestParameter implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer	id;
+
+	@NotBlank
 	@Column(nullable = false, length= 64)
 	private String	name;
 
+	@NotBlank
 	@Column(nullable = false, length=64)
 	private String	type;
 

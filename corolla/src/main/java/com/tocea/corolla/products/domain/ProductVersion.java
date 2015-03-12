@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * This class defines a version for a component or a product.
  *
@@ -24,15 +26,19 @@ public class ProductVersion {
 	@GeneratedValue
 	private Integer				id;
 
+	@NotBlank
 	@Column(nullable = false, length = 64)
 	private String				name;
 
+	@NotBlank
 	@Column(nullable = false, length = 256)
 	private String				description;
+
 
 	@Column(nullable = true)
 	private Date				releaseDate;
 
+	@NotBlank
 	@Column(nullable = false, length = 64)
 	private String				type;
 

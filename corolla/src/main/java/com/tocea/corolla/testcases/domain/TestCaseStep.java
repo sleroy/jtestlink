@@ -12,6 +12,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -42,6 +43,7 @@ public class TestCaseStep implements Serializable {
 	@NotBlank
 	private String	execution_type;
 
+	@NotNull
 	@Column(nullable = false)
 	private Double	estimatedTime	= 0d;
 

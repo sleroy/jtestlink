@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.tocea.corolla.users.domain.User;
 
@@ -28,9 +29,11 @@ public class TestCase implements Serializable {
 	private Integer		id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "author_id")
+	@JoinColumn(name = "author_id", nullable=false)
+	@NotNull
 	private User		author;
 
+	@NotNull
 	@Column(nullable = false)
 	private Date		created_time;
 

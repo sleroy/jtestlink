@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * This class declares a type of component to be employed in the product; etc
  *
@@ -23,6 +25,7 @@ public class ProductComponentType implements Serializable {
 	@GeneratedValue
 	private Integer	id;
 
+	@NotBlank
 	@Column(nullable = false, length=128)
 	private String	name;
 

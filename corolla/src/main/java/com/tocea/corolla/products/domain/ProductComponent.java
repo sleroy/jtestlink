@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.tocea.corolla.customfields.domain.CustomField;
 
 /**
@@ -41,6 +43,7 @@ public class ProductComponent implements Serializable {
 	@JoinColumn(name = "componenttype_id")
 	private ProductComponentType	type;
 
+	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String					name;
 
