@@ -84,10 +84,9 @@ public class DemoDataBean {
 		final Product komeaProduct = this.newProduct(	"Komea",
 				"<b>komea</b> is a dashboard software to measure ....");
 
-		final ProductComponent productFuncArchitecture = (ProductComponent) this.gate.dispatch(new AddNewArchitectureToProductCommand(komeaProduct.getId(),
-		                                                                                                                                    funcArchiType.getId()));
-		final ProductComponent productTechArchitecture = (ProductComponent) this.gate.dispatch(new AddNewArchitectureToProductCommand(komeaProduct.getId(),
-		                                                                                                                                    techArchiType.getId()));
+		final ProductComponent productFuncArchitecture = this.newFunctionality(funcArchiType, komeaProduct, null, "Architecture fonctionnelle");
+
+		final ProductComponent productTechArchitecture = this.newFunctionality(techArchiType, komeaProduct, null, "Architecture technique");
 
 		this.newFunctionality(	functionalityArchiType, komeaProduct,
 		                      	productFuncArchitecture, "Gestion des CRONS");
@@ -103,8 +102,8 @@ public class DemoDataBean {
 		this.newFunctionality(	coucheArchiType, komeaProduct,
 		                      	productTechArchitecture, "Portail Liferay");
 		final ProductComponent admin = this.newFunctionality(	coucheArchiType,
-		                                                        	komeaProduct,
-		                                                        	productTechArchitecture,
+		                                                     	komeaProduct,
+		                                                     	productTechArchitecture,
 				"IHM Administration");
 		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
 				"Gestion des KPIS");
@@ -119,7 +118,7 @@ public class DemoDataBean {
 		                      productTechArchitecture,
 				"Backend");
 		final ProductComponent plugins = this.newFunctionality(	coucheArchiType, komeaProduct,
-		                                                          	productTechArchitecture, "Plugins");
+		                                                       	productTechArchitecture, "Plugins");
 		this.newFunctionality(componentArchitectureType, komeaProduct, plugins, "Plugin Bugzilla");
 		this.newFunctionality(componentArchitectureType, komeaProduct, plugins, "Plugin Testlink");
 		this.newFunctionality(	coucheArchiType, komeaProduct,
@@ -146,19 +145,21 @@ public class DemoDataBean {
 	/**
 	 * @param funcArchiType
 	 * @param komeaProduct
-	 * @param productFuncArchitecture
+	 * @param _parentComponent
 	 * @param _funcName
 	 * @return
 	 */
 	private ProductComponent newFunctionality(
 			final ProductComponentType funcArchiType,
 			final Product komeaProduct,
-			final ProductComponent productFuncArchitecture,
+			final ProductComponent _parentComponent,
 			final String _funcName) {
 		final AddNewArchitectureToProductCommand command = new AddNewArchitectureToProductCommand();
 		command.setArchitectureTypeID(funcArchiType.getId());
 		command.setProductID(komeaProduct.getId());
-		command.setParentArchitectureID(productFuncArchitecture.getId());
+		if (_parentComponent != null) {
+			command.setParentArchitectureID(_parentComponent.getId());
+		}
 		command.setName(_funcName);
 		command.setDescription(_funcName);
 		return (ProductComponent) this.gate.dispatch(command);

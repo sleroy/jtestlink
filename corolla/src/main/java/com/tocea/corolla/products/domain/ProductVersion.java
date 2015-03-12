@@ -6,11 +6,13 @@ package com.tocea.corolla.products.domain;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,6 +22,8 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author sleroy
  *
  */
+@Entity()
+@Table(name = "product_versions")
 public class ProductVersion {
 
 	@Id

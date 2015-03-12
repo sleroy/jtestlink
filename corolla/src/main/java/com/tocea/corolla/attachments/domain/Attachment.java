@@ -6,6 +6,8 @@ package com.tocea.corolla.attachments.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -22,6 +24,9 @@ import com.tocea.corolla.requirements.domain.RequirementRevision;
 @Entity()
 @Table(name = "attachments")
 public class Attachment {
+	@Id
+	@GeneratedValue
+	private Integer	id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "OWNER_ID")
@@ -44,6 +49,13 @@ public class Attachment {
 	 */
 	public String getDescription() {
 		return this.description;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return this.id;
 	}
 
 	/**
@@ -76,6 +88,14 @@ public class Attachment {
 	}
 
 	/**
+	 * @param _id
+	 *            the id to set
+	 */
+	public void setId(final Integer _id) {
+		this.id = _id;
+	}
+
+	/**
 	 * @param _name
 	 *            the name to set
 	 */
@@ -87,7 +107,8 @@ public class Attachment {
 	 * @param _requirement_owner
 	 *            the requirement_owner to set
 	 */
-	public void setRequirement_owner(final RequirementRevision _requirement_owner) {
+	public void setRequirement_owner(
+			final RequirementRevision _requirement_owner) {
 		this.requirement_owner = _requirement_owner;
 	}
 
@@ -99,15 +120,13 @@ public class Attachment {
 		this.url = _url;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Attachment [requirement_owner=" + this.requirement_owner
-				+ ", name=" + this.name + ", description=" + this.description
-				+ ", url=" + this.url + "]";
+		return "Attachment [id=" + this.id + ", requirement_owner="
+				+ this.requirement_owner + ", name=" + this.name + ", description="
+				+ this.description + ", url=" + this.url + "]";
 	}
 }

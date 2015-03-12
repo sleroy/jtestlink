@@ -61,6 +61,8 @@ ICommandHandler<AddNewArchitectureToProductCommand, ProductComponent> {
 		}
 
 		final ProductComponent productComponent = new ProductComponent();
+		productComponent.setName(_command.getName());
+		productComponent.setDescription(_command.getDescription());
 		productComponent.setOwner(product);
 		productComponent.setType(productComponentType);
 		productComponent.setParent(parentProductArchitecture);

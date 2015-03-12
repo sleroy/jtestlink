@@ -83,7 +83,7 @@ public class TestCaseRevision {
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
 	private List<TestCaseStep>		steps;
 
-	@OneToMany(mappedBy = "parameters", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
 	private List<TestParameter>		parameters;
 
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
