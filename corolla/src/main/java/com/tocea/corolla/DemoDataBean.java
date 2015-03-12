@@ -16,7 +16,8 @@ import com.tocea.corolla.products.dao.IProductArchitectureDAO;
 import com.tocea.corolla.products.dao.IProductArchitectureTypeDAO;
 import com.tocea.corolla.products.dao.IProductDAO;
 import com.tocea.corolla.products.domain.Product;
-import com.tocea.corolla.products.domain.ProductArchitectureType;
+import com.tocea.corolla.products.domain.ProductComponent;
+import com.tocea.corolla.products.domain.ProductComponentType;
 import com.tocea.corolla.users.api.IPasswordEncoder;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.dao.IUserDAO;
@@ -48,10 +49,8 @@ public class DemoDataBean {
 	@Autowired
 	private IProductArchitectureTypeDAO	productArchitectureTypeDAO;
 
-
 	@Autowired
-	private Gate iCommandHandler;
-
+	private Gate						gate;
 
 	@SuppressWarnings("nls")
 	@PostConstruct
@@ -76,15 +75,57 @@ public class DemoDataBean {
 		             	"gandalf",
 		             	"saroumaneisg..", roleFM);
 
-		final ProductArchitectureType funcArchiType = this.newArchitectureType("Architecture fonctionnelle");
-		final ProductArchitectureType techArchiType = this.newArchitectureType("Architecture technique");
+		final ProductComponentType funcArchiType = this.newArchitectureType("Architecture fonctionnelle");
+		final ProductComponentType techArchiType = this.newArchitectureType("Architecture technique");
+		final ProductComponentType componentArchitectureType = this.newArchitectureType("Composant");
+		final ProductComponentType coucheArchiType = this.newArchitectureType("Couche");
+		final ProductComponentType functionalityArchiType = this.newArchitectureType("Fonctionnalité");
 
-
-		final Product newProduct = this.newProduct(	"Komea",
+		final Product komeaProduct = this.newProduct(	"Komea",
 				"<b>komea</b> is a dashboard software to measure ....");
 
-		this.iCommandHandler.dispatch(new AddNewArchitectureToProductCommand(newProduct.getId(), funcArchiType.getId()));
-		this.iCommandHandler.dispatch(new AddNewArchitectureToProductCommand(newProduct.getId(), techArchiType.getId()));
+		final ProductComponent productFuncArchitecture = (ProductComponent) this.gate.dispatch(new AddNewArchitectureToProductCommand(komeaProduct.getId(),
+		                                                                                                                                    funcArchiType.getId()));
+		final ProductComponent productTechArchitecture = (ProductComponent) this.gate.dispatch(new AddNewArchitectureToProductCommand(komeaProduct.getId(),
+		                                                                                                                                    techArchiType.getId()));
+
+		this.newFunctionality(	functionalityArchiType, komeaProduct,
+		                      	productFuncArchitecture, "Gestion des CRONS");
+		this.newFunctionality(	functionalityArchiType, komeaProduct,
+		                      	productFuncArchitecture,
+				"Moteur de statistiques");
+		this.newFunctionality(	functionalityArchiType, komeaProduct,
+		                      	productFuncArchitecture, "Execution des KPIS");
+		this.newFunctionality(	functionalityArchiType, komeaProduct,
+		                      	productFuncArchitecture,
+				"Moteur de statistiques");
+
+		this.newFunctionality(	coucheArchiType, komeaProduct,
+		                      	productTechArchitecture, "Portail Liferay");
+		final ProductComponent admin = this.newFunctionality(	coucheArchiType,
+		                                                        	komeaProduct,
+		                                                        	productTechArchitecture,
+				"IHM Administration");
+		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
+				"Gestion des KPIS");
+		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
+				"Gestion des personnes");
+		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
+				"Gestion des équipes");
+		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
+				"Gestion des départements");
+		this.newFunctionality(coucheArchiType,
+		                      komeaProduct,
+		                      productTechArchitecture,
+				"Backend");
+		final ProductComponent plugins = this.newFunctionality(	coucheArchiType, komeaProduct,
+		                                                          	productTechArchitecture, "Plugins");
+		this.newFunctionality(componentArchitectureType, komeaProduct, plugins, "Plugin Bugzilla");
+		this.newFunctionality(componentArchitectureType, komeaProduct, plugins, "Plugin Testlink");
+		this.newFunctionality(	coucheArchiType, komeaProduct,
+		                      	productTechArchitecture, "Kpis");
+		this.newFunctionality(	coucheArchiType, komeaProduct,
+		                      	productTechArchitecture, "Providers");
 
 	}
 
@@ -92,13 +133,35 @@ public class DemoDataBean {
 	 * @param _architectureName
 	 * @return
 	 */
-	private ProductArchitectureType newArchitectureType(final String _architectureName) {
-		final ProductArchitectureType productArchitectureType = new ProductArchitectureType();
-		productArchitectureType.setName(_architectureName);
-		productArchitectureType.setDescription(_architectureName);
-		this.productArchitectureTypeDAO.save(productArchitectureType);
-		return productArchitectureType;
+	private ProductComponentType newArchitectureType(
+			final String _architectureName) {
+		final ProductComponentType productComponentType = new ProductComponentType();
+		productComponentType.setName(_architectureName);
+		productComponentType.setDescription(_architectureName);
+		this.productArchitectureTypeDAO.save(productComponentType);
+		return productComponentType;
 
+	}
+
+	/**
+	 * @param funcArchiType
+	 * @param komeaProduct
+	 * @param productFuncArchitecture
+	 * @param _funcName
+	 * @return
+	 */
+	private ProductComponent newFunctionality(
+			final ProductComponentType funcArchiType,
+			final Product komeaProduct,
+			final ProductComponent productFuncArchitecture,
+			final String _funcName) {
+		final AddNewArchitectureToProductCommand command = new AddNewArchitectureToProductCommand();
+		command.setArchitectureTypeID(funcArchiType.getId());
+		command.setProductID(komeaProduct.getId());
+		command.setParentArchitectureID(productFuncArchitecture.getId());
+		command.setName(_funcName);
+		command.setDescription(_funcName);
+		return (ProductComponent) this.gate.dispatch(command);
 	}
 
 	/**

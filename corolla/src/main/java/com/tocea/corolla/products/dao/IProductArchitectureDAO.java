@@ -6,7 +6,7 @@ package com.tocea.corolla.products.dao;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import com.tocea.corolla.products.domain.ProductArchitecture;
+import com.tocea.corolla.products.domain.ProductComponent;
 
 /**
  * This interface defines the CRUD to manipulate members.
@@ -16,6 +16,6 @@ import com.tocea.corolla.products.domain.ProductArchitecture;
  *
  */
 @RepositoryRestResource(path = "/product_architectures", collectionResourceRel = "product_architectures")
-public interface IProductArchitectureDAO extends CrudRepository<ProductArchitecture, Integer> {
+public interface IProductArchitectureDAO extends CrudRepository<ProductComponent, Integer> {
 
 }

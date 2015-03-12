@@ -5,11 +5,16 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.tocea.corolla.customfields.domain.CustomField;
 
 /**
  * This class declares a product on which will be attached requirements / test
@@ -24,23 +29,37 @@ public class Product implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private Integer						id;
+	private Integer					id;
 
-	@Column(nullable = false)
-	private String						name;
+	@NotBlank
+	@Column(nullable = false, length = 128)
+	private String					name;
 
 	@Lob
 	@Column(nullable = false)
-	private String						description;
+	private String					description;
 
-	@OneToMany(mappedBy = "owner")
-	private List<ProductArchitecture>	architectures;
+	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+	private List<ProductComponent>	architectures;
+
+	@OneToMany(mappedBy = "productOwner", fetch = FetchType.LAZY)
+	private List<ProductVersion>	versions;
+
+	@OneToMany(mappedBy = "productOwner", fetch = FetchType.LAZY)
+	private List<CustomField>		customFields;
 
 	/**
 	 * @return the architectures
 	 */
-	public List<ProductArchitecture> getArchitectures() {
+	public List<ProductComponent> getArchitectures() {
 		return this.architectures;
+	}
+
+	/**
+	 * @return the customFields
+	 */
+	public List<CustomField> getCustomFields() {
+		return this.customFields;
 	}
 
 	/**
@@ -65,11 +84,26 @@ public class Product implements Serializable {
 	}
 
 	/**
+	 * @return the versions
+	 */
+	public List<ProductVersion> getVersions() {
+		return this.versions;
+	}
+
+	/**
 	 * @param _architectures
 	 *            the architectures to set
 	 */
-	public void setArchitectures(final List<ProductArchitecture> _architectures) {
+	public void setArchitectures(final List<ProductComponent> _architectures) {
 		this.architectures = _architectures;
+	}
+
+	/**
+	 * @param _customFields
+	 *            the customFields to set
+	 */
+	public void setCustomFields(final List<CustomField> _customFields) {
+		this.customFields = _customFields;
 	}
 
 	/**
@@ -96,6 +130,14 @@ public class Product implements Serializable {
 		this.name = _name;
 	}
 
+	/**
+	 * @param _versions
+	 *            the versions to set
+	 */
+	public void setVersions(final List<ProductVersion> _versions) {
+		this.versions = _versions;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -104,7 +146,9 @@ public class Product implements Serializable {
 	@Override
 	public String toString() {
 		return "Product [id=" + this.id + ", name=" + this.name
-				+ ", description=" + this.description + "]";
+				+ ", description=" + this.description + ", architectures="
+				+ this.architectures + ", versions=" + this.versions
+				+ ", customFields=" + this.customFields + "]";
 	}
 
 }

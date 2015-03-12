@@ -10,27 +10,25 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
- * This class declares a product on which will be attached requirements / test
- * etc
+ * This class declares a type of component to be employed in the product; etc
  *
  * @author sleroy
  *
  */
 @Entity()
-@Table(name = "product_architecture_type")
-public class ProductArchitectureType implements Serializable {
+@Table(name = "product_component_types")
+public class ProductComponentType implements Serializable {
 
 	@Id
 	@GeneratedValue
 	private Integer	id;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length=128)
 	private String	name;
 
 	@Lob
 	@Column(nullable = false)
 	private String	description;
-
 
 	/**
 	 * @return the description
@@ -52,8 +50,6 @@ public class ProductArchitectureType implements Serializable {
 	public String getName() {
 		return this.name;
 	}
-
-
 
 	/**
 	 * @param _description
@@ -79,8 +75,6 @@ public class ProductArchitectureType implements Serializable {
 		this.name = _name;
 	}
 
-
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -88,7 +82,7 @@ public class ProductArchitectureType implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Product [id=" + this.id + ", name=" + this.name
+		return "ProductComponentType [id=" + this.id + ", name=" + this.name
 				+ ", description=" + this.description + "]";
 	}
 

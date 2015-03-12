@@ -17,8 +17,8 @@ import com.tocea.corolla.products.dao.IProductArchitectureDAO;
 import com.tocea.corolla.products.dao.IProductArchitectureTypeDAO;
 import com.tocea.corolla.products.dao.IProductDAO;
 import com.tocea.corolla.products.domain.Product;
-import com.tocea.corolla.products.domain.ProductArchitecture;
-import com.tocea.corolla.products.domain.ProductArchitectureType;
+import com.tocea.corolla.products.domain.ProductComponent;
+import com.tocea.corolla.products.domain.ProductComponentType;
 
 /**
  * @author sleroy
@@ -27,7 +27,8 @@ import com.tocea.corolla.products.domain.ProductArchitectureType;
 @CommandHandler
 @Transactional
 public class AddNewArchitectureToProductCommandHandler
-implements ICommandHandler<AddNewArchitectureToProductCommand, ProductArchitecture> {
+implements
+ICommandHandler<AddNewArchitectureToProductCommand, ProductComponent> {
 
 	@Autowired
 	private IProductDAO					productDAO;
@@ -40,28 +41,42 @@ implements ICommandHandler<AddNewArchitectureToProductCommand, ProductArchitectu
 	/*
 	 * (non-Javadoc)
 	 *
-	 * @see
-	 * com.tocea.corolla.cqrs.handler.ICommandHandler#handle(java.lang
+	 * @see com.tocea.corolla.cqrs.handler.ICommandHandler#handle(java.lang
 	 * .Object)
 	 */
 	@Override
-	public ProductArchitecture handle(
+	public ProductComponent handle(
 			final AddNewArchitectureToProductCommand _command) {
 		final Product product = this.productDAO.findOne(_command.getProductID());
 		Validate.notNull(product, "Product should exist");
-		final ProductArchitectureType productArchitectureType = this.productArchitectureTypeDAO.findOne(_command.getArchitectureTypeID());
-		Validate.notNull(	productArchitectureType,
+		final ProductComponentType productComponentType = this.productArchitectureTypeDAO.findOne(_command.getArchitectureTypeID());
+		Validate.notNull(	productComponentType,
 				"Architecture type should exist");
-		final List<ProductArchitecture> architectures = product.getArchitectures();
-		final ProductArchitecture productArchitecture = new ProductArchitecture();
-		productArchitecture.setOwner(product);
-		productArchitecture.setType(productArchitectureType);
-		architectures.add(productArchitecture);
-		product.setArchitectures(architectures);
 
-		this.productArchitectureDAO.save(productArchitecture);
-		this.productDAO.save(product);
+		// Get the parent architecture if available
+		ProductComponent parentProductArchitecture = null;
+		if (_command.getParentArchitectureID() != null) {
+			parentProductArchitecture = this.productArchitectureDAO.findOne(_command.getParentArchitectureID());
+			Validate.notNull(parentProductArchitecture, "Parent architecture should exist");
+		}
 
-		return productArchitecture;
+		final ProductComponent productComponent = new ProductComponent();
+		productComponent.setOwner(product);
+		productComponent.setType(productComponentType);
+		productComponent.setParent(parentProductArchitecture);
+		this.productArchitectureDAO.save(productComponent);
+
+		if (parentProductArchitecture == null) { // Attach to parent
+			final List<ProductComponent> architectures = product.getArchitectures();
+			architectures.add(productComponent);
+			product.setArchitectures(architectures);
+			this.productDAO.save(product);
+
+		} else {
+			parentProductArchitecture.getChildren().add(productComponent);
+			this.productArchitectureDAO.save(parentProductArchitecture);
+		}
+
+		return productComponent;
 	}
 }
