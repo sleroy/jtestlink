@@ -1,6 +1,7 @@
-package com.tocea.corolla;
+package com.tocea.corolla.views;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.devutils.stateless.StatelessChecker;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.slf4j.Logger;
@@ -9,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.tocea.corolla.views.Homepage;
+import com.tocea.corolla.views.admin.central.AdminCentralPage;
+import com.tocea.corolla.views.admin.users.UserAdminPage;
 
 /**
  * The web application class also serves as spring boot starting point by using
@@ -37,21 +39,20 @@ public class WicketWebApplication extends WebApplication {
 		return Homepage.class;
 	}
 
-	/**
-	 * <ul>
-	 * <li>making the wicket components injectable by activating the
-	 * SpringComponentInjector</li>
-	 * <li>mounting the test page</li>
-	 * <li>logging spring service method output to showcase working
-	 * integration</li>
-	 * </ul>
-	 */
 	@Override
 	protected void init() {
 		super.init();
+		//https://github.com/sebfz1/wicket-jquery-ui
+		//http://central.maven.org/maven2/com/googlecode/wicket-jquery-ui/
 		this.getComponentInstantiationListeners().add(
 		                                              new SpringComponentInjector(this, this.applicationContext));
+
+		this.getComponentPreOnBeforeRenderListeners().add(new StatelessChecker());
+
 		this.mountPage("/index.html", Homepage.class);
+		this.mountPage("/admin", AdminCentralPage.class);
+		this.mountPage("/admin/users", UserAdminPage.class);
+		//this.mountPage("/admin/users", UserAdminPage.class);
 		//this.mountPage("/mounted.html", MountedPage.class);
 		// best place to do this is in Application#init()
 

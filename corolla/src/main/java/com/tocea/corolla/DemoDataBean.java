@@ -19,6 +19,7 @@ import com.tocea.corolla.products.domain.Product;
 import com.tocea.corolla.products.domain.ProductComponent;
 import com.tocea.corolla.products.domain.ProductComponentType;
 import com.tocea.corolla.users.api.IPasswordEncoder;
+import com.tocea.corolla.users.commands.AddNewUserCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.domain.Role;
@@ -71,9 +72,12 @@ public class DemoDataBean {
 		             	"ikurosaki", "password", roleTester);
 		this.newUser(	"James", "Bond", "james.bond@mi6.com", "jbond", "007",
 		             	rolePM);
-		this.newUser(	"Gandalf", "LeGris", "gandald.legris@lotr.com",
+		this.newUser(	"Gandalf", "LeGris", "gandalf.legris@lotr.com",
 		             	"gandalf",
 		             	"saroumaneisg..", roleFM);
+		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
+		             	"saroumane",
+		             	"fuckSauron..", roleFM);
 
 		final ProductComponentType funcArchiType = this.newArchitectureType("Architecture fonctionnelle");
 		final ProductComponentType techArchiType = this.newArchitectureType("Architecture technique");
@@ -206,7 +210,7 @@ public class DemoDataBean {
 		user.setLogin(_string4);
 		user.setPassword(this.passwordEncoder.encodePassword(_password));
 		user.setRole_id(_rolePO.getId());
-		this.userDAO.save(user);
+		this.gate.dispatch(new AddNewUserCommand(user));
 		return user;
 	}
 }

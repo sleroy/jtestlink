@@ -1,14 +1,17 @@
 package com.tocea.corolla.users.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+
 
 /**
  * This class declares a member that contributes to a repository. It is
@@ -45,17 +48,32 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 256)
 	private String	password;
 
+	@NotNull
 	@Column(nullable = false)
 	private int		role_id;
 
+	@NotBlank
 	@Column(nullable = false, length = 10)
 	private String	locale	= "en_GB";		//$NON-NLS-1$
 
 	@Column(nullable = true)
 	private Integer	defaultTestProject_id;
 
+	@NotNull
+	@Column(nullable = false)
+	private Date createdTime;
+
+
+	@NotNull
 	@Column(nullable = false)
 	private boolean	active	= true;
+
+	/**
+	 * @return the createdTime
+	 */
+	public Date getCreatedTime() {
+		return this.createdTime;
+	}
 
 	/**
 	 * @return the defaultTestProject_id
@@ -133,6 +151,13 @@ public class User implements Serializable {
 	 */
 	public void setActive(final boolean _active) {
 		this.active = _active;
+	}
+
+	/**
+	 * @param _createdTime the createdTime to set
+	 */
+	public void setCreatedTime(final Date _createdTime) {
+		this.createdTime = _createdTime;
 	}
 
 	/**

@@ -1,18 +1,19 @@
-package com.tocea.corolla.views;
+package com.tocea.corolla.views.admin.central;
 
 import org.apache.wicket.markup.head.IHeaderResponse;
 
-import com.tocea.corolla.views.menu.MainSideMenu;
+import com.tocea.corolla.views.LayoutPage;
+import com.tocea.corolla.views.menu.AdminSideMenu;
 import com.tocea.corolla.widgets.sidemenu.SideMenuPanel;
 
 /**
- * Home page
+ * Administration central page
  *
  * @author Sylvain Leroy
  *
  */
-public class Homepage extends LayoutPage {
-	public Homepage() {
+public class AdminCentralPage extends LayoutPage {
+	public AdminCentralPage() {
 		super();
 
 	}
@@ -20,6 +21,7 @@ public class Homepage extends LayoutPage {
 	@Override
 	public void renderHead(final IHeaderResponse response) {
 		super.renderHead(response);
+
 	}
 
 	/* (non-Javadoc)
@@ -29,7 +31,6 @@ public class Homepage extends LayoutPage {
 	protected void onInitialize() {
 		super.onInitialize();
 
-
 	}
 
 	/* (non-Javadoc)
@@ -37,6 +38,7 @@ public class Homepage extends LayoutPage {
 	 */
 	@Override
 	protected SideMenuPanel useSideMenu() {
-		return new MainSideMenu();
+
+		return new AdminSideMenu();
 	}
 }

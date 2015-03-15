@@ -90,7 +90,13 @@ dependencies {
 	compile "org.apache.wicket:wicket-bootstrap:0.17"
 	compile "org.apache.wicket:wicket-native-websocket-tomcat:$WICKET"
 	compile "org.apache.wicket:wicket-spring:$WICKET"
+	compile "org.apache.wicket:wicket-devutils:$WICKET"
 	compile "org.apache.wicket:wicket-extensions:$WICKET"
+	compile "com.googlecode.wicket-jquery-ui:wicket-jquery-ui:$WICKET"
+	compile "com.googlecode.wicket-jquery-ui:wicket-jquery-ui-theme-southstreet:$WICKET"
+	compile "com.googlecode.wicket-jquery-ui:wicket-kendo-ui:$WICKET"
+	compile "com.googlecode.wicket-jquery-ui:wicket-kendo-ui-theme-bootstrap:$WICKET"
+	
 
 
 
