@@ -30,7 +30,7 @@ public class GravatarPanel extends Panel {
 	protected void onInitialize() {
 
 		super.onInitialize();
-		this.add(new GravatarImage("pic",this.getDefaultModelObjectAsString(),  GravatarDefaultImage.GRAVATAR_ICON, this.size));
+		this.add(new GravatarImage("pic",this.getDefaultModelObjectAsString(),  GravatarDefaultImage.IDENTICON, this.size));
 	}
 
 }

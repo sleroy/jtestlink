@@ -10,7 +10,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1" />
-<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/bootstrap.css" rel="stylesheet" />
 <link href="css/styles.css" rel="stylesheet">
 <!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,8 +72,8 @@
 							<ul class="nav navbar-nav">
 								<li><a href="#"><i class="glyphicon glyphicon-home"></i>
 										Home</a></li>
-								<!-- 								<li><a href="#postModal" role="button" data-toggle="modal"><i
-										class="glyphicon glyphicon-plus"></i> Post</a></li> -->
+								<li><a href="#"> Users</a></li>
+								<li><a href="#"> User details</a></li>
 							</ul>
 							<form class="navbar-form navbar-left">
 								<div class="input-group input-group-sm"
@@ -88,19 +88,6 @@
 									</div>
 								</div>
 							</form>
-							<form class="navbar-form navbar-right"
-								wicket:id="productSelectForm">
-								<div class="input-group input-group-sm"
-									style="max-width: 360px;">
-									<select class="form-control" wicket:id="productSelect">
-										<option value="one">Projet A</option>
-										<option value="two">Projet B</option>
-										<option value="three">Projet C</option>
-										<option value="four">Projet D</option>
-										<option value="five">Projet E</option>
-									</select>
-								</div>
-							</form>
 
 							<ul class="nav navbar-nav navbar-right">
 								<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -110,11 +97,13 @@
 										<li><a href="">Logout</a></li>
 									</ul></li>
 							</ul>
+
 						</nav>
 					</div>
-					<!-- /top nav -->
+
 
 					<div class="padding">
+
 						<div class="full col-sm-9">
 
 							<wicket:child></wicket:child>
@@ -191,7 +180,6 @@
             document.body.appendChild(s)
         })();
     </script> -->
-
 </body>
 
 
