@@ -2,7 +2,7 @@ package com.tocea.corolla.views;
 
 import org.apache.wicket.markup.head.IHeaderResponse;
 
-import com.tocea.corolla.views.menu.MainSideMenu;
+import com.tocea.corolla.widgets.sidemenu.MainSideMenu;
 import com.tocea.corolla.widgets.sidemenu.SideMenuPanel;
 
 /**

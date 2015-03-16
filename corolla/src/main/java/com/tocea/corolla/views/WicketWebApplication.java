@@ -11,7 +11,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.tocea.corolla.views.admin.central.AdminCentralPage;
+import com.tocea.corolla.views.admin.roles.RoleAdminPage;
+import com.tocea.corolla.views.admin.roles.RoleEditPage;
 import com.tocea.corolla.views.admin.users.UserAdminPage;
+import com.tocea.corolla.views.admin.users.UserEditPage;
 
 /**
  * The web application class also serves as spring boot starting point by using
@@ -52,8 +55,9 @@ public class WicketWebApplication extends WebApplication {
 		this.mountPage("/index.html", Homepage.class);
 		this.mountPage("/admin", AdminCentralPage.class);
 		this.mountPage("/admin/users", UserAdminPage.class);
-		//this.mountPage("/admin/users", UserAdminPage.class);
-		//this.mountPage("/mounted.html", MountedPage.class);
+		this.mountPage("/admin/users/edit", UserEditPage.class);
+		this.mountPage("/admin/roles", RoleAdminPage.class);
+		this.mountPage("/admin/roles/edit", RoleEditPage.class);
 		// best place to do this is in Application#init()
 
 	}

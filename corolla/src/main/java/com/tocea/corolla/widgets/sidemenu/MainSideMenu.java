@@ -1,11 +1,10 @@
 /**
  *
  */
-package com.tocea.corolla.views.menu;
+package com.tocea.corolla.widgets.sidemenu;
 
 import com.tocea.corolla.views.Homepage;
 import com.tocea.corolla.views.admin.central.AdminCentralPage;
-import com.tocea.corolla.widgets.sidemenu.SideMenuPanel;
 
 /**
  * This class defines the main menu panel.

@@ -1,23 +1,21 @@
-package com.tocea.corolla.views.admin.users;
+package com.tocea.corolla.views.admin.roles;
 
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.model.Model;
 
-import com.tocea.corolla.users.domain.User;
+import com.tocea.corolla.users.domain.Role;
 import com.tocea.corolla.views.LayoutPage;
 import com.tocea.corolla.widgets.datatable.DataTableBuilder;
-import com.tocea.corolla.widgets.datatable.columns.GravatarColumn;
 import com.tocea.corolla.widgets.sidemenu.AdminSideMenu;
 import com.tocea.corolla.widgets.sidemenu.SideMenuPanel;
 
 /**
- * User admin page
+ * Role admin page
  *
  * @author Sylvain Leroy
  *
  */
-public class UserAdminPage extends LayoutPage {
-	public UserAdminPage() {
+public class RoleAdminPage extends LayoutPage {
+	public RoleAdminPage() {
 		super();
 
 	}
@@ -36,18 +34,12 @@ public class UserAdminPage extends LayoutPage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		final DataTableBuilder<User,String> dataTableBuilder = DataTableBuilder.newTable("userDataTable"); //$NON-NLS-1$
-		dataTableBuilder.addColumn(new GravatarColumn(Model.of("")));
-		dataTableBuilder.addColumn("First name", "firstName");
-		dataTableBuilder.addColumn("Last name", "lastName");
-		dataTableBuilder.addColumn("Login", "login");
-		dataTableBuilder.addColumn("Email", "email");
-		dataTableBuilder.addColumn("Created", "createdTime");
+		final DataTableBuilder<Role,String> dataTableBuilder = DataTableBuilder.newTable("roleDataTable"); //$NON-NLS-1$
+		dataTableBuilder.addColumn("Role", "name");
+		dataTableBuilder.addColumn("Description", "note");
 		dataTableBuilder.displayRows(30);
-		dataTableBuilder.withListData(this.viewAPI.getUsers());
+		dataTableBuilder.withListData(this.viewAPI.getRoles());
 		this.add(dataTableBuilder.build());
-
-
 
 	}
 

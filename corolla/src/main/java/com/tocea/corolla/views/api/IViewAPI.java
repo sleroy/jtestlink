@@ -6,6 +6,7 @@ package com.tocea.corolla.views.api;
 import java.util.List;
 
 import com.tocea.corolla.products.domain.Product;
+import com.tocea.corolla.users.domain.Role;
 import com.tocea.corolla.users.domain.User;
 
 /**
@@ -20,8 +21,14 @@ public interface IViewAPI {
 	List<Product> getProducts();
 
 	/**
+	 * Returns the list of roles
+	 * @return the roles.
+	 */
+	List<Role> getRoles();
+
+	/**
 	 * Returns the list of users.
-	 * @return
+	 * @return the users
 	 */
 	List<User> getUsers();
 }

@@ -1,21 +1,19 @@
-package com.tocea.corolla.views.admin.central;
+package com.tocea.corolla.views.admin.roles;
 
 import org.apache.wicket.markup.head.IHeaderResponse;
 
 import com.tocea.corolla.views.LayoutPage;
-import com.tocea.corolla.widgets.links.RoleAdminLink;
-import com.tocea.corolla.widgets.links.UserAdminLink;
 import com.tocea.corolla.widgets.sidemenu.AdminSideMenu;
 import com.tocea.corolla.widgets.sidemenu.SideMenuPanel;
 
 /**
- * Administration central page
+ * Role edit page
  *
  * @author Sylvain Leroy
  *
  */
-public class AdminCentralPage extends LayoutPage {
-	public AdminCentralPage() {
+public class RoleEditPage extends LayoutPage {
+	public RoleEditPage() {
 		super();
 
 	}
@@ -34,8 +32,6 @@ public class AdminCentralPage extends LayoutPage {
 	@Override
 	protected void onInitialize() {
 		super.onInitialize();
-		this.add(new UserAdminLink("userAdminLink"));
-		this.add(new RoleAdminLink("roleAdminLink"));
 
 	}
 
