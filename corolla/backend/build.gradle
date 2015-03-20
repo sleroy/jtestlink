@@ -1,0 +1,34 @@
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+	compile("org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}")
+	compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+	//compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+	compile 'org.springframework.data:spring-data-rest-webmvc:2.2.2.RELEASE'
+
+
+
+
+
+
+	compile "org.slf4j:slf4j-api:$LOG_SLF4J"
+	compile "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
+	compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
+
+	compile 'org.apache.commons:commons-lang3:3.3.2'
+	compile "org.ocpsoft.prettytime:prettytime:$PRETTY_TIME"
+	compile 'com.google.code.findbugs:jsr305:3.0.0'
+	compile 'com.h2database:h2:1.4.185'
+	compile "joda-time:joda-time:2.4"
+
+
+	testCompile LOGGING
+	testCompile tests_frameworks // TEST FRAMEWORKS
+	testCompile("org.easymock:easymock:3.1") { exclude group: 'org.objenesis' }
+	testRuntime 'org.apache.logging.log4j:log4j-core:2.0.2'
+	testCompile 'org.codehaus.groovy:groovy-all:2.3.7'
+	testCompile('org.spockframework:spock-core:0.7-groovy-2.0') { exclude group: 'junit' }
+	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+
+}
+
