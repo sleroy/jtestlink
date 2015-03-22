@@ -15,20 +15,15 @@ dependencies {
 	compile "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
 	compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
 
-	compile 'org.apache.commons:commons-lang3:3.3.2'
+	compile "org.apache.commons:commons-lang3:$APACHE_COMMONLANG3"
 	compile "org.ocpsoft.prettytime:prettytime:$PRETTY_TIME"
 	compile 'com.google.code.findbugs:jsr305:3.0.0'
-	compile 'com.h2database:h2:1.4.185'
-	compile "joda-time:joda-time:2.4"
+	compile "com.h2database:h2:$H2_BASE"
+	compile "joda-time:joda-time:$JODA_TIME"
+	compile "org.codehaus.groovy:groovy-all:$GROOVY_VERSION"
 
 
-	testCompile LOGGING
-	testCompile tests_frameworks // TEST FRAMEWORKS
-	testCompile("org.easymock:easymock:3.1") { exclude group: 'org.objenesis' }
-	testRuntime 'org.apache.logging.log4j:log4j-core:2.0.2'
-	testCompile 'org.codehaus.groovy:groovy-all:2.3.7'
-	testCompile('org.spockframework:spock-core:0.7-groovy-2.0') { exclude group: 'junit' }
-	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+
 
 }
 

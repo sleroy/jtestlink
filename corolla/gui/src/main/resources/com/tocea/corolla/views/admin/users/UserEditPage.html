@@ -15,6 +15,7 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">
 						<h4>User details</h4>
+						<h3 wicket:id="userName">Sylvain Leroy : tester, admin</h3>
 						</div>
 							<div class="panel-body">
 								<div class="row">
@@ -22,13 +23,13 @@
 										<div class="thumbnail">
 											<img
 												src="http://thetransformedmale.files.wordpress.com/2011/06/bruce-wayne-armani.jpg"
-												alt="" class="img-rounded img-responsive"
+												alt="" class="img-rounded img-responsive" wicket:id="gravatar"
 												 />
 
 										</div>
 									</div>
 									<div class="col-md-9">
-										<form class="form-horizontal">
+										<form class="form-horizontal" wicket:id="formEdit">
 											<fieldset>
 
 												
@@ -38,7 +39,7 @@
 													<label class="col-md-4 control-label" for="login">Login</label>
 													<div class="col-md-4">
 														<input id="login" name="login" placeholder="jdoe"
-															class="form-control input-md" required="" type="text">
+															class="form-control input-md" required="required" type="text" wicket:id="login">
 
 													</div>
 												</div>
@@ -49,7 +50,7 @@
 														name</label>
 													<div class="col-md-4">
 														<input id="firstName" name="firstName" placeholder="John"
-															class="form-control input-md" required="" type="text">
+															class="form-control input-md" required="required" type="text" wicket:id="firstName">
 
 													</div>
 												</div>
@@ -60,7 +61,7 @@
 														name</label>
 													<div class="col-md-4">
 														<input id="lastName" name="lastName" placeholder="Doe"
-															class="form-control input-md" required="" type="text">
+															class="form-control input-md" required="required" type="text" wicket:id="lastName">
 
 													</div>
 												</div>
@@ -71,7 +72,7 @@
 													<div class="col-md-5">
 														<input id="email" name="email"
 															placeholder="john.doe@company.org"
-															class="form-control input-md" required="" type="text">
+															class="form-control input-md" required="" type="text" wicket:id="email">
 
 													</div>
 												</div>
@@ -82,7 +83,7 @@
 													<div class="col-md-4">
 														<input id="password" name="password"
 															placeholder="password" class="form-control input-md"
-															required="" type="password">
+															required="required" type="password" wicket:id="password">
 
 													</div>
 												</div>
@@ -92,9 +93,9 @@
 													<label class="col-md-4 control-label" for="passwordConfirm">Confirm
 														your password</label>
 													<div class="col-md-4">
-														<input id="passwordConfirm" name="passwordConfirm"
+														<input id="passwordConfirm" name="passwordConfirm" required="required"
 															placeholder="" class="form-control input-md"
-															type="password">
+															type="password" wicket:id="passwordConfirm">
 
 													</div>
 												</div>

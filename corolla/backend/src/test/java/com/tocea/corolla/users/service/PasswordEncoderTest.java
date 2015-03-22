@@ -10,11 +10,11 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.tocea.corolla.CorollaProgramApplication;
+import com.tocea.corolla.CorollaProgramTestApplication;
 import com.tocea.corolla.users.api.IPasswordEncoder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = CorollaProgramApplication.class)
+@SpringApplicationConfiguration(classes = CorollaProgramTestApplication.class)
 @WebAppConfiguration
 public class PasswordEncoderTest {
 

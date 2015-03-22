@@ -9,13 +9,11 @@ import org.apache.wicket.model.Model
 import org.apache.wicket.request.mapper.parameter.PageParameters
 
 import com.tocea.corolla.users.domain.User
-import com.tocea.corolla.views.LayoutPage
+import com.tocea.corolla.views.admin.central.AbstractAdminPage
 import com.tocea.corolla.widget.links.factory.api.ILinkFactory
 import com.tocea.corolla.widgets.datatable.DataTableBuilder
 import com.tocea.corolla.widgets.datatable.columns.GravatarColumn
 import com.tocea.corolla.widgets.panel.table.editdelete.EditDeleteColumn
-import com.tocea.corolla.widgets.sidemenu.AdminSideMenu
-import com.tocea.corolla.widgets.sidemenu.SideMenuPanel
 
 /**
  * User admin page
@@ -23,12 +21,9 @@ import com.tocea.corolla.widgets.sidemenu.SideMenuPanel
  * @author Sylvain Leroy
  *
  */
-class UserAdminPage extends LayoutPage {
+class UserAdminPage extends AbstractAdminPage {
 
 
-	def void renderHead(final IHeaderResponse response) {
-		super.renderHead(response)
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -43,6 +38,7 @@ class UserAdminPage extends LayoutPage {
 					public AbstractLink newLink(final String _widgetID, final IModel<User> _object) {
 
 						final PageParameters parameters = new PageParameters()
+						parameters.add "user", _object.object.id
 						return new BookmarkablePageLink<>(_widgetID, UserEditPage.class, parameters)
 					}
 				}
@@ -58,14 +54,15 @@ class UserAdminPage extends LayoutPage {
 
 										viewAPI.deleteUser(_object)
 									}
-
-
 								}
 					}
 				}
 
+
+
+
 		def dataTableBuilder = DataTableBuilder.newTable("userDataTable") //$NON-NLS-1$
-		with dataTableBuilder {
+		dataTableBuilder.with {
 			addColumn new GravatarColumn(Model.of(""))
 			addColumn "First name", "firstName"
 			addColumn "Last name", "lastName"
@@ -83,14 +80,4 @@ class UserAdminPage extends LayoutPage {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.tocea.corolla.views.LayoutPage#provideMenu()
-	 */
-	@Override
-	protected SideMenuPanel useSideMenu() {
-
-		return new AdminSideMenu()
-	}
 }

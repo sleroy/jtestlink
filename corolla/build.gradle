@@ -59,6 +59,17 @@ subprojects {
 	        "org.objenesis:objenesis:1.3",
 	        'org.hamcrest:hamcrest-all:1.3'
         ]
+		
+		
+		dependencies {
+		
+			testCompile LOGGING
+			testCompile tests_frameworks // TEST FRAMEWORKS
+			testCompile("org.easymock:easymock:3.1") { exclude group: 'org.objenesis' }
+			testRuntime 'org.apache.logging.log4j:log4j-core:2.0.2'
+			testCompile('org.spockframework:spock-core:1.0-groovy-2.4') { exclude group: 'junit' }
+			testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+		}
 
         test {
 	        if (project.hasProperty("logTest")) {
@@ -120,6 +131,7 @@ subprojects {
 
         task wrapper(type: Wrapper) { gradleVersion = '1.12' }
 
+		
 }
 
 
