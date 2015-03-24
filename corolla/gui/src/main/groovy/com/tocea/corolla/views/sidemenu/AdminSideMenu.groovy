@@ -17,9 +17,6 @@ import com.tocea.corolla.widgets.sidemenu.SideMenuPanel
  */
 class AdminSideMenu extends SideMenuPanel {
 
-	def AdminSideMenu() {
-		super("sidemenu")
-	}
 
 	protected void onInitialize() {
 		super.onInitialize()

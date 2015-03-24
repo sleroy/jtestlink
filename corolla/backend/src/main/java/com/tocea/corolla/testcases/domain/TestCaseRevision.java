@@ -4,28 +4,17 @@
 package com.tocea.corolla.testcases.domain;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.tocea.corolla.attachments.domain.Attachment;
-import com.tocea.corolla.customfields.domain.CustomField;
-import com.tocea.corolla.products.domain.ProductVersion;
-import com.tocea.corolla.requirements.domain.Requirement;
 import com.tocea.corolla.users.domain.User;
 
 @Entity()
@@ -35,9 +24,9 @@ public class TestCaseRevision {
 	@GeneratedValue
 	private Integer		id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "OWNER_ID")
-	private TestCase	owner;
+	@NotNull
+	@Column(nullable = false)
+	private TestCase	ownerTestCase;
 
 	@NotNull
 	@Column(nullable = false)
@@ -45,11 +34,11 @@ public class TestCaseRevision {
 
 	@NotNull
 	@Column(nullable = false)
-	private int			version;
+	private Integer			version;
 
 	@NotNull
 	@Column(nullable = false)
-	private int			revision;
+	private Integer			revision;
 
 	@NotNull
 	@NotBlank
@@ -80,25 +69,10 @@ public class TestCaseRevision {
 	@Column(nullable = false, length = 256)
 	private String					tags;
 
-	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-	private List<TestCaseStep>		steps;
 
-	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-	private List<TestParameter>		parameters;
 
-	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-	private List<TestDataSet>		dataset;
-
-	@ManyToMany
-	@JoinTable(name = "TESTCASE_COMPONENTS", joinColumns = { @JoinColumn(name = "TCREV_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "COMPONENT_ID", referencedColumnName = "ID") })
-	private List<ProductVersion>	componentVersions;
-
-	@ManyToMany
-	@JoinTable(name = "TESTCASE_REQUIREMENTS", joinColumns = { @JoinColumn(name = "TCREV_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "REQ_ID", referencedColumnName = "ID") })
-	private List<Requirement>		requirements;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "UPDATER_ID")
+	@NotNull
+	@Column(nullable = false)
 	private User					updater;
 
 	@Column(nullable = false)
@@ -112,25 +86,8 @@ public class TestCaseRevision {
 	@Column(nullable = false)
 	private String					preconditions;
 
-	@OneToMany(mappedBy = "requirement_owner", fetch = FetchType.LAZY)
-	private List<Attachment>		attachments;
 
-	@OneToMany(mappedBy = "requirementOwner")
-	private List<CustomField>		customFields;
 
-	/**
-	 * @return the attachments
-	 */
-	public List<Attachment> getAttachments() {
-		return this.attachments;
-	}
-
-	/**
-	 * @return the componentVersions
-	 */
-	public List<ProductVersion> getComponentVersions() {
-		return this.componentVersions;
-	}
 
 	/**
 	 * @return the criticity
@@ -139,19 +96,6 @@ public class TestCaseRevision {
 		return this.criticity;
 	}
 
-	/**
-	 * @return the customFields
-	 */
-	public List<CustomField> getCustomFields() {
-		return this.customFields;
-	}
-
-	/**
-	 * @return the dataset
-	 */
-	public List<TestDataSet> getDataset() {
-		return this.dataset;
-	}
 
 	/**
 	 * @return the estimatedTime
@@ -189,18 +133,12 @@ public class TestCaseRevision {
 	}
 
 	/**
-	 * @return the owner
+	 * @return the ownerTestCase
 	 */
-	public TestCase getOwner() {
-		return this.owner;
+	public TestCase getOwnerTestCase() {
+		return this.ownerTestCase;
 	}
 
-	/**
-	 * @return the parameters
-	 */
-	public List<TestParameter> getParameters() {
-		return this.parameters;
-	}
 
 	/**
 	 * @return the preconditions
@@ -216,17 +154,12 @@ public class TestCaseRevision {
 		return this.reference;
 	}
 
-	/**
-	 * @return the requirements
-	 */
-	public List<Requirement> getRequirements() {
-		return this.requirements;
-	}
+
 
 	/**
 	 * @return the revision
 	 */
-	public int getRevision() {
+	public Integer getRevision() {
 		return this.revision;
 	}
 
@@ -237,12 +170,6 @@ public class TestCaseRevision {
 		return this.status;
 	}
 
-	/**
-	 * @return the steps
-	 */
-	public List<TestCaseStep> getSteps() {
-		return this.steps;
-	}
 
 	/**
 	 * @return the summary
@@ -275,25 +202,11 @@ public class TestCaseRevision {
 	/**
 	 * @return the version
 	 */
-	public int getVersion() {
+	public Integer getVersion() {
 		return this.version;
 	}
 
-	/**
-	 * @param _attachments
-	 *            the attachments to set
-	 */
-	public void setAttachments(final List<Attachment> _attachments) {
-		this.attachments = _attachments;
-	}
 
-	/**
-	 * @param _componentVersions
-	 *            the componentVersions to set
-	 */
-	public void setComponentVersions(final List<ProductVersion> _componentVersions) {
-		this.componentVersions = _componentVersions;
-	}
 
 	/**
 	 * @param _criticity
@@ -301,22 +214,6 @@ public class TestCaseRevision {
 	 */
 	public void setCriticity(final String _criticity) {
 		this.criticity = _criticity;
-	}
-
-	/**
-	 * @param _customFields
-	 *            the customFields to set
-	 */
-	public void setCustomFields(final List<CustomField> _customFields) {
-		this.customFields = _customFields;
-	}
-
-	/**
-	 * @param _dataset
-	 *            the dataset to set
-	 */
-	public void setDataset(final List<TestDataSet> _dataset) {
-		this.dataset = _dataset;
 	}
 
 	/**
@@ -361,20 +258,11 @@ public class TestCaseRevision {
 
 	/**
 	 * @param _owner
-	 *            the owner to set
+	 *            the ownerTestCase to set
 	 */
-	public void setOwner(final TestCase _owner) {
-		this.owner = _owner;
+	public void setOwnerTestCase(final TestCase _owner) {
+		this.ownerTestCase = _owner;
 	}
-
-	/**
-	 * @param _parameters
-	 *            the parameters to set
-	 */
-	public void setParameters(final List<TestParameter> _parameters) {
-		this.parameters = _parameters;
-	}
-
 	/**
 	 * @param _preconditions
 	 *            the preconditions to set
@@ -391,19 +279,13 @@ public class TestCaseRevision {
 		this.reference = _reference;
 	}
 
-	/**
-	 * @param _requirements
-	 *            the requirements to set
-	 */
-	public void setRequirements(final List<Requirement> _requirements) {
-		this.requirements = _requirements;
-	}
+
 
 	/**
 	 * @param _revision
 	 *            the revision to set
 	 */
-	public void setRevision(final int _revision) {
+	public void setRevision(final Integer _revision) {
 		this.revision = _revision;
 	}
 
@@ -413,14 +295,6 @@ public class TestCaseRevision {
 	 */
 	public void setStatus(final String _status) {
 		this.status = _status;
-	}
-
-	/**
-	 * @param _steps
-	 *            the steps to set
-	 */
-	public void setSteps(final List<TestCaseStep> _steps) {
-		this.steps = _steps;
 	}
 
 	/**
@@ -459,29 +333,23 @@ public class TestCaseRevision {
 	 * @param _version
 	 *            the version to set
 	 */
-	public void setVersion(final int _version) {
+	public void setVersion(final Integer _version) {
 		this.version = _version;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "TestCaseRevision [id=" + this.id + ", owner=" + this.owner
-				+ ", modificationTime=" + this.modificationTime + ", version="
-				+ this.version + ", revision=" + this.revision + ", reference="
-				+ this.reference + ", type=" + this.type + ", status=" + this.status
-				+ ", criticity=" + this.criticity + ", importance=" + this.importance
-				+ ", modificationReason=" + this.modificationReason + ", tags="
-				+ this.tags + ", steps=" + this.steps + ", parameters=" + this.parameters
-				+ ", dataset=" + this.dataset + ", componentVersions="
-				+ this.componentVersions + ", requirements=" + this.requirements
-				+ ", updater=" + this.updater + ", estimatedTime=" + this.estimatedTime
-				+ ", summary=" + this.summary + ", preconditions=" + this.preconditions
-				+ ", attachments=" + this.attachments + ", customFields="
-				+ this.customFields + "]";
+		return "TestCaseRevision [id=" + this.id + ", ownerTestCase="
+				+ this.ownerTestCase + ", modificationTime=" + this.modificationTime
+				+ ", version=" + this.version + ", revision=" + this.revision
+				+ ", reference=" + this.reference + ", type=" + this.type + ", status="
+				+ this.status + ", criticity=" + this.criticity + ", importance="
+				+ this.importance + ", modificationReason=" + this.modificationReason
+				+ ", tags=" + this.tags + ", updater=" + this.updater
+				+ ", estimatedTime=" + this.estimatedTime + ", summary=" + this.summary
+				+ ", preconditions=" + this.preconditions + "]";
 	}
 }

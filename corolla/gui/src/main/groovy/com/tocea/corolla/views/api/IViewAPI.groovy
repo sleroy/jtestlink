@@ -6,6 +6,7 @@ package com.tocea.corolla.views.api
 import com.tocea.corolla.products.domain.Product
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.domain.User
+import com.tocea.corolla.widget.treeItem.TreeItem
 
 /**
  * @author sleroy
@@ -36,4 +37,6 @@ public interface IViewAPI {
 	List<User> getUsers()
 
 	User findUser(Integer id)
+
+	List<TreeItem> getProductRoots()
 }

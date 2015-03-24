@@ -4,12 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -24,21 +21,26 @@ public class TestCaseStep implements Serializable {
 	@GeneratedValue
 	private Integer	id;
 
+	@NotNull
 	@Min(value = 0)
 	@Column(nullable = false)
 	private int		stepNumber;
 
+	@NotNull
 	@Column(nullable = false)
 	@Lob
 	private String	actions;
 
+	@NotNull
 	@Column(nullable = false)
 	@Lob
 	private String	expected_results;
 
+	@NotNull
 	@Column(nullable = false)
-	private boolean	active;
+	private Boolean	active;
 
+	@NotNull
 	@Column(nullable = false)
 	@NotBlank
 	private String	execution_type;
@@ -47,9 +49,12 @@ public class TestCaseStep implements Serializable {
 	@Column(nullable = false)
 	private Double	estimatedTime	= 0d;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id")
-	private TestCaseRevision	owner;
+	/**
+	 * Returns a revision.
+	 */
+	@Column(nullable = false)
+	@NotNull
+	private Integer	testCaseRevision;
 
 	/**
 	 * @return the actions
@@ -87,13 +92,6 @@ public class TestCaseStep implements Serializable {
 	}
 
 	/**
-	 * @return the owner
-	 */
-	public TestCaseRevision getOwner() {
-		return this.owner;
-	}
-
-	/**
 	 * @return the stepNumber
 	 */
 	public int getStepNumber() {
@@ -101,9 +99,16 @@ public class TestCaseStep implements Serializable {
 	}
 
 	/**
+	 * @return the testCaseRevision
+	 */
+	public Integer getTestCaseRevision() {
+		return this.testCaseRevision;
+	}
+
+	/**
 	 * @return the active
 	 */
-	public boolean isActive() {
+	public Boolean isActive() {
 		return this.active;
 	}
 
@@ -119,7 +124,7 @@ public class TestCaseStep implements Serializable {
 	 * @param _active
 	 *            the active to set
 	 */
-	public void setActive(final boolean _active) {
+	public void setActive(final Boolean _active) {
 		this.active = _active;
 	}
 
@@ -156,19 +161,19 @@ public class TestCaseStep implements Serializable {
 	}
 
 	/**
-	 * @param _owner
-	 *            the owner to set
-	 */
-	public void setOwner(final TestCaseRevision _owner) {
-		this.owner = _owner;
-	}
-
-	/**
 	 * @param _stepNumber
 	 *            the stepNumber to set
 	 */
 	public void setStepNumber(final int _stepNumber) {
 		this.stepNumber = _stepNumber;
+	}
+
+	/**
+	 * @param _owner
+	 *            the testCaseRevision to set
+	 */
+	public void setTestCaseRevision(final Integer _owner) {
+		this.testCaseRevision = _owner;
 	}
 
 	/*
@@ -182,7 +187,7 @@ public class TestCaseStep implements Serializable {
 				+ ", actions=" + this.actions + ", expected_results="
 				+ this.expected_results + ", active=" + this.active + ", execution_type="
 				+ this.execution_type + ", estimatedTime=" + this.estimatedTime
-				+ ", owner=" + this.owner + "]";
+				+ ", testCaseRevision=" + this.testCaseRevision + "]";
 	}
 
 }

@@ -3,8 +3,6 @@
  */
 package com.tocea.corolla.products.commands.handlers;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.Validate;
@@ -63,19 +61,19 @@ ICommandHandler<AddNewArchitectureToProductCommand, ProductComponent> {
 		final ProductComponent productComponent = new ProductComponent();
 		productComponent.setName(_command.getName());
 		productComponent.setDescription(_command.getDescription());
-		productComponent.setOwner(product);
-		productComponent.setType(productComponentType);
-		productComponent.setParent(parentProductArchitecture);
+		//		productComponent.setOwner(product);
+		//		productComponent.setType(productComponentType);
+		//		productComponent.setParent(parentProductArchitecture);
 		this.productArchitectureDAO.save(productComponent);
 
 		if (parentProductArchitecture == null) { // Attach to parent
-			final List<ProductComponent> architectures = product.getArchitectures();
-			architectures.add(productComponent);
-			product.setArchitectures(architectures);
+			//			final List<ProductComponent> architectures = product.getArchitectures();
+			//			architectures.add(productComponent);
+			//			product.setArchitectures(architectures);
 			this.productDAO.save(product);
 
 		} else {
-			parentProductArchitecture.getChildren().add(productComponent);
+			//parentProductArchitecture.getChildren().add(productComponent);
 			this.productArchitectureDAO.save(parentProductArchitecture);
 		}
 

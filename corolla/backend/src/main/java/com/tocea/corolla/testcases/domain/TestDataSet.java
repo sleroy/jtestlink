@@ -4,12 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -29,9 +27,9 @@ public class TestDataSet implements Serializable {
 	@Column(nullable = false, length = 512)
 	private String				url;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id")
-	private TestCaseRevision	owner;
+	@Column(nullable = false)
+	@NotNull
+	private TestCaseRevision	testCaseRevision;
 
 	public TestDataSet() {
 		super();
@@ -52,10 +50,10 @@ public class TestDataSet implements Serializable {
 	}
 
 	/**
-	 * @return the owner
+	 * @return the testCaseRevision
 	 */
-	public TestCaseRevision getOwner() {
-		return this.owner;
+	public TestCaseRevision getTestCaseRevision() {
+		return this.testCaseRevision;
 	}
 
 	/**
@@ -83,10 +81,10 @@ public class TestDataSet implements Serializable {
 
 	/**
 	 * @param _owner
-	 *            the owner to set
+	 *            the testCaseRevision to set
 	 */
-	public void setOwner(final TestCaseRevision _owner) {
-		this.owner = _owner;
+	public void setTestCaseRevision(final TestCaseRevision _owner) {
+		this.testCaseRevision = _owner;
 	}
 
 	/**
@@ -105,7 +103,7 @@ public class TestDataSet implements Serializable {
 	@Override
 	public String toString() {
 		return "TestDataSet [id=" + this.id + ", name=" + this.name + ", url="
-				+ this.url + ", owner=" + this.owner + "]";
+				+ this.url + ", testCaseRevision=" + this.testCaseRevision + "]";
 	}
 
 }

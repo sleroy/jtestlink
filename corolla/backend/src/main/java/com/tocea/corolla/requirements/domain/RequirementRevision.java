@@ -4,29 +4,16 @@
 package com.tocea.corolla.requirements.domain;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
-
-import com.google.common.collect.Lists;
-import com.tocea.corolla.attachments.domain.Attachment;
-import com.tocea.corolla.customfields.domain.CustomField;
-import com.tocea.corolla.products.domain.ProductVersion;
-import com.tocea.corolla.users.domain.User;
 
 /**
  * @author sleroy
@@ -41,25 +28,26 @@ public class RequirementRevision {
 	private Integer					id;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id", nullable = false)
-	private Requirement				owner;
+	@Column(nullable = false)
+	private Integer				owner;
 
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "updater_id", nullable = false)
-	private User					updater;
-
 	@Column(nullable = false)
-	private int						version;
+	private Integer				updater;
 
+	@NotNull
 	@Column(nullable = false)
-	private int						revision;
+	private Integer		 				version;
+
+	@NotNull
+	@Column(nullable = false)
+	private Integer						revision;
 
 	@NotBlank
 	@Column(nullable = false, length = 128)
 	private String					reference;
 
+	@NotNull
 	@Column(nullable = false)
 	private Date					modificationTime;
 
@@ -83,33 +71,14 @@ public class RequirementRevision {
 	@Column(nullable = false, length = 256)
 	private String					tags;
 
-	@ManyToMany
-	@JoinTable(name = "requirements_revision_components", joinColumns = { @JoinColumn(name = "req_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "component_id", referencedColumnName = "id") })
-	private List<ProductVersion>	componentVersions	= Lists.newArrayList();
 
+	@NotNull
 	@Lob
 	@Column(nullable = false)
 	private String					description;
 
-	@OneToMany(mappedBy = "requirement_owner", fetch = FetchType.LAZY)
-	private List<Attachment>		attachments;
 
-	@OneToMany(mappedBy = "requirementOwner")
-	private List<CustomField>		customFields;
 
-	/**
-	 * @return the attachments
-	 */
-	public List<Attachment> getAttachments() {
-		return this.attachments;
-	}
-
-	/**
-	 * @return the componentVersions
-	 */
-	public List<ProductVersion> getComponentVersions() {
-		return this.componentVersions;
-	}
 
 	/**
 	 * @return the criticity
@@ -118,12 +87,6 @@ public class RequirementRevision {
 		return this.criticity;
 	}
 
-	/**
-	 * @return the customFields
-	 */
-	public List<CustomField> getCustomFields() {
-		return this.customFields;
-	}
 
 	/**
 	 * @return the description
@@ -156,7 +119,7 @@ public class RequirementRevision {
 	/**
 	 * @return the owner
 	 */
-	public Requirement getOwner() {
+	public Integer getOwner() {
 		return this.owner;
 	}
 
@@ -198,7 +161,7 @@ public class RequirementRevision {
 	/**
 	 * @return the updater
 	 */
-	public User getUpdater() {
+	public Integer getUpdater() {
 		return this.updater;
 	}
 
@@ -209,22 +172,8 @@ public class RequirementRevision {
 		return this.version;
 	}
 
-	/**
-	 * @param _attachments
-	 *            the attachments to set
-	 */
-	public void setAttachments(final List<Attachment> _attachments) {
-		this.attachments = _attachments;
-	}
 
-	/**
-	 * @param _componentVersions
-	 *            the componentVersions to set
-	 */
-	public void setComponentVersions(
-			final List<ProductVersion> _componentVersions) {
-		this.componentVersions = _componentVersions;
-	}
+
 
 	/**
 	 * @param _criticity
@@ -234,13 +183,7 @@ public class RequirementRevision {
 		this.criticity = _criticity;
 	}
 
-	/**
-	 * @param _customFields
-	 *            the customFields to set
-	 */
-	public void setCustomFields(final List<CustomField> _customFields) {
-		this.customFields = _customFields;
-	}
+
 
 	/**
 	 * @param _description
@@ -278,7 +221,7 @@ public class RequirementRevision {
 	 * @param _owner
 	 *            the owner to set
 	 */
-	public void setOwner(final Requirement _owner) {
+	public void setOwner(final Integer _owner) {
 		this.owner = _owner;
 	}
 
@@ -326,7 +269,7 @@ public class RequirementRevision {
 	 * @param _updater
 	 *            the updater to set
 	 */
-	public void setUpdater(final User _updater) {
+	public void setUpdater(final Integer _updater) {
 		this.updater = _updater;
 	}
 

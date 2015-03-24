@@ -5,17 +5,12 @@ package com.tocea.corolla.attachments.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
-
-import com.tocea.corolla.requirements.domain.RequirementRevision;
 
 /**
  * @author sleroy
@@ -28,9 +23,14 @@ public class Attachment {
 	@GeneratedValue
 	private Integer	id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "OWNER_ID")
-	private RequirementRevision	requirement_owner;
+	// Requirement revision
+	@Column(nullable = true)
+	private Integer	requirementOwner;
+
+	//TEst case
+
+	@Column(nullable = true)
+	private Integer	testCaseRevisionOwner;
 
 	@NotBlank
 	@Column(nullable = false, length = 128)
@@ -66,10 +66,17 @@ public class Attachment {
 	}
 
 	/**
-	 * @return the requirement_owner
+	 * @return the requirementOwner
 	 */
-	public RequirementRevision getRequirement_owner() {
-		return this.requirement_owner;
+	public Integer getRequirementOwner() {
+		return this.requirementOwner;
+	}
+
+	/**
+	 * @return the testCaseRevisionOwner
+	 */
+	public Integer getTestCaseRevisionOwner() {
+		return this.testCaseRevisionOwner;
 	}
 
 	/**
@@ -105,11 +112,18 @@ public class Attachment {
 
 	/**
 	 * @param _requirement_owner
-	 *            the requirement_owner to set
+	 *            the requirementOwner to set
 	 */
-	public void setRequirement_owner(
-			final RequirementRevision _requirement_owner) {
-		this.requirement_owner = _requirement_owner;
+	public void setRequirementOwner(
+			final Integer _requirement_owner) {
+		this.requirementOwner = _requirement_owner;
+	}
+
+	/**
+	 * @param _testCase_owner the testCaseRevisionOwner to set
+	 */
+	public void setTestCaseRevisionOwner(final Integer _testCase_owner) {
+		this.testCaseRevisionOwner = _testCase_owner;
 	}
 
 	/**
@@ -125,8 +139,9 @@ public class Attachment {
 	 */
 	@Override
 	public String toString() {
-		return "Attachment [id=" + this.id + ", requirement_owner="
-				+ this.requirement_owner + ", name=" + this.name + ", description="
-				+ this.description + ", url=" + this.url + "]";
+		return "Attachment [id=" + this.id + ", requirementOwner="
+				+ this.requirementOwner + ", testCaseRevisionOwner=" + this.testCaseRevisionOwner
+				+ ", name=" + this.name + ", description=" + this.description + ", url="
+				+ this.url + "]";
 	}
 }

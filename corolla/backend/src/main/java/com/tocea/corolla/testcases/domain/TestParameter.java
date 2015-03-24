@@ -4,13 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -30,13 +28,15 @@ public class TestParameter implements Serializable {
 	@Column(nullable = false, length=64)
 	private String	type;
 
+
+	@NotNull
 	@Lob
 	@Column(nullable = false)
 	private String	description;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id")
-	private TestCaseRevision	owner;
+	@Column(nullable = false)
+	@NotNull
+	private Integer	testCaseRevision;
 
 	public TestParameter() {
 		super();
@@ -64,10 +64,10 @@ public class TestParameter implements Serializable {
 	}
 
 	/**
-	 * @return the owner
+	 * @return the testCaseRevision
 	 */
-	public TestCaseRevision getOwner() {
-		return this.owner;
+	public Integer getTestCaseRevision() {
+		return this.testCaseRevision;
 	}
 
 	/**
@@ -102,10 +102,10 @@ public class TestParameter implements Serializable {
 	}
 
 	/**
-	 * @param _owner the owner to set
+	 * @param _owner the testCaseRevision to set
 	 */
-	public void setOwner(final TestCaseRevision _owner) {
-		this.owner = _owner;
+	public void setTestCaseRevision(final Integer _owner) {
+		this.testCaseRevision = _owner;
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class TestParameter implements Serializable {
 	@Override
 	public String toString() {
 		return "TestParameter [id=" + this.id + ", name=" + this.name + ", type=" + this.type
-				+ ", description=" + this.description + ", owner=" + this.owner + "]";
+				+ ", description=" + this.description + ", testCaseRevision=" + this.testCaseRevision + "]";
 	}
 
 }

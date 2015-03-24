@@ -7,12 +7,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -23,8 +21,8 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  */
 @Entity()
-@Table(name = "product_versions")
-public class ProductVersion {
+@Table(name = "artifact_versions")
+public class ArtifactVersion {
 
 	@Id
 	@GeneratedValue
@@ -46,18 +44,18 @@ public class ProductVersion {
 	@Column(nullable = false, length = 64)
 	private String				type;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "powner_id")
-	private Product				productOwner;
+	@NotNull
+	@Column(nullable = false)
+	private Integer				productOwner;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cowner_id")
-	private ProductComponent	componentOwner;
+
+	@Column(nullable = true)
+	private Integer	componentOwner;
 
 	/**
 	 * @return the componentOwner
 	 */
-	public ProductComponent getComponentOwner() {
+	public Integer getComponentOwner() {
 		return this.componentOwner;
 	}
 
@@ -85,7 +83,7 @@ public class ProductVersion {
 	/**
 	 * @return the productOwner
 	 */
-	public Product getProductOwner() {
+	public Integer getProductOwner() {
 		return this.productOwner;
 	}
 
@@ -107,7 +105,7 @@ public class ProductVersion {
 	 * @param _componentOwner
 	 *            the componentOwner to set
 	 */
-	public void setComponentOwner(final ProductComponent _componentOwner) {
+	public void setComponentOwner(final Integer _componentOwner) {
 		this.componentOwner = _componentOwner;
 	}
 
@@ -139,7 +137,7 @@ public class ProductVersion {
 	 * @param _productOwner
 	 *            the productOwner to set
 	 */
-	public void setProductOwner(final Product _productOwner) {
+	public void setProductOwner(final Integer _productOwner) {
 		this.productOwner = _productOwner;
 	}
 
@@ -166,7 +164,7 @@ public class ProductVersion {
 	 */
 	@Override
 	public String toString() {
-		return "ProductVersion [id=" + this.id + ", name=" + this.name
+		return "ArtifactVersion [id=" + this.id + ", name=" + this.name
 				+ ", description=" + this.description + ", releaseDate="
 				+ this.releaseDate + ", type=" + this.type + ", productOwner="
 				+ this.productOwner + ", componentOwner=" + this.componentOwner

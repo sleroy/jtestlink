@@ -5,18 +5,11 @@ package com.tocea.corolla.customfields.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
-
-import com.tocea.corolla.products.domain.Product;
-import com.tocea.corolla.products.domain.ProductComponent;
-import com.tocea.corolla.requirements.domain.RequirementRevision;
 
 @Entity()
 @Table(name = "custom_fields")
@@ -34,22 +27,22 @@ public class CustomField {
 	@Column(nullable = false, length = 256)
 	private String	value;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "POWNER_ID")
-	private Product				productOwner;
+	@Column(nullable = true)
+	private Integer				productOwner;
+	@Column(nullable = true)
+	private Integer	componentOwner;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "COWNER_ID")
-	private ProductComponent	componentOwner;
+	// requirement version
+	@Column(nullable = true)
+	private Integer	requirementOwner;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ROWNER_ID")
-	private RequirementRevision	requirementOwner;
+	@Column(nullable = true)
+	private Integer	testCaseRevisionOwner;
 
 	/**
 	 * @return the componentOwner
 	 */
-	public ProductComponent getComponentOwner() {
+	public Integer getComponentOwner() {
 		return this.componentOwner;
 	}
 
@@ -70,15 +63,22 @@ public class CustomField {
 	/**
 	 * @return the productOwner
 	 */
-	public Product getProductOwner() {
+	public Integer getProductOwner() {
 		return this.productOwner;
 	}
 
 	/**
 	 * @return the requirementOwner
 	 */
-	public RequirementRevision getRequirementOwner() {
+	public Integer getRequirementOwner() {
 		return this.requirementOwner;
+	}
+
+	/**
+	 * @return the testCaseRevisionOwner
+	 */
+	public Integer getTestCaseRevisionOwner() {
+		return this.testCaseRevisionOwner;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class CustomField {
 	 * @param _componentOwner
 	 *            the componentOwner to set
 	 */
-	public void setComponentOwner(final ProductComponent _componentOwner) {
+	public void setComponentOwner(final Integer _componentOwner) {
 		this.componentOwner = _componentOwner;
 	}
 
@@ -116,7 +116,7 @@ public class CustomField {
 	 * @param _productOwner
 	 *            the productOwner to set
 	 */
-	public void setProductOwner(final Product _productOwner) {
+	public void setProductOwner(final Integer _productOwner) {
 		this.productOwner = _productOwner;
 	}
 
@@ -124,8 +124,15 @@ public class CustomField {
 	 * @param _requirementOwner
 	 *            the requirementOwner to set
 	 */
-	public void setRequirementOwner(final RequirementRevision _requirementOwner) {
+	public void setRequirementOwner(final Integer _requirementOwner) {
 		this.requirementOwner = _requirementOwner;
+	}
+
+	/**
+	 * @param _testCaseRevisionOwner the testCaseRevisionOwner to set
+	 */
+	public void setTestCaseRevisionOwner(final Integer _testCaseRevisionOwner) {
+		this.testCaseRevisionOwner = _testCaseRevisionOwner;
 	}
 
 	/**
@@ -136,9 +143,7 @@ public class CustomField {
 		this.value = _value;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -146,7 +151,7 @@ public class CustomField {
 		return "CustomField [id=" + this.id + ", name=" + this.name + ", value=" + this.value
 				+ ", productOwner=" + this.productOwner + ", componentOwner="
 				+ this.componentOwner + ", requirementOwner=" + this.requirementOwner
-				+ "]";
+				+ ", testCaseRevisionOwner=" + this.testCaseRevisionOwner + "]";
 	}
 
 }

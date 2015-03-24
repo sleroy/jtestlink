@@ -23,6 +23,9 @@ import org.apache.wicket.model.Model
 class SideMenuPanel extends Panel {
 	List<MenuItem> menuItems = new ArrayList<>()
 
+	SideMenuPanel() {
+		super("sidemenu")
+	}
 
 
 	def void addMenuItem(_page,  _icon,  _text) {
@@ -45,13 +48,13 @@ class SideMenuPanel extends Panel {
 						bookmarkablePageLink.add(iconLabel)
 
 						_arg0.add(bookmarkablePageLink)
-
 					}
-
 				}
 		this.add(menuItemsComponent)
-
+		addCustomPanel()
 	}
 
-
+	def addCustomPanel() {
+		add(new Label("customPanel"))
+	}
 }
