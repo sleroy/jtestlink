@@ -5,6 +5,8 @@ package com.tocea.corolla.testcases.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +18,10 @@ import javax.validation.constraints.NotNull;
 @Entity()
 @Table(name = "testcaserev_requirement")
 public class TestCaseRevisionRequirement {
+
+	@Id
+	@GeneratedValue
+	private Integer		id;
 
 	@Column(nullable = false)
 	@NotNull
@@ -30,6 +36,13 @@ public class TestCaseRevisionRequirement {
 	}
 
 	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return this.id;
+	}
+
+	/**
 	 * @return the requirementId
 	 */
 	public Integer getRequirementId() {
@@ -41,6 +54,13 @@ public class TestCaseRevisionRequirement {
 	 */
 	public Integer getTestCaseRevisionId() {
 		return this.testCaseRevisionId;
+	}
+
+	/**
+	 * @param _id the id to set
+	 */
+	public void setId(final Integer _id) {
+		this.id = _id;
 	}
 
 	/**
@@ -64,8 +84,9 @@ public class TestCaseRevisionRequirement {
 	 */
 	@Override
 	public String toString() {
-		return "TestCaseRevisionRequirement [testCaseRevisionId="
-				+ this.testCaseRevisionId + ", requirementId=" + this.requirementId + "]";
+		return "TestCaseRevisionRequirement [id=" + this.id
+				+ ", testCaseRevisionId=" + this.testCaseRevisionId
+				+ ", requirementId=" + this.requirementId + "]";
 	}
 
 }

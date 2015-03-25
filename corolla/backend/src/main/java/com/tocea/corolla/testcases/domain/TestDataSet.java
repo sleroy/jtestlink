@@ -29,7 +29,7 @@ public class TestDataSet implements Serializable {
 
 	@Column(nullable = false)
 	@NotNull
-	private TestCaseRevision	testCaseRevision;
+	private Integer	testCaseRevision;
 
 	public TestDataSet() {
 		super();
@@ -52,7 +52,7 @@ public class TestDataSet implements Serializable {
 	/**
 	 * @return the testCaseRevision
 	 */
-	public TestCaseRevision getTestCaseRevision() {
+	public Integer getTestCaseRevision() {
 		return this.testCaseRevision;
 	}
 
@@ -83,7 +83,7 @@ public class TestDataSet implements Serializable {
 	 * @param _owner
 	 *            the testCaseRevision to set
 	 */
-	public void setTestCaseRevision(final TestCaseRevision _owner) {
+	public void setTestCaseRevision(final Integer _owner) {
 		this.testCaseRevision = _owner;
 	}
 

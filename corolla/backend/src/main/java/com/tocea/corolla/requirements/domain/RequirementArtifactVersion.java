@@ -5,6 +5,8 @@ package com.tocea.corolla.requirements.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +18,10 @@ import javax.validation.constraints.NotNull;
 @Entity()
 @Table(name = "requirement_artifact_version")
 public class RequirementArtifactVersion {
+
+	@Id
+	@GeneratedValue
+	private Integer		id;
 
 	@Column(nullable = false)
 	@NotNull
@@ -37,6 +43,13 @@ public class RequirementArtifactVersion {
 	}
 
 	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return this.id;
+	}
+
+	/**
 	 * @return the requirementId
 	 */
 	public Integer getRequirementId() {
@@ -52,6 +65,13 @@ public class RequirementArtifactVersion {
 	}
 
 	/**
+	 * @param _id the id to set
+	 */
+	public void setId(final Integer _id) {
+		this.id = _id;
+	}
+
+	/**
 	 * @param _requirementId
 	 *            the requirementId to set
 	 */
@@ -59,15 +79,13 @@ public class RequirementArtifactVersion {
 		this.requirementId = _requirementId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "TestCaseRevisionArtifact [requirementId=" + this.requirementId
-				+ ", artifactId=" + this.artifactId + "]";
+		return "RequirementArtifactVersion [id=" + this.id + ", requirementId="
+				+ this.requirementId + ", artifactId=" + this.artifactId + "]";
 	}
 
 }

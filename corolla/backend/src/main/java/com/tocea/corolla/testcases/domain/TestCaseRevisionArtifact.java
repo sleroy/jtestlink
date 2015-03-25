@@ -5,6 +5,8 @@ package com.tocea.corolla.testcases.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +18,10 @@ import javax.validation.constraints.NotNull;
 @Entity()
 @Table(name = "testcaserev_artifact")
 public class TestCaseRevisionArtifact {
+
+	@Id
+	@GeneratedValue
+	private Integer		id;
 
 	@Column(nullable = false)
 	@NotNull
@@ -37,6 +43,13 @@ public class TestCaseRevisionArtifact {
 	}
 
 	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return this.id;
+	}
+
+	/**
 	 * @return the testCaseRevisionId
 	 */
 	public Integer getTestCaseRevisionId() {
@@ -52,6 +65,13 @@ public class TestCaseRevisionArtifact {
 	}
 
 	/**
+	 * @param _id the id to set
+	 */
+	public void setId(final Integer _id) {
+		this.id = _id;
+	}
+
+	/**
 	 * @param _requirementId
 	 *            the testCaseRevisionId to set
 	 */
@@ -59,15 +79,13 @@ public class TestCaseRevisionArtifact {
 		this.testCaseRevisionId = _requirementId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "TestCaseRevisionArtifact [testCaseRevisionId=" + this.testCaseRevisionId
-				+ ", artifactId=" + this.artifactId + "]";
+		return "TestCaseRevisionArtifact [id=" + this.id + ", testCaseRevisionId="
+				+ this.testCaseRevisionId + ", artifactId=" + this.artifactId + "]";
 	}
 
 }
