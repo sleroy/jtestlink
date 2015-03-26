@@ -3,7 +3,7 @@
 
 dependencies {
 
-	compile project(":backend")
+	compile project(":corolla:backend")
 
 	compile "org.apache.wicket:wicket:$WICKET"
 	compile "org.apache.wicket:wicket-bootstrap:0.17"

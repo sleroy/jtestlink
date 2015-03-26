@@ -12,7 +12,7 @@ apply plugin: 'spring-boot'
 configurations { providedRuntime }
 
 dependencies {
-	compile project(":widgets")
+	compile project(":corolla:widgets")
 
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
