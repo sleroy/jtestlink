@@ -9,9 +9,9 @@ import java.util.Locale;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Strings;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.users.commands.AddNewUserCommand;
@@ -19,7 +19,9 @@ import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.domain.Role;
 import com.tocea.corolla.users.domain.User;
+import com.tocea.corolla.users.exceptions.AlreadyExistingUserWithLoginException;
 import com.tocea.corolla.users.exceptions.InvalidEmailAddressException;
+import com.tocea.corolla.users.exceptions.InvalidUserInformationException;
 import com.tocea.corolla.users.exceptions.MissingUserInformationException;
 import com.tocea.corolla.users.exceptions.RoleManagementBrokenException;
 import com.tocea.corolla.users.service.EmailValidationService;
@@ -54,6 +56,10 @@ ICommandHandler<AddNewUserCommand, User> {
 		if (user == null) {
 			throw new MissingUserInformationException("No data provided to create user");
 		}
+		if (user.getId() != null) {
+			throw new InvalidUserInformationException("No ID expected");
+		}
+		this.checkUserLogin(user);
 		user.setActivationToken("");
 		user.setActive(false);
 		user.setCreatedTime(new Date());
@@ -65,6 +71,16 @@ ICommandHandler<AddNewUserCommand, User> {
 
 		this.userDAO.save(user);
 		return user;
+	}
+
+	/**
+	 * @param _user
+	 */
+	private void checkUserLogin(final User _user) {
+		if (this.userDAO.findUserByLogin(_user.getLogin()) != null) {
+			throw new AlreadyExistingUserWithLoginException(_user.getLogin());
+		}
+
 	}
 
 	/**
@@ -85,7 +101,7 @@ ICommandHandler<AddNewUserCommand, User> {
 	 * @param user
 	 */
 	private void setLocaleIfNecessary(final User user) {
-		if (Strings.isBlank(user.getLocale())) {
+		if (Strings.isNullOrEmpty(user.getLocale())) {
 			user.setLocale(Locale.getDefault().toString());
 		}
 	}

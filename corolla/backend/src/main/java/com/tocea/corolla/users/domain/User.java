@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,7 +23,10 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  */
 @Entity()
-@Table(name = "users")
+@Table(name = "users", indexes= {
+		@Index(unique=true, name="login_index", columnList="login")
+})
+
 public class User implements Serializable {
 
 	@Id
@@ -47,6 +51,7 @@ public class User implements Serializable {
 	@NotBlank
 	@Size(min=3,max=30)
 	@Column(nullable = false, length = 30)
+
 	private String	login;
 
 	@NotBlank
