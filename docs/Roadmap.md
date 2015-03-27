@@ -24,16 +24,17 @@ version 0.1.0
 ---------------
 
 * Gestion des utilisateurs
- * créer un utilisateur
- * activer un utilisateur
- * désactiver un utilisateur
- * supprimer un utilisateur
- * éditer le profil d'un utilisateur
+ * créer un utilisateur [POJO] [COMMAND]
+ * activer un utilisateur [POJO]
+ * désactiver un utilisateur [POJO]
+ * supprimer un utilisateur [POJO]
+ * éditer le profil d'un utilisateur [
 * Authentification (Interne, social, ldap)
  * S'authentifier via le système interne
  * S'authentifier via le système LDAP
  * S'authentifier via le système Social
  * Se déconnecter
+ * Remember me
 * Gestion des rôles
  * Créer un nouveau rôle
  * Définir les permissions d'un rôle
