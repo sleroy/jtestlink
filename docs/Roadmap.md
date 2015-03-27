@@ -24,9 +24,25 @@ version 0.1.0
 ---------------
 
 * Gestion des utilisateurs
+ * créer un utilisateur
+ * activer un utilisateur
+ * désactiver un utilisateur
+ * supprimer un utilisateur
+ * éditer le profil d'un utilisateur
 * Authentification (Interne, social, ldap)
+ * S'authentifier via le système interne
+ * S'authentifier via le système LDAP
+ * S'authentifier via le système Social
+ * Se déconnecter
 * Gestion des rôles
-
+ * Créer un nouveau rôle
+ * Définir les permissions d'un rôle
+ * Supprimer un rôle
+ * Définir la liste des permissions (statique)
+* Système d'audit (audit trails)
+ * Logger une trace
+ * Récupérer la liste des traces
+ * Récupérer la liste des traces sur une période
 
 version 0.2.0
 ------------------
@@ -69,3 +85,5 @@ version 0.9.0
 
 * Déroulement d'un test dans une campagne
 * Visualisation de l'état d'une campagne de tests
+
+------------------------------------

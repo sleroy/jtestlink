@@ -56,6 +56,10 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 10)
 	private String	locale	= "en_GB";		//$NON-NLS-1$
 
+	@NotBlank
+	@Column(nullable = false, length = 50)
+	private String	activationToken	= "";		//$NON-NLS-1$
+
 	@Column(nullable = true)
 	private Integer	defaultTestProject_id;
 
@@ -67,6 +71,13 @@ public class User implements Serializable {
 	@NotNull
 	@Column(nullable = false)
 	private boolean	active	= true;
+
+	/**
+	 * @return the activationToken
+	 */
+	public String getActivationToken() {
+		return this.activationToken;
+	}
 
 	/**
 	 * @return the createdTime
@@ -143,6 +154,13 @@ public class User implements Serializable {
 	 */
 	public boolean isActive() {
 		return this.active;
+	}
+
+	/**
+	 * @param _activationToken the activationToken to set
+	 */
+	public void setActivationToken(final String _activationToken) {
+		this.activationToken = _activationToken;
 	}
 
 	/**

@@ -3,8 +3,6 @@
  */
 package com.tocea.corolla
 
-import javax.annotation.PostConstruct
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -52,7 +50,7 @@ class DemoDataBean {
 	Gate						gate
 
 	@SuppressWarnings("nls")
-	@PostConstruct
+	//	@PostConstruct
 	public void init() throws MalformedURLException {
 
 		final Role rolePO = this.newRole("productOwner", "Product Owner")

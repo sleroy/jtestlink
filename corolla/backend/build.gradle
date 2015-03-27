@@ -18,6 +18,11 @@ dependencies {
 	compile "org.ocpsoft.prettytime:prettytime:$PRETTY_TIME"
 
 	compile "com.h2database:h2:$H2_BASE"
+	compile "mysql:mysql-connector-java:$MYSQL"
+//	compile "org.vibur:vibur-dbcp:$VIBUR"
+//	compile "'org.mybatis:mybatis-spring:1.2.2'"
+	
+	
 	compile "joda-time:joda-time:$JODA_TIME"
 	compile "org.codehaus.groovy:groovy-all:$GROOVY_VERSION"
 
