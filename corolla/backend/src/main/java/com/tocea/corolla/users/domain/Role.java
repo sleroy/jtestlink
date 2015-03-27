@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.sun.istack.internal.NotNull;
+
 /**
  * @author sleroy
  *
@@ -31,8 +33,17 @@ public class Role implements Serializable {
 	private String	name;
 
 	@NotBlank
-	@Column(nullable = false)
+	@Column(nullable = false, length = 256)
 	private String	note;
+
+	@NotBlank
+	@Column(nullable = false, length=256)
+	private String	permissions;
+
+	@Column(nullable = false)
+	@NotNull
+	private boolean defaultRole;
+
 
 	/**
 	 * @return the id
@@ -53,6 +64,27 @@ public class Role implements Serializable {
 	 */
 	public String getNote() {
 		return this.note;
+	}
+
+	/**
+	 * @return the permissions
+	 */
+	public String getPermissions() {
+		return this.permissions;
+	}
+
+	/**
+	 * @return the defaultRole
+	 */
+	public boolean isDefaultRole() {
+		return this.defaultRole;
+	}
+
+	/**
+	 * @param _defaultRole the defaultRole to set
+	 */
+	public void setDefaultRole(final boolean _defaultRole) {
+		this.defaultRole = _defaultRole;
 	}
 
 	/**
@@ -77,6 +109,13 @@ public class Role implements Serializable {
 	 */
 	public void setNote(final String _note) {
 		this.note = _note;
+	}
+
+	/**
+	 * @param _permissions the permissions to set
+	 */
+	public void setPermissions(final String _permissions) {
+		this.permissions = _permissions;
 	}
 
 	/* (non-Javadoc)

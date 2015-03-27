@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -29,34 +30,41 @@ public class User implements Serializable {
 	private Integer	id;
 
 	@NotBlank
+	@Size(max=40)
 	@Column(nullable = false, length = 40)
 	private String	firstName;
 
 	@NotBlank
+	@Size(max=40)
 	@Column(nullable = false, length = 40)
 	private String	lastName;
 
 	@NotBlank
+	@Size(max=128)
 	@Column(nullable = false, length = 128)
 	private String	email;
 
 	@NotBlank
+	@Size(min=3,max=30)
 	@Column(nullable = false, length = 30)
 	private String	login;
 
 	@NotBlank
+	@Size(max=256)
 	@Column(nullable = false, length = 256)
 	private String	password;
 
 	@NotNull
 	@Column(nullable = false)
-	private int		role_id;
+	private Integer		roleId;
 
 	@NotBlank
+	@Size(max=10)
 	@Column(nullable = false, length = 10)
 	private String	locale	= "en_GB";		//$NON-NLS-1$
 
 	@NotBlank
+	@Size(max=50)
 	@Column(nullable = false, length = 50)
 	private String	activationToken	= "";		//$NON-NLS-1$
 
@@ -145,8 +153,8 @@ public class User implements Serializable {
 	/**
 	 * @return the role_id
 	 */
-	public int getRole_id() {
-		return this.role_id;
+	public Integer getRoleId() {
+		return this.roleId;
 	}
 
 	/**
@@ -246,8 +254,8 @@ public class User implements Serializable {
 	 * @param _role_id
 	 *            the role_id to set
 	 */
-	public void setRole_id(final int _role_id) {
-		this.role_id = _role_id;
+	public void setRoleId(final Integer _role_id) {
+		this.roleId = _role_id;
 	}
 
 	/*
