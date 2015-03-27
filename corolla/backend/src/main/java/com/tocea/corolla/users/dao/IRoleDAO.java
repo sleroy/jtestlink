@@ -4,7 +4,7 @@
 package com.tocea.corolla.users.dao;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
 
 import com.tocea.corolla.users.domain.Role;
 
@@ -15,7 +15,7 @@ import com.tocea.corolla.users.domain.Role;
  *
  *
  */
-@RepositoryRestResource(path = "/roles", collectionResourceRel = "roles")
+
 public interface IRoleDAO extends CrudRepository<Role, Integer> {
 
 }

@@ -9,12 +9,12 @@ buildscript {
 
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.1'
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.3.1'	        
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.8'        
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.3.1'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.8'
     }
 }
 
-       
+
 println "---------------------------------------------------------------------------------------"
 println "How to use Komea build script :                                                        "
 println "HINT : To print unit tests logs uses -PlogTest"
@@ -86,7 +86,7 @@ sonarRunner {
 
 
 allprojects {
- 
+
 
 
     apply plugin: "java"
@@ -115,8 +115,8 @@ allprojects {
             // Look for POMs and artifacts, such as JARs, here
             url "http://repo.jenkins-ci.org/public"
         }
-		
-        maven {		
+
+        maven {
             url "http://dl.bintray.com/sleroy/maven"
         }
     }
@@ -127,12 +127,12 @@ allprojects {
         //enable compilation in a separate daemon process
         options.fork = true
         sourceCompatibility = 1.7
-        targetCompatibility = 1.7		
+        targetCompatibility = 1.7
         //enable incremental compilation
         options.incremental = true
     }
 
-	
+
 
     /** CONFIGURATIONS */
     configurations { provided }
@@ -148,74 +148,101 @@ allprojects {
             compileClasspath += configurations.provided
             runtimeClasspath += configurations.provided
         }
-		
+
     }
-	
-    if (!project.hasProperty("nodep")) {
+
+    if (project.hasProperty("depcheck")) {
         configurations.all {
 
             resolutionStrategy { failOnVersionConflict() }
         }
     }
-	
+
     configurations.all {
         resolutionStrategy {
-            //        force    'org.objenesis:objenesis:1.3'                                    
+            //        force    'org.objenesis:objenesis:1.3'
             force JUNIT
         }
-    }    
-        
+    }
+
 
     /** DEPENDENCIES */
 
-        
+
 
     dependencies {
-	
+
         compile "org.slf4j:slf4j-api:$LOG_SLF4J"
         compile "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
         compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
+
+	compile "com.google.code.findbugs:jsr305:$FINDBUGS"
+
         testCompile LOGGING
-	
+
         testCompile tests_frameworks // TEST FRAMEWORKS
 
         testCompile("org.easymock:easymock:${TEST_EASYMOCK}") { exclude group: 'org.objenesis' }
         testRuntime "org.apache.logging.log4j:log4j-core:${LOG4J}"
         testCompile "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
         testCompile("org.spockframework:spock-core:$TEST_SPOCK") { exclude group: 'junit' }
-        testCompile("org.spockframework:spock-spring:$TEST_SPOCK") { exclude group: 'junit' }        
-        compile "com.google.code.findbugs:jsr305:$FINDBUGS"
+        testCompile("org.spockframework:spock-spring:$TEST_SPOCK") { exclude group: 'junit' }
+        testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+
     }
-    
+
     configurations.all {
           resolutionStrategy {
                 force   "commons-logging:commons-logging:$APACHE_COMMONLOG"
                 force   "org.slf4j:slf4j-api:$LOG_SLF4J"
                 force   "commons-io:commons-io:$APACHE_COMMONIO"
-                force   "commons-lang:commons-lang:$APACHE_COMMONLANG"                
+                force   "commons-lang:commons-lang:$APACHE_COMMONLANG"
                 force   "cglib:cglib-nodep:${TEST_CGLIB}"
+
+                force   "org.springframework:spring-webmvc:$SPRING_VERSION"
+                force   "org.springframework:spring-aop:$SPRING_VERSION"
+                force   "org.springframework:spring-beans:$SPRING_VERSION"
+                force   "org.springframework:spring-context:$SPRING_VERSION"
+                force   "org.springframework:spring-core:$SPRING_VERSION"
+                force   "org.springframework:spring-expression:$SPRING_VERSION"
+                force   "org.springframework:spring-web:$SPRING_VERSION"
+                force   "org.springframework:spring-orm:$SPRING_VERSION"
+		force   "org.springframework:spring-tx:$SPRING_VERSION"
+		force   "org.springframework.data:spring-data-commons:$SPRING_DATA"
+
+		force   "org.aspectj:aspectjrt:$ASPECTJRT"
+                force   "com.fasterxml.jackson.core:jackson-databind:$JACKSON"
+		force 	"com.fasterxml.jackson.core:jackson-annotations:$JACKSON"
+                force   "org.slf4j:slf4j-api:$LOG_SLF4J"
+                force   "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
+                force   "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
+		force   "org.javassist:javassist:$JAVASSIST"
+		force 	"org.hamcrest:hamcrest-core:$TEST_HAMCREST"
+		 force 	"org.objenesis:objenesis:$TEST_OBJENESIS"
+
         }
      }
-    
-    
+
+
     task unitTest(type : Test) {
         exclude "**/**IT"
     }
-        
-    
+
+
     /**
     TESTS
      */
-        
+
     jacoco {
         toolVersion = '0.7.1.201405082137'
     }
-        
+
     test {
         if (project.hasProperty("logTest")) {
             // listen to events in the test execution lifecycle
             beforeTest { descriptor ->
                 logger.lifecycle("Running test: " + descriptor)
+
             }
             // listen to standard out and standard error of the test JVM(s)
             onOutput { descriptor, event ->
@@ -225,15 +252,15 @@ allprojects {
             testLogging.showStandardStreams = true
 
         }
-	 
-	
+
+
         // set heap size for the test JVM(s)
         minHeapSize = "128m"
         maxHeapSize = "512m"
-	
+
         // set JVM arguments for the test JVM(s)
         jvmArgs '-XX:MaxPermSize=256m'
-	
+
     }
 
 
@@ -259,9 +286,9 @@ allprojects {
     )
 
 
- 
-      
-       
+
+
+
     gradle.taskGraph.whenReady { taskGraph ->
         tasks.findbugsMain.onlyIf { taskGraph.hasTask((tasks.findbugs)) }
         tasks.findbugsTest.onlyIf { taskGraph.hasTask((tasks.findbugs)) }
@@ -277,11 +304,11 @@ allprojects {
         reports { xml.enabled=true }
     }
 
- 
+
 }
 
-subprojects {        
- 
+subprojects {
+
     jacocoTestReport {
         reports {
             html.enabled = true
@@ -292,10 +319,10 @@ subprojects {
 }
 
 
-  
+
 coveralls {
     sourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs).files.absolutePath
-} 
+}
 
 task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     dependsOn = subprojects.test
@@ -314,7 +341,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
     doFirst {
         executionData = files(executionData.findAll { it.exists() })
     }
-} 
+}
 /** BINTRAY CONFIGURATION */
 apply from: "$rootDir/config/bintray.gradle"
 
@@ -324,7 +351,7 @@ Documentation
 : http://gradle.codehaus.org/Cookbook
 : http://stackoverflow.com/questions/8343871/mark-gradle-build-unstable-in-jenkins-when-junit-tests-fail
  */
- 
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = GRADLE_VERSION
