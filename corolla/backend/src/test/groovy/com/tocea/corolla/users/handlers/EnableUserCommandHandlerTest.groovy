@@ -52,7 +52,7 @@ class EnableUserCommandHandlerTest extends Specification{
 
 	/**
 	 * Test method for
-	 * {@link com.tocea.corolla.users.handlers.AddNewUserCommandHandler#handle(com.tocea.corolla.users.commands.AddNewUserCommand)}
+	 * {@link com.tocea.corolla.users.handlers.CreateUserCommandHandler#handle(com.tocea.corolla.users.commands.CreateUserCommand)}
 	 * .
 	 */
 	def "test enable user with existing user"() {

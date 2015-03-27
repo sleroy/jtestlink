@@ -52,7 +52,7 @@ class DeleteUserCommandHandlerTest extends Specification{
 
 	/**
 	 * Test method for
-	 * {@link com.tocea.corolla.users.handlers.AddNewUserCommandHandler#handle(com.tocea.corolla.users.commands.AddNewUserCommand)}
+	 * {@link com.tocea.corolla.users.handlers.CreateUserCommandHandler#handle(com.tocea.corolla.users.commands.CreateUserCommand)}
 	 * .
 	 */
 	def "test delete user with existing user"() {

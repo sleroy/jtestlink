@@ -11,7 +11,7 @@ import org.mockito.Mockito
 import spock.lang.Specification
 
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.users.commands.AddNewUserCommand
+import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
 import com.tocea.corolla.users.domain.Role
@@ -29,7 +29,7 @@ import com.tocea.corolla.utils.functests.FunctionalTestDoc
  *
  */
 @FunctionalTestDoc(requirementName = "ADD_USER")
-class AddNewUserCommandHandlerTest extends Specification{
+class CreateUserCommandHandlerTest extends Specification{
 
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
@@ -38,7 +38,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 	def emailValid = new EmailValidationService()
 	def defaultRole = new Role(id:1, name:'Guest', note:'Guest role', permissions:"ALL")
 
-	def AddNewUserCommandHandler	handler
+	def CreateUserCommandHandler	handler
 
 	def User validUser
 	def User validUserWithoutRole
@@ -46,7 +46,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 
 
 	def setup() {
-		handler = new AddNewUserCommandHandler(
+		handler = new CreateUserCommandHandler(
 				userDAO : userDao,
 				roleDAO : roleDao,
 				emailValidationService : emailValid
@@ -100,7 +100,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 	def "testvalid user creation"() {
 
 		when:
-		final AddNewUserCommand command = new AddNewUserCommand()
+		final CreateUserCommand command = new CreateUserCommand()
 
 
 		command.setUser validUser
@@ -121,7 +121,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 		given:
 		when(roleDao.getDefaultRole()).thenReturn defaultRole
 		when:
-		final AddNewUserCommand command = new AddNewUserCommand()
+		final CreateUserCommand command = new CreateUserCommand()
 
 		command.setUser validUserWithoutRole
 		this.handler.handle(command)
@@ -142,7 +142,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 		given:
 		when(roleDao.getDefaultRole()).thenReturn defaultRole
 		when:
-		final AddNewUserCommand command = new AddNewUserCommand()
+		final CreateUserCommand command = new CreateUserCommand()
 
 		command.setUser userWithInvalidEmail
 		this.handler.handle(command)
@@ -161,7 +161,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 	 */
 	def "test creation with missing user"() {
 		when:
-		final AddNewUserCommand command = new AddNewUserCommand()
+		final CreateUserCommand command = new CreateUserCommand()
 
 		this.handler.handle(command)
 
@@ -179,7 +179,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 		given:
 		when(roleDao.getDefaultRole()).thenReturn null
 		when:
-		final AddNewUserCommand command = new AddNewUserCommand()
+		final CreateUserCommand command = new CreateUserCommand()
 
 		command.setUser validUserWithoutRole
 		this.handler.handle(command)
@@ -198,7 +198,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 		given:
 		when(userDao.findUserByLogin('login')).thenReturn( validUser)
 		when:
-		final AddNewUserCommand command = new AddNewUserCommand()
+		final CreateUserCommand command = new CreateUserCommand()
 
 
 		command.setUser validUser
@@ -219,7 +219,7 @@ class AddNewUserCommandHandlerTest extends Specification{
 		def primaryKeyUser = new User(id:1)
 
 		when:
-		final AddNewUserCommand command = new AddNewUserCommand()
+		final CreateUserCommand command = new CreateUserCommand()
 
 
 		command.setUser primaryKeyUser

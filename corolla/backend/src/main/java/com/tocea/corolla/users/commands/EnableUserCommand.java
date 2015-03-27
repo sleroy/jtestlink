@@ -3,10 +3,13 @@
  */
 package com.tocea.corolla.users.commands;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.tocea.corolla.cqrs.annotations.Command;
 
 @Command
 public class EnableUserCommand {
+	@NotBlank
 	private String	userLogin;
 
 	/**

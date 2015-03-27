@@ -17,5 +17,6 @@ import java.lang.annotation.Target;
 public @interface FunctionalTestDoc {
 	String requirementId() default "";
 	String requirementName();
+	String testCaseId() default "";
 	String ticketNumber() default "";
 }

@@ -15,7 +15,7 @@ import com.tocea.corolla.products.domain.Product
 import com.tocea.corolla.products.domain.ProductComponent
 import com.tocea.corolla.products.domain.ProductComponentType
 import com.tocea.corolla.users.api.IPasswordEncoder
-import com.tocea.corolla.users.commands.AddNewUserCommand
+import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
 import com.tocea.corolla.users.domain.Role
@@ -203,7 +203,7 @@ class DemoDataBean {
 		user.setLogin(_string4)
 		user.setPassword(this.passwordEncoder.encodePassword(_password))
 		user.setRole_id(_rolePO.getId())
-		this.gate.dispatch(new AddNewUserCommand(user))
+		this.gate.dispatch(new CreateUserCommand(user))
 		return user
 	}
 }
