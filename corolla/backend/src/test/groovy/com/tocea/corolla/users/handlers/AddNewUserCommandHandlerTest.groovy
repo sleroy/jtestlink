@@ -16,7 +16,9 @@ import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.domain.User
+import com.tocea.corolla.users.exceptions.AlreadyExistingUserWithLoginException
 import com.tocea.corolla.users.exceptions.InvalidEmailAddressException
+import com.tocea.corolla.users.exceptions.InvalidUserInformationException
 import com.tocea.corolla.users.exceptions.MissingUserInformationException
 import com.tocea.corolla.users.exceptions.RoleManagementBrokenException
 import com.tocea.corolla.users.service.EmailValidationService
@@ -26,7 +28,7 @@ import com.tocea.corolla.utils.functests.FunctionalTestDoc
  * @author sleroy
  *
  */
-@FunctionalTestDoc(requirementName = "CREATE_USER")
+@FunctionalTestDoc(requirementName = "ADD_USER")
 class AddNewUserCommandHandlerTest extends Specification{
 
 	@Rule
@@ -184,5 +186,46 @@ class AddNewUserCommandHandlerTest extends Specification{
 
 		then:
 		thrown(RoleManagementBrokenException)
+	}
+
+
+	/**
+	 * Test method for
+	 * {@link com.tocea.corolla.users.handlers.AddNewUserCommandHandler#handle(com.tocea.corolla.users.commands.AddNewUserCommand)}
+	 * .
+	 */
+	def "testvalid user with already existing login "() {
+		given:
+		when(userDao.findUserByLogin('login')).thenReturn( validUser)
+		when:
+		final AddNewUserCommand command = new AddNewUserCommand()
+
+
+		command.setUser validUser
+
+		this.handler.handle(command)
+		then:
+		thrown(AlreadyExistingUserWithLoginException.class)
+	}
+
+
+	/**
+	 * Test method for
+	 * {@link com.tocea.corolla.users.handlers.AddNewUserCommandHandler#handle(com.tocea.corolla.users.commands.AddNewUserCommand)}
+	 * .
+	 */
+	def "test user with primary key"() {
+		given:
+		def primaryKeyUser = new User(id:1)
+
+		when:
+		final AddNewUserCommand command = new AddNewUserCommand()
+
+
+		command.setUser primaryKeyUser
+
+		this.handler.handle(command)
+		then:
+		thrown(InvalidUserInformationException)
 	}
 }
