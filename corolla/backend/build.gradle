@@ -15,10 +15,13 @@ dependencies {
 	compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
 
 	compile "org.apache.commons:commons-lang3:$APACHE_COMMONLANG3"
+	compile "commons-validator:commons-validator:$APACHE_COMMONVALID"
+
 	compile "org.ocpsoft.prettytime:prettytime:$PRETTY_TIME"
 
 	compile "com.h2database:h2:$H2_BASE"
 	compile "mysql:mysql-connector-java:$MYSQL"
+	compile "javax.mail:javax.mail-api:$JAVAMAIL"
 //	compile "org.vibur:vibur-dbcp:$VIBUR"
 //	compile "'org.mybatis:mybatis-spring:1.2.2'"
 	

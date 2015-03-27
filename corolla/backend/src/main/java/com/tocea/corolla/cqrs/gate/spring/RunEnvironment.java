@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
+import com.tocea.corolla.utils.domain.ObjectValidation;
 
 /**
  * This class prepares the command to be executed. It can override the default
@@ -45,7 +46,10 @@ public class RunEnvironment {
 		// You can add Your own capabilities here: dependency injection,
 		// security, transaction management, logging, profiling, spying, storing
 		// commands, etc
-
+		final ObjectValidation objectValidation = new ObjectValidation();
+		if(!objectValidation.isValid(command)) {
+			throw new InvalidCommandException(command);
+		}
 		final Object result = handler.handle(command);
 
 		// You can add Your own capabilities here
