@@ -18,6 +18,8 @@ import com.tocea.corolla.users.domain.Role;
 
 public interface IRoleDAO extends CrudRepository<Role, Integer> {
 
+	Role findRoleByName(String name);
+
 	/**
 	 * Returns the default role
 	 * @return the default  role.

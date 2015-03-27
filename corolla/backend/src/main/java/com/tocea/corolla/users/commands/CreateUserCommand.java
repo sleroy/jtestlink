@@ -3,24 +3,27 @@
  */
 package com.tocea.corolla.users.commands;
 
+import javax.validation.constraints.NotNull;
+
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.users.domain.User;
 
 @Command
-public class AddNewUserCommand {
+public class CreateUserCommand {
+	@NotNull
 	private User	user;
 
 	/**
 	 *
 	 */
-	public AddNewUserCommand() {
+	public CreateUserCommand() {
 		super();
 	}
 
 	/**
 	 * @param _user
 	 */
-	public AddNewUserCommand(final User _user) {
+	public CreateUserCommand(final User _user) {
 		this.user = _user;
 
 	}
@@ -45,6 +48,6 @@ public class AddNewUserCommand {
 	 */
 	@Override
 	public String toString() {
-		return "AddNewUserCommand [user=" + this.user + "]";
+		return "CreateUserCommand [user=" + this.user + "]";
 	}
 }

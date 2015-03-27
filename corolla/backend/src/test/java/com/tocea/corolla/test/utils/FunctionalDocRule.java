@@ -29,7 +29,7 @@ public class FunctionalDocRule implements MethodRule {
 			final Object _target) {
 		final FunctionalTestDoc annotation = _method.getDeclaringClass().getAnnotation(FunctionalTestDoc.class);
 		if(annotation != null) {
-			LOGGER.info("Functional test started :\n\trequirementId={}\n\tFeature={}\n\tticket={}", annotation.requirementId(), annotation.requirementName(), annotation.ticketNumber());
+			LOGGER.info("Functional test started :\n\trequirementId={}\n\tFeature={}\n\tticket={}\n\ttestCaseId={}", annotation.requirementId(), annotation.requirementName(), annotation.ticketNumber(), annotation.testCaseId());
 		}
 		return _base;
 	}

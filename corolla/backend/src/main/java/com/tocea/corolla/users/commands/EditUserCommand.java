@@ -3,11 +3,14 @@
  */
 package com.tocea.corolla.users.commands;
 
+import javax.validation.constraints.NotNull;
+
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.users.domain.User;
 
 @Command
 public class EditUserCommand {
+	@NotNull
 	private User	user;
 
 	/**

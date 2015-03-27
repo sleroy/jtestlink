@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.base.Strings;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
-import com.tocea.corolla.users.commands.AddNewUserCommand;
+import com.tocea.corolla.users.commands.CreateUserCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.domain.Role;
@@ -32,8 +32,8 @@ import com.tocea.corolla.users.service.EmailValidationService;
  */
 @CommandHandler
 @Transactional
-public class AddNewUserCommandHandler implements
-ICommandHandler<AddNewUserCommand, User> {
+public class CreateUserCommandHandler implements
+ICommandHandler<CreateUserCommand, User> {
 
 	@Autowired
 	private IUserDAO				userDAO;
@@ -51,7 +51,7 @@ ICommandHandler<AddNewUserCommand, User> {
 	 * com.tocea.corolla.cqrs.handler.ICommandHandler#handle(java.lang.Object)
 	 */
 	@Override
-	public User handle(@Valid final AddNewUserCommand _command) {
+	public User handle(@Valid final CreateUserCommand _command) {
 		final User user = _command.getUser();
 		if (user == null) {
 			throw new MissingUserInformationException("No data provided to create user");
