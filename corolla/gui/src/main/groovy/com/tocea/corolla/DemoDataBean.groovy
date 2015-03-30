@@ -205,12 +205,12 @@ class DemoDataBean {
 			final String _password, final Role _rolePO) {
 		final User user = new User()
 		user.with {
-			user.firstName = _string
-			user.lastName = _string2
-			user.email =_string3
-			user.login =_string4
-			user.password = this.passwordEncoder.encodePassword(_password)
-			user.roleId = _rolePO.getId()
+			firstName = _string
+			lastName = _string2
+			email =_string3
+			login =_string4
+			password = this.passwordEncoder.encodePassword(_password)
+			roleId = _rolePO.getId()
 		}
 		this.gate.dispatch new CreateUserCommand(user)
 		return user
