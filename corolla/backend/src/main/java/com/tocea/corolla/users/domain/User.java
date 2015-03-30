@@ -68,9 +68,8 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 10)
 	private String	locale	= "en_GB";		//$NON-NLS-1$
 
-	@NotBlank
 	@Size(max=50)
-	@Column(nullable = false, length = 50)
+	@Column(nullable = true, length = 50)
 	private String	activationToken	= "";		//$NON-NLS-1$
 
 	@Column(nullable = true)
@@ -84,6 +83,9 @@ public class User implements Serializable {
 	@NotNull
 	@Column(nullable = false)
 	private boolean	active	= true;
+
+	@Column(name = "SALT")
+	private Integer salt;
 
 	/**
 	 * @return the activationToken
@@ -160,6 +162,13 @@ public class User implements Serializable {
 	 */
 	public Integer getRoleId() {
 		return this.roleId;
+	}
+
+	/**
+	 * @return the salt
+	 */
+	public Integer getSalt() {
+		return this.salt;
 	}
 
 	/**
@@ -261,6 +270,13 @@ public class User implements Serializable {
 	 */
 	public void setRoleId(final Integer _role_id) {
 		this.roleId = _role_id;
+	}
+
+	/**
+	 * @param _salt the salt to set
+	 */
+	public void setSalt(final Integer _salt) {
+		this.salt = _salt;
 	}
 
 	/*

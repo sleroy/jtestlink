@@ -7,7 +7,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tocea.corolla.configuration.CorollaConfigurationBean;
+import com.tocea.corolla.app.configuration.CorollaConfigurationBean;
 
 /**
  * This service defines the email validation.

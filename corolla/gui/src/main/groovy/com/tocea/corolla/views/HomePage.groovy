@@ -1,5 +1,6 @@
 package com.tocea.corolla.views
 
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation
 import org.apache.wicket.markup.head.IHeaderResponse
 
 import com.tocea.corolla.views.sidemenu.MainSideMenu
@@ -11,6 +12,7 @@ import com.tocea.corolla.widgets.sidemenu.SideMenuPanel
  * @author Sylvain Leroy
  *
  */
+@AuthorizeInstantiation("ROLE_USER")
 public class HomePage extends LayoutPage {
 	public HomePage() {
 		super()

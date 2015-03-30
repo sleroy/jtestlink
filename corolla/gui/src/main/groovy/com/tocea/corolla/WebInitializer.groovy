@@ -1,13 +1,15 @@
 package com.tocea.corolla
 
-import javax.servlet.FilterRegistration
-import javax.servlet.ServletContext
-import javax.servlet.ServletException
+import javax.servlet.DispatcherType
 
 import org.apache.wicket.protocol.http.WicketFilter
 import org.apache.wicket.spring.SpringWebApplicationFactory
-import org.springframework.boot.context.embedded.ServletContextInitializer
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.boot.context.embedded.FilterRegistrationBean
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 
 /**
  * This class is the replacement of the web.xml. It registers the wicket filter
@@ -17,18 +19,28 @@ import org.springframework.context.annotation.Configuration
  *
  */
 @Configuration
-class WebInitializer implements ServletContextInitializer {
+@Order(2)
+class WebInitializer {
 
 	private static final String PARAM_APP_BEAN = "applicationBean"
 
-	@Override
-	public void onStartup(final ServletContext sc) throws ServletException {
-		final FilterRegistration filter = sc.addFilter "wicket-filter", WicketFilter.class
-		filter.setInitParameter WicketFilter.APP_FACT_PARAM, SpringWebApplicationFactory.class.getName()
-		filter.setInitParameter PARAM_APP_BEAN, "wicketWebApplication"
-		// This line is the only surprise when comparing to the equivalent
-		// web.xml. Without some initialization seems to be missing.
-		filter.setInitParameter WicketFilter.FILTER_MAPPING_PARAM, "/v/*"
-		filter.	addMappingForUrlPatterns null, false, "/v/*"
+	private static final Logger LOGGER = LoggerFactory.getLogger(WebInitializer)
+
+	@Bean
+	public FilterRegistrationBean wicketFilter() {
+		LOGGER.info ">---Web.xml Wicket configuration.."
+		final FilterRegistrationBean filterConfig = new FilterRegistrationBean()
+		filterConfig.setDispatcherTypes(EnumSet.allOf(DispatcherType.class))
+		def wicketFilter = new WicketFilter()
+		filterConfig.filter = wicketFilter
+		def springWebFactory = new SpringWebApplicationFactory()
+		wicketFilter.applicationFactory = springWebFactory
+		filterConfig.addInitParameter PARAM_APP_BEAN, "wicketWebApplication"
+		filterConfig.addInitParameter WicketFilter.APP_FACT_PARAM, SpringWebApplicationFactory.class.getName()
+		filterConfig.addInitParameter WicketFilter.FILTER_MAPPING_PARAM, "/v/*"
+
+
+		LOGGER.info "<----Web.xml Wicket configuration.."
+		return filterConfig
 	}
 }

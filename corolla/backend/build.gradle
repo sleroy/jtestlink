@@ -1,9 +1,11 @@
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+	compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+	compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-	
+	compile("org.springframework.security:spring-security-ldap:${SPRING_LDAP}")
 
 
 
@@ -22,15 +24,15 @@ dependencies {
 	compile "com.h2database:h2:$H2_BASE"
 	compile "mysql:mysql-connector-java:$MYSQL"
 	compile "javax.mail:javax.mail-api:$JAVAMAIL"
-//	compile "org.vibur:vibur-dbcp:$VIBUR"
-//	compile "'org.mybatis:mybatis-spring:1.2.2'"
-	
-	
+	//	compile "org.vibur:vibur-dbcp:$VIBUR"
+	//	compile "'org.mybatis:mybatis-spring:1.2.2'"
+
+
 	compile "joda-time:joda-time:$JODA_TIME"
 	compile "org.codehaus.groovy:groovy-all:$GROOVY_VERSION"
 
-
-
+	// LDAP
+	testCompile   ("org.apache.directory.server:apacheds-server-jndi:${LDAP_SERVER}")
 
 }
 

@@ -28,7 +28,8 @@ version 0.1.0
  * activer un utilisateur [POJO]
  * désactiver un utilisateur [POJO]
  * supprimer un utilisateur [POJO]
- * éditer le profil d'un utilisateur [
+ * éditer le profil d'un utilisateur
+ * changer le password d'un utilisateur
 * Authentification (Interne, social, ldap)
  * S'authentifier via le système interne
  * S'authentifier via le système LDAP

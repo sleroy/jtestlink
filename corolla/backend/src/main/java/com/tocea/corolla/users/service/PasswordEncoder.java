@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.tocea.corolla.configuration.SecurityConfigurationBean;
+import com.tocea.corolla.app.configuration.SecurityConfigurationBean;
 import com.tocea.corolla.users.api.IPasswordEncoder;
 
 /**

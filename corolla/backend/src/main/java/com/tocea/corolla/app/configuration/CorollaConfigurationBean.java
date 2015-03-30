@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tocea.corolla.configuration;
+package com.tocea.corolla.app.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
