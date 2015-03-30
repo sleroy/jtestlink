@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.tocea.corolla.app.configuration.LdapSecurityConfigurationBean;
 import com.tocea.corolla.app.configuration.SecurityConfigurationBean;
@@ -86,27 +85,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(final AuthenticationManagerBuilder auth)
 			throws Exception {
 		LOGGER.info("SECURITY : Configuration of Authentication");
-		/** LDAP Security */
-		if (this.ldapSecurity.hasUserDN()) {
-			auth.ldapAuthentication()
-			.userDnPatterns(this.ldapSecurity.getUserDnPatterns())
-			.groupSearchBase(this.ldapSecurity.getGroupSearchBase())
-			.groupRoleAttribute(this.ldapSecurity.getGroupRoleAttribute())
-			.groupSearchFilter(this.ldapSecurity.getGroupSearchFilter());
-		} else if (this.ldapSecurity.hasUserSearch()) {
-			auth.ldapAuthentication()
-			.userSearchBase(this.ldapSecurity.getUserSearchBase())
-			.userSearchFilter(this.ldapSecurity.getUserSearchFilter())
-			.groupSearchBase(this.ldapSecurity.getGroupSearchBase())
-			.groupRoleAttribute(this.ldapSecurity.getGroupRoleAttribute())
-			.groupSearchFilter(this.ldapSecurity.getGroupSearchFilter());
-		}
-		auth.userDetailsService(this.userDetailsService)
-		.passwordEncoder(new BCryptPasswordEncoder());
+		//		/** LDAP Security */
+		//		if (this.ldapSecurity.hasUserDN()) {
+		//			auth.ldapAuthentication()
+		//			.userDnPatterns(this.ldapSecurity.getUserDnPatterns())
+		//			.groupSearchBase(this.ldapSecurity.getGroupSearchBase())
+		//			.groupRoleAttribute(this.ldapSecurity.getGroupRoleAttribute())
+		//			.groupSearchFilter(this.ldapSecurity.getGroupSearchFilter());
+		//		} else if (this.ldapSecurity.hasUserSearch()) {
+		//			auth.ldapAuthentication()
+		//			.userSearchBase(this.ldapSecurity.getUserSearchBase())
+		//			.userSearchFilter(this.ldapSecurity.getUserSearchFilter())
+		//			.groupSearchBase(this.ldapSecurity.getGroupSearchBase())
+		//			.groupRoleAttribute(this.ldapSecurity.getGroupRoleAttribute())
+		//			.groupSearchFilter(this.ldapSecurity.getGroupSearchFilter());
+		//		}
+		//		auth.userDetailsService(this.userDetailsService)
+		//		.passwordEncoder(new BCryptPasswordEncoder());
 
-		//		auth
-		//		.inMemoryAuthentication()
-		//		.withUser("user").password("password").roles("USER");
+		auth.inMemoryAuthentication().withUser("user").password("password")
+		.roles("USER");
 	}
 
 }
