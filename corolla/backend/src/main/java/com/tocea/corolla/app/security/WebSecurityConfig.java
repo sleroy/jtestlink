@@ -62,13 +62,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/images/**").permitAll()
 			.antMatchers("/js/**").permitAll()
 			.antMatchers("/resources/**").permitAll()
-			.antMatchers("/v/login").permitAll()
+			.antMatchers("/ui/login").permitAll()
 			.anyRequest().authenticated().and().httpBasic().and().
 
-			formLogin().loginPage("/v/login").usernameParameter("username")
-			.passwordParameter("password").defaultSuccessUrl("/v").failureUrl("/login&error=true").and()
-
-			.logout().logoutUrl("/v/logout").permitAll().deleteCookies("JSESSIONID");
+			formLogin().loginPage("/ui/login.html").usernameParameter("username")
+			.passwordParameter("password").defaultSuccessUrl("/ui/index.html").failureUrl("/ui/login.html&error=true").and()
+			.logout().logoutUrl("/ui/logout.html").permitAll().deleteCookies("JSESSIONID");
 		}
 	}
 	private static final Logger				LOGGER	= LoggerFactory.getLogger(WebSecurityConfig.class);
