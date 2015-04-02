@@ -24,10 +24,10 @@ version 0.1.0
 ---------------
 
 * Gestion des utilisateurs
- * créer un utilisateur [POJO] [COMMAND]
- * activer un utilisateur [POJO]
- * désactiver un utilisateur [POJO]
- * supprimer un utilisateur [POJO]
+ * créer un utilisateur
+ * activer un utilisateur
+ * désactiver un utilisateur
+ * supprimer un utilisateur
  * éditer le profil d'un utilisateur
  * changer le password d'un utilisateur
 * Authentification (Interne, social, ldap)
@@ -60,6 +60,10 @@ version 0.4.0
 ------------------
 
 * Gestion des requirements
+ * Gestion des personnes (approval) qui ont validé la requirement
+ * Gestion des commentaires sur un requirement (comme un attachment)
+ * Gestion des liens (hypertextes)
+ * Gestion des verrous
 
 
 version 0.5.0

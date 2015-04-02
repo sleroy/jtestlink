@@ -1,0 +1,34 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") }
+}
+
+apply plugin: 'war'
+apply plugin: 'spring-boot'
+
+configurations { providedRuntime }
+
+dependencies {
+
+	compile project(":corolla-backend:corolla-backend-application")
+	compile project(":corolla-backend:corolla-backend-cqrs")
+	compile project(":corolla-backend:corolla-backend-domain-commons")
+	compile project(":corolla-backend:plugins:corolla-backend-plugin-specification")
+	compile project(":corolla-backend:plugins:corolla-backend-plugin-testlink")
+	compile project(":corolla-backend:corolla-backend-projects")
+	compile project(":corolla-backend:corolla-backend-requirements")
+	compile project(":corolla-backend:corolla-backend-users")
+	compile project(":corolla-backend:corolla-backend-utils")
+
+
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+}
+
+war {
+	baseName = 'corolla-backend'
+}
+

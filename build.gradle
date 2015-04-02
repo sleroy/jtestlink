@@ -97,6 +97,9 @@ allprojects {
     apply plugin: 'jacoco'
     apply plugin: 'findbugs'
     apply plugin : 'maven-publish'
+    apply plugin: 'groovy'
+
+
 
 
 
@@ -177,6 +180,7 @@ allprojects {
         compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
 
 	compile "com.google.code.findbugs:jsr305:$FINDBUGS"
+	compile "com.google.guava:guava:$GUAVA"
 
         testCompile LOGGING
 
