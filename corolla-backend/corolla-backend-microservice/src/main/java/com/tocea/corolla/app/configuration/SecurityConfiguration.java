@@ -20,6 +20,8 @@ public class SecurityConfiguration {
 
 	private int passwordStrength;
 
+	private boolean	allowURLRewriting = false;
+
 
 
 	/**
@@ -34,6 +36,20 @@ public class SecurityConfiguration {
 	 */
 	public int getPasswordStrength() {
 		return this.passwordStrength;
+	}
+
+	/**
+	 * @return the allowURLRewriting
+	 */
+	public boolean isAllowURLRewriting() {
+		return this.allowURLRewriting;
+	}
+
+	/**
+	 * @param _allowURLRewriting the allowURLRewriting to set
+	 */
+	public void setAllowURLRewriting(final boolean _allowURLRewriting) {
+		this.allowURLRewriting = _allowURLRewriting;
 	}
 
 	/**
