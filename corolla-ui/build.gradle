@@ -1,21 +1,41 @@
 subprojects {
-        dependencies {
-            compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
-            compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
-            compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
+	dependencies {
+		compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+		compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+		compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
+		compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 
-            compile "org.slf4j:slf4j-api:$LOG_SLF4J"
-            compile "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
-            compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
+		compile "org.slf4j:slf4j-api:$LOG_SLF4J"
+		compile "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
+		compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
 
-            compile "org.apache.commons:commons-lang3:$APACHE_COMMONLANG3"
-            compile "commons-validator:commons-validator:$APACHE_COMMONVALID"
+		compile "org.apache.commons:commons-lang3:$APACHE_COMMONLANG3"
+		compile "commons-validator:commons-validator:$APACHE_COMMONVALID"
 
-            compile "org.ocpsoft.prettytime:prettytime:$PRETTY_TIME"
+		compile "org.ocpsoft.prettytime:prettytime:$PRETTY_TIME"
 
-            compile "joda-time:joda-time:$JODA_TIME"
-            compile "org.codehaus.groovy:groovy-all:$GROOVY_VERSION"
+		compile "joda-time:joda-time:$JODA_TIME"
+		compile "org.codehaus.groovy:groovy-all:$GROOVY_VERSION"
 
-         
-        }
+
+
+
+
+		//compile project(":corolla:backend")
+
+		compile "org.apache.wicket:wicket:$WICKET"
+		compile "org.apache.wicket:wicket-bootstrap:0.17"
+		compile "org.apache.wicket:wicket-native-websocket-tomcat:$WICKET"
+		compile "org.apache.wicket:wicket-spring:$WICKET"
+		compile "org.apache.wicket:wicket-auth-roles:$WICKET"
+		compile "org.apache.wicket:wicket-devutils:$WICKET"
+		compile "org.apache.wicket:wicket-extensions:$WICKET"
+		compile "com.googlecode.wicket-jquery-ui:wicket-jquery-ui:$WICKET"
+		compile "com.googlecode.wicket-jquery-ui:wicket-jquery-ui-theme-southstreet:$WICKET"
+		compile "com.googlecode.wicket-jquery-ui:wicket-kendo-ui:$WICKET"
+		compile "com.googlecode.wicket-jquery-ui:wicket-kendo-ui-theme-bootstrap:$WICKET"
+
+
+
+	}
 }

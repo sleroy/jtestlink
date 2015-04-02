@@ -7,6 +7,6 @@ class ServletInitializer extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
-		return application.sources(CorollaProgramApplication.class);
+		return application.sources(CorollaBackendApplication.class);
 	}
 }

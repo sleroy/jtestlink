@@ -12,9 +12,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan
 @EnableJpaRepositories
 @EnableAutoConfiguration
-public class CorollaProgramApplication {
+public class CorollaBackendApplication {
 
 	public static void main(final String[] args) {
-		SpringApplication.run(CorollaProgramApplication.class, args);
+		SpringApplication.run(CorollaBackendApplication.class, args);
 	}
 }
