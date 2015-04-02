@@ -6,6 +6,7 @@ package com.tocea.corolla
 import javax.annotation.PostConstruct
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 import com.tocea.corolla.cqrs.gate.Gate
@@ -16,7 +17,6 @@ import com.tocea.corolla.products.dao.IProductDAO
 import com.tocea.corolla.products.domain.Product
 import com.tocea.corolla.products.domain.ProductComponent
 import com.tocea.corolla.products.domain.ProductComponentType
-import com.tocea.corolla.users.api.IPasswordEncoder
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
@@ -41,7 +41,7 @@ class DemoDataBean {
 	IProductDAO					productDAO
 
 	@Autowired
-	IPasswordEncoder			passwordEncoder
+	PasswordEncoder			passwordEncoder
 
 	@Autowired
 	IProductArchitectureDAO		productArchitectureDAO

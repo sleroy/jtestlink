@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.tocea.corolla.app.configuration.LdapSecurityConfiguration;
 import com.tocea.corolla.app.configuration.SecurityConfiguration;
@@ -36,6 +37,11 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private LdapSecurityConfiguration	ldapSecurity;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+
 
 	@Override
 	public void configure(final AuthenticationManagerBuilder auth)
@@ -73,6 +79,8 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManager();
 	}
 
+
+
 	// @Override
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
@@ -84,13 +92,6 @@ public class RestSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	}
 
-	//
-	//		formLogin().loginPage("/ui/login.html")
-	//		.usernameParameter("username").passwordParameter("password")
-	//		.defaultSuccessUrl("/ui/index.html")
-	//		.failureUrl("/ui/login.html&error=true").and().logout()
-	//		.logoutUrl("/ui/logout.html").permitAll()
-	//		.deleteCookies("JSESSIONID");
 
 
 }

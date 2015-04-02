@@ -1,0 +1,4 @@
+dependencies {
+	compile project(":corolla-backend:corolla-backend-cqrs")
+	compile project(":corolla-backend:corolla-backend-users")
+}
