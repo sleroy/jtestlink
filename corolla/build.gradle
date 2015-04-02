@@ -1,6 +1,0 @@
-subprojects {
-	apply plugin: 'java'
-	apply plugin: 'groovy'
-	dependencies { compile "com.google.guava:guava:$GUAVA" }
-}
-

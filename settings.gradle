@@ -1,7 +1,23 @@
 rootProject.name = 'corolla-parent'
 
 
-include "corolla:backend"
-include "corolla:widgets"
-include "corolla:gui"
+include "corolla-backend:corolla-backend-cqrs"
+include "corolla-backend:corolla-backend-domain-commons"
+include "corolla-backend:corolla-backend-users"
+include "corolla-backend:corolla-backend-requirements"
+include "corolla-backend:corolla-backend-application"
+include "corolla-backend:corolla-backend-projects"
+include "corolla-backend:corolla-backend-utils"
+include "corolla-backend:corolla-backend-testspecifications"
+include "corolla-backend:corolla-backend-microservice"
+include "corolla-backend:plugins:corolla-backend-plugin-testlink"
+include "corolla-backend:plugins:corolla-backend-plugin-specification"
+
+include "corolla-ui:corolla-ui-widgets"
+include "corolla-ui:corolla-ui-users"
+include "corolla-ui:corolla-ui-requirements"
+include "corolla-ui:corolla-ui-application"
+include "corolla-ui:corolla-ui-projects"
+include "corolla-ui:corolla-ui-testspecifications"
+include "corolla-ui:corolla-ui-microservice"
 

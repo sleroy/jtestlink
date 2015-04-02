@@ -97,6 +97,9 @@ allprojects {
     apply plugin: 'jacoco'
     apply plugin: 'findbugs'
     apply plugin : 'maven-publish'
+    apply plugin: 'groovy'
+
+
 
 
 
@@ -177,6 +180,8 @@ allprojects {
         compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
 
 	compile "com.google.code.findbugs:jsr305:$FINDBUGS"
+	compile "com.google.guava:guava:$GUAVA"
+        compile "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
 
         testCompile LOGGING
 
@@ -184,7 +189,7 @@ allprojects {
 
         testCompile("org.easymock:easymock:${TEST_EASYMOCK}") { exclude group: 'org.objenesis' }
         testRuntime "org.apache.logging.log4j:log4j-core:${LOG4J}"
-        testCompile "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
+
         testCompile("org.spockframework:spock-core:$TEST_SPOCK") { exclude group: 'junit' }
         testCompile("org.spockframework:spock-spring:$TEST_SPOCK") { exclude group: 'junit' }
         testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
