@@ -5,8 +5,6 @@ package com.tocea.corolla.views.admin.roles
 import groovy.transform.InheritConstructors
 
 import com.tocea.corolla.users.domain.Role
-import com.tocea.corolla.views.admin.central.AbstractAdminPage
-import com.tocea.corolla.widgets.datatable.DataTableBuilder
 
 /**
  * Role admin page

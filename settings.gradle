@@ -14,10 +14,5 @@ include "corolla-backend:plugins:corolla-backend-plugin-testlink"
 include "corolla-backend:plugins:corolla-backend-plugin-specification"
 
 include "corolla-ui:corolla-ui-widgets"
-include "corolla-ui:corolla-ui-users"
-include "corolla-ui:corolla-ui-requirements"
-include "corolla-ui:corolla-ui-application"
-include "corolla-ui:corolla-ui-projects"
-include "corolla-ui:corolla-ui-testspecifications"
 include "corolla-ui:corolla-ui-microservice"
 

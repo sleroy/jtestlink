@@ -1,18 +1,6 @@
 package com.tocea.corolla.views.admin.users
 
-import org.apache.wicket.markup.html.basic.Label
-import org.apache.wicket.markup.html.form.PasswordTextField
-import org.apache.wicket.markup.html.form.StatelessForm
-import org.apache.wicket.markup.html.form.TextField
-import org.apache.wicket.model.CompoundPropertyModel
-import org.apache.wicket.model.Model
-import org.apache.wicket.model.PropertyModel
-import org.apache.wicket.request.mapper.parameter.PageParameters
-
-import com.tocea.corolla.users.domain.User
-import com.tocea.corolla.views.admin.central.AbstractAdminPage
-import com.tocea.corolla.widgets.gravatar.GravatarDefaultImage
-import com.tocea.corolla.widgets.gravatar.GravatarImage
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  * User edit page
