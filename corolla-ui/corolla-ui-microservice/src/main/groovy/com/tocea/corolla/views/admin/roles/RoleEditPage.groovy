@@ -1,6 +1,8 @@
 package com.tocea.corolla.views.admin.roles
 
-import groovy.transform.InheritConstructors;
+import groovy.transform.InheritConstructors
+
+import com.tocea.corolla.views.admin.central.AbstractAdminPage
 
 /**
  * Role edit page

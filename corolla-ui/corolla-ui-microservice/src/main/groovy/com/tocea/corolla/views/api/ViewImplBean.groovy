@@ -3,14 +3,9 @@
  */
 package com.tocea.corolla.views.api
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
-import com.google.common.collect.Lists
-import com.tocea.corolla.products.dao.IProductDAO
 import com.tocea.corolla.products.domain.Product
-import com.tocea.corolla.users.dao.IRoleDAO
-import com.tocea.corolla.users.dao.IUserDAO
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.domain.User
 import com.tocea.corolla.widget.treeItem.TreeItem
@@ -22,37 +17,36 @@ import com.tocea.corolla.widget.treeItem.TreeItem
 @Service
 public class ViewImplBean implements IViewAPI {
 
-	@Autowired
-	private IUserDAO userDAO
+	private List<Product> products= []
+	private List<User> users = []
+	private List<Role> roles = []
 
-	@Autowired
-	private IRoleDAO roleDAO
-
-	@Autowired
-	private IProductDAO productDAO
 
 	/* (non-Javadoc)
 	 * @see com.tocea.corolla.views.api.IViewAPI#deleteUser(com.tocea.corolla.users.domain.User)
 	 */
 	@Override
 	public void deleteUser(final User _user) {
-		this.userDAO.delete _user
+		//this.userDAO.delete _user
 	}
 
 	@Override
 	public List<Product> getProducts() {
-		Lists.newArrayList this.productDAO.findAll()
+		//	Lists.newArrayList this.productDAO.findAll()
+		return products
 	}
 
 	@Override
 	public List<Role> getRoles() {
 
-		Lists.newArrayList this.roleDAO.findAll()
+		//Lists.newArrayList this.roleDAO.findAll()
+		return []
 	}
 
 	@Override
 	public List<User> getUsers() {
-		Lists.newArrayList this.userDAO.findAll()
+		//Lists.newArrayList this.userDAO.findAll()
+		return []
 	}
 
 	public User findUser(Integer _id) {
