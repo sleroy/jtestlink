@@ -6,10 +6,13 @@ import org.apache.wicket.protocol.http.WicketFilter
 import org.apache.wicket.spring.SpringWebApplicationFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.embedded.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+
+import com.tocea.corolla.app.configuration.WicketConfiguration
 
 /**
  * This class is the replacement of the web.xml. It registers the wicket filter
@@ -26,6 +29,9 @@ class WebInitializer {
 
 	private static final Logger	LOGGER			= LoggerFactory.getLogger(WebInitializer.class)
 
+	@Autowired
+	private WicketConfiguration configuration
+
 	@Bean
 	public FilterRegistrationBean wicketFilter() {
 		LOGGER.info(">---Web.xml Wicket configuration..")
@@ -38,6 +44,7 @@ class WebInitializer {
 			addInitParameter PARAM_APP_BEAN, "wicketWebApplication"
 			addInitParameter	WicketFilter.APP_FACT_PARAM, SpringWebApplicationFactory.class.getName()
 			addInitParameter WicketFilter.FILTER_MAPPING_PARAM, "/*"
+			addInitParameter "configuration" configuration.mode
 
 			LOGGER.info("<----Web.xml Wicket configuration..")
 		}

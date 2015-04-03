@@ -20,7 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @EnableWebSecurity
-//@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+
 public class GuiSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final Logger			LOGGER	= LoggerFactory.getLogger(GuiSecurityConfig.class)
