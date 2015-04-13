@@ -214,6 +214,7 @@ allprojects {
                 force   "org.springframework:spring-orm:$SPRING_VERSION"
 		force   "org.springframework:spring-tx:$SPRING_VERSION"
 		force   "org.springframework.data:spring-data-commons:$SPRING_DATA"
+                force   "org.springframework.security:spring-security-core:$SPRING_SECU"
 
 		force   "org.aspectj:aspectjrt:$ASPECTJRT"
                 force   "com.fasterxml.jackson.core:jackson-databind:$JACKSON"

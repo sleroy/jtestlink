@@ -24,7 +24,7 @@ subprojects {
 		//compile project(":corolla:backend")
 
 		compile "org.apache.wicket:wicket:$WICKET"
-		compile "org.apache.wicket:wicket-bootstrap:0.17"
+//		compile "org.apache.wicket:wicket-bootstrap:0.17"
 		compile "org.apache.wicket:wicket-native-websocket-tomcat:$WICKET"
 		compile "org.apache.wicket:wicket-spring:$WICKET"
 		compile "org.apache.wicket:wicket-auth-roles:$WICKET"

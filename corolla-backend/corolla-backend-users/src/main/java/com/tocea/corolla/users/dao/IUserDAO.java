@@ -3,7 +3,7 @@
  */
 package com.tocea.corolla.users.dao;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.tocea.corolla.users.domain.User;
 
@@ -13,8 +13,7 @@ import com.tocea.corolla.users.domain.User;
  *
  *
  */
-
-public interface IUserDAO extends PagingAndSortingRepository<User, Integer> {
+public interface IUserDAO extends CrudRepository<User, Integer> {
 
 
 	/**

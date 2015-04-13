@@ -7,13 +7,14 @@ buildscript {
 }
 
 apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'spring-boot'
 
 configurations { providedRuntime }
 
 dependencies {
 	compile project(":corolla-ui:corolla-ui-widgets")
-
 
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")

@@ -2,6 +2,7 @@ package com.tocea.corolla.users.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.google.common.base.Strings;
 
 
 /**
@@ -36,28 +39,28 @@ public class User implements Serializable {
 	@NotBlank
 	@Size(max=40)
 	@Column(nullable = false, length = 40)
-	private String	firstName;
+	private String	firstName ="";
 
 	@NotBlank
 	@Size(max=40)
 	@Column(nullable = false, length = 40)
-	private String	lastName;
+	private String	lastName = "";
 
 	@NotBlank
 	@Size(max=128)
 	@Column(nullable = false, length = 128)
-	private String	email;
+	private String	email = "";
 
 	@NotBlank
 	@Size(min=3,max=30)
 	@Column(nullable = false, length = 30)
 
-	private String	login;
+	private String	login = "";
 
 	@NotBlank
 	@Size(max=256)
 	@Column(nullable = false, length = 256)
-	private String	password;
+	private String	password = "";
 
 	@NotNull
 	@Column(nullable = false)
@@ -72,8 +75,8 @@ public class User implements Serializable {
 	@Column(nullable = true, length = 50)
 	private String	activationToken	= "";		//$NON-NLS-1$
 
-	@Column(nullable = true)
-	private Integer	defaultTestProject_id;
+	@Column(nullable = true, name="testproject_id")
+	private Integer	testProjectId;
 
 	@NotNull
 	@Column(nullable = false)
@@ -84,8 +87,26 @@ public class User implements Serializable {
 	@Column(nullable = false)
 	private boolean	active	= true;
 
-	@Column(name = "SALT")
-	private Integer salt;
+	/**
+	 * Copy values if missing fields
+	 */
+	public void copyMissingFields() {
+		if (this.activationToken == null) {
+			this.activationToken = "";
+		}
+		if (Strings.isNullOrEmpty(this.firstName) && Strings.isNullOrEmpty(this.lastName)) {
+			this.firstName = this.login;
+		}
+		if (this.createdTime == null) {
+			this.createdTime = new Date();
+		}
+
+
+
+		this.setLocaleIfNecessary();
+
+
+	}
 
 	/**
 	 * @return the activationToken
@@ -99,13 +120,6 @@ public class User implements Serializable {
 	 */
 	public Date getCreatedTime() {
 		return this.createdTime;
-	}
-
-	/**
-	 * @return the defaultTestProject_id
-	 */
-	public Integer getDefaultTestProject_id() {
-		return this.defaultTestProject_id;
 	}
 
 	/**
@@ -165,11 +179,12 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @return the salt
+	 * @return the testProjectId
 	 */
-	public Integer getSalt() {
-		return this.salt;
+	public Integer getTestProjectId() {
+		return this.testProjectId;
 	}
+
 
 	/**
 	 * @return the active
@@ -198,14 +213,6 @@ public class User implements Serializable {
 	 */
 	public void setCreatedTime(final Date _createdTime) {
 		this.createdTime = _createdTime;
-	}
-
-	/**
-	 * @param _defaultTestProject_id
-	 *            the defaultTestProject_id to set
-	 */
-	public void setDefaultTestProject_id(final Integer _defaultTestProject_id) {
-		this.defaultTestProject_id = _defaultTestProject_id;
 	}
 
 	/**
@@ -249,6 +256,17 @@ public class User implements Serializable {
 	}
 
 	/**
+	 * Set locale if necessary
+	 * @param _user
+	 */
+	public void setLocaleIfNecessary() {
+		if (Strings.isNullOrEmpty(this.getLocale())) {
+			this.setLocale(Locale.getDefault().toString());
+		}
+
+	}
+
+	/**
 	 * @param _login
 	 *            the login to set
 	 */
@@ -273,11 +291,14 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param _salt the salt to set
+	 * @param _defaultTestProject_id
+	 *            the testProjectId to set
 	 */
-	public void setSalt(final Integer _salt) {
-		this.salt = _salt;
+	public void setTestProjectId(final Integer _defaultTestProject_id) {
+		this.testProjectId = _defaultTestProject_id;
 	}
+
+
 
 	/*
 	 * (non-Javadoc)
