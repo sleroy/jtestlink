@@ -1,5 +1,6 @@
 package com.tocea.corolla.ui.views
 
+import groovy.transform.CompileStatic
 import groovy.transform.InheritConstructors
 
 import javax.servlet.ServletRequest
@@ -25,6 +26,7 @@ import com.tocea.corolla.ui.widgets.sidemenu.SideMenuPanel
  *
  */
 @InheritConstructors
+@CompileStatic
 public abstract class LayoutPage extends WebPage {
 
 	@SpringBean

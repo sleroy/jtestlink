@@ -29,10 +29,10 @@
 								</div>
 								<div class="col-md-9">
 
-
+									<div class="alert alert-warning alert-dismissible" role="alert"
+										wicket:id="feedback">Message d'erreur</div>
 									<form class="form-horizontal" wicket:id="formEdit">
-										<div class="alert alert-error alert-dismissible" role="alert"
-											wicket:id="feedback">Message d'erreur</div>
+
 										<fieldset>
 
 
@@ -112,7 +112,8 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="role">Role</label>
 												<div class="col-md-5">
-													<select id="role" name="role" class="form-control" wicket:id="roleChoice">
+													<select id="role" name="role" class="form-control"
+														wicket:id="roleId">
 														<option value="1">Administrator</option>
 														<option value="2">Dev</option>
 													</select>
@@ -123,7 +124,8 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="Locale">Locale</label>
 												<div class="col-md-4">
-													<select id="Locale" name="Locale" class="form-control" wicket:id="locale">
+													<select id="Locale" name="Locale" class="form-control"
+														wicket:id="locale">
 														<option value="1">Fr</option>
 														<option value="2">En</option>
 													</select>
@@ -134,7 +136,8 @@
 											<div class="form-group">
 												<label class="col-md-4 control-label" for="active">Active</label>
 												<div class="col-md-4">
-													<select id="Active" name="Active" class="form-control" wicket:id="active">
+													<select id="Active" name="Active" class="form-control"
+														wicket:id="active">
 														<option value="false">Disabled</option>
 														<option value="true">Enabled</option>
 													</select>

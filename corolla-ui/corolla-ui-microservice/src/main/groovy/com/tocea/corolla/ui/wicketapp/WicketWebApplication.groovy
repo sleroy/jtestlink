@@ -1,7 +1,10 @@
 package com.tocea.corolla.ui.wicketapp
 
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 
+import org.apache.wicket.ConverterLocator
+import org.apache.wicket.IConverterLocator
 import org.apache.wicket.Page
 import org.apache.wicket.RuntimeConfigurationType
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession
@@ -9,8 +12,6 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AnnotationsRoleAuthorizationStrategy
 import org.apache.wicket.devutils.stateless.StatelessChecker
 import org.apache.wicket.markup.html.WebPage
-import org.apache.wicket.request.IRequestHandler
-import org.apache.wicket.request.cycle.RequestCycle
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationContext
@@ -33,6 +34,7 @@ import com.tocea.corolla.ui.views.admin.users.UserEditPage
  */
 @Component
 @Slf4j
+@CompileStatic
 class WicketWebApplication extends AuthenticatedWebApplication {
 
 	@Autowired
@@ -77,6 +79,7 @@ class WicketWebApplication extends AuthenticatedWebApplication {
 		this.getMarkupSettings().setStripWicketTags(true)
 
 
+
 		mountPages()
 		// best place to do this is in Application#init()
 		//
@@ -111,6 +114,17 @@ class WicketWebApplication extends AuthenticatedWebApplication {
 	@Override
 	protected Class<? extends WebPage> getSignInPageClass() {
 		return LoginPage.class
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.apache.wicket.Application#newConverterLocator()
+	 */
+	@Override
+	protected IConverterLocator newConverterLocator() {
+		def convertLocator = new ConverterLocator()
+		//convertLocator.set(
+		return convertLocator
 	}
 
 

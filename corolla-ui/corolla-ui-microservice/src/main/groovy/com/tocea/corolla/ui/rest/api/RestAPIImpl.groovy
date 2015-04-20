@@ -92,6 +92,7 @@ public class RestAPIImpl implements IRestAPI {
 	/* (non-Javadoc)
 	 * @see com.tocea.corolla.ui.rest.api.IRestAPI#saveUser(com.tocea.corolla.users.domain.User)
 	 */
+
 	@Override
 	public void saveUser(User _user) {
 		if (_user.getId() == null) {
@@ -108,5 +109,31 @@ public class RestAPIImpl implements IRestAPI {
 	public boolean existLogin(String _loginName) {
 
 		return userDAO.findUserByLogin(_loginName) != null
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tocea.corolla.ui.rest.api.IRestAPI#getDefaultRole()
+	 */
+	@Override
+	public Role getDefaultRole() {
+
+		return this.roleDAO.defaultRole
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tocea.corolla.ui.rest.api.IRestAPI#getRole(java.lang.Integer)
+	 */
+	@Override
+	public Role getRole(Integer _primaryKey) {
+
+		return roleDAO.findOne(_primaryKey)
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tocea.corolla.ui.rest.api.IRestAPI#deleteUser(java.lang.String)
+	 */
+	@Override
+	public void deleteUserByLogin(String _login) {
+		gate.dispatch new DeleteUserCommand(_login)
 	}
 }

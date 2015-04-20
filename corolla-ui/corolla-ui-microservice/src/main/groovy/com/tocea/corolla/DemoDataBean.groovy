@@ -91,7 +91,7 @@ public class DemoDataBean {
 		this.newUser(	"Gandalf", "LeGris", "gandalf.legris@lotr.com",
 				"gandalf",
 				"saroumaneisg..", roleApplicationManager)
-		this.newUser(	"Saroumane", "LeBlanch", "saroumane.lebladminanc@lotr.com",
+		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
 				"saroumane",
 				"fuckSauron..", roleAdmin)
 		//		final ProductComponentType funcArchiType = this.newArchitectureType("Architecture fonctionnelle")
@@ -226,7 +226,7 @@ public class DemoDataBean {
 	 *            the role note
 	 * @return the new role
 	 */
-	Role newRole(final String _roleName, final String _roleNote, List<String> _roles, boolean _defaultRole=false) {
+	public Role newRole(final String _roleName, final String _roleNote, List<String> _roles, boolean _defaultRole=false) {
 		final Role role = new Role()
 		role.with {
 			name = _roleName
@@ -238,7 +238,7 @@ public class DemoDataBean {
 		return role
 	}
 
-	User newUser(final String _string, final String _string2,
+	public User newUser(final String _string, final String _string2,
 			final String _string3, final String _string4,
 			final String _password, final Role _rolePO) {
 		final User user = new User()

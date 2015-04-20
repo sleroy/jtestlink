@@ -155,6 +155,13 @@ class DataTableBuilder<T extends Serializable, S> {
 		return this
 	}
 
+	DataTableBuilder<T, S> withDataClosure(
+			Closure<List<T>> _dataProvider) {
+
+		this.dataProvider =new ClosureDataModel(_dataProvider)
+		return this
+	}
+
 	DataTableBuilder<T, S> withHeaders() {
 
 		this.headers = true

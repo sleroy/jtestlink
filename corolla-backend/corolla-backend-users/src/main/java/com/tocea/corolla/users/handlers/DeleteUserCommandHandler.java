@@ -24,25 +24,24 @@ import com.tocea.corolla.users.domain.User;
 public class DeleteUserCommandHandler implements
 ICommandHandler<DeleteUserCommand, Boolean> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteUserCommandHandler.class);
+	private static final Logger	LOGGER	= LoggerFactory.getLogger(DeleteUserCommandHandler.class);
 
 	@Autowired
-	private IUserDAO				userDAO;
+	private IUserDAO			userDAO;
 
-
-	/* (non-Javadoc)
-	 * @see com.tocea.corolla.cqrs.handler.ICommandHandler#handle(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.tocea.corolla.cqrs.handler.ICommandHandler#handle(java.lang.Object)
 	 */
 	@Override
 	public Boolean handle(final DeleteUserCommand _command) {
 
 		final User user = this.userDAO.findUserByLogin(_command.getUserLogin());
-		final Boolean found =  user != null;
-		if (found) {
-			LOGGER.info("Delete user {}", user.getLogin());
-			this.userDAO.delete(user);
-
-		}
+		final Boolean found = user != null;
+		LOGGER.info("Delete user {}", user.getLogin());
+		this.userDAO.deleteUserByLogin(user.getLogin());
 
 		return found;
 	}

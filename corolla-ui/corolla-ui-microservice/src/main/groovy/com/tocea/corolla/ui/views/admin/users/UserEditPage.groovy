@@ -1,6 +1,7 @@
 package com.tocea.corolla.ui.views.admin.users
 
 import org.apache.wicket.markup.html.basic.Label
+import org.apache.wicket.markup.html.panel.FeedbackPanel
 import org.apache.wicket.model.CompoundPropertyModel
 import org.apache.wicket.model.Model
 import org.apache.wicket.model.PropertyModel
@@ -24,7 +25,8 @@ class UserEditPage extends AdminPage  {
 		super(parameters)
 		def StringValue param = parameters.get "user"
 		if (!param.isEmpty()) {
-			setDefaultModel Model.of(this.restAPI.findUser(param.toInteger()))
+			def User user = this.restAPI.findUser(param.toInteger())
+			setDefaultModel Model.of(user)
 		}
 		if (this.getDefaultModelObject() == null) {
 			setDefaultModel Model.of(new User())
@@ -59,7 +61,10 @@ class UserEditPage extends AdminPage  {
 
 
 		add(form)
+
+		def feedback = new FeedbackPanel("feedback")
+		feedback.outputMarkupId  = true
+		feedback.visible = false
+		add feedback
 	}
-
-
 }

@@ -37,4 +37,12 @@ public abstract class CorollaPage extends LayoutPage {
 		return new MainSideMenu()
 
 	}
+
+	/* (non-Javadoc)
+	 * @see org.apache.wicket.Component#isVersioned()
+	 */
+	@Override
+	public boolean isVersioned() {
+		return false
+	}
 }

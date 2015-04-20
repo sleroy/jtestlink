@@ -282,6 +282,12 @@ public class User implements Serializable {
 		this.password = _password;
 	}
 
+	public void setRole(final Role _role) {
+		this.roleId = _role.getId();
+	}
+
+
+
 	/**
 	 * @param _role_id
 	 *            the role_id to set
@@ -290,6 +296,7 @@ public class User implements Serializable {
 		this.roleId = _role_id;
 	}
 
+
 	/**
 	 * @param _defaultTestProject_id
 	 *            the testProjectId to set
@@ -297,8 +304,6 @@ public class User implements Serializable {
 	public void setTestProjectId(final Integer _defaultTestProject_id) {
 		this.testProjectId = _defaultTestProject_id;
 	}
-
-
 
 	/*
 	 * (non-Javadoc)

@@ -19,6 +19,12 @@ public interface IRestAPI {
 	void deleteUser(User _user)
 
 	/**
+	 * Deletesanuser.
+	 */
+	void deleteUserByLogin(String _login)
+
+
+	/**
 	 * Returns the list of products.
 	 * @return the list of products.
 	 */
@@ -29,6 +35,8 @@ public interface IRestAPI {
 	 * @return the roles.
 	 */
 	List<Role> getRoles()
+
+	Role getRole(Integer _primaryKey)
 
 	/**
 	 * Returns the list of users.
@@ -47,4 +55,6 @@ public interface IRestAPI {
 	void saveUser(User _user)
 
 	boolean existLogin(String loginName)
+
+	Role getDefaultRole()
 }
