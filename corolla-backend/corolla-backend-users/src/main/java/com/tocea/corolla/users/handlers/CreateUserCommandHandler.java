@@ -3,15 +3,11 @@
  */
 package com.tocea.corolla.users.handlers;
 
-import java.util.Date;
-import java.util.Locale;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.base.Strings;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.users.commands.CreateUserCommand;
@@ -60,10 +56,8 @@ ICommandHandler<CreateUserCommand, User> {
 			throw new InvalidUserInformationException("No ID expected");
 		}
 		this.checkUserLogin(user);
-		user.setActivationToken("");
+		user.copyMissingFields();
 		user.setActive(false);
-		user.setCreatedTime(new Date());
-		this.setLocaleIfNecessary(user);
 		this.setDefaultRoleIfNecessary(user);
 		if (!this.emailValidationService.validateEmail(user.getEmail())) {
 			throw new InvalidEmailAddressException(user.getEmail());
@@ -97,13 +91,5 @@ ICommandHandler<CreateUserCommand, User> {
 		}
 	}
 
-	/**
-	 * @param user
-	 */
-	private void setLocaleIfNecessary(final User user) {
-		if (Strings.isNullOrEmpty(user.getLocale())) {
-			user.setLocale(Locale.getDefault().toString());
-		}
-	}
 
 }

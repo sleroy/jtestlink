@@ -3,15 +3,18 @@ package com.tocea.corolla
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.transaction.annotation.EnableTransactionManagement
 
 @SpringBootApplication
-@Configuration
-@ComponentScan
 @EnableAutoConfiguration
-@EnableWebSecurity
+@EnableConfigurationProperties
+@EnableJpaAuditing
+@EnableJpaRepositories
+@EnableTransactionManagement
+//@EnableWebMvc
 class CorollaGuiApplication {
 
 	public static void main(final String[] args) {

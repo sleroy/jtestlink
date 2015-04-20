@@ -49,21 +49,22 @@ version 0.1.0
 version 0.2.0
 ------------------
 
-* Gestion des applications et des versions
+* Gestion des requirements
+ * Gestion des personnes (approval) qui ont validé la requirement
+ * Gestion des commentaires sur un requirement (comme un attachment)
+ * Gestion des liens (hypertextes)
+ * Gestion des verrous
 
 version 0.3.0
 ------------------
 
 * Gestion des projets
 
+
 version 0.4.0
 ------------------
 
-* Gestion des requirements
- * Gestion des personnes (approval) qui ont validé la requirement
- * Gestion des commentaires sur un requirement (comme un attachment)
- * Gestion des liens (hypertextes)
- * Gestion des verrous
+* Gestion des applications et des versions
 
 
 version 0.5.0
