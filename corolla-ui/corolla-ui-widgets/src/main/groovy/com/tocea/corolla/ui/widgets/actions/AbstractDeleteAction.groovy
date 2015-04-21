@@ -46,9 +46,9 @@ IDeleteAction<T> {
 		this.wicketId = _wicketId
 		this.liste = _liste
 
-		this.dialog = new MessageDialog(AbstractDeleteAction.this.wicketId,
-				AbstractDeleteAction.this.page.getString("global.popup.warning.title"),
-				AbstractDeleteAction.this.page.getString("global.popup.warning.delete.confirm"),
+		this.dialog = new MessageDialog(wicketId,
+				page.getString("global.popup.warning.title"),
+				page.getString("global.popup.warning.delete.confirm"),
 				DialogButtons.OK_CANCEL,
 				DialogIcon.WARN) {
 
@@ -62,7 +62,7 @@ IDeleteAction<T> {
 						}
 					}
 				}
-		AbstractDeleteAction.this.page.add(this.dialog)
+		page.add(this.dialog)
 	}
 
 	/*
