@@ -50,6 +50,13 @@ version 0.2.0
 ------------------
 
 * Gestion des requirements
+ * Visualisation des requirements (arbre)
+  * Visualisation d'un requirement (un seul)
+  * Edition
+  * Déplacement
+  * Copie 
+  * Suppression
+  * Renommage
  * Gestion des personnes (approval) qui ont validé la requirement
  * Gestion des commentaires sur un requirement (comme un attachment)
  * Gestion des liens (hypertextes)

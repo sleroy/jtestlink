@@ -3,8 +3,6 @@ package com.tocea.corolla.ui.widgets.gravatar
 
 
 
-import org.apache.wicket.model.AbstractReadOnlyModel
-import org.apache.wicket.model.IModel
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder
 
 
@@ -14,8 +12,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder
  *
  * @author sleroy
  */
-public class GravatarModel extends AbstractReadOnlyModel<String>
-{
+public class GravatarModel {
 
 
 	private static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/"
@@ -26,10 +23,10 @@ public class GravatarModel extends AbstractReadOnlyModel<String>
 
 
 
-	public GravatarModel(final IModel<String> model, final int _hSize) {
+	public GravatarModel(final String model, final int _hSize) {
 
 
-		email = model.getObject()
+		email = model
 		gravatarKey = new Md5PasswordEncoder().encodePassword(email, null)
 		hsize = _hSize
 	}

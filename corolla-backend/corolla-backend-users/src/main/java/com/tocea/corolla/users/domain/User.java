@@ -17,7 +17,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.google.common.base.Strings;
 
-
 /**
  * This class declares a member that contributes to a repository. It is
  * basically identified by the email.
@@ -26,10 +25,7 @@ import com.google.common.base.Strings;
  *
  */
 @Entity()
-@Table(name = "users", indexes= {
-		@Index(unique=true, name="login_index", columnList="login")
-})
-
+@Table(name = "users", indexes = { @Index(unique = true, name = "login_index", columnList = "login") })
 public class User implements Serializable {
 
 	@Id
@@ -37,55 +33,53 @@ public class User implements Serializable {
 	private Integer	id;
 
 	@NotBlank
-	@Size(max=40)
+	@Size(max = 40)
 	@Column(nullable = false, length = 40)
-	private String	firstName ="";
+	private String	firstName		= "";
 
 	@NotBlank
-	@Size(max=40)
+	@Size(max = 40)
 	@Column(nullable = false, length = 40)
-	private String	lastName = "";
+	private String	lastName		= "";
 
 	@NotBlank
-	@Size(max=128)
+	@Size(max = 128)
 	@Column(nullable = false, length = 128)
-	private String	email = "";
+	private String	email			= "";
 
 	@NotBlank
-	@Size(min=3,max=30)
+	@Size(min = 3, max = 30)
 	@Column(nullable = false, length = 30)
-
-	private String	login = "";
+	private String	login			= "";
 
 	@NotBlank
-	@Size(max=256)
+	@Size(max = 256)
 	@Column(nullable = false, length = 256)
-	private String	password = "";
+	private String	password		= "";
 
 	@NotNull
 	@Column(nullable = false)
-	private Integer		roleId;
+	private Integer	roleId;
 
 	@NotBlank
-	@Size(max=10)
+	@Size(max = 10)
 	@Column(nullable = false, length = 10)
-	private String	locale	= "en_GB";		//$NON-NLS-1$
+	private String	locale			= "en_GB";	//$NON-NLS-1$
 
-	@Size(max=50)
+	@Size(max = 50)
 	@Column(nullable = true, length = 50)
 	private String	activationToken	= "";		//$NON-NLS-1$
 
-	@Column(nullable = true, name="testproject_id")
+	@Column(nullable = true, name = "testproject_id")
 	private Integer	testProjectId;
 
 	@NotNull
 	@Column(nullable = false)
-	private Date createdTime;
-
+	private Date	createdTime;
 
 	@NotNull
 	@Column(nullable = false)
-	private boolean	active	= true;
+	private boolean	active			= true;
 
 	/**
 	 * Copy values if missing fields
@@ -94,17 +88,15 @@ public class User implements Serializable {
 		if (this.activationToken == null) {
 			this.activationToken = "";
 		}
-		if (Strings.isNullOrEmpty(this.firstName) && Strings.isNullOrEmpty(this.lastName)) {
+		if (Strings.isNullOrEmpty(this.firstName)
+				&& Strings.isNullOrEmpty(this.lastName)) {
 			this.firstName = this.login;
 		}
 		if (this.createdTime == null) {
 			this.createdTime = new Date();
 		}
 
-
-
 		this.setLocaleIfNecessary();
-
 
 	}
 
@@ -185,7 +177,6 @@ public class User implements Serializable {
 		return this.testProjectId;
 	}
 
-
 	/**
 	 * @return the active
 	 */
@@ -194,7 +185,8 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param _activationToken the activationToken to set
+	 * @param _activationToken
+	 *            the activationToken to set
 	 */
 	public void setActivationToken(final String _activationToken) {
 		this.activationToken = _activationToken;
@@ -209,7 +201,8 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param _createdTime the createdTime to set
+	 * @param _createdTime
+	 *            the createdTime to set
 	 */
 	public void setCreatedTime(final Date _createdTime) {
 		this.createdTime = _createdTime;
@@ -257,6 +250,7 @@ public class User implements Serializable {
 
 	/**
 	 * Set locale if necessary
+	 *
 	 * @param _user
 	 */
 	public void setLocaleIfNecessary() {
@@ -286,8 +280,6 @@ public class User implements Serializable {
 		this.roleId = _role.getId();
 	}
 
-
-
 	/**
 	 * @param _role_id
 	 *            the role_id to set
@@ -295,7 +287,6 @@ public class User implements Serializable {
 	public void setRoleId(final Integer _role_id) {
 		this.roleId = _role_id;
 	}
-
 
 	/**
 	 * @param _defaultTestProject_id

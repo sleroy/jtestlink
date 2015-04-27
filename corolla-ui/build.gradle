@@ -4,6 +4,7 @@ subprojects {
 		compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
 		compile("org.springframework.boot:spring-boot-starter-logging:${springBootVersion}")
 		compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+		compile("org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}")
 
 		compile "org.slf4j:slf4j-api:$LOG_SLF4J"
 		compile "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
@@ -20,20 +21,7 @@ subprojects {
 
 
 
-
-		//compile project(":corolla:backend")
-
-		compile "org.apache.wicket:wicket:$WICKET"
-//		compile "org.apache.wicket:wicket-bootstrap:0.17"
-		compile "org.apache.wicket:wicket-native-websocket-tomcat:$WICKET"
-		compile "org.apache.wicket:wicket-spring:$WICKET"
-		compile "org.apache.wicket:wicket-auth-roles:$WICKET"
-		compile "org.apache.wicket:wicket-devutils:$WICKET"
-		compile "org.apache.wicket:wicket-extensions:$WICKET"
-		compile "com.googlecode.wicket-jquery-ui:wicket-jquery-ui:$WICKET"
-		compile "com.googlecode.wicket-jquery-ui:wicket-jquery-ui-theme-southstreet:$WICKET"
-		compile "com.googlecode.wicket-jquery-ui:wicket-kendo-ui:$WICKET"
-		compile "com.googlecode.wicket-jquery-ui:wicket-kendo-ui-theme-bootstrap:$WICKET"
+		
 
 
 

@@ -293,3 +293,7 @@ small.text-muted {
 		padding-left: 3px;
 	}
 }
+
+.tableimage > tbody > tr > td {
+     vertical-align: middle;
+}

@@ -85,12 +85,12 @@ public class GuiSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		LOGGER.info("Web-- Defining Web Security")
-		http.authorizeRequests().antMatchers("/js/**", "/public/**", "/images/**", "/css/**", "/pictures/**", "/fonts/**", "/ui/login", "/ui/logout","/", "/favicon.ico").permitAll().
+		http.authorizeRequests().antMatchers("/resources/**", "/js/**", "/public/**", "/images/**", "/css/**", "/pictures/**", "/fonts/**", "/login", "/logout","/", "/favicon.ico").permitAll().
 				antMatchers("/ui/**").hasRole("GUI").
 				antMatchers("/api/**").hasRole("REST")
 
 		//anyRequest().permitAll()
-		http.formLogin().loginPage("/ui/login").defaultSuccessUrl("/ui/home").failureUrl("/ui/login?errorCode=badCredentials").and().logout().logoutUrl("/ui/logout")
+		http.formLogin().loginPage("/login").defaultSuccessUrl("/home").and().logout().logoutUrl("/logout")
 		http.csrf().disable()
 
 

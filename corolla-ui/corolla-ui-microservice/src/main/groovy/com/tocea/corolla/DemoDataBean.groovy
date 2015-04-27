@@ -82,6 +82,8 @@ public class DemoDataBean {
 
 		this.newUser(	"John", "Snow", "john.snow@email.com", "jsnow",
 				"password", roleAdmin)
+		this.newUser(	"Sébastien", "Carreau", "sebastien.carreau@tocea.com", "scarreau",
+				"scarreau", roleAdmin)
 		this.newUser(	"Jack", "Pirate", "jack.pirate@email.com", "jpirate",
 				"password", roleGuest)
 		this.newUser(	"Ichigo", "Kurosaki", "ichigo.kurosaki@email.com",

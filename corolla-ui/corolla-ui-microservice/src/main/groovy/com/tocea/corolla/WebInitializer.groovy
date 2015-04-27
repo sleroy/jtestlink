@@ -3,8 +3,6 @@ package com.tocea.corolla
 import javax.servlet.DispatcherType
 import javax.servlet.Filter
 
-import org.apache.wicket.protocol.http.WicketFilter
-import org.apache.wicket.spring.SpringWebApplicationFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -55,44 +53,6 @@ class WebInitializer {
 
 
 	@Bean
-	public FilterRegistrationBean wicketFilter() {
-		LOGGER.info ">---Web.xml Wicket configuration.."
-		final WicketFilter wicketFilter = new WicketFilter()
-		final FilterRegistrationBean filterConfig = new FilterRegistrationBean(wicketFilter)
-		filterConfig.with {
-			setDispatcherTypes EnumSet.allOf(DispatcherType.class)
-			name ="WicketFilter"
-			addInitParameter PARAM_APP_BEAN, "wicketWebApplication"
-			addInitParameter	WicketFilter.APP_FACT_PARAM, SpringWebApplicationFactory.class.getName()
-			addInitParameter WicketFilter.FILTER_MAPPING_PARAM, "/ui/*"
-			addInitParameter "configuration", this.configuration.mode
-			//			addUrlPatterns("/ui/*")
-			order = 1
-		}
-
-		LOGGER.info "<----Web.xml Wicket configuration.."
-
-		return filterConfig
-	}
-
-	//	@Bean
-	//	public FilterRegistrationBean springFilter() {
-	//
-	//		final DelegatingFilterProxy springFilter = new DelegatingFilterProxy()
-	//		final FilterRegistrationBean filterConfig = new FilterRegistrationBean()
-	//		filterConfig.with {
-	//			setDispatcherTypes EnumSet.allOf(DispatcherType.class)
-	//			setFilter springFilter
-	//			order = 0
-	//			addUrlPatterns("/*")
-	//
-	//		}
-	//
-	//
-	//		return filterConfig
-	//	}
-	//
-	@Bean
 	public FilterRegistrationBean securityFilterChain(
 			@Qualifier(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME) final Filter securityFilter) {
 		LOGGER.info ">---Web.xml Spring Security configuration.."
@@ -103,6 +63,4 @@ class WebInitializer {
 		LOGGER.info "<----Web.xml Spring Security configuration.."
 		return registration
 	}
-
-
 }
