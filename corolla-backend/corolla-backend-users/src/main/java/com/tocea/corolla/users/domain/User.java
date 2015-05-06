@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.google.common.base.Strings;
@@ -45,6 +46,7 @@ public class User implements Serializable {
 	@NotBlank
 	@Size(max = 128)
 	@Column(nullable = false, length = 128)
+	@Email
 	private String	email			= "";
 
 	@NotBlank
@@ -70,8 +72,7 @@ public class User implements Serializable {
 	@Column(nullable = true, length = 50)
 	private String	activationToken	= "";		//$NON-NLS-1$
 
-	@Column(nullable = true, name = "testproject_id")
-	private Integer	testProjectId;
+
 
 	@NotNull
 	@Column(nullable = false)
@@ -168,13 +169,6 @@ public class User implements Serializable {
 	 */
 	public Integer getRoleId() {
 		return this.roleId;
-	}
-
-	/**
-	 * @return the testProjectId
-	 */
-	public Integer getTestProjectId() {
-		return this.testProjectId;
 	}
 
 	/**
@@ -288,13 +282,7 @@ public class User implements Serializable {
 		this.roleId = _role_id;
 	}
 
-	/**
-	 * @param _defaultTestProject_id
-	 *            the testProjectId to set
-	 */
-	public void setTestProjectId(final Integer _defaultTestProject_id) {
-		this.testProjectId = _defaultTestProject_id;
-	}
+
 
 	/*
 	 * (non-Javadoc)

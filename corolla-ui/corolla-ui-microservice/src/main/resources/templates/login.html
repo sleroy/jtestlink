@@ -10,14 +10,16 @@
 	<div layout:fragment="content">
 
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-sm-6 col-sm-offset-3">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<span class="glyphicon glyphicon-lock"></span> Login
+						<!-- <span class="glyphicon glyphicon-lock"></span> Login -->
+						<img src="/pictures/corolla2.jpg" class="img-responsive center-block img-rounded" style="width: 100%" alt="Corolla"></img>
 					</div>
 					<div class="panel-body">
+					
 						<div th:if="${param.error}">Invalid username and password.</div>
-						<div th:if="${param.logout}">You have been logged out.</div>
+						<div th:if="${param.logout}">You have been logged out.</div>						
 						<!-- wicket:message="value:login.submit.label" -->
 						<form class="form-horizontal" role="form" th:action="@{/login}"
 							method="post">

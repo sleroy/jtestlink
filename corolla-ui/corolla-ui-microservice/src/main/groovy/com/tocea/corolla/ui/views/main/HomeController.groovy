@@ -16,9 +16,7 @@ import com.tocea.corolla.users.domain.Permission
  *
  */
 
-@Secured(
-Permission.GUI
-)
+
 @Controller
 public class HomeController {
 
@@ -27,7 +25,7 @@ public class HomeController {
 		return "mainMenu"
 	}
 
-	@RequestMapping(value=["/ui/home", "/ui/"])
+	@RequestMapping(value=["/ui/home", "/ui/", "/home"])
 	public ModelAndView getHomePage() {
 		return new ModelAndView("home")
 	}

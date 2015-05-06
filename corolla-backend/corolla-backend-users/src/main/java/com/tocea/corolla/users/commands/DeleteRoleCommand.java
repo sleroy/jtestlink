@@ -3,8 +3,7 @@
  */
 package com.tocea.corolla.users.commands;
 
-import org.hibernate.validator.constraints.NotBlank;
-
+import com.esotericsoftware.kryo.NotNull;
 import com.tocea.corolla.cqrs.annotations.Command;
 
 /**
@@ -13,31 +12,24 @@ import com.tocea.corolla.cqrs.annotations.Command;
  */
 @Command
 public class DeleteRoleCommand {
-	@NotBlank
-	private String	roleName;
+	@NotNull
+	private Integer	roleID;
 
 	public DeleteRoleCommand() {
 		super();
 	}
 
-	public DeleteRoleCommand(final String _roleName) {
-		this.roleName = _roleName;
+	public DeleteRoleCommand(final Integer _roleName) {
+		this.roleID = _roleName;
 
 	}
 
-	/**
-	 * @return the roleName
-	 */
-	public String getRoleName() {
-		return this.roleName;
+	public Integer getRoleID() {
+		return this.roleID;
 	}
 
-	/**
-	 * @param _roleName
-	 *            the roleName to set
-	 */
-	public void setRoleName(final String _roleName) {
-		this.roleName = _roleName;
+	public void setRoleID(final Integer _roleID) {
+		this.roleID = _roleID;
 	}
 
 	/*
@@ -47,7 +39,7 @@ public class DeleteRoleCommand {
 	 */
 	@Override
 	public String toString() {
-		return "DeleteRoleCommand [roleName=" + this.roleName + "]";
+		return "DeleteRoleCommand [roleID=" + this.roleID + "]";
 	}
 
 }

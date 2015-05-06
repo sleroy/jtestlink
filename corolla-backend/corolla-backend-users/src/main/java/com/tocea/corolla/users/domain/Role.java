@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -47,13 +48,16 @@ public class Role implements GrantedAuthority {
 	@Column(nullable = false, length = 256)
 	private String				note;
 
-	@NotBlank
 	@Column(nullable = false, length = 256)
 	private String				permissions;
 
 	@Column(nullable = false)
 	@NotNull
 	private boolean				defaultRole;
+
+	@Column(nullable = false)
+	@NotNull
+	private boolean				roleProtected	= false;
 
 	/**
 	 *
@@ -77,6 +81,16 @@ public class Role implements GrantedAuthority {
 		this.defaultRole = _defaultRole;
 	}
 
+	/**
+	 * Returns a new object will all attributes initialized from this instance.
+	 *
+	 */
+	public Role duplicate() {
+		final Role role = new Role();
+		BeanUtils.copyProperties(this, role);
+		return role;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -87,9 +101,9 @@ public class Role implements GrantedAuthority {
 
 		return this.permissions;
 	}
+
 	/**
 	 * @return the spring security authorities.
-
 	 */
 	public List<GrantedAuthority> getGrantedAuthorities() {
 		final Iterable<String> permissionIterator = Splitter.on(',')
@@ -139,6 +153,13 @@ public class Role implements GrantedAuthority {
 	}
 
 	/**
+	 * @return the roleProtected
+	 */
+	public boolean isRoleProtected() {
+		return this.roleProtected;
+	}
+
+	/**
 	 * @param _defaultRole
 	 *            the defaultRole to set
 	 */
@@ -178,6 +199,14 @@ public class Role implements GrantedAuthority {
 		this.permissions = _permissions;
 	}
 
+	/**
+	 * @param _roleProtected
+	 *            the roleProtected to set
+	 */
+	public void setRoleProtected(final boolean _roleProtected) {
+		this.roleProtected = _roleProtected;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 *
@@ -186,6 +215,8 @@ public class Role implements GrantedAuthority {
 	@Override
 	public String toString() {
 		return "Role [id=" + this.id + ", name=" + this.name + ", note="
-				+ this.note + "]";
+				+ this.note + ", permissions=" + this.permissions
+				+ ", defaultRole=" + this.defaultRole + ", roleProtected="
+				+ this.roleProtected + "]";
 	}
 }

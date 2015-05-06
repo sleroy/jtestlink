@@ -12,6 +12,15 @@ public class EnableUserCommand {
 	@NotBlank
 	private String	userLogin;
 
+	public EnableUserCommand() {
+		super();
+	}
+
+	public EnableUserCommand(final String _userLogin) {
+		super();
+		this.userLogin = _userLogin;
+	}
+
 	/**
 	 * @return the userLogin
 	 */
@@ -27,7 +36,9 @@ public class EnableUserCommand {
 		this.userLogin = _userLogin;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

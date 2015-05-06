@@ -12,9 +12,15 @@ public class DisableUserCommand {
 	@NotBlank
 	private String	userLogin;
 
-	/**
-	 * @return the userLogin
-	 */
+	public DisableUserCommand() {
+		super();
+	}
+
+	public DisableUserCommand(final String _userLogin) {
+		super();
+		this.userLogin = _userLogin;
+	}
+
 	public String getUserLogin() {
 		return this.userLogin;
 	}

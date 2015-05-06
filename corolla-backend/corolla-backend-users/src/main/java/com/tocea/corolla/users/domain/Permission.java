@@ -10,7 +10,6 @@ package com.tocea.corolla.users.domain;
  *
  */
 public class Permission {
-	public static final String	GUI				= "ROLE_GUI";
 	public static final String	REST			= "ROLE_REST";
 	public static final String	REQUIREMENT		= "ROLE_REQUIREMENT";
 	public static final String	APPLICATION		= "ROLE_APPLICATION";

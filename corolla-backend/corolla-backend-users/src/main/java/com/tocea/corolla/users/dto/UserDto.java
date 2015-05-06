@@ -5,6 +5,11 @@ package com.tocea.corolla.users.dto;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.DigestUtils;
 
 import com.tocea.corolla.users.domain.User;
@@ -16,24 +21,35 @@ import com.tocea.corolla.users.domain.User;
 public class UserDto {
 	private Integer	id;
 
+	@NotBlank
+	@Size(max = 40)
 	private String	firstName		= "";
 
+	@NotBlank
+	@Size(max = 40)
 	private String	lastName		= "";
 
+	@NotBlank
+	@Size(max = 128)
+	@Email
 	private String	email			= "";
-
+	@NotBlank
+	@Size(min = 3, max = 30)
 	private String	login			= "";
 
+	@NotNull
 	private Integer	roleId;
 
+	@NotBlank
+	@Size(max = 10)
 	private String	locale			= "en_GB";	//$NON-NLS-1$
 
+	@Size(max = 50)
 	private String	activationToken	= "";		//$NON-NLS-1$
-
-	private Integer	testProjectId;
 
 	private Date	createdTime;
 
+	@NotNull
 	private boolean	active			= true;
 
 	private String	gravatar		= "";
@@ -56,9 +72,9 @@ public class UserDto {
 		this.locale = _user.getLocale();
 		this.login = _user.getLogin();
 		this.roleId = _user.getRoleId();
-		this.testProjectId = _user.getTestProjectId();
-		this.gravatar = DigestUtils.md5DigestAsHex(this.email.toLowerCase().trim()
-		                                      .getBytes());
+		this.gravatar = DigestUtils.md5DigestAsHex(this.email.toLowerCase()
+		                                           .trim()
+		                                           .getBytes());
 	}
 
 	/**
@@ -131,11 +147,8 @@ public class UserDto {
 		return this.roleId;
 	}
 
-	/**
-	 * @return the testProjectId
-	 */
-	public Integer getTestProjectId() {
-		return this.testProjectId;
+	public boolean hasId() {
+		return this.id != null;
 	}
 
 	/**
@@ -233,14 +246,6 @@ public class UserDto {
 		this.roleId = _roleId;
 	}
 
-	/**
-	 * @param _testProjectId
-	 *            the testProjectId to set
-	 */
-	public void setTestProjectId(final Integer _testProjectId) {
-		this.testProjectId = _testProjectId;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -252,9 +257,7 @@ public class UserDto {
 				+ ", lastName=" + this.lastName + ", email=" + this.email
 				+ ", login=" + this.login + ", roleId=" + this.roleId
 				+ ", locale=" + this.locale + ", activationToken="
-				+ this.activationToken + ", testProjectId="
-				+ this.testProjectId + ", createdTime=" + this.createdTime
+				+ this.activationToken + ", createdTime=" + this.createdTime
 				+ ", active=" + this.active + "]";
 	}
-
 }

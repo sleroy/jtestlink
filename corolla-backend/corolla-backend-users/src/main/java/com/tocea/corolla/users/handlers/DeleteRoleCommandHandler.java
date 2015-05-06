@@ -32,7 +32,7 @@ ICommandHandler<DeleteRoleCommand, Boolean> {
 	@Override
 	public Boolean handle(final DeleteRoleCommand _command) {
 
-		final Role role = this.roleDAO.findRoleByName(_command.getRoleName());
+		final Role role = this.roleDAO.findOne(_command.getRoleID());
 		final Boolean found = role != null;
 		if (found) {
 			LOGGER.info("Delete role {}", role.getName());

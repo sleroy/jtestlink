@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<body>
+ <!-- Main -->
+ <div class="content" layout:fragment="content">
+  <!-- content -->
+  <div class="row">
+   <!-- main col left -->
+   <div class="col-sm-12">
+    <div class="panel panel-default">
+     <div class="panel-heading">
+      <h4>Define Role</h4>
+      <h3 th:text="${'Role' + role.name}">Guest</h3>
+     </div>
+     <div class="panel-body">
+      <div class="row">
+      
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <!--/row-->
+ <div layout:fragment="footer">
+  <script type="text/javascript" src="../../static/js/modules/roles.js" th:src="@{/js/modules/roles.js}"></script>
+  <script type="text/javascript">
+			initFormUserEdit()
+		</script>
+ </div>
+</body>
+</html>

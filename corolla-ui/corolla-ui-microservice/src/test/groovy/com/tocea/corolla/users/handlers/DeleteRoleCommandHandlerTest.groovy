@@ -49,7 +49,7 @@ class DeleteRoleCommandHandlerTest extends Specification{
 		given:
 		roleDao.findRoleByName('admin') >> validRole
 		when:
-		final DeleteRoleCommand command = new DeleteRoleCommand(roleName : 'admin')
+		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : 'admin')
 
 		this.handler.handle command
 
@@ -66,7 +66,7 @@ class DeleteRoleCommandHandlerTest extends Specification{
 		given:
 		roleDao.findRoleByName('admin') >> null
 		when:
-		final DeleteRoleCommand command = new DeleteRoleCommand(roleName : 'admin')
+		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : 'admin')
 
 		this.handler.handle command
 

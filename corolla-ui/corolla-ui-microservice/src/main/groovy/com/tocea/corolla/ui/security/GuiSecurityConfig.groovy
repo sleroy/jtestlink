@@ -86,7 +86,7 @@ public class GuiSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(final HttpSecurity http) throws Exception {
 		LOGGER.info("Web-- Defining Web Security")
 		http.authorizeRequests().antMatchers("/resources/**", "/js/**", "/public/**", "/images/**", "/css/**", "/pictures/**", "/fonts/**", "/login", "/logout","/", "/favicon.ico").permitAll().
-				antMatchers("/ui/**").hasRole("GUI").
+				antMatchers("/ui/**").authenticated().
 				antMatchers("/api/**").hasRole("REST")
 
 		//anyRequest().permitAll()

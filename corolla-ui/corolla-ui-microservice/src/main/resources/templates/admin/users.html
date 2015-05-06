@@ -30,7 +30,7 @@
 						<!-- Collect the nav links, forms, and other content for toggling -->
 						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 							<div class="btn-compose pull-left">
-								<a type="button" class="btn btn-danger navbar-btn" wicket:id="addButton"> <span
+								<a type="button" href="/ui/admin/users/add" class="btn btn-danger navbar-btn"> <span
 									class="glyphicon glyphicon-pencil"
 								></span> Add User
 								</a>
@@ -42,37 +42,67 @@
 						<!-- /.navbar-collapse -->
 					</div>
 					<!-- /.container-fluid --> </nav>
-					<table id="users" class="display table tableimage table-striped table-hover" cellspacing="0" width="100%">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Login</th>
-								<th>First name</th>
-								<th>Last name</th>
-								<th>Email</th>
-								<th>Role</th>
+					<div class="table-responsive">
+						<table id="users" class="table table-hover table-striped" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Login</th>
+									<th>First name</th>
+									<th>Last name</th>
+									<th>Email</th>
+									<th>Role</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+							</thead>
+							<tr th:each="user : ${users}" th:attr="data-id=${user.login}" th:class="${user.active ? '' : 'warning'}">
+								<td><img th:src="'http://www.gravatar.com/avatar/'+ ${user.gravatar} + '?s=48'" class="img-responsive" /></td>
+								<td><a data-toggle="tooltip" title="Edit this user" th:href="@{'/ui/admin/users/edit/' + ${user.login}}"
+									th:text="${user.login}"
+								>login</a></td>
+								<td th:text="${user.firstName}">First name</td>
+								<td th:text="${user.lastName}">Last name</td>
+								<td th:text="${user.email}">Email</td>
+								<td th:text="${user.role}">Role</td>
+								<td><a th:href="@{'/ui/admin/users/edit/' + ${user.login}}" data-placement="top" data-toggle="tooltip"
+									title="Edit"
+								>
+										<button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
+											<span class="glyphicon glyphicon-pencil"></span>
+										</button>
+								</a></td>
+								<td class="warning"><p th:if="${#httpServletRequest.remoteUser != user.login}" data-placement="top" data-toggle="tooltip"
+										title="Delete"
+									>
+										<button class="btn btn-danger btn-xs userDelete" data-title="Delete">
+											<span class="glyphicon glyphicon-trash"></span>
+										</button>
+									</p></td>
 							</tr>
-						</thead>
-						<tfoot>
-							<tr>
-								<th></th>
-								<th>Login</th>
-								<th>First name</th>
-								<th>Last name</th>
-								<th>Email</th>
-								<th>Role</th>
-							</tr>
-						</tfoot>
-					</table>
+							<tfoot>
+								<tr>
+									<th></th>
+									<th>Login</th>
+									<th>First name</th>
+									<th>Last name</th>
+									<th>Email</th>
+									<th>Role</th>
+									<th>Edit</th>
+									<th>Delete</th>
+								</tr>
+							</tfoot>
+						</table>
+						<!-- include modal deletion -->
+						<div th:replace="modal :: deleteModal"></div>
+					</div>
 				</div>
 			</div>
-			<!-- main col right -->
-			<div class="col-sm-7"></div>
 		</div>
 	</div>
 	<!--/row-->
 	<div layout:fragment="footer">
-		<script type="text/javascript" src="/js/modules/users.js"></script>
+		<script type="text/javascript" src="../../static/js/modules/users.js" th:src="@{/js/modules/users.js}"></script>
 		<script type="text/javascript">
 			$(document).ready(userTable);
 		</script>

@@ -25,6 +25,6 @@ public class DataTableList<T> {
 	 * @return the data
 	 */
 	public List<T> getData() {
-		return data;
+		return this.data;
 	}
 }

@@ -61,24 +61,23 @@ public class DemoDataBean {
 
 		final Role roleAdmin = this.newRole("Administrator", "Administrator role", [
 			Permission.ADMIN,
-			Permission.GUI,
+			Permission.ADMIN_ROLES,
+			Permission.ADMIN_CONFIG,
 			Permission.ADMIN_USERS ,
+			Permission.REQUIREMENT,
+			Permission.APPLICATION,
+			Permission.TESTSUITE,
+			Permission.TESTCAMP,
 			Permission.REST]
 		)
-		final Role roleGuest = this.newRole("Guest", "Guest", [Permission.GUI], true)
-		final Role roleTester = this.newRole("Tester", "Tester", [
-			Permission.GUI,
-			Permission.REST
-		])
-		final Role roleTestManager = this.newRole("Test manager", "Test Manager", [
-			Permission.GUI,
-			Permission.REST
-		])
+		roleAdmin.roleProtected = true
+		roleDAO.save roleAdmin
+
+		final Role roleGuest = this.newRole("Guest", "Guest", [], true)
+		final Role roleTester = this.newRole("Tester", "Tester", [Permission.REST])
+		final Role roleTestManager = this.newRole("Test manager", "Test Manager", [Permission.REST])
 		final Role roleApplicationManager = this.newRole(	"Application manager",
-				"Application manager", [
-					Permission.GUI,
-					Permission.REST
-				])
+				"Application manager", [Permission.REST])
 
 		this.newUser(	"John", "Snow", "john.snow@email.com", "jsnow",
 				"password", roleAdmin)
@@ -213,7 +212,8 @@ public class DemoDataBean {
 		role.with {
 			name = _roleName
 			note = _roleNote
-			permissions = Permission.GUI
+			permissions = ""
+			roleProtected = false
 		}
 		this.roleDAO.save role
 		return role
@@ -235,6 +235,7 @@ public class DemoDataBean {
 			note = _roleNote
 			permissions = _roles.join(", ")
 			defaultRole = _defaultRole
+			roleProtected = false
 		}
 		this.roleDAO.save role
 		return role

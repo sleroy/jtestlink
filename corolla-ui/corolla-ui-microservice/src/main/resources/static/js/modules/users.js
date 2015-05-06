@@ -1,32 +1,48 @@
 function userTable() {
-	$('#users').dataTable(
-	        {
-	            "bProcessing" : true,
-	            "ajax" : "/rest/users/allwithrole",
-	            "columns" : [ { "data" : "gravatar" }, { "data" : "login" },
-	                    { "data" : "firstName" }, { "data" : "lastName" },
-	                    { "data" : "email" }, { "data" : "role" } ],
-	            "fnRowCallback" : function(nRow, data, iDisplayIndex) {
-		            
-		            gravatarColumn(nRow, data.gravatar)
-		            loginColumn(nRow, data.login)
-
-		            return nRow;
-	            }, });
+	// $('.user-delete').click(function(e) {
+	// alert("gni")
+	// });
+	$('#users').dataTable();
+	
+	$("[data-toggle=tooltip]").tooltip();
+	
+	$('button.userDelete').on('click', function(e) {
+		e.preventDefault();
+		var id = $(this).closest('tr').data('id');
+		$('#modal').data('id', id).modal('show');
+	});
+	
+	define_yesModalButton_clickAction(function() {
+		var id = $('#modal').data('id');
+		
+		rest_deleteUser(id, function(data, status) {
+			consoleLog("User " + id + " removed")
+			$('[data-id=' + id + ']').remove();
+		});
+		
+		$('#modal').modal('hide');
+	});
 }
 
-function loginColumn(nRow, login) {
-	var link = $("<a  />");
-	link.attr('href', '/ui/admin/users/edit/' + login);
-	link.text(login);
-	$('td:eq(1)', nRow).html(link);
-}
+var rand = function() {
+	return Math.random().toString(36).substr(2); // remove `0.`
+};
 
-function gravatarColumn(nRow, gravatar) {
-	var img = $("<img  />");
-	img
-	        .attr('src', "http://www.gravatar.com/avatar/" + gravatar
-	                + "?s=32");
-	img.attr('class', 'img-responsive')
-	$('td:eq(0)', nRow).html(img);
+var token = function() {
+	return rand() + rand() + rand(); // to make it longer
+};
+
+function initFormUserEdit() {
+	$(document).ready(function() {
+		
+		$('#generateTokenButton').click(function(){
+			var tokenText = token();
+		    $('#activationToken').val(tokenText);
+		    
+		});
+		
+		$('#form').parsley();
+		
+	});
+	
 }
