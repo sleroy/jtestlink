@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component
 
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.commands.AddNewArchitectureToProductCommand
-import com.tocea.corolla.products.dao.IProductArchitectureDAO
-import com.tocea.corolla.products.dao.IProductArchitectureTypeDAO
-import com.tocea.corolla.products.dao.IProductDAO
-import com.tocea.corolla.products.domain.Product
-import com.tocea.corolla.products.domain.ProductComponent
-import com.tocea.corolla.products.domain.ProductComponentType
+import com.tocea.corolla.products.dao.IApplicationDAO
+import com.tocea.corolla.products.dao.IComponentDAO
+import com.tocea.corolla.products.dao.IComponentTypeDAO
+import com.tocea.corolla.products.domain.Application
+import com.tocea.corolla.products.domain.ApplicationStatus
+import com.tocea.corolla.products.domain.ComponentType
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
@@ -41,16 +41,16 @@ public class DemoDataBean {
 	def IUserDAO					userDAO
 
 	@Autowired
-	def IProductDAO					productDAO
+	def IApplicationDAO					applicationDAO
 
 	@Autowired
 	def PasswordEncoder			passwordEncoder
 
 	@Autowired
-	def IProductArchitectureDAO		productArchitectureDAO
+	def IComponentDAO		productArchitectureDAO
 
 	@Autowired
-	def IProductArchitectureTypeDAO	productArchitectureTypeDAO
+	def IComponentTypeDAO	productArchitectureTypeDAO
 
 	@Autowired
 	def Gate						gate
@@ -95,18 +95,18 @@ public class DemoDataBean {
 		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
 				"saroumane",
 				"fuckSauron..", roleAdmin)
-		//		final ProductComponentType funcArchiType = this.newArchitectureType("Architecture fonctionnelle")
-		//		final ProductComponentType techArchiType = this.newArchitectureType("Architecture technique")
-		//		final ProductComponentType componentArchitectureType = this.newArchitectureType("Composant")
-		//		final ProductComponentType coucheArchiType = this.newArchitectureType("Couche")
-		//		final ProductComponentType functionalityArchiType = this.newArchitectureType("Fonctionnalité")
+		//		final ComponentType funcArchiType = this.newArchitectureType("Architecture fonctionnelle")
+		//		final ComponentType techArchiType = this.newArchitectureType("Architecture technique")
+		//		final ComponentType componentArchitectureType = this.newArchitectureType("Composant")
+		//		final ComponentType coucheArchiType = this.newArchitectureType("Couche")
+		//		final ComponentType functionalityArchiType = this.newArchitectureType("Fonctionnalité")
 		//
-		//		final Product komeaProduct = this.newProduct(	"Komea",
-		//				"<b>komea</b> is a dashboard software to measure ....")
+		final Application komeaProduct = this.newProduct("KOMEA_DASHBOARD",	"Komea Dashboard",
+				"<b>komea</b> is a dashboard software to measure ....")
 		//
-		//		final ProductComponent productFuncArchitecture = this.newFunctionality(funcArchiType, komeaProduct, null, "Architecture fonctionnelle")
+		//		final Component productFuncArchitecture = this.newFunctionality(funcArchiType, komeaProduct, null, "Architecture fonctionnelle")
 		//
-		//		final ProductComponent productTechArchitecture = this.newFunctionality(techArchiType, komeaProduct, null, "Architecture technique")
+		//		final Component productTechArchitecture = this.newFunctionality(techArchiType, komeaProduct, null, "Architecture technique")
 		//
 		//		this.newFunctionality(	functionalityArchiType, komeaProduct,
 		//				productFuncArchitecture, "Gestion des CRONS")
@@ -121,7 +121,7 @@ public class DemoDataBean {
 		//
 		//		this.newFunctionality(	coucheArchiType, komeaProduct,
 		//				productTechArchitecture, "Portail Liferay")
-		//		final ProductComponent admin = this.newFunctionality(	coucheArchiType,
+		//		final Component admin = this.newFunctionality(	coucheArchiType,
 		//				komeaProduct,
 		//				productTechArchitecture,
 		//				"IHM Administration")
@@ -137,7 +137,7 @@ public class DemoDataBean {
 		//				komeaProduct,
 		//				productTechArchitecture,
 		//				"Backend")
-		//		final ProductComponent plugins = this.newFunctionality(	coucheArchiType, komeaProduct,
+		//		final Component plugins = this.newFunctionality(	coucheArchiType, komeaProduct,
 		//				productTechArchitecture, "Plugins")
 		//		this.newFunctionality(componentArchitectureType, komeaProduct, plugins, "Plugin Bugzilla")
 		//		this.newFunctionality(componentArchitectureType, komeaProduct, plugins, "Plugin Testlink")
@@ -151,9 +151,9 @@ public class DemoDataBean {
 	 * @param _architectureName
 	 * @return
 	 */
-	ProductComponentType newArchitectureType(
+	ComponentType newArchitectureType(
 			final String _architectureName) {
-		final ProductComponentType productComponentType = new ProductComponentType()
+		final ComponentType productComponentType = new ComponentType()
 		productComponentType.setName(_architectureName)
 		productComponentType.setDescription(_architectureName)
 		this.productArchitectureTypeDAO.save(productComponentType)
@@ -167,10 +167,10 @@ public class DemoDataBean {
 	 * @param _funcName
 	 * @return
 	 */
-	ProductComponent newFunctionality(
-			final ProductComponentType funcArchiType,
-			final Product komeaProduct,
-			final ProductComponent _parentComponent,
+	Component newFunctionality(
+			final ComponentType funcArchiType,
+			final Application komeaProduct,
+			final Component _parentComponent,
 			final String _funcName) {
 		final AddNewArchitectureToProductCommand command = new AddNewArchitectureToProductCommand()
 		command.setArchitectureTypeID(funcArchiType.getId())
@@ -180,21 +180,20 @@ public class DemoDataBean {
 		}
 		command.setName(_funcName)
 		command.setDescription(_funcName)
-		return (ProductComponent) this.gate.dispatch(command)
+		return (Component) this.gate.dispatch(command)
 	}
 
-	/**
-	 * @param _string
-	 * @param _string2
-	 * @return
-	 */
-	Product newProduct(final String _string, final String _string2) {
-		final Product product = new Product()
+
+	Application newProduct(String _key, final String _name, final String _description) {
+		final Application product = new Application()
 		product.with {
-			name = _string
-			description = _string2
+			key = _key
+			name = _name
+			description = _description
+			status = ApplicationStatus.ACTIVE
+			image = "http://dummyimage.com/50x50&text=" + _key
 		}
-		this.productDAO.save product
+		this.applicationDAO.save product
 		return product
 	}
 

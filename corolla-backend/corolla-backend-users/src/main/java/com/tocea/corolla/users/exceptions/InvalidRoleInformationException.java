@@ -3,13 +3,13 @@
  */
 package com.tocea.corolla.users.exceptions;
 
-import com.tocea.corolla.utils.domain.DomainException;
+import com.tocea.corolla.utils.domain.CorollaDomainException;
 
 /**
  * @author sleroy
  *
  */
-public class InvalidRoleInformationException extends DomainException {
+public class InvalidRoleInformationException extends CorollaDomainException {
 
 	/**
 	 * @param _message

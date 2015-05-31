@@ -1,52 +1,42 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <body>
-	<ul class="nav hidden-xs" id="lg-menu" th:fragment="adminMenu"
-		th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}"
-	>
-		<li><a href="/ui/admin"> <i class="glyphicon glyphicon-dashboard"></i>Administration
-		</a></li>
-		<li><a href="/ui/home"> <i class="glyphicon glyphicon-home"></i> Home
-		</a></li>
-		<li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_USERS')}"><a href="/ui/admin/users"> <i
-				class="glyphicon glyphicon-book"
-			></i> User management
-		</a></li>
-		<li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_ROLES')}"><a href="/ui/admin/roles"> <i
-				class="glyphicon glyphicon-briefcase"
-			></i> Role management
-		</a></li>
-		<li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_CONFIG')}"><a href="/ui/admin/config"> <i
-				class="glyphicon glyphicon-modal-window"
-			></i> Configuration
-		</a></li>
-	</ul>
-	<ul class="nav hidden-xs" id="lg-menu" th:fragment="mainMenu">
-		<li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}"><a href="/ui/admin"> <i
-				class="glyphicon glyphicon-dashboard"
-			></i>Administration
-		</a></li>
-		<li><a href="/ui/home"> <i class="glyphicon glyphicon-home"></i> Home
-		</a></li>
-		<li th:if="${#httpServletRequest.isUserInRole('ROLE_APPLICATION')}"><a href="/ui/application"> <i
-				class="glyphicon glyphicon-book"
-			></i> Application management
-		</a></li>
-		<li th:if="${#httpServletRequest.isUserInRole('ROLE_REQUIREMENT')}"><a href="/ui/requirements"> <i
-				class="glyphicon glyphicon-briefcase"
-			></i> Requirements
-		</a></li>
-		<li th:if="${#httpServletRequest.isUserInRole('ROLE_TESTSUITE')}"><a href="/ui/testsuite"> <i
-				class="glyphicon glyphicon-modal-window"
-			></i> Test specifications
-		</a></li>
-		<li th:if="${#httpServletRequest.isUserInRole('ROLE_TESTCAMP')}"><a href="/ui/tests"> <i
-				class="glyphicon glyphicon-tent"
-			></i> Test campaigns
-		</a></li>
-	</ul>
+ <ul class="nav hidden-xs" id="lg-menu" th:fragment="adminMenu" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+  <li><a href="/ui/admin"> <i class="glyphicon glyphicon-dashboard"></i>Administration
+  </a></li>
+  <li><a href="/ui/home"> <i class="glyphicon glyphicon-home"></i> Home
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_USERS')}"><a href="/ui/admin/users"> <i class="glyphicon glyphicon-book"></i> User management
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_ROLES')}"><a href="/ui/admin/roles"> <i class="glyphicon glyphicon-briefcase"></i> Role management
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_CONFIG')}"><a href="/ui/admin/config"> <i class="glyphicon glyphicon-modal-window"></i> Configuration
+  </a></li>
+ </ul>
+ <ul class="nav hidden-xs" id="lg-menu" th:fragment="mainMenu">
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}"><a href="/ui/admin"> <i class="glyphicon glyphicon-dashboard"></i>Administration
+  </a></li>
+  <li><a href="/ui/home"> <i class="glyphicon glyphicon-home"></i> Home
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_APPLICATION')}"><a href="/ui/applications"> <i class="glyphicon glyphicon-book"></i> Application management
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_REQUIREMENT')}"><a href="/ui/requirements"> <i class="glyphicon glyphicon-briefcase"></i> Requirements
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_TESTSUITE')}"><a href="/ui/testsuite"> <i class="glyphicon glyphicon-modal-window"></i> Test specifications
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_TESTCAMP')}"><a href="/ui/tests"> <i class="glyphicon glyphicon-tent"></i> Test campaigns
+  </a></li>
+ </ul>
+ <ul class="nav hidden-xs" id="lg-menu" th:fragment="applicationMenu">
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}"><a href="/ui/admin"> <i class="glyphicon glyphicon-dashboard"></i>Administration
+  </a></li>
+  <li><a href="/ui/home"> <i class="glyphicon glyphicon-home"></i> Home
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_APPLICATION')}"><a href="/ui/applications"> <i class="glyphicon glyphicon-book"></i> Application management
+  </a></li>
+
+
+ </ul>
 
 </body>
 </html>

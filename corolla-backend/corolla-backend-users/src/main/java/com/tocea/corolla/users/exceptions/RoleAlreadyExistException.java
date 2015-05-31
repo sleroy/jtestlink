@@ -3,13 +3,13 @@
  */
 package com.tocea.corolla.users.exceptions;
 
-import com.tocea.corolla.utils.domain.DomainException;
+import com.tocea.corolla.utils.domain.CorollaDomainException;
 
 /**
  * @author sleroy
  *
  */
-public class RoleAlreadyExistException extends DomainException {
+public class RoleAlreadyExistException extends CorollaDomainException {
 
 	/**
 	 * @param _message

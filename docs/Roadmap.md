@@ -4,6 +4,7 @@
 * Gestion des rôles
 * Gestion des applications et des versions
 * Gestion des composants et des versions
+* Gestion des types de composants
 * Gestion de projets
 * Gestion des requirements/exigences
 * Gestion des cas de tests
@@ -40,7 +41,9 @@ version 0.1.0
  * Créer un nouveau rôle
  * Définir les permissions d'un rôle
  * Supprimer un rôle
- * Définir la liste des permissions (statique)
+ * Dupliquer un rôle
+ * Définir un rôle par défaut
+ * Protéger un rôle. 
 * Système d'audit (audit trails)
  * Logger une trace
  * Récupérer la liste des traces

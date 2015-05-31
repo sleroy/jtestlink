@@ -25,7 +25,11 @@ public class HomeController {
 		return "mainMenu"
 	}
 
-	@RequestMapping(value=["/ui/home", "/ui/", "/home"])
+	@RequestMapping(value=[
+		"/ui/home",
+		"/ui/",
+		"/"
+	])
 	public ModelAndView getHomePage() {
 		return new ModelAndView("home")
 	}

@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
-import com.tocea.corolla.products.commands.AddNewArchitectureToProductCommand;
-import com.tocea.corolla.products.dao.IProductArchitectureDAO;
-import com.tocea.corolla.products.dao.IProductArchitectureTypeDAO;
-import com.tocea.corolla.products.dao.IProductDAO;
-import com.tocea.corolla.products.domain.Product;
-import com.tocea.corolla.products.domain.ProductComponent;
-import com.tocea.corolla.products.domain.ProductComponentType;
+import com.tocea.corolla.products.commands.AddNewArchitectureToApplicationCommand;
+import com.tocea.corolla.products.dao.IComponentDAO;
+import com.tocea.corolla.products.dao.IComponentTypeDAO;
+import com.tocea.corolla.products.dao.IApplicationDAO;
+import com.tocea.corolla.products.domain.Application;
+import com.tocea.corolla.products.domain.Component;
+import com.tocea.corolla.products.domain.ComponentType;
 
 /**
  * @author sleroy
@@ -26,15 +26,15 @@ import com.tocea.corolla.products.domain.ProductComponentType;
 @Transactional
 public class AddNewArchitectureToProductCommandHandler
 implements
-ICommandHandler<AddNewArchitectureToProductCommand, ProductComponent> {
+ICommandHandler<AddNewArchitectureToApplicationCommand, Component> {
 
 	@Autowired
-	private IProductDAO					productDAO;
+	private IApplicationDAO					applicationDAO;
 
 	@Autowired
-	private IProductArchitectureTypeDAO	productArchitectureTypeDAO;
+	private IComponentTypeDAO	componentTypeDAO;
 	@Autowired
-	private IProductArchitectureDAO		productArchitectureDAO;
+	private IComponentDAO		componentDAO;
 
 	/*
 	 * (non-Javadoc)
@@ -43,40 +43,40 @@ ICommandHandler<AddNewArchitectureToProductCommand, ProductComponent> {
 	 * .Object)
 	 */
 	@Override
-	public ProductComponent handle(
-			final AddNewArchitectureToProductCommand _command) {
-		final Product product = this.productDAO.findOne(_command.getProductID());
-		Validate.notNull(product, "Product should exist");
-		final ProductComponentType productComponentType = this.productArchitectureTypeDAO.findOne(_command.getArchitectureTypeID());
-		Validate.notNull(	productComponentType,
+	public Component handle(
+			final AddNewArchitectureToApplicationCommand _command) {
+		final Application application = this.applicationDAO.findOne(_command.getProductID());
+		Validate.notNull(application, "Application should exist");
+		final ComponentType componentType = this.componentTypeDAO.findOne(_command.getArchitectureTypeID());
+		Validate.notNull(	componentType,
 				"Architecture type should exist");
 
 		// Get the parent architecture if available
-		ProductComponent parentProductArchitecture = null;
+		Component parentProductArchitecture = null;
 		if (_command.getParentArchitectureID() != null) {
-			parentProductArchitecture = this.productArchitectureDAO.findOne(_command.getParentArchitectureID());
+			parentProductArchitecture = this.componentDAO.findOne(_command.getParentArchitectureID());
 			Validate.notNull(parentProductArchitecture, "Parent architecture should exist");
 		}
 
-		final ProductComponent productComponent = new ProductComponent();
-		productComponent.setName(_command.getName());
-		productComponent.setDescription(_command.getDescription());
+		final Component component = new Component();
+		component.setName(_command.getName());
+		component.setDescription(_command.getDescription());
 		//		productComponent.setOwner(product);
 		//		productComponent.setType(productComponentType);
 		//		productComponent.setParent(parentProductArchitecture);
-		this.productArchitectureDAO.save(productComponent);
+		this.componentDAO.save(component);
 
 		if (parentProductArchitecture == null) { // Attach to parent
-			//			final List<ProductComponent> architectures = product.getArchitectures();
+			//			final List<Component> architectures = product.getArchitectures();
 			//			architectures.add(productComponent);
 			//			product.setArchitectures(architectures);
-			this.productDAO.save(product);
+			this.applicationDAO.save(application);
 
 		} else {
 			//parentProductArchitecture.getChildren().add(productComponent);
-			this.productArchitectureDAO.save(parentProductArchitecture);
+			this.componentDAO.save(parentProductArchitecture);
 		}
 
-		return productComponent;
+		return component;
 	}
 }
