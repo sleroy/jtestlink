@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 import com.tocea.corolla.cqrs.gate.Gate
-import com.tocea.corolla.products.commands.AddNewArchitectureToProductCommand
+import com.tocea.corolla.products.commands.AddNewArchitectureToApplicationCommand
 import com.tocea.corolla.products.dao.IApplicationDAO
 import com.tocea.corolla.products.dao.IComponentDAO
 import com.tocea.corolla.products.dao.IComponentTypeDAO
@@ -172,7 +172,7 @@ public class DemoDataBean {
 			final Application komeaProduct,
 			final Component _parentComponent,
 			final String _funcName) {
-		final AddNewArchitectureToProductCommand command = new AddNewArchitectureToProductCommand()
+		final AddNewArchitectureToApplicationCommand command = new AddNewArchitectureToApplicationCommand()
 		command.setArchitectureTypeID(funcArchiType.getId())
 		command.setProductID(komeaProduct.getId())
 		if (_parentComponent != null) {

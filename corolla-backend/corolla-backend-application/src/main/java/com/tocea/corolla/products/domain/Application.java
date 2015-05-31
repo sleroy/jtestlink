@@ -8,10 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.esotericsoftware.kryo.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
