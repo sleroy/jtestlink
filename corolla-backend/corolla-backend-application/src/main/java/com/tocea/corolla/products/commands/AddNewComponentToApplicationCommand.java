@@ -12,34 +12,34 @@ import com.tocea.corolla.cqrs.annotations.Command;
  *
  */
 @Command
-public class AddNewArchitectureToApplicationCommand {
+public class AddNewComponentToApplicationCommand {
 	private Integer	productID;
-	private Integer	architectureTypeID;
-	private Integer	parentArchitectureID;
+	private Integer	componentTypeID;
+	private Integer	parentComponentID;
 	private String	name;
 	private String	description;
 
-	public AddNewArchitectureToApplicationCommand() {
+	public AddNewComponentToApplicationCommand() {
 		super();
 	}
 
 	/**
 	 * This class defines the new commands.
 	 *
-	 * @param _productID2
-	 * @param _architectureTypeID2
+	 * @param _parentComponentId
+	 * @param componentTYpeID
 	 */
-	public AddNewArchitectureToApplicationCommand(final Integer _productID2,
-			final Integer _architectureTypeID2) {
-		this.productID = _productID2;
-		this.architectureTypeID = _architectureTypeID2;
+	public AddNewComponentToApplicationCommand(final Integer _parentComponentId,
+			final Integer componentTYpeID) {
+		this.productID = _parentComponentId;
+		this.componentTypeID = componentTYpeID;
 	}
 
 	/**
-	 * @return the architectureTypeID
+	 * @return the componentTypeID
 	 */
-	public Integer getArchitectureTypeID() {
-		return this.architectureTypeID;
+	public Integer getComponentTypeID() {
+		return this.componentTypeID;
 	}
 
 	/**
@@ -57,10 +57,10 @@ public class AddNewArchitectureToApplicationCommand {
 	}
 
 	/**
-	 * @return the parentArchitectureID
+	 * @return the parentComponentID
 	 */
-	public Integer getParentArchitectureID() {
-		return this.parentArchitectureID;
+	public Integer getParentComponentID() {
+		return this.parentComponentID;
 	}
 
 	/**
@@ -72,10 +72,10 @@ public class AddNewArchitectureToApplicationCommand {
 
 	/**
 	 * @param _architectureTypeID
-	 *            the architectureTypeID to set
+	 *            the componentTypeID to set
 	 */
-	public void setArchitectureTypeID(final Integer _architectureTypeID) {
-		this.architectureTypeID = _architectureTypeID;
+	public void setComponentTypeID(final Integer _architectureTypeID) {
+		this.componentTypeID = _architectureTypeID;
 	}
 
 	/**
@@ -96,10 +96,10 @@ public class AddNewArchitectureToApplicationCommand {
 
 	/**
 	 * @param _parentArchitectureID
-	 *            the parentArchitectureID to set
+	 *            the parentComponentID to set
 	 */
-	public void setParentArchitectureID(final Integer _parentArchitectureID) {
-		this.parentArchitectureID = _parentArchitectureID;
+	public void setParentComponentID(final Integer _parentArchitectureID) {
+		this.parentComponentID = _parentArchitectureID;
 	}
 
 	/**
@@ -115,9 +115,9 @@ public class AddNewArchitectureToApplicationCommand {
 	 */
 	@Override
 	public String toString() {
-		return "AddNewArchitectureToApplicationCommand [productID=" + this.productID
-				+ ", architectureTypeID=" + this.architectureTypeID
-				+ ", parentArchitectureID=" + this.parentArchitectureID + ", name="
+		return "AddNewComponentToApplicationCommand [productID=" + this.productID
+				+ ", componentTypeID=" + this.componentTypeID
+				+ ", parentComponentID=" + this.parentComponentID + ", name="
 				+ this.name + ", description=" + this.description + "]";
 	}
 

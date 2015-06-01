@@ -25,24 +25,24 @@ version 0.1.0
 ---------------
 
 * Gestion des utilisateurs
- * créer un utilisateur
- * activer un utilisateur
- * désactiver un utilisateur
- * supprimer un utilisateur
- * éditer le profil d'un utilisateur
+ * [DONE] créer un utilisateur 
+ * [DONE] activer un utilisateur 
+ * [DONE] désactiver un utilisateur 
+ * [DONE] supprimer un utilisateur 
+ * [DONE] éditer le profil d'un utilisateur 
  * changer le password d'un utilisateur
 * Authentification (Interne, social, ldap)
- * S'authentifier via le système interne
- * S'authentifier via le système LDAP
- * S'authentifier via le système Social
- * Se déconnecter
- * Remember me
+ * [DONE] S'authentifier via le système interne 
+ * [DONE] S'authentifier via le système LDAP 
+ * [DONE] S'authentifier via le système Social 
+ * [DONE] Se déconnecter 
+ * [DONE] Remember me 
 * Gestion des rôles
- * Créer un nouveau rôle
- * Définir les permissions d'un rôle
- * Supprimer un rôle
- * Dupliquer un rôle
- * Définir un rôle par défaut
+ * [DONE] Créer un nouveau rôle 
+ * [DONE] Définir les permissions d'un rôle  
+ * [DONE] Supprimer un rôle
+ * [DONE] Dupliquer un rôle
+ * [DONE] Définir un rôle par défaut
  * Protéger un rôle. 
 * Système d'audit (audit trails)
  * Logger une trace
@@ -50,6 +50,11 @@ version 0.1.0
  * Récupérer la liste des traces sur une période
 
 version 0.2.0
+------------------
+
+* Gestion des applications et des versions
+
+version 0.3.0
 ------------------
 
 * Gestion des requirements
@@ -71,10 +76,6 @@ version 0.3.0
 * Gestion des projets
 
 
-version 0.4.0
-------------------
-
-* Gestion des applications et des versions
 
 
 version 0.5.0

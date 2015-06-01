@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
 import com.tocea.corolla.cqrs.gate.Gate
-import com.tocea.corolla.products.commands.AddNewArchitectureToApplicationCommand
+import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
 import com.tocea.corolla.products.dao.IApplicationDAO
 import com.tocea.corolla.products.dao.IComponentDAO
 import com.tocea.corolla.products.dao.IComponentTypeDAO
@@ -95,63 +95,41 @@ public class DemoDataBean {
 		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
 				"saroumane",
 				"fuckSauron..", roleAdmin)
-		//		final ComponentType funcArchiType = this.newArchitectureType("Architecture fonctionnelle")
-		//		final ComponentType techArchiType = this.newArchitectureType("Architecture technique")
-		//		final ComponentType componentArchitectureType = this.newArchitectureType("Composant")
-		//		final ComponentType coucheArchiType = this.newArchitectureType("Couche")
-		//		final ComponentType functionalityArchiType = this.newArchitectureType("Fonctionnalité")
-		//
-		final Application komeaProduct = this.newProduct("KOMEA_DASHBOARD",	"Komea Dashboard",
-				"<b>komea</b> is a dashboard software to measure ....")
-		//
-		//		final Component productFuncArchitecture = this.newFunctionality(funcArchiType, komeaProduct, null, "Architecture fonctionnelle")
-		//
-		//		final Component productTechArchitecture = this.newFunctionality(techArchiType, komeaProduct, null, "Architecture technique")
-		//
-		//		this.newFunctionality(	functionalityArchiType, komeaProduct,
-		//				productFuncArchitecture, "Gestion des CRONS")
-		//		this.newFunctionality(	functionalityArchiType, komeaProduct,
-		//				productFuncArchitecture,
-		//				"Moteur de statistiques")
-		//		this.newFunctionality(	functionalityArchiType, komeaProduct,
-		//				productFuncArchitecture, "Execution des KPIS")
-		//		this.newFunctionality(	functionalityArchiType, komeaProduct,
-		//				productFuncArchitecture,
-		//				"Moteur de statistiques")
-		//
-		//		this.newFunctionality(	coucheArchiType, komeaProduct,
-		//				productTechArchitecture, "Portail Liferay")
-		//		final Component admin = this.newFunctionality(	coucheArchiType,
-		//				komeaProduct,
-		//				productTechArchitecture,
-		//				"IHM Administration")
-		//		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
-		//				"Gestion des KPIS")
-		//		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
-		//				"Gestion des personnes")
-		//		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
-		//				"Gestion des équipes")
-		//		this.newFunctionality(	componentArchitectureType, komeaProduct, admin,
-		//				"Gestion des départements")
-		//		this.newFunctionality(coucheArchiType,
-		//				komeaProduct,
-		//				productTechArchitecture,
-		//				"Backend")
-		//		final Component plugins = this.newFunctionality(	coucheArchiType, komeaProduct,
-		//				productTechArchitecture, "Plugins")
-		//		this.newFunctionality(componentArchitectureType, komeaProduct, plugins, "Plugin Bugzilla")
-		//		this.newFunctionality(componentArchitectureType, komeaProduct, plugins, "Plugin Testlink")
-		//		this.newFunctionality(	coucheArchiType, komeaProduct,
-		//				productTechArchitecture, "Kpis")
-		//		this.newFunctionality(	coucheArchiType, komeaProduct,
-		//				productTechArchitecture, "Providers")
+		final Application corollaProduct = this.newApplication("CROLLA",	"Corolla",
+				"<b>Corolla</b> is a tool to manage softare requirements....")
+
+		backendComponentType = newTypeOfComponent("Backend")
+		restComponentType = newTypeOfComponent("Rest")
+		screenComponentType = newTypeOfComponent("Screen")
+		funcDomainComponentType = newTypeOfComponent("FunctionalDomain")
+
+		def userLayer = newClassicComponent(funcDomainComponentType, corollaProduct, null, "Gestion des utilisateurs")
+
+		def roleLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des roles")
+		def applicationLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des applications")
+		def componentLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des composants")
+		def componentTypeLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des types de composants")
 	}
 
-	/**
-	 * @param _architectureName
-	 * @return
-	 */
-	ComponentType newArchitectureType(
+	def Component newClassicComponent(
+			final ComponentType funcArchiType,
+			final Application komeaProduct,
+			final Component _parentComponent,
+			final String _funcName) {
+		def funcLayer = newComponent(funcDomainComponentType, komeaProduct, _parentComponent, _funcName)
+		def restComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
+		def serviceComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
+		def screenComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
+		return funcLayer
+	}
+
+	def ComponentType backendComponentType
+	def ComponentType restComponentType
+	def ComponentType screenComponentType
+	def ComponentType funcDomainComponentType
+
+
+	def ComponentType newTypeOfComponent(
 			final String _architectureName) {
 		final ComponentType productComponentType = new ComponentType()
 		productComponentType.setName(_architectureName)
@@ -160,23 +138,16 @@ public class DemoDataBean {
 		return productComponentType
 	}
 
-	/**
-	 * @param funcArchiType
-	 * @param komeaProduct
-	 * @param _parentComponent
-	 * @param _funcName
-	 * @return
-	 */
-	Component newFunctionality(
+	def Component newComponent(
 			final ComponentType funcArchiType,
 			final Application komeaProduct,
 			final Component _parentComponent,
 			final String _funcName) {
-		final AddNewArchitectureToApplicationCommand command = new AddNewArchitectureToApplicationCommand()
-		command.setArchitectureTypeID(funcArchiType.getId())
+		final AddNewComponentToApplicationCommand command = new AddNewComponentToApplicationCommand()
+		command.setComponentTypeID(funcArchiType.getId())
 		command.setProductID(komeaProduct.getId())
 		if (_parentComponent != null) {
-			command.setParentArchitectureID(_parentComponent.getId())
+			command.setParentComponentID(_parentComponent.getId())
 		}
 		command.setName(_funcName)
 		command.setDescription(_funcName)
@@ -184,7 +155,7 @@ public class DemoDataBean {
 	}
 
 
-	Application newProduct(String _key, final String _name, final String _description) {
+	Application newApplication(String _key, final String _name, final String _description) {
 		final Application product = new Application()
 		product.with {
 			key = _key
