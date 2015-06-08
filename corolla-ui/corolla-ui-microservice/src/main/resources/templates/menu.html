@@ -32,7 +32,9 @@
   </a></li>
   <li><a href="/ui/home"> <i class="glyphicon glyphicon-home"></i> Home
   </a></li>
-  <li th:if="${#httpServletRequest.isUserInRole('ROLE_APPLICATION')}"><a href="/ui/applications"> <i class="glyphicon glyphicon-book"></i> Application management
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_APPLICATION')}"><a href="/ui/applications/"> <i class="glyphicon glyphicon-book"></i> Application management
+  </a></li>
+  <li th:if="${#httpServletRequest.isUserInRole('ROLE_APPLICATION')}"><a href="/ui/applications/add"> <i class="glyphicon glyphicon-plus"></i> Add a new application
   </a></li>
 
 

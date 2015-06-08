@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -30,9 +31,11 @@ public class Application implements Serializable {
 	private Integer				id;
 
 	@NotBlank
+	@Size(min = 2, max = 255)
 	@Column(nullable = false, length = 255)
 	private String				name;
 
+	@Size(min = 1, max = 40)
 	@NotBlank
 	@Column(nullable = false, length = 40)
 	private String				key;

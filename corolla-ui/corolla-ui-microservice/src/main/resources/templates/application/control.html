@@ -23,7 +23,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
        <div class="btn-compose pull-left">
-        <a type="button" href="/ui/products/add" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" class="btn btn-danger navbar-btn"> <span class="glyphicon glyphicon-pencil"></span> Create a new Application
+        <a type="button" th:href="@{/ui/applications/add}" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}" class="btn btn-danger navbar-btn"> <span class="glyphicon glyphicon-pencil"></span> Create a new Application
         </a>
        </div>
       </div>
@@ -44,10 +44,10 @@
        </thead>
        <tr th:each="application : ${applications}" th:attr="data-id=${application.key}" th:class="${application.isActive() ? '' : 'warning'}">
         <td><img th:src="@{${application.image}}" class="media-object" /></td>
-        <td><a data-toggle="tooltip" title="Go to the project dashboard" th:href="@{'/ui/application/edit/' + ${application.id}}" th:text="${application.key}">key</a></td>
+        <td><a data-toggle="tooltip" title="Go to the project dashboard" th:href="@{'/ui/applications/edit/' + ${application.id}}" th:text="${application.key}">key</a></td>
         <td th:text="${application.name}">Name</td>
         <td th:text="${application.status}">Status</td>
-        <td><a th:href="@{'/ui/application/edit/' + ${application.id}}" data-placement="top" data-toggle="tooltip" title="Edit">
+        <td><a th:href="@{'/ui/applications/edit/' + ${application.id}}" data-placement="top" data-toggle="tooltip" title="Edit">
           <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
            <span class="glyphicon glyphicon-pencil"></span>
           </button>
@@ -78,9 +78,9 @@
  </div>
  <!--/row-->
  <div layout:fragment="footer">
-  <script type="text/javascript" src="../../static/js/modules/users.js" th:src="@{/js/modules/users.js}"></script>
+  <script type="text/javascript" src="../../static/js/modules/applications.js" th:src="@{/js/modules/applications.js}"></script>
   <script type="text/javascript">
-			$(document).ready(userTable);
+			$(document).ready(applicationTable);
 		</script>
  </div>
 </body>

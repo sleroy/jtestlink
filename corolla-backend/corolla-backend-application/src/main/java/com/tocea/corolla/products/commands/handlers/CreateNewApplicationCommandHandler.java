@@ -24,6 +24,7 @@ import com.tocea.corolla.products.exceptions.InvalidProductException;
 public class CreateNewApplicationCommandHandler implements
 ICommandHandler<CreateNewApplicationCommand, Application> {
 
+	private static final String	HTTP_DUMMYIMAGE_COM_50X50_TEXT	= "http://dummyimage.com/50x50&text=";
 	@Autowired
 	private IApplicationDAO	applicationDAO;
 
@@ -39,6 +40,10 @@ ICommandHandler<CreateNewApplicationCommand, Application> {
 		Validate.notNull(application, "Application should exist");
 		if (application.getId() != null) {
 			throw new InvalidProductException();
+		}
+		if (application.getImage() == null) {
+			application.setImage(HTTP_DUMMYIMAGE_COM_50X50_TEXT
+					+ application.getKey());
 		}
 		this.applicationDAO.save(application);
 		return application;

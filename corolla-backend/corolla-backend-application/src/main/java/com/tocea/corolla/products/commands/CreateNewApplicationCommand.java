@@ -12,6 +12,14 @@ import com.tocea.corolla.products.domain.Application;
 public class CreateNewApplicationCommand {
 	private Application	application;
 
+	public CreateNewApplicationCommand() {
+		super();
+	}
+
+	public CreateNewApplicationCommand(final Application _application) {
+		this.application = _application;
+	}
+
 	/**
 	 * @return the application
 	 */
@@ -34,6 +42,7 @@ public class CreateNewApplicationCommand {
 	 */
 	@Override
 	public String toString() {
-		return "CreateNewApplicationCommand [application=" + this.application + "]";
+		return "CreateNewApplicationCommand [application=" + this.application
+				+ "]";
 	}
 }

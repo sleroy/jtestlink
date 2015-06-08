@@ -24,12 +24,11 @@ import com.tocea.corolla.products.domain.ComponentType;
  */
 @CommandHandler
 @Transactional
-public class AddNewComponentToApplicationCommandHandler
-implements
+public class AddNewComponentToApplicationCommandHandler implements
 ICommandHandler<AddNewComponentToApplicationCommand, Component> {
 
 	@Autowired
-	private IApplicationDAO					applicationDAO;
+	private IApplicationDAO		applicationDAO;
 
 	@Autowired
 	private IComponentTypeDAO	componentTypeDAO;
@@ -43,40 +42,55 @@ ICommandHandler<AddNewComponentToApplicationCommand, Component> {
 	 * .Object)
 	 */
 	@Override
-	public Component handle(
-			final AddNewComponentToApplicationCommand _command) {
+	public Component handle(final AddNewComponentToApplicationCommand _command) {
 		final Application application = this.applicationDAO.findOne(_command.getProductID());
 		Validate.notNull(application, "Application should exist");
 		final ComponentType componentType = this.componentTypeDAO.findOne(_command.getComponentTypeID());
-		Validate.notNull(	componentType,
-				"Architecture type should exist");
+		Validate.notNull(componentType, "Architecture type should exist");
 
 		// Get the parent architecture if available
 		Component parentProductArchitecture = null;
 		if (_command.getParentComponentID() != null) {
 			parentProductArchitecture = this.componentDAO.findOne(_command.getParentComponentID());
-			Validate.notNull(parentProductArchitecture, "Parent architecture should exist");
+			Validate.notNull(	parentProductArchitecture,
+					"Parent architecture should exist");
 		}
 
-		final Component component = new Component();
-		component.setName(_command.getName());
-		component.setDescription(_command.getDescription());
-		component.setParentComponent(parentProductArchitecture.getId());
-		component.setProductOwner(application.getId());
-		component.setComponentType(componentType.getId());
-		this.componentDAO.save(component);
+		final Component component = this.createNewComponent(	_command, application,
+		                                                    	componentType,
+		                                                    	parentProductArchitecture);
 
 		if (parentProductArchitecture == null) { // Attach to parent
-			//			final List<Component> architectures = product.getArchitectures();
-			//			architectures.add(productComponent);
-			//			product.setArchitectures(architectures);
 			this.applicationDAO.save(application);
-
 		} else {
-			//parentProductArchitecture.getChildren().add(productComponent);
 			this.componentDAO.save(parentProductArchitecture);
 		}
 
+		return component;
+	}
+
+	/**
+	 * Creates the new component
+	 *
+	 * @param _command
+	 * @param application
+	 * @param componentType
+	 * @param parentProductArchitecture
+	 * @return
+	 */
+	private Component createNewComponent(
+			final AddNewComponentToApplicationCommand _command,
+			final Application application, final ComponentType componentType,
+			final Component parentProductArchitecture) {
+		final Component component = new Component();
+		component.setName(_command.getName());
+		component.setDescription(_command.getDescription());
+		if (parentProductArchitecture != null) {
+			component.setParentComponent(parentProductArchitecture.getId());
+		}
+		component.setProductOwner(application.getId());
+		component.setComponentType(componentType.getId());
+		this.componentDAO.save(component);
 		return component;
 	}
 }

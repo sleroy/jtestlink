@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.stereotype.Component
 
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
@@ -16,6 +15,7 @@ import com.tocea.corolla.products.dao.IComponentDAO
 import com.tocea.corolla.products.dao.IComponentTypeDAO
 import com.tocea.corolla.products.domain.Application
 import com.tocea.corolla.products.domain.ApplicationStatus
+import com.tocea.corolla.products.domain.Component
 import com.tocea.corolla.products.domain.ComponentType
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.EditUserCommand
@@ -29,7 +29,7 @@ import com.tocea.corolla.users.domain.User
  * @author sleroy
  *
  */
-@Component
+@org.springframework.stereotype.Component
 public class DemoDataBean {
 
 	static final String ADMIN_USERS = ADMIN_USERS
@@ -95,7 +95,7 @@ public class DemoDataBean {
 		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
 				"saroumane",
 				"fuckSauron..", roleAdmin)
-		final Application corollaProduct = this.newApplication("CROLLA",	"Corolla",
+		final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
 				"<b>Corolla</b> is a tool to manage softare requirements....")
 
 		backendComponentType = newTypeOfComponent("Backend")
@@ -104,11 +104,15 @@ public class DemoDataBean {
 		funcDomainComponentType = newTypeOfComponent("FunctionalDomain")
 
 		def userLayer = newClassicComponent(funcDomainComponentType, corollaProduct, null, "Gestion des utilisateurs")
-
 		def roleLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des roles")
 		def applicationLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des applications")
-		def componentLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des composants")
+		def componentLayer = newComponent(funcDomainComponentType, corollaProduct, applicationLayer, "Gestion des composants")
 		def componentTypeLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des types de composants")
+		def exigencesLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des exigences")
+		def scenariosTestsLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des scénarios de tests")
+		def casTestsLayer = newComponent(funcDomainComponentType, corollaProduct, scenariosTestsLayer, "Gestion des cas de tests")
+		def generationRapportsLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Génération de rapports")
+		def gestiondesCampagnesLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des campagnes de tests")
 	}
 
 	def Component newClassicComponent(
@@ -211,15 +215,15 @@ public class DemoDataBean {
 		return role
 	}
 
-	public User newUser(final String _string, final String _string2,
-			final String _string3, final String _string4,
+	public User newUser(final String _firstName, final String _lastName,
+			final String _email, final String _login,
 			final String _password, final Role _rolePO) {
 		final User user = new User()
 		user.with {
-			firstName = _string
-			lastName = _string2
-			email =_string3
-			login =_string4
+			firstName = _firstName
+			lastName = _lastName
+			email =_email
+			login =_login
 			password = this.passwordEncoder.encode _password
 			roleId = _rolePO.id
 		}

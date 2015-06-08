@@ -41,7 +41,7 @@ public class ApplicationEditController {
 
 	def static final String APPLICATION_EDIT = "application/application_edit"
 
-	static final String APPLICATION = "application"
+	def static final String APPLICATION = "product"
 
 	@Autowired
 	private IApplicationDAO applicationDAO
@@ -52,22 +52,30 @@ public class ApplicationEditController {
 	@Autowired
 	private ApplicationPageController controller
 
+	@ModelAttribute("applications")
+	def addProducts() {
+		return applicationDAO.findAll()
+	}
 
+	@ModelAttribute("sideMenu")
+	public String addApplicationMenu() {
+		return "applicationMenu"
+	}
 
 	@RequestMapping("/add")
-	public ModelAndView getAddPage(@ModelAttribute Application application) {
+	public ModelAndView getAddPage(@ModelAttribute(value=ApplicationEditController.APPLICATION) Application product) {
 		def ModelAndView model = new ModelAndView(APPLICATION_EDIT)
-		model.addObject APPLICATION, application
+		model.addObject ApplicationEditController.APPLICATION, product
 		return model
 	}
 
 	@RequestMapping(value="/add", method = RequestMethod.POST)
-	public ModelAndView saveNewApplication(@Valid @ModelAttribute("application") Application application, BindingResult _result) {
+	public ModelAndView saveNewApplication(@Valid @ModelAttribute(ApplicationEditController.APPLICATION) Application application, BindingResult _result) {
 
 		if (_result.hasErrors()) {
-			def ModelAndView model2 = new ModelAndView(APPLICATION_EDIT)
-			model2.addObject(APPLICATION, application)
-			return model2
+			def ModelAndView editApplication = new ModelAndView(APPLICATION_EDIT)
+			editApplication.addObject ApplicationEditController.APPLICATION, application
+			return editApplication
 		}
 		CreateNewApplicationCommand command = new CreateNewApplicationCommand(application)
 		gate.dispatch(command)
@@ -83,7 +91,7 @@ public class ApplicationEditController {
 		if (application == null) {
 			log.error("Application not found {}", id)
 		}
-		model.addObject APPLICATION, application == null ? new Application() : new Application(application)
+		model.addObject ApplicationEditController.APPLICATION, application == null ? new Application() : application
 		return model
 	}
 
@@ -93,7 +101,7 @@ public class ApplicationEditController {
 	}
 
 	@RequestMapping(value="/edit/{id}", method = RequestMethod.POST)
-	public ModelAndView modifyUser(@Valid @ModelAttribute("application") Application _application, BindingResult _result, @PathVariable Integer id) {
+	public ModelAndView modifyUser(@Valid @ModelAttribute(ApplicationEditController.APPLICATION) Application _application, BindingResult _result, @PathVariable Integer id) {
 		if (!id.equals(_application.id)) {
 			_result.addError( new ObjectError("id", "ID is invalid"))
 		}
@@ -103,7 +111,8 @@ public class ApplicationEditController {
 
 		if (_result.hasErrors()) {
 			def ModelAndView model2 = new ModelAndView(APPLICATION_EDIT)
-			model2.addObject(APPLICATION, _application)
+			model2.addObject ApplicationEditController.APPLICATION, _application
+
 			return model2
 		}
 
