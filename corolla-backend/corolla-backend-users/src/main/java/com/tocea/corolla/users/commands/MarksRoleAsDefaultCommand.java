@@ -3,7 +3,8 @@
  */
 package com.tocea.corolla.users.commands;
 
-import com.esotericsoftware.kryo.NotNull;
+import javax.validation.constraints.NotNull;
+
 import com.tocea.corolla.cqrs.annotations.Command;
 
 /**

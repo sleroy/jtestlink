@@ -39,7 +39,6 @@ class DeleteUserCommandHandlerTest extends Specification{
 				activationToken:"",
 				active:true,
 				createdTime:null,
-				testProjectId:0,
 				email:"user@dummy.org",
 				firstName:"John",
 				lastName:"Doe",
@@ -64,7 +63,7 @@ class DeleteUserCommandHandlerTest extends Specification{
 		this.handler.handle command
 
 		then:
-		1 * userDao.delete(_)
+		1 * userDao.deleteUserByLogin(_)
 	}
 
 	/**
@@ -81,6 +80,6 @@ class DeleteUserCommandHandlerTest extends Specification{
 		this.handler.handle command
 
 		then:
-		0 * userDao.delete(_)
+		0 * userDao.deleteUserByLogin(_)
 	}
 }

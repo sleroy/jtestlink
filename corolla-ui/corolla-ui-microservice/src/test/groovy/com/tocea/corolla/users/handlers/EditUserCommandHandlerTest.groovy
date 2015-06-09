@@ -50,7 +50,6 @@ class EditUserCommandHandlerTest extends Specification{
 				activationToken:"",
 				active:true,
 				createdTime:null,
-				testProjectId:0,
 				email:"user@dummy.org",
 				firstName:"John",
 				lastName:"Doe",
@@ -58,6 +57,7 @@ class EditUserCommandHandlerTest extends Specification{
 				login:"login",
 				password:"superPassword",
 				roleId:1)
+
 		userWithInvalidId = 		new User(
 				id:null,
 				)
@@ -70,7 +70,6 @@ class EditUserCommandHandlerTest extends Specification{
 				activationToken:"",
 				active:true,
 				createdTime:null,
-				testProjectId:0,
 				email:"user",
 				firstName:"John",
 				lastName:"Doe",

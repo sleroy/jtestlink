@@ -40,8 +40,11 @@ ICommandHandler<DeleteUserCommand, Boolean> {
 
 		final User user = this.userDAO.findUserByLogin(_command.getUserLogin());
 		final Boolean found = user != null;
-		LOGGER.info("Delete user {}", user.getLogin());
-		this.userDAO.deleteUserByLogin(user.getLogin());
+		if (found) {
+			LOGGER.info("Delete user {}", user.getLogin());
+			this.userDAO.deleteUserByLogin(user.getLogin());
+		}
+
 
 		return found;
 	}

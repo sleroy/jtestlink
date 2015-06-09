@@ -9,7 +9,10 @@ dependencies {
 	compile project(":corolla-backend:corolla-backend-requirements")
 	compile project(":corolla-backend:corolla-backend-users")
 	compile project(":corolla-backend:corolla-backend-utils")
+	
+	
 //	compile project(":corolla-backend:corolla-backend-microservice")
-
+	compile "commons-io:commons-io:$APACHE_COMMONIO"
+	
 	
 }

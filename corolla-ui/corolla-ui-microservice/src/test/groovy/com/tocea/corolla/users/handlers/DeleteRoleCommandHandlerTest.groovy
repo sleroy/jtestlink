@@ -36,7 +36,7 @@ class DeleteRoleCommandHandlerTest extends Specification{
 		handler = new DeleteRoleCommandHandler(
 				roleDAO : roleDao
 				)
-		validRole = new Role(name:"admin", note:"Admin role", permissions:"",defaultRole:true )
+		validRole = new Role(id:1, name:"admin", note:"Admin role", permissions:"",defaultRole:true )
 	}
 
 
@@ -47,9 +47,9 @@ class DeleteRoleCommandHandlerTest extends Specification{
 	 */
 	def "test delete role existing role"() {
 		given:
-		roleDao.findRoleByName('admin') >> validRole
+		roleDao.findOne(1) >> validRole
 		when:
-		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : 'admin')
+		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : 1)
 
 		this.handler.handle command
 
@@ -64,9 +64,9 @@ class DeleteRoleCommandHandlerTest extends Specification{
 	 */
 	def "test delete role with unknown role"() {
 		given:
-		roleDao.findRoleByName('admin') >> null
+		roleDao.findOne(1) >> null
 		when:
-		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : 'admin')
+		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : 1)
 
 		this.handler.handle command
 

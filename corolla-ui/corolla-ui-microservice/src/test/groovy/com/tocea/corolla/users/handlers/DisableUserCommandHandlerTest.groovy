@@ -39,7 +39,6 @@ class DisableUserCommandHandlerTest extends Specification{
 				activationToken:"",
 				active:true,
 				createdTime:null,
-				testProjectId:0,
 				email:"user@dummy.org",
 				firstName:"John",
 				lastName:"Doe",
