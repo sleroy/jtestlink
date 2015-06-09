@@ -41,7 +41,7 @@ ICommandHandler<DuplicateRoleCommand, Role> {
 		roleToDuplicate = roleToDuplicate.duplicate();
 		roleToDuplicate.setName(roleToDuplicate.getName() + " duplicated");
 		roleToDuplicate.setId(null);
-
+		roleToDuplicate.setDefaultRole(false);
 		this.roleDAO.save(roleToDuplicate);
 
 		return roleToDuplicate;
