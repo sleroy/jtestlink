@@ -33,19 +33,20 @@ public class RoleAdminController {
 	@Autowired
 	private IRoleDAO roleDAO
 
-
 	@Autowired
-
 	private UserValidation validation
+	
+	@Autowired
+	private Gate gate
 
 	@ModelAttribute("sideMenu")
 	public String addAccount() {
 		return "adminMenu"
 	}
 
-
 	@RequestMapping("/ui/admin/roles")
 	public ModelAndView getHomePage() {
+		
 		def ModelAndView model = new ModelAndView("admin/roles")
 		model.addObject "roles", roleDAO.findAll()
 
@@ -53,31 +54,24 @@ public class RoleAdminController {
 	}
 
 	@RequestMapping("/ui/admin/roles/default/{id}")
-	public ModelAndView marksRoleAsDefault(@PathVariable Integer id) {
+	public String marksRoleAsDefault(@PathVariable Integer id) {
+		
 		if (roleDAO.findOne(id) != null) {
-
 			gate.dispatch(new MarksRoleAsDefaultCommand(id))
 		}
-
-		def ModelAndView model = new ModelAndView("admin/roles")
-		model.addObject "roles", roleDAO.findAll()
-
-		return model
+		
+		return "redirect:/ui/admin/roles"
+		
 	}
 
 	@RequestMapping("/ui/admin/roles/duplicate/{id}")
-	public ModelAndView duplicateRole(@PathVariable Integer id) {
+	public String duplicateRole(@PathVariable Integer id) {
+		
 		if (roleDAO.findOne(id) != null) {
-
 			gate.dispatch(new DuplicateRoleCommand(id))
 		}
-
-		def ModelAndView model = new ModelAndView("admin/roles")
-		model.addObject "roles", roleDAO.findAll()
-
-		return model
+		
+		return "redirect:/ui/admin/roles"
 	}
-
-	@Autowired
-	private Gate gate
+	
 }
