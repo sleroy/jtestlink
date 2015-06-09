@@ -45,8 +45,7 @@ public class RoleRestController {
 			throw new InvalidRoleException();
 		}
 
-		this.gate.dispatch(	new DeleteRoleCommand(id),
-		                   	new EmptyCommandCallback<>());
+		this.gate.dispatch(new DeleteRoleCommand(id));
 
 	}
 
