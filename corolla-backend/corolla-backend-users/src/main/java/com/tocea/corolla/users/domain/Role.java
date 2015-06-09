@@ -159,6 +159,11 @@ public class Role implements GrantedAuthority {
 		return this.roleProtected;
 	}
 
+	public void setDefaultRole() {
+		this.setDefaultRole(true);
+
+	}
+
 	/**
 	 * @param _defaultRole
 	 *            the defaultRole to set

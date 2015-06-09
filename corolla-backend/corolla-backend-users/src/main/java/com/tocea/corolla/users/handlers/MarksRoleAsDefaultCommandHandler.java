@@ -13,7 +13,7 @@ import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.users.commands.MarksRoleAsDefaultCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.domain.Role;
-import com.tocea.corolla.users.service.RolePermissionService;
+import com.tocea.corolla.users.exceptions.InvalidRoleException;
 
 /**
  * @author sleroy
@@ -25,25 +25,34 @@ public class MarksRoleAsDefaultCommandHandler implements
 ICommandHandler<MarksRoleAsDefaultCommand, Boolean> {
 
 	@Autowired
-	private IRoleDAO				roleDAO;
-
-	@Autowired
-	private RolePermissionService rolePermissionService;
-
+	private IRoleDAO	roleDAO;
 
 	@Override
 	public Boolean handle(@Valid final MarksRoleAsDefaultCommand _command) {
 		final Integer roleID = _command.getRoleID();
-		boolean found = false;
-		for (final Role role : this.roleDAO.findAll()) {
-			final boolean active = roleID.equals(role.getId());
-			found |= active;
-			role.setDefaultRole(active);
-			this.roleDAO.save(role);
+		if (!this.roleDAO.exists(roleID)) {
+			throw new InvalidRoleException("Role was not found " + roleID);
 		}
+		this.disableOtherRoles();
+		this.enableSelectedRole(roleID);
 
-		return found;
+		return true;
 	}
 
+	private void disableOtherRoles() {
+		for (final Role role : this.roleDAO.findAll()) {
+			if (role.isDefaultRole()) {
+				role.setDefaultRole(false);
+				this.roleDAO.save(role);
+			}
+		}
+
+	}
+
+	private void enableSelectedRole(final Integer _roleID) {
+		final Role role = this.roleDAO.findOne(_roleID);
+		role.setDefaultRole();
+		this.roleDAO.save(role);
+	}
 
 }

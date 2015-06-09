@@ -7,7 +7,7 @@
 * Gestion des types de composants
 * Gestion de projets
 * Gestion des requirements/exigences
-* Gestion des cas de tests
+* Gestion des suites de tests
 * Gestion des pas dans les cas de tests
 * Génération rapport d'exigences
 * Génération cahier de recette pour un projet
@@ -19,6 +19,17 @@
 * Génération d'un rapport de bilan de campagne
 * Association tests automatisés et exécution d'une campagne
 
+Plus tard :
+ * Module Roadmap
+ * Module Calculette de charge / Abaque
+ * Ajouter FK  
+ * Problème de responsive
+ * La partie application n'est pas finie.
+
+
+Bug  : duplication de role (setActive false)
+Bug : Transitions de pages
+Bug : Champ login qui devrait être figé lors de l'édition (voire pas du tout modifiable)
 
 
 version 0.1.0
@@ -70,28 +81,27 @@ version 0.3.0
  * Gestion des liens (hypertextes)
  * Gestion des verrous
 
-version 0.3.0
-------------------
 
-* Gestion des projets
-
-
-
-
-version 0.5.0
+version 0.4.0
 ------------------
 
 * Gestion des cas de tests
 
-version 0.6.0
+version 0.5.0
 ------------------
 
 * Gestion des pas dans les cas de tests
 
-version 0.7.0
+version 0.6.0
 ------------------
 
 * Gestion des composants et des versions
+
+version 0.7.0
+------------------
+
+* Gestion des projets
+
 
 version 0.8.0
 ------------------
@@ -104,4 +114,9 @@ version 0.9.0
 * Déroulement d'un test dans une campagne
 * Visualisation de l'état d'une campagne de tests
 
-------------------------------------
+version 1.0.0
+------------------
+
+* Déroulement d'un test dans une campagne
+* Visualisation de l'état d'une campagne de tests
+

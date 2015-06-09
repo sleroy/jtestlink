@@ -155,7 +155,7 @@ public class DemoDataBean {
 		}
 		command.setName(_funcName)
 		command.setDescription(_funcName)
-		return (Component) this.gate.dispatch(command)
+		this.gate.dispatch command
 	}
 
 
@@ -227,9 +227,9 @@ public class DemoDataBean {
 			password = this.passwordEncoder.encode _password
 			roleId = _rolePO.id
 		}
-		user = this.gate.dispatch new CreateUserCommand(user)
+		this.gate.dispatch new CreateUserCommand(user)
 		user.active = true
-		this.gate.dispatch(new EditUserCommand(user))
+		this.gate.dispatch new EditUserCommand(user)
 		return user
 	}
 }

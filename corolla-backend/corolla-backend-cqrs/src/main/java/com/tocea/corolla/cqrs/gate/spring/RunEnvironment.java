@@ -18,9 +18,12 @@
  */
 package com.tocea.corolla.cqrs.gate.spring;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.tocea.corolla.cqrs.gate.ICommandCallback;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.utils.domain.ObjectValidation;
 
@@ -37,24 +40,37 @@ public class RunEnvironment {
 		ICommandHandler<Object, Object> getHandler(Object command);
 	}
 
-	@Autowired
-	private HandlersProvider	handlersProfiver;
+	private static final Logger	LOGGER	= LoggerFactory.getLogger(RunEnvironment.class);
 
-	public Object run(final Object command) {
-		final ICommandHandler<Object, Object> handler = this.handlersProfiver.getHandler(command);
+	@Autowired
+	private HandlersProvider	handlersProvider;
+
+	/**
+	 * Executes a command in synchronous way.
+	 *
+	 * @param command
+	 *            the command
+	 * @param _callback
+	 *            the callback
+	 */
+	public <R> void run(final Object command,
+			final ICommandCallback<R> _callback) {
+		final ICommandHandler<Object, Object> handler = this.handlersProvider.getHandler(command);
 
 		// You can add Your own capabilities here: dependency injection,
 		// security, transaction management, logging, profiling, spying, storing
 		// commands, etc
-		final ObjectValidation objectValidation = new ObjectValidation();
-		if(!objectValidation.isValid(command)) {
-			throw new InvalidCommandException(command);
+		try {
+			final ObjectValidation objectValidation = new ObjectValidation();
+			if (!objectValidation.isValid(command)) {
+				throw new InvalidCommandException(command);
+			}
+			final Object result = handler.handle(command);
+			_callback.onSuccess((R) result);
+
+		} catch (final Throwable e) {
+			LOGGER.error("The command has failed {}", e);
+			_callback.onFailure(e);
 		}
-		final Object result = handler.handle(command);
-
-		// You can add Your own capabilities here
-
-		return result;
 	}
-
 }

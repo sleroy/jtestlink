@@ -3,6 +3,8 @@
  */
 package com.tocea.corolla.users.rest;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tocea.corolla.cqrs.gate.EmptyCommandCallback;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.users.commands.DeleteRoleCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
@@ -27,6 +30,7 @@ import com.tocea.corolla.users.exceptions.InvalidRoleException;
 @RestController()
 @RequestMapping("/rest/roles")
 @Secured(Permission.REST)
+@Transactional
 public class RoleRestController {
 
 	@Autowired
@@ -41,7 +45,8 @@ public class RoleRestController {
 			throw new InvalidRoleException();
 		}
 
-		this.gate.dispatch(new DeleteRoleCommand(id));
+		this.gate.dispatch(	new DeleteRoleCommand(id),
+		                   	new EmptyCommandCallback<>());
 
 	}
 

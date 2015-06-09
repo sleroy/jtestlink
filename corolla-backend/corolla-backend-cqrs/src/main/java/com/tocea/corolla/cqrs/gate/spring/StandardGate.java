@@ -25,36 +25,62 @@ import org.springframework.stereotype.Component;
 
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.cqrs.gate.ICommandCallback;
 
 @Component
 public class StandardGate implements Gate {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(StandardGate.class);
+	private static final Logger	LOGGER		= LoggerFactory.getLogger(StandardGate.class);
 
 	@Autowired
-	private RunEnvironment	runEnvironment;
+	private RunEnvironment		runEnvironment;
 
-	private final GateHistory		gateHistory	= new GateHistory();
+	// @Autowired
+	// private RunEnvironment runEnvironment;
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.tocea.corolla.cqrs.gate.spring.Gate#dispatch(java.lang.Object)
-	 */
+	private final GateHistory	gateHistory	= new GateHistory();
+
 	@Override
-	public Object dispatch(final Object command) {
+	public <R> R dispatch(final Object _command) {
+		if (this.isAsynchronous(_command)) {
+			throw new InvalidCommandException(_command);
+		}
+		final ThreadLocal<R> threadLocal = new ThreadLocal<R>();
+
+		this.dispatch(_command, new ICommandCallback<R>() {
+
+			@Override
+			public void onFailure(final Throwable _cause) {
+				threadLocal.set(null);
+
+			}
+
+			@Override
+			public void onSuccess(final R _result) {
+				threadLocal.set(_result);
+
+			}
+		});
+		return threadLocal.get();
+	}
+
+	@Override
+	public <R> void dispatch(final Object command,
+			final ICommandCallback<R> _callBack) {
 		if (!this.gateHistory.register(command)) {
-			LOGGER.info("Duplicate command {}", command);
-			return null;// skip duplicate
+			LOGGER.warn("Duplicate command {}", command);
+			return;
 		}
 
 		if (this.isAsynchronous(command)) {
 			// TODO add to the queue. Queue should send this command to the
 			// RunEnvironment
-			return null;
+			// asyncQueue.push(command, _callBack);
+		} else {
+			LOGGER.info("Treating command {}", command);
+			this.runEnvironment.run(command, _callBack);
 		}
-		LOGGER.info("Treating command {}", command);
-		return this.runEnvironment.run(command);
+
 	}
 
 	/**
@@ -67,7 +93,7 @@ public class StandardGate implements Gate {
 		}
 
 		final Command commandAnnotation = command.getClass()
-				.getAnnotation(Command.class);
+				.getAnnotation(	Command.class);
 		return commandAnnotation.asynchronous();
 	}
 
