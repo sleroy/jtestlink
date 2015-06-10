@@ -23,7 +23,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
        <div class="btn-compose pull-left">
-        <a type="button" href="/admin/roles/add" class="btn btn-danger navbar-btn"> <span class="glyphicon glyphicon-pencil" /> Defines a new Role
+        <a type="button" href="/ui/admin/roles/add" class="btn btn-danger navbar-btn"> <span class="glyphicon glyphicon-pencil" /> Defines a new Role
         </a>
        </div>
       </div>
@@ -50,8 +50,11 @@
           <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">Set as default</button>
         </a></td>
         <td><i th:if="${role.roleProtected}" class="glyphicon glyphicon-lock center-block" /></td>
-        <td><a th:if="${!role.roleProtected}" th:href="@{'/ui/admin/roles/edit/' + ${role.id}}" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit"> <span class="glyphicon glyphicon-pencil" />
-        </a></td>
+        <td>
+        	<a th:if="${!role.roleProtected}" th:href="@{'/ui/admin/roles/edit/' + ${role.id}}" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"> 
+        		<span class="glyphicon glyphicon-pencil" />
+        	</a>
+        </td>
         <td ><p data-placement="top" data-toggle="tooltip" title="Delete this role">
           <button class="btn btn-danger btn-xs roleDelete" data-title="Delete this role">
            <span class="glyphicon glyphicon-trash"></span>

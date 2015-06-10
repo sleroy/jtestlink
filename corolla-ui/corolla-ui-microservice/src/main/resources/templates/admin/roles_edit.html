@@ -10,11 +10,38 @@
     <div class="panel panel-default">
      <div class="panel-heading">
       <h4>Define Role</h4>
-      <h3 th:text="${'Role' + role.name}">Guest</h3>
      </div>
      <div class="panel-body">
       <div class="row">
-      
+      	<form class="form-horizontal" th:object="${role}" th:attr="action=@{${role.id} == null ? '/ui/admin/roles/add' : '/ui/admin/roles/edit/' + ${role.id}}" method="post" id="form">
+        <fieldset>
+          <input type="hidden" name="id" id="id" th:value="${role.id}" />
+          <!-- Name input-->
+          <div class="form-group">
+          	<label class="col-md-2 control-label" for="name">Name</label>
+          	<div class="col-md-4">
+          		<input id="name" name="name" placeholder="Guest" class="form-control input-md" required="required" data-parsley-trigger="focusin focusout change" data-parsley-range="[3, 30]" type="text" th:field="*{name}"></input>         
+           </div>
+          </div>
+          <!-- Note input-->
+          <div class="form-group">
+          	<label class="col-md-2 control-label" for="note">Note</label>
+          	<div class="col-md-4">
+          		<input id="note" name="note" placeholder="Guest" class="form-control input-md" required="required" data-parsley-trigger="focusin focusout change" data-parsley-range="[3, 30]" type="text" th:field="*{note}"></input>         
+           </div>
+          </div>
+          <!-- Button (Double) -->
+          <div class="form-group">
+           <label class="col-md-2 control-label" for="saveButton"></label>
+           <div class="col-md-2">
+            <a href="/ui/admin/roles" id="cancelButton" name="cancelButton" class="btn btn-default">Cancel</a>
+           </div>
+           <div class="col-md-2">
+            <button id="saveButton" name="saveButton" class="btn btn-success">Save</button>
+           </div>
+          </div>
+        </fieldset>
+        </form>
       </div>
      </div>
     </div>
@@ -23,10 +50,10 @@
  </div>
  <!--/row-->
  <div layout:fragment="footer">
-  <script type="text/javascript" src="../../static/js/modules/roles.js" th:src="@{/js/modules/roles.js}"></script>
-  <script type="text/javascript">
+  	<script type="text/javascript" src="../../static/js/modules/roles.js" th:src="@{/js/modules/roles.js}"></script>
+  	<script type="text/javascript">
 			initFormUserEdit()
-		</script>
+	</script>
  </div>
 </body>
 </html>
