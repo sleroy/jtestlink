@@ -59,9 +59,6 @@ public class UserEditController {
 	private UserValidation validation
 
 	@Autowired
-	private UserAdminController controller
-
-	@Autowired
 	private Gate gate
 
 	@ModelAttribute("sideMenu")
@@ -93,9 +90,8 @@ public class UserEditController {
 		CreateUserCommand command = new CreateUserCommand(_passwordDto)
 		gate.dispatch(command)
 
-		return controller.getHomePage()
+		return new ModelAndView("redirect:/ui/admin/users")
 	}
-
 
 	@RequestMapping("/edit/{login}")
 	public ModelAndView getAddPage(@PathVariable String login) {
@@ -109,11 +105,6 @@ public class UserEditController {
 		}
 		model.addObject "user", user == null ? new UserPasswordDto() : new UserPasswordDto(user)
 		return model
-	}
-
-	@RequestMapping(value="/save", method = RequestMethod.GET)
-	public String returnToUsers() {
-		return "/ui/admin/users"
 	}
 
 	@RequestMapping(value="/edit/{login}", method = RequestMethod.POST)
@@ -134,6 +125,7 @@ public class UserEditController {
 		EditUserCommand command = new EditUserCommand(_passwordDto)
 		gate.dispatch(command)
 
-		return controller.getHomePage()
+		return new ModelAndView("redirect:/ui/admin/users")
 	}
+	
 }
