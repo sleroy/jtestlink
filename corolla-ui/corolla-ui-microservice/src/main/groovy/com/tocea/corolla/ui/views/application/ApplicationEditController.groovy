@@ -49,9 +49,6 @@ public class ApplicationEditController {
 	@Autowired
 	private Gate gate
 
-	@Autowired
-	private ApplicationPageController controller
-
 	@ModelAttribute("applications")
 	def addProducts() {
 		return applicationDAO.findAll()
@@ -80,7 +77,7 @@ public class ApplicationEditController {
 		CreateNewApplicationCommand command = new CreateNewApplicationCommand(application)
 		gate.dispatch(command)
 
-		return controller.getHomePage()
+		return new ModelAndView("redirect:/ui/applications")
 	}
 
 
@@ -93,11 +90,6 @@ public class ApplicationEditController {
 		}
 		model.addObject ApplicationEditController.APPLICATION, application == null ? new Application() : application
 		return model
-	}
-
-	@RequestMapping(value="/save", method = RequestMethod.GET)
-	public RedirectView returnToApplications() {
-		return "/ui/applications"
 	}
 
 	@RequestMapping(value="/edit/{id}", method = RequestMethod.POST)
@@ -119,6 +111,7 @@ public class ApplicationEditController {
 		EditApplicationCommand command = new EditApplicationCommand(_application)
 		gate.dispatch(command)
 
-		return controller.getHomePage()
+		return new ModelAndView("redirect:/ui/applications")
 	}
+	
 }

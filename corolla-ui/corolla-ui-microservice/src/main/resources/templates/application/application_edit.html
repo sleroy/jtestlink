@@ -18,8 +18,8 @@
 <link th:href="@{/resources/parsleyjs/src/parsley.css}" href="../../static/resources/parsleyjs/src/parsley.css" rel="stylesheet"></link>
 <link th:href="@{/resources/jstree/dist/themes/default/style.min.css}" href="../../static/resources/jstree/dist/themes/default/style.min.css" rel="stylesheet"></link>
 <!--[if lt IE 9]>
-            <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 </head>
 <body>
  <!-- Main -->
@@ -42,13 +42,20 @@
          <p th:if="${#fields.hasErrors('all')}" th:errors="*{all}" class="bg-danger">Incorrect field</p>
          <fieldset>
           <input type="hidden" name="id" id="id" th:value="${product.id}" />
-          <!-- Text input-->
+          <!-- Identifier input-->
           <div class="form-group">
            <label class="col-md-3 control-label" for="login">Application identifier</label>
            <div class="col-md-4">
-            <input id="key" name="key" placeholder="Application key" class="form-control input-md" required="required" data-parsley-trigger="focusin focusout change" data-parsley-range="[1, 40]" type="text" th:field="*{key}" disabled="" th:if="${product.id != null}"></input> <input id="key" name="key" placeholder="Application key" class="form-control input-md" required="required"
-             data-parsley-trigger="focusin focusout change" data-parsley-range="[1, 40]" type="text" th:field="*{key}" th:if="${product.id == null}"
-            ></input>
+            <input id="key" 
+            		name="key" 
+            		placeholder="Application key" 
+            		class="form-control input-md" 
+            		required="required" 
+            		data-parsley-trigger="focusin focusout change" 
+            		data-parsley-range="[1, 40]" 
+            		type="text" 
+            		th:field="*{key}" 
+            		th:attr="readonly=@{${product.id != null} ? 'true' : 'false'}"/>
            </div>
           </div>
           <!-- Text input-->
@@ -112,12 +119,12 @@
  </div>
  <!--/row-->
  <div layout:fragment="footer">
-  <script type="text/javascript" src="../../static/resources/ckeditor/ckeditor.js" th:src="@{/resources/ckeditor/ckeditor.js}"></script>
-  <script type="text/javascript" src="../../static/js/modules/applications.js" th:src="@{/js/modules/users.js}"></script>
-  <script type="text/javascript">
-			initFormUserEdit();
-            CKEDITOR.replace('description');
-		</script>
+ 	<script type="text/javascript" src="../../static/resources/ckeditor/ckeditor.js" th:src="@{/resources/ckeditor/ckeditor.js}"></script>
+  	<script type="text/javascript" src="../../static/js/modules/applications.js" th:src="@{/js/modules/users.js}"></script>
+  	<script type="text/javascript">
+		initFormUserEdit();
+        CKEDITOR.replace('description');
+	</script>
  </div>
 </body>
 </html>

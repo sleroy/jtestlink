@@ -3,14 +3,29 @@
  */
 package com.tocea.corolla.products.commands;
 
+import javax.validation.constraints.NotNull;
+
+import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.products.domain.Application;
 
 /**
  * @author sleroy
  *
  */
+@Command
 public class EditApplicationCommand {
+	
+	@NotNull
 	private Application	application;
+	
+	public EditApplicationCommand() {
+		super();
+	}
+	
+	public EditApplicationCommand(Application _application) {
+		super();
+		this.application = _application;
+	}
 
 	/**
 	 * @return the application
