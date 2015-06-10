@@ -14,6 +14,7 @@ import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.users.commands.DeleteRoleCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.domain.Role;
+import com.tocea.corolla.users.exceptions.RoleOperationForbiddenException;
 
 /**
  * @author sleroy
@@ -35,6 +36,11 @@ ICommandHandler<DeleteRoleCommand, Boolean> {
 		final Role role = this.roleDAO.findOne(_command.getRoleID());
 		final Boolean found = role != null;
 		if (found) {
+			
+			if (role.isRoleProtected()) {
+				throw new RoleOperationForbiddenException("cannot delete a protected role");
+			}
+			
 			LOGGER.info("Delete role {}", role.getName());
 			this.roleDAO.delete(role);
 
