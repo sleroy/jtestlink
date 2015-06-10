@@ -18,3 +18,36 @@ function initMainJS() {
 function define_yesModalButton_clickAction(action) {
 	$('#btnModalYes').click(action);
 }
+
+function DeleteModal() {
+	
+	var modalSelector = '#modal';
+	var btnYesSelector = '#btnModalYes';
+	
+	return {
+		
+		'set': function(key, value) {
+			$(modalSelector).data(key, value);
+		},
+		
+		'get': function(key) {
+			return $(modalSelector).data(key);
+		},
+		
+		'show': function() {
+			$(modalSelector).modal('show');
+		},
+		
+		'hide': function() {
+			$(modalSelector).modal('hide');
+		},
+		
+		'onYesAction': function(action) {
+			$(btnYesSelector).click(action);
+		}
+		
+	}
+	
+}
+
+var deleteModal = new DeleteModal();

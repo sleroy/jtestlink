@@ -4,21 +4,27 @@ function roleTable() {
 	$("[data-toggle=tooltip]").tooltip();
 	
 	$('button.roleDelete').on('click', function(e) {
+		
 		e.preventDefault();
 		var id = $(this).closest('tr').data('id');
-		$('#modal').data('id', id).modal('show');
+		
+		deleteModal.set('id', id);
+		deleteModal.show();
+		
 	});
 	
-	define_yesModalButton_clickAction(function() {
-		var id = $('#modal').data('id');
+	deleteModal.onYesAction(function() {
+		
+		var id = deleteModal.get('id');
 		
 		restAPI.roles.delete(id, function(data, status) {
 			consoleLog("Role " + id + " removed")
 			$('[data-id=' + id + ']').remove();
 		});
 		
-		$('#modal').modal('hide');
+		deleteModal.hide();
 	});
+
 }
 
 function initFormRoleEdit() {
