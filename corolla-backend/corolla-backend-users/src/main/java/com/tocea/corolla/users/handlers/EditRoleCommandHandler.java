@@ -13,8 +13,10 @@ import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.users.commands.EditRoleCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.domain.Role;
+import com.tocea.corolla.users.exceptions.InvalidRoleException;
 import com.tocea.corolla.users.exceptions.InvalidRoleInformationException;
 import com.tocea.corolla.users.exceptions.MissingRoleInformationException;
+import com.tocea.corolla.users.exceptions.RoleOperationForbiddenException;
 import com.tocea.corolla.users.service.RolePermissionService;
 
 /**
@@ -35,15 +37,24 @@ ICommandHandler<EditRoleCommand, Role> {
 
 	@Override
 	public Role handle(@Valid final EditRoleCommand _command) {
+		
 		final Role role = _command.getRole();
+		
 		if (role == null) {
 			throw new MissingRoleInformationException("No data provided to create role");
 		}
+		
 		if (role.getId() == null) {
 			throw new InvalidRoleInformationException("ID is missing");
 		}
+		
+		if (role.isRoleProtected()) {
+			throw new RoleOperationForbiddenException("cannot edit a protected role");
+		}
+
 		this.rolePermissionService.checkPermissions(role.getPermissions());
 		this.roleDAO.save(role);
+		
 		return role;
 	}
 

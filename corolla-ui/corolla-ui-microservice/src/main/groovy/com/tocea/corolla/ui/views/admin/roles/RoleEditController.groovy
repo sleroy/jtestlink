@@ -95,7 +95,13 @@ public class RoleEditController {
 			return model2
 		}
 		
-		EditRoleCommand command = new EditRoleCommand(_role)
+		Role role = roleDAO.findOne(_role.getId());
+		if (role != null) {
+			role.setName(_role.getName());
+			role.setNote(_role.getNote());
+		}
+		
+		EditRoleCommand command = new EditRoleCommand(role)
 		gate.dispatch(command)
 		
 		return new ModelAndView("redirect:/ui/admin/roles")
