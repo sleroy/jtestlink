@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.ModelAndView
-import org.springframework.web.servlet.view.RedirectView
 
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.users.commands.EditUserCommand
@@ -33,8 +32,6 @@ import com.tocea.corolla.users.validation.UserValidation
  * @author sleroy
  *
  */
-
-
 @Controller
 @Slf4j
 public class UserViewProfileController {
@@ -74,7 +71,7 @@ public class UserViewProfileController {
 
 
 	@RequestMapping(value="/ui/edit_profile", method = RequestMethod.POST)
-	public RedirectView modifyUser(@Valid @ModelAttribute("user") UserProfileDto _userProfile, BindingResult _result, Principal _principal) {
+	public ModelAndView modifyUser(@Valid @ModelAttribute("user") UserProfileDto _userProfile, BindingResult _result, Principal _principal) {
 		def login = _principal.name
 		if (!login.equals(_userProfile.login)) {
 			_result.addError( new ObjectError("login", "Login is invalid"))
@@ -91,6 +88,6 @@ public class UserViewProfileController {
 		EditUserCommand command = new EditUserCommand(user, _userProfile)
 		gate.dispatch(command)
 
-		return new RedirectView("/")
+		return new ModelAndView("redirect:/")
 	}
 }
