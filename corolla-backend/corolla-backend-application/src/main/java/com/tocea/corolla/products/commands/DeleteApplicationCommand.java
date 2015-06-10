@@ -3,11 +3,18 @@
  */
 package com.tocea.corolla.products.commands;
 
+import javax.validation.constraints.NotNull;
+
+import com.tocea.corolla.cqrs.annotations.Command;
+
 /**
  * @author sleroy
  *
  */
+@Command
 public class DeleteApplicationCommand {
+	
+	@NotNull
 	private Integer	productID;
 
 	/**

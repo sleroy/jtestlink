@@ -12,7 +12,7 @@ function roleTable() {
 	define_yesModalButton_clickAction(function() {
 		var id = $('#modal').data('id');
 		
-		rest_deleteRole(id, function(data, status) {
+		restAPI.roles.delete(id, function(data, status) {
 			consoleLog("Role " + id + " removed")
 			$('[data-id=' + id + ']').remove();
 		});

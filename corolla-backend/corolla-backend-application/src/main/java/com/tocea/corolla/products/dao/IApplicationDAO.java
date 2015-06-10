@@ -18,4 +18,6 @@ import com.tocea.corolla.products.domain.Application;
 
 public interface IApplicationDAO extends CrudRepository<Application, Integer> {
 
+	Application findApplicationByKey(String key);
+	
 }

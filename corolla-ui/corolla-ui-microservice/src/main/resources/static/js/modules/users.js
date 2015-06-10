@@ -1,7 +1,5 @@
 function userTable() {
-	// $('.user-delete').click(function(e) {
-	// alert("gni")
-	// });
+
 	$('#users').dataTable();
 	
 	$("[data-toggle=tooltip]").tooltip();
@@ -15,7 +13,7 @@ function userTable() {
 	define_yesModalButton_clickAction(function() {
 		var id = $('#modal').data('id');
 		
-		rest_deleteUser(id, function(data, status) {
+		restAPI.users.delete(id, function(data, status) {
 			consoleLog("User " + id + " removed")
 			$('[data-id=' + id + ']').remove();
 		});
