@@ -3,6 +3,8 @@
  */
 package com.tocea.corolla.users.handlers;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -13,7 +15,9 @@ import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.users.commands.DeleteRoleCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
+import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.domain.Role;
+import com.tocea.corolla.users.domain.User;
 import com.tocea.corolla.users.exceptions.RoleOperationForbiddenException;
 
 /**
@@ -29,17 +33,34 @@ ICommandHandler<DeleteRoleCommand, Boolean> {
 
 	@Autowired
 	private IRoleDAO			roleDAO;
+	
+	@Autowired
+	private IUserDAO 			userDAO;
 
 	@Override
 	public Boolean handle(final DeleteRoleCommand _command) {
 
 		final Role role = this.roleDAO.findOne(_command.getRoleID());
 		final Boolean found = role != null;
+		
 		if (found) {
 			
 			if (role.isRoleProtected()) {
 				throw new RoleOperationForbiddenException("cannot delete a protected role");
 			}
+			
+			if (role.isDefaultRole()) {
+				throw new RoleOperationForbiddenException("cannot delete the default role");
+			}
+			
+			Role defaultRole = roleDAO.getDefaultRole();
+			
+			List<User> users = userDAO.findByRoleId(role.getId());			
+			for(User user : users) {
+				LOGGER.info("Reset role for user {}", user.getLogin());
+				user.setRole(defaultRole);	
+			}
+			userDAO.save(users);
 			
 			LOGGER.info("Delete role {}", role.getName());
 			this.roleDAO.delete(role);
