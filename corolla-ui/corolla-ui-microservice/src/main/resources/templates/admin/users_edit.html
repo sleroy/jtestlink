@@ -74,7 +74,7 @@
             <input data-parsley-range="[2, 256]" id="passwordConfirm" name="passwordConfirm" required="required" data-parsley-trigger="focusin focusout change" placeholder="" class="form-control input-md" type="password" th:field="*{passwordConfirm}"></input>
            </div>
           </div>
-          <!-- Select Basic -->
+          <!-- Select Role -->
           <div class="form-group">
            <label class="col-md-2 control-label" for="role">Role</label>
            <div class="col-md-5">
@@ -136,10 +136,10 @@
  </div>
  <!--/row-->
  <div layout:fragment="footer">
-  <script type="text/javascript" src="../../static/js/modules/users.js" th:src="@{/js/modules/users.js}"></script>
-  <script type="text/javascript">
+  	<script type="text/javascript" src="../../static/js/modules/users.js" th:src="@{/js/modules/users.js}"></script>
+  	<script type="text/javascript">
 			initFormUserEdit()
-		</script>
+	</script>
  </div>
 </body>
 </html>

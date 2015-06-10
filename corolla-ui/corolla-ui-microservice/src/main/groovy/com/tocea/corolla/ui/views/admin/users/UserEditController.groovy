@@ -73,8 +73,14 @@ public class UserEditController {
 
 	@RequestMapping("/add")
 	public ModelAndView getAddPage(@ModelAttribute UserPasswordDto user) {
+		
+		if (user.roleId == null) {
+			user.roleId = roleDAO.getDefaultRole().getId()
+		}
+		
 		def ModelAndView model = new ModelAndView(ADMIN_USERS_EDIT)
 		model.addObject "user", user
+		
 		return model
 	}
 
