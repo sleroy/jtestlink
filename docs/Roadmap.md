@@ -18,6 +18,13 @@
 * Visualisation de l'état d'une campagne de tests
 * Génération d'un rapport de bilan de campagne
 * Association tests automatisés et exécution d'une campagne
+* Compatibilité avec une GED
+* Module d'importation des données de testlink
+
+Contraintes :
+* Création d'une campagne de test à partir d'une liste de features
+* Partage de features entre produits (par référence ou par duplication) ou gérer des branches par produit (en plus du versioning)
+* Performance sur la modélisation des graphes (utilisation de git ?)
 
 Plus tard :
  * Module Roadmap
