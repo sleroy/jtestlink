@@ -3,16 +3,10 @@ dependencies {
 	compile project(":corolla-backend:corolla-backend-application")
 	compile project(":corolla-backend:corolla-backend-cqrs")
 	compile project(":corolla-backend:corolla-backend-domain-commons")
-	compile project(":corolla-backend:plugins:corolla-backend-plugin-specification")
-	compile project(":corolla-backend:plugins:corolla-backend-plugin-testlink")
 	compile project(":corolla-backend:corolla-backend-projects")
-	compile project(":corolla-backend:corolla-backend-requirements")
 	compile project(":corolla-backend:corolla-backend-users")
 	compile project(":corolla-backend:corolla-backend-utils")
 	
-	
-//	compile project(":corolla-backend:corolla-backend-microservice")
 	compile "commons-io:commons-io:$APACHE_COMMONIO"
-	
 	
 }
