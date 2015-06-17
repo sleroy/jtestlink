@@ -18,6 +18,10 @@ public class EditRoleCommand {
 	@NotNull
 	private Role	role;
 
+	public EditRoleCommand() {
+		
+	}
+	
 	/**
 	 * @param _role
 	 */

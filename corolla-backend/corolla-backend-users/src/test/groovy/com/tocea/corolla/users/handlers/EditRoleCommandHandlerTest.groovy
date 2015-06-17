@@ -46,8 +46,7 @@ class EditRoleCommandHandlerTest extends Specification{
 	def "testvalid role edition"() {
 
 		when:
-		final EditRoleCommand command = new EditRoleCommand()
-		command.role = validRole
+		final EditRoleCommand command = new EditRoleCommand(validRole)
 
 		this.handler.handle command
 
@@ -60,7 +59,6 @@ class EditRoleCommandHandlerTest extends Specification{
 
 		when:
 		final EditRoleCommand command = new EditRoleCommand()
-		command.role = null
 
 		this.handler.handle command
 
@@ -72,8 +70,7 @@ class EditRoleCommandHandlerTest extends Specification{
 	def "testvalid role with id creation"() {
 
 		when:
-		final EditRoleCommand command = new EditRoleCommand()
-		command.role = new Role(id:null)
+		final EditRoleCommand command = new EditRoleCommand(new Role(id:null))
 
 		this.handler.handle command
 

@@ -42,14 +42,13 @@ class CreateRoleCommandHandlerTest extends Specification{
 				rolePermissionService : rolePermissionDao
 				)
 		validRole = new Role(name:"admin", note:"Admin role", permissions:"",defaultRole:true )
-		defaultRole = new Role(id:1, name:'Guest', note:'Guest role', permissions:"ALL")
+		defaultRole = new Role(id:'1', name:'Guest', note:'Guest role', permissions:"ALL")
 	}
 
 	def "testvalid role creation"() {
 
 		when:
-		final CreateRoleCommand command = new CreateRoleCommand()
-		command.role = validRole
+		final CreateRoleCommand command = new CreateRoleCommand(validRole)
 
 		this.handler.handle command
 
@@ -62,7 +61,6 @@ class CreateRoleCommandHandlerTest extends Specification{
 
 		when:
 		final CreateRoleCommand command = new CreateRoleCommand()
-		command.role = null
 
 		this.handler.handle command
 
@@ -74,8 +72,7 @@ class CreateRoleCommandHandlerTest extends Specification{
 	def "testvalid role with id creation"() {
 
 		when:
-		final CreateRoleCommand command = new CreateRoleCommand()
-		command.role = new Role(id:1)
+		final CreateRoleCommand command = new CreateRoleCommand(new Role(id:'1'))
 
 		this.handler.handle command
 

@@ -19,6 +19,10 @@ public class CreateRoleCommand {
 	@NotNull
 	private Role	role;
 
+	public CreateRoleCommand() {
+		
+	}
+	
 	/**
 	 * @param _role
 	 */
