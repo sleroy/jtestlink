@@ -7,15 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -26,8 +25,9 @@ import com.google.common.collect.Lists;
  * @author sleroy
  *
  */
-@Entity
-@Table(name = "roles")
+/*@Entity
+@Table(name = "roles")*/
+@Document(collection = "roles")
 public class Role implements GrantedAuthority {
 
 	public static final Role	DEFAULT_ROLE	= new Role("MISSING_ROLE",
@@ -36,31 +36,29 @@ public class Role implements GrantedAuthority {
 	                        	            	           false);
 
 	@Id
-	@GeneratedValue
-	private Integer				id;
+	@Field("_id")
+	private String				id;
 
-	@Size(min = 1, max = 30)
-	@NotBlank
-	@Column(nullable = false)
+	//@Size(min = 1, max = 30)
+	//@NotBlank
+	//@Column(nullable = false)
 	private String				name;
 
-	@NotBlank
-	@Column(nullable = false, length = 256)
+	//@NotBlank
+	//@Column(nullable = false, length = 256)
 	private String				note;
 
-	@Column(nullable = false, length = 256)
+	//@Column(nullable = false, length = 256)
 	private String				permissions;
 
-	@Column(nullable = false)
-	@NotNull
-	private boolean				defaultRole;
+	//@Column(nullable = false)
+	private boolean				defaultRole = false;
 
-	@Column(nullable = false)
-	@NotNull
+	//@Column(nullable = false)
 	private boolean				roleProtected	= false;
 
 	/**
-	 *
+	 * default constructor
 	 */
 	public Role() {
 		super();
@@ -120,7 +118,7 @@ public class Role implements GrantedAuthority {
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
 
@@ -176,7 +174,7 @@ public class Role implements GrantedAuthority {
 	 * @param _id
 	 *            the id to set
 	 */
-	public void setId(final Integer _id) {
+	public void setId(final String _id) {
 		this.id = _id;
 	}
 

@@ -5,8 +5,7 @@ package com.tocea.corolla.users.dao;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.tocea.corolla.users.domain.User;
 
@@ -17,9 +16,9 @@ import com.tocea.corolla.users.domain.User;
  *
  *
  */
-public interface IUserDAO extends CrudRepository<User, Integer> {
+public interface IUserDAO extends MongoRepository<User, String> {
 
-	void deleteUserByLogin(String login);
+	//void deleteUserByLogin(String login);
 
 	/**
 	 * Finds a user per login.
@@ -33,6 +32,6 @@ public interface IUserDAO extends CrudRepository<User, Integer> {
 	 * @param roleId
 	 * @return
 	 */
-	List<User> findByRoleId(Integer roleId);
+	List<User> findByRoleId(String roleId);
 	
 }

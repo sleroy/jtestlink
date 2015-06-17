@@ -14,22 +14,22 @@ import com.tocea.corolla.cqrs.annotations.Command;
 @Command
 public class DeleteRoleCommand {
 	@NotNull
-	private Integer	roleID;
+	private String	roleID;
 
 	public DeleteRoleCommand() {
 		super();
 	}
 
-	public DeleteRoleCommand(final Integer _roleName) {
-		this.roleID = _roleName;
+	public DeleteRoleCommand(final String id) {
+		this.roleID = id;
 
 	}
 
-	public Integer getRoleID() {
+	public String getRoleID() {
 		return this.roleID;
 	}
 
-	public void setRoleID(final Integer _roleID) {
+	public void setRoleID(final String _roleID) {
 		this.roleID = _roleID;
 	}
 

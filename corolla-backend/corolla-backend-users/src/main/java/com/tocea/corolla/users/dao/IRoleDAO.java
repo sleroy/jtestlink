@@ -3,8 +3,8 @@
  */
 package com.tocea.corolla.users.dao;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.tocea.corolla.users.domain.Role;
 
@@ -15,8 +15,7 @@ import com.tocea.corolla.users.domain.Role;
  *
  *
  */
-
-public interface IRoleDAO extends CrudRepository<Role, Integer> {
+public interface IRoleDAO extends MongoRepository<Role, String> {
 
 	Role findRoleByName(String name);
 
@@ -24,7 +23,8 @@ public interface IRoleDAO extends CrudRepository<Role, Integer> {
 	 * Returns the default role
 	 * @return the default  role.
 	 */
-	@Query("SELECT r FROM Role r where r.defaultRole = true")
+	//@Query("SELECT r FROM Role r where r.defaultRole = true")
+	@Query("{ 'defaultRole': true }")
 	Role getDefaultRole();
 
 }

@@ -3,6 +3,8 @@
  */
 package com.tocea.corolla
 
+import groovy.util.logging.Slf4j;
+
 import javax.annotation.PostConstruct
 
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,6 +32,7 @@ import com.tocea.corolla.users.domain.User
  *
  */
 @org.springframework.stereotype.Component
+@Slf4j
 public class DemoDataBean {
 
 	static final String ADMIN_USERS = ADMIN_USERS
@@ -95,7 +98,8 @@ public class DemoDataBean {
 		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
 				"saroumane",
 				"fuckSauron..", roleAdmin)
-		final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
+				
+		/*final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
 				"<b>Corolla</b> is a tool to manage softare requirements....")
 
 		backendComponentType = newTypeOfComponent("Backend")
@@ -112,7 +116,7 @@ public class DemoDataBean {
 		def scenariosTestsLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des scénarios de tests")
 		def casTestsLayer = newComponent(funcDomainComponentType, corollaProduct, scenariosTestsLayer, "Gestion des cas de tests")
 		def generationRapportsLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Génération de rapports")
-		def gestiondesCampagnesLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des campagnes de tests")
+		def gestiondesCampagnesLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des campagnes de tests")*/
 	}
 
 	def Component newClassicComponent(
@@ -212,6 +216,7 @@ public class DemoDataBean {
 			roleProtected = false
 		}
 		this.roleDAO.save role
+		log.info("new role created [_id:"+role.getId()+"]");
 		return role
 	}
 
@@ -230,6 +235,7 @@ public class DemoDataBean {
 		this.gate.dispatch new CreateUserCommand(user)
 		user.active = true
 		this.gate.dispatch new EditUserCommand(user)
+		log.info("new user created [_id:"+user.getId()+"]");
 		return user
 	}
 }

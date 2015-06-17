@@ -40,7 +40,7 @@ public class RoleRestController {
 
 	@Secured({ Permission.ADMIN, Permission.ADMIN_ROLES })
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	public void deleteUser(@PathVariable final Integer id) {
+	public void deleteUser(@PathVariable final String id) {
 		if (this.roleDao.findOne(id) == null) {
 			throw new InvalidRoleException();
 		}

@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableConfigurationProperties
-@EnableJpaAuditing
-@EnableJpaRepositories
+//@EnableJpaAuditing
+//@EnableJpaRepositories
 @EnableTransactionManagement
 //@EnableWebMvc
 class CorollaGuiApplication {

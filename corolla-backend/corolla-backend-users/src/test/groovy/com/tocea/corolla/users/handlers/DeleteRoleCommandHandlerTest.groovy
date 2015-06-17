@@ -15,6 +15,8 @@ import com.tocea.corolla.users.commands.DeleteRoleCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.domain.Role
+import com.tocea.corolla.users.domain.User;
+import com.tocea.corolla.users.exceptions.RoleOperationForbiddenException;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 /**
@@ -36,12 +38,18 @@ class DeleteRoleCommandHandlerTest extends Specification{
 	def Role validRole
 	
 	def Role defaultRole
+	
+	def Role protectedRole
 
 
 	def setup() {
+		
 		handler = new DeleteRoleCommandHandler(roleDAO : roleDao, userDAO : userDao)
-		validRole = new Role(id:1, name:"admin", note:"Admin role", permissions:"",defaultRole:false)
-		defaultRole = new Role(id:2, name:"default", note:"Default Role", permissions:"", defaultRole:true)
+		validRole = new Role(id:'1', name:"admin", note:"Admin role", permissions:"",defaultRole:false)
+		defaultRole = new Role(id:'2', name:"default", note:"Default Role", permissions:"", defaultRole:true)
+		protectedRole = new Role(id:'3', name:"protected", note:"Protected Role", permissions:"", defaultRole:false, roleProtected:true)
+		
+		roleDao.getDefaultRole() >> defaultRole
 	}
 
 
@@ -50,20 +58,19 @@ class DeleteRoleCommandHandlerTest extends Specification{
 	 * {@link com.tocea.corolla.users.handlers.CreateRoleCommandHandler#handle(com.tocea.corolla.users.commands.CreateRoleCommand)}
 	 * .
 	 */
-	def "test delete role existing role"() {
+	def "it should delete an existing role"() {
 		
 		given:
-		roleDao.findOne(1) >> validRole
-		roleDao.getDefaultRole() >> defaultRole
-		userDao.findByRoleId(1) >> Lists.newArrayList()
+			roleDao.findOne('1') >> validRole
+			userDao.findByRoleId('1') >> Lists.newArrayList()
 		
 		when:
-		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : 1)
-
-		this.handler.handle command
+			final DeleteRoleCommand command = new DeleteRoleCommand(roleID : '1')
+			this.handler.handle command
 
 		then:
-		1 * roleDao.delete(_)
+			1 * roleDao.delete(_)
+			
 	}
 
 	/**
@@ -71,15 +78,62 @@ class DeleteRoleCommandHandlerTest extends Specification{
 	 * {@link com.tocea.corolla.users.handlers.AddNewRoleCommandHandler#handle(com.tocea.corolla.users.commands.AddNewRoleCommand)}
 	 * .
 	 */
-	def "test delete role with unknown role"() {
+	def "it should not delete an unknown role"() {
+		
 		given:
-		roleDao.findOne(1) >> null
+		roleDao.findOne('1') >> null
+		
 		when:
-		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : 1)
+		final DeleteRoleCommand command = new DeleteRoleCommand(roleID : '1')
 
 		this.handler.handle command
 
 		then:
 		0 * roleDao.delete(_)
+	}
+	
+	def "it should not delete a protected role"() {
+		
+		given:
+			roleDao.findOne('3') >> protectedRole
+		
+		when:
+			final DeleteRoleCommand command = new DeleteRoleCommand(roleID : '3')
+			this.handler.handle command
+		
+		then:
+			thrown RoleOperationForbiddenException
+		
+	}
+	
+	def "it should not delete the default role"() {
+		
+		given:
+			roleDao.findOne('2') >> defaultRole
+		
+		when:
+			final DeleteRoleCommand command = new DeleteRoleCommand(roleID : '2')
+			this.handler.handle command
+		
+		then:
+			thrown RoleOperationForbiddenException
+		
+	}
+	
+	def "it should change the role of the users assigned to the deleted role"() {
+		
+		given:
+			roleDao.findOne('1') >> validRole
+			def users = [Mock(User), Mock(User)]
+			userDao.findByRoleId('1') >> users
+		
+		when:
+			final DeleteRoleCommand command = new DeleteRoleCommand(roleID : '1')
+			this.handler.handle command
+		
+		then:
+			users.each() { it.role = defaultRole }
+			1 * userDao.save(users)
+			
 	}
 }

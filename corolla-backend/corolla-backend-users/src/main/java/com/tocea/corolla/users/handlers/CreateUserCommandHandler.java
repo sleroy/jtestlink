@@ -52,7 +52,7 @@ ICommandHandler<CreateUserCommand, User> {
 		if (user == null) {
 			throw new MissingUserInformationException("No data provided to create user");
 		}
-		if (user.getId() != null) {
+		if (user.getId() != null && user.getId() != "") {
 			throw new InvalidUserInformationException("No ID expected");
 		}
 		this.checkUserLogin(user);

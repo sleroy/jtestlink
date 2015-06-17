@@ -29,7 +29,7 @@ ICommandHandler<MarksRoleAsDefaultCommand, Boolean> {
 
 	@Override
 	public Boolean handle(@Valid final MarksRoleAsDefaultCommand _command) {
-		final Integer roleID = _command.getRoleID();
+		final String roleID = _command.getRoleID();
 		if (!this.roleDAO.exists(roleID)) {
 			throw new InvalidRoleException("Role was not found " + roleID);
 		}
@@ -49,7 +49,7 @@ ICommandHandler<MarksRoleAsDefaultCommand, Boolean> {
 
 	}
 
-	private void enableSelectedRole(final Integer _roleID) {
+	private void enableSelectedRole(final String _roleID) {
 		final Role role = this.roleDAO.findOne(_roleID);
 		role.setDefaultRole();
 		this.roleDAO.save(role);

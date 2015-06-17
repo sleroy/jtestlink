@@ -14,21 +14,20 @@ import com.tocea.corolla.cqrs.annotations.Command;
 @Command
 public class MarksRoleAsDefaultCommand {
 	@NotNull
-	private Integer	roleID;
+	private String	roleID;
 
 	public MarksRoleAsDefaultCommand() {
 		super();
 	}
 
-	public MarksRoleAsDefaultCommand(final Integer _roleName) {
-		this.roleID = _roleName;
-
+	public MarksRoleAsDefaultCommand(final String _roleName) {
+		setRoleID(_roleName);
 	}
 
 	/**
 	 * @return the roleID
 	 */
-	public Integer getRoleID() {
+	public String getRoleID() {
 		return this.roleID;
 	}
 
@@ -37,7 +36,11 @@ public class MarksRoleAsDefaultCommand {
 	 *            the roleID to set
 	 */
 	public void setRoleID(final Integer _roleName) {
-		this.roleID = _roleName;
+		this.roleID = _roleName.toString();
+	}
+	
+	public void setRoleID(final String _roleID) {
+		this.roleID = _roleID;
 	}
 
 	/*

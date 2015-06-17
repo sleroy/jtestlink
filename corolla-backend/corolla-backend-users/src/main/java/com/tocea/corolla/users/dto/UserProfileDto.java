@@ -45,7 +45,7 @@ public class UserProfileDto {
 		passwordConfirm = _passwordConfirm;
 	}
 
-	private Integer	id;
+	private String	id;
 
 	@NotBlank
 	@Size(max = 40)
@@ -88,6 +88,7 @@ public class UserProfileDto {
 	}
 
 	public UserProfileDto(final User _user) {
+		
 		this.activationToken = _user.getActivationToken();
 		this.email = _user.getEmail();
 		this.firstName = _user.getFirstName();
@@ -131,7 +132,7 @@ public class UserProfileDto {
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
 
@@ -202,7 +203,7 @@ public class UserProfileDto {
 	 * @param _id
 	 *            the id to set
 	 */
-	public void setId(final Integer _id) {
+	public void setId(final String _id) {
 		this.id = _id;
 	}
 

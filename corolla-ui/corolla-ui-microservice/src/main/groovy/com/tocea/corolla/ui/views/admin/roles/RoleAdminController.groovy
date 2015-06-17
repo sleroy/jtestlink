@@ -54,7 +54,7 @@ public class RoleAdminController {
 	}
 
 	@RequestMapping("/ui/admin/roles/default/{id}")
-	public String marksRoleAsDefault(@PathVariable Integer id) {
+	public String marksRoleAsDefault(@PathVariable String id) {
 		
 		if (roleDAO.findOne(id) != null) {
 			gate.dispatch(new MarksRoleAsDefaultCommand(id))
@@ -65,7 +65,7 @@ public class RoleAdminController {
 	}
 
 	@RequestMapping("/ui/admin/roles/duplicate/{id}")
-	public String duplicateRole(@PathVariable Integer id) {
+	public String duplicateRole(@PathVariable String id) {
 		
 		if (roleDAO.findOne(id) != null) {
 			gate.dispatch(new DuplicateRoleCommand(id))

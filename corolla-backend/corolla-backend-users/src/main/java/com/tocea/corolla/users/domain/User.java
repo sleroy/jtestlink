@@ -4,17 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.google.common.base.Strings;
 
@@ -25,61 +22,60 @@ import com.google.common.base.Strings;
  * @author sleroy
  *
  */
-@Entity()
-@Table(name = "users", indexes = { @Index(unique = true, name = "login_index", columnList = "login") })
+/*@Entity()
+@Table(name = "users", indexes = { @Index(unique = true, name = "login_index", columnList = "login") })*/
+@Document(collection="users")
 public class User implements Serializable {
 
 	@Id
-	@GeneratedValue
-	private Integer	id;
+	@Field("_id")
+	private String id;
+
+	@NotBlank
+	@Size(min = 3, max = 30)
+	//@Column(nullable = false, length = 30)
+	private String	login			= "";
 
 	@NotBlank
 	@Size(max = 40)
-	@Column(nullable = false, length = 40)
+	//@Column(nullable = false, length = 40)
 	private String	firstName		= "";
 
 	@NotBlank
 	@Size(max = 40)
-	@Column(nullable = false, length = 40)
+	//@Column(nullable = false, length = 40)
 	private String	lastName		= "";
 
 	@NotBlank
 	@Size(max = 128)
-	@Column(nullable = false, length = 128)
+	//@Column(nullable = false, length = 128)
 	@Email
 	private String	email			= "";
 
 	@NotBlank
-	@Size(min = 3, max = 30)
-	@Column(nullable = false, length = 30)
-	private String	login			= "";
-
-	@NotBlank
 	@Size(max = 256)
-	@Column(nullable = false, length = 256)
+	//@Column(nullable = false, length = 256)
 	private String	password		= "";
 
 	@NotNull
-	@Column(nullable = false)
-	private Integer	roleId;
+	//@Column(nullable = false)
+	private String	roleId;
 
 	@NotBlank
 	@Size(max = 10)
-	@Column(nullable = false, length = 10)
+	//@Column(nullable = false, length = 10)
 	private String	locale			= "en_GB";	//$NON-NLS-1$
 
 	@Size(max = 50)
-	@Column(nullable = true, length = 50)
+	//@Column(nullable = true, length = 50)
 	private String	activationToken	= "";		//$NON-NLS-1$
 
-
-
 	@NotNull
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	private Date	createdTime;
 
 	@NotNull
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	private boolean	active			= true;
 
 	/**
@@ -130,13 +126,6 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @return the id
-	 */
-	public Integer getId() {
-		return this.id;
-	}
-
-	/**
 	 * @return the lastName
 	 */
 	public String getLastName() {
@@ -167,7 +156,7 @@ public class User implements Serializable {
 	/**
 	 * @return the role_id
 	 */
-	public Integer getRoleId() {
+	public String getRoleId() {
 		return this.roleId;
 	}
 
@@ -216,14 +205,6 @@ public class User implements Serializable {
 	 */
 	public void setFirstName(final String _firstName) {
 		this.firstName = _firstName;
-	}
-
-	/**
-	 * @param _id
-	 *            the id to set
-	 */
-	public void setId(final Integer _id) {
-		this.id = _id;
 	}
 
 	/**
@@ -278,10 +259,17 @@ public class User implements Serializable {
 	 * @param _role_id
 	 *            the role_id to set
 	 */
-	public void setRoleId(final Integer _role_id) {
+	public void setRoleId(final String _role_id) {
 		this.roleId = _role_id;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 
 	/*
@@ -291,7 +279,7 @@ public class User implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "User [id=" + this.id + ", firstName=" + this.firstName
+		return "User [_id="+this.id+", firstName=" + this.firstName
 				+ ", lastName=" + this.lastName + ", email=" + this.email
 				+ ", login=" + this.login + "]";
 	}

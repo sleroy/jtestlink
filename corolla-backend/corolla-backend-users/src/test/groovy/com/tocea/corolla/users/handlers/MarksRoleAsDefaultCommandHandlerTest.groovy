@@ -35,16 +35,16 @@ class MarksRoleAsDefaultCommandHandlerTest extends Specification{
 		handler = new MarksRoleAsDefaultCommandHandler(
 				roleDAO : roleDao,
 				)
-		nonDefaultRole = new Role(id:1,name:"adminRole", note:"Admin role", permissions:"",defaultRole:false)
-		defaultRole = new Role(id:2,name:"defaultRole", note:"Default role", permissions:"",defaultRole:true)
+		nonDefaultRole = new Role(id:'1',name:"adminRole", note:"Admin role", permissions:"",defaultRole:false)
+		defaultRole = new Role(id:'2',name:"defaultRole", note:"Default role", permissions:"",defaultRole:true)
 	}
 
 	def "test non-defaut-role-becomes-default"() {
 
 		when:
 		final MarksRoleAsDefaultCommand command = new MarksRoleAsDefaultCommand(nonDefaultRole.id)
-		roleDao.findOne(1) >> nonDefaultRole
-		roleDao.exists(1) >> true
+		roleDao.findOne('1') >> nonDefaultRole
+		roleDao.exists('1') >> true
 		roleDao.findAll() >> [nonDefaultRole, defaultRole]
 
 		this.handler.handle command
@@ -58,8 +58,8 @@ class MarksRoleAsDefaultCommandHandlerTest extends Specification{
 
 		when:
 		final MarksRoleAsDefaultCommand command = new MarksRoleAsDefaultCommand(defaultRole.id)
-		roleDao.findOne(2) >> defaultRole
-		roleDao.exists(2) >> true
+		roleDao.findOne('2') >> defaultRole
+		roleDao.exists('2') >> true
 		roleDao.findAll() >> [nonDefaultRole, defaultRole]
 
 		this.handler.handle command

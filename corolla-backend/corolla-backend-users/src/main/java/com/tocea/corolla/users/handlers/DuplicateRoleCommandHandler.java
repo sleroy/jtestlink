@@ -33,15 +33,20 @@ ICommandHandler<DuplicateRoleCommand, Role> {
 
 	@Override
 	public Role handle(@Valid final DuplicateRoleCommand _command) {
-		final Integer roleID = _command.getRoleID();
-		Role roleToDuplicate = this.roleDAO.findOne(roleID);
+		
+		final String roleID = _command.getRoleID();
+		
+		Role roleToDuplicate = this.roleDAO.findOne(roleID.toString());
+		
 		if (roleToDuplicate == null) {
 			throw new MissingRoleInformationException("No role provided");
 		}
+		
 		roleToDuplicate = roleToDuplicate.duplicate();
 		roleToDuplicate.setName(roleToDuplicate.getName() + " duplicated");
 		roleToDuplicate.setId(null);
 		roleToDuplicate.setDefaultRole(false);
+		
 		this.roleDAO.save(roleToDuplicate);
 
 		return roleToDuplicate;

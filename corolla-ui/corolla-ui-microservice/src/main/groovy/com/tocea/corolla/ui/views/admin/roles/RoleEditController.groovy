@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +22,7 @@ import com.tocea.corolla.users.commands.EditRoleCommand;
 import com.tocea.corolla.users.domain.Permission
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.domain.Role
+import com.tocea.corolla.users.dto.RoleDTO;
 
 @Secured([
 	Permission.ADMIN,
@@ -44,7 +47,7 @@ public class RoleEditController {
 	}
 	
 	@RequestMapping("/add")
-	public ModelAndView getAddPage(@ModelAttribute Role role) {
+	public ModelAndView getAddPage(@ModelAttribute RoleDTO role) {
 		
 		def ModelAndView model = new ModelAndView(ADMIN_ROLES_EDIT)
 		model.addObject "role", role
@@ -54,14 +57,14 @@ public class RoleEditController {
 	}
 	
 	@RequestMapping(value="/add", method = RequestMethod.POST)
-	public ModelAndView saveNewRole(@Valid @ModelAttribute("role") Role _role, BindingResult _result) {
+	public ModelAndView saveNewRole(@Valid @ModelAttribute("role") RoleDTO _role, BindingResult _result) {
 		
 		if (_result.hasErrors()) {
 			def ModelAndView model2 = new ModelAndView(ADMIN_ROLES_EDIT)
 			model2.addObject "role", _role
 			return model2
 		}
-		
+		log.warn("role found: {}", _role)
 		CreateRoleCommand command = new CreateRoleCommand(_role)
 		gate.dispatch(command)
 		
@@ -69,25 +72,25 @@ public class RoleEditController {
 		
 	}
 	
-	@RequestMapping("/edit/{id}")
-	public ModelAndView getEditPage(@PathVariable Integer id) {
+	@RequestMapping("/edit/{role_id}")
+	public ModelAndView getEditPage(@PathVariable String role_id) {
 		
-		Role role = roleDAO.findOne(id)
+		Role role = roleDAO.findOne(role_id)
 				
 		if (role == null) {
-			log.error("Role not found {}", id)
+			log.error("Role not found {}", role_id)
 			return new ModelAndView("redirect:/ui/admin/roles/add")
 		}
 		
 		def model = new ModelAndView(ADMIN_ROLES_EDIT)
-		model.addObject "role", role
+		model.addObject "role", new RoleDTO(role)
 		
 		return model
 		
 	}
 	
-	@RequestMapping(value="/edit/{id}", method = RequestMethod.POST)
-	public ModelAndView modifyRole(@Valid @ModelAttribute("role") Role _role, BindingResult _result) {
+	@RequestMapping(value="/edit/{role_id}", method = RequestMethod.POST)
+	public ModelAndView modifyRole(@PathVariable String role_id, @Valid @ModelAttribute("role") RoleDTO _role, BindingResult _result) {
 		
 		if (_result.hasErrors()) {
 			def ModelAndView model2 = new ModelAndView(ADMIN_ROLES_EDIT)
@@ -96,12 +99,9 @@ public class RoleEditController {
 		}
 		
 		Role role = roleDAO.findOne(_role.getId());
-		if (role != null) {
-			role.setName(_role.getName());
-			role.setNote(_role.getNote());
-		}
+		log.warn("role found: {}", _role)
 		
-		EditRoleCommand command = new EditRoleCommand(role)
+		EditRoleCommand command = new EditRoleCommand(role, _role)
 		gate.dispatch(command)
 		
 		return new ModelAndView("redirect:/ui/admin/roles")

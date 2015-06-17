@@ -170,10 +170,16 @@ allprojects {
         compile "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
         compile "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
 
-	compile "com.google.code.findbugs:jsr305:$FINDBUGS"
-	compile "com.google.guava:guava:$GUAVA"
+		compile "com.google.code.findbugs:jsr305:$FINDBUGS"
+		compile "com.google.guava:guava:$GUAVA"
         compile "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
+		
+		compile	"org.springframework.data:spring-data-mongodb:$SPRING_MONGO"
 
+		testCompile 'org.mongodb:mongo-java-driver:3.0.2'
+		testCompile 'com.github.fakemongo:fongo:2.0.1'
+		testCompile 'com.lordofthejars:nosqlunit-mongodb:0.8.1'
+		
         testCompile LOGGING
 
         testCompile tests_frameworks // TEST FRAMEWORKS
@@ -202,20 +208,20 @@ allprojects {
                 force   "org.springframework:spring-core:$SPRING_VERSION"
                 force   "org.springframework:spring-expression:$SPRING_VERSION"
                 force   "org.springframework:spring-web:$SPRING_VERSION"
-                force   "org.springframework:spring-orm:$SPRING_VERSION"
-		force   "org.springframework:spring-tx:$SPRING_VERSION"
-		force   "org.springframework.data:spring-data-commons:$SPRING_DATA"
+                //force   "org.springframework:spring-orm:$SPRING_VERSION"
+				force   "org.springframework:spring-tx:$SPRING_VERSION"
+				//force   "org.springframework.data:spring-data-commons:$SPRING_DATA"
                 force   "org.springframework.security:spring-security-core:$SPRING_SECU"
 
-		force   "org.aspectj:aspectjrt:$ASPECTJRT"
+				force   "org.aspectj:aspectjrt:$ASPECTJRT"
                 force   "com.fasterxml.jackson.core:jackson-databind:$JACKSON"
-		force 	"com.fasterxml.jackson.core:jackson-annotations:$JACKSON"
+				force 	"com.fasterxml.jackson.core:jackson-annotations:$JACKSON"
                 force   "org.slf4j:slf4j-api:$LOG_SLF4J"
                 force   "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
                 force   "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
-		force   "org.javassist:javassist:$JAVASSIST"
-		force 	"org.hamcrest:hamcrest-core:$TEST_HAMCREST"
-		 force 	"org.objenesis:objenesis:$TEST_OBJENESIS"
+				force   "org.javassist:javassist:$JAVASSIST"
+				force 	"org.hamcrest:hamcrest-core:$TEST_HAMCREST"
+				force 	"org.objenesis:objenesis:$TEST_OBJENESIS"
 
         }
      }

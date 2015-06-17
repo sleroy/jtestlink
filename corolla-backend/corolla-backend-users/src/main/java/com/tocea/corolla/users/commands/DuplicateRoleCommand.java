@@ -14,21 +14,21 @@ import com.tocea.corolla.cqrs.annotations.Command;
 @Command
 public class DuplicateRoleCommand {
 	@NotNull
-	private Integer	roleID;
+	private String	roleID;
 
 	public DuplicateRoleCommand() {
 		super();
 	}
 
-	public DuplicateRoleCommand(final Integer _roleName) {
-		this.roleID = _roleName;
+	public DuplicateRoleCommand(final String _roleID) {
+		this.roleID = _roleID;
 
 	}
 
 	/**
 	 * @return the roleID
 	 */
-	public Integer getRoleID() {
+	public String getRoleID() {
 		return this.roleID;
 	}
 
@@ -36,8 +36,8 @@ public class DuplicateRoleCommand {
 	 * @param _roleName
 	 *            the roleID to set
 	 */
-	public void setRoleID(final Integer _roleName) {
-		this.roleID = _roleName;
+	public void setRoleID(final String _roleID) {
+		this.roleID = _roleID;
 	}
 
 	/*

@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.users.domain.Role;
+import com.tocea.corolla.users.dto.RoleDTO;
 
 /**
  * @author sleroy
@@ -23,6 +24,13 @@ public class EditRoleCommand {
 	public EditRoleCommand(final Role _role) {
 		super();
 		this.role = _role;
+	}
+	
+	public EditRoleCommand(final Role _role, final RoleDTO _roleDTO) {
+		super();
+		this.role = _role;
+		this.role.setName(_roleDTO.getName());
+		this.role.setNote(_roleDTO.getNote());
 	}
 
 	/**

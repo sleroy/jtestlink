@@ -19,7 +19,8 @@ import com.tocea.corolla.users.domain.User;
  *
  */
 public class UserDto {
-	private Integer	id;
+	
+	private String	id;
 
 	@NotBlank
 	@Size(max = 40)
@@ -38,7 +39,7 @@ public class UserDto {
 	private String	login			= "";
 
 	@NotNull
-	private Integer	roleId;
+	private String	roleId;
 
 	@NotBlank
 	@Size(max = 10)
@@ -62,6 +63,7 @@ public class UserDto {
 	}
 
 	public UserDto(final User _user) {
+		
 		this.activationToken = _user.getActivationToken();
 		this.active = _user.isActive();
 		this.createdTime = _user.getCreatedTime();
@@ -115,7 +117,7 @@ public class UserDto {
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
 
@@ -143,7 +145,7 @@ public class UserDto {
 	/**
 	 * @return the roleId
 	 */
-	public Integer getRoleId() {
+	public String getRoleId() {
 		return this.roleId;
 	}
 
@@ -210,7 +212,7 @@ public class UserDto {
 	 * @param _id
 	 *            the id to set
 	 */
-	public void setId(final Integer _id) {
+	public void setId(final String _id) {
 		this.id = _id;
 	}
 
@@ -242,8 +244,12 @@ public class UserDto {
 	 * @param _roleId
 	 *            the roleId to set
 	 */
-	public void setRoleId(final Integer _roleId) {
+	public void setRoleId(final String _roleId) {
 		this.roleId = _roleId;
+	}
+	
+	public void setRoleId(final Integer _roleId) {
+		this.roleId = _roleId.toString();
 	}
 
 	/*

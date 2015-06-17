@@ -63,7 +63,7 @@ class DeleteUserCommandHandlerTest extends Specification{
 		this.handler.handle command
 
 		then:
-		1 * userDao.deleteUserByLogin(_)
+		1 * userDao.delete(_)
 	}
 
 	/**
@@ -80,6 +80,6 @@ class DeleteUserCommandHandlerTest extends Specification{
 		this.handler.handle command
 
 		then:
-		0 * userDao.deleteUserByLogin(_)
+		0 * userDao.delete(_)
 	}
 }
