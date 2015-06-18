@@ -19,6 +19,7 @@ import com.tocea.corolla.products.domain.Application
 import com.tocea.corolla.products.domain.ApplicationStatus
 import com.tocea.corolla.products.domain.Component
 import com.tocea.corolla.products.domain.ComponentType
+import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
@@ -74,7 +75,7 @@ public class DemoDataBean {
 			Permission.REST]
 		)
 		roleAdmin.roleProtected = true
-		roleDAO.save roleAdmin
+		this.gate.dispatch new CreateRoleCommand(roleAdmin)
 
 		final Role roleGuest = this.newRole("Guest", "Guest", [], true)
 		final Role roleTester = this.newRole("Tester", "Tester", [Permission.REST])
@@ -193,7 +194,8 @@ public class DemoDataBean {
 			permissions = ""
 			roleProtected = false
 		}
-		this.roleDAO.save role
+		this.gate.dispatch new CreateRoleCommand(role)
+		log.info("new role created [_id:"+role.getId()+"]");
 		return role
 	}
 
@@ -215,7 +217,7 @@ public class DemoDataBean {
 			defaultRole = _defaultRole
 			roleProtected = false
 		}
-		this.roleDAO.save role
+		this.gate.dispatch new CreateRoleCommand(role)
 		log.info("new role created [_id:"+role.getId()+"]");
 		return role
 	}
