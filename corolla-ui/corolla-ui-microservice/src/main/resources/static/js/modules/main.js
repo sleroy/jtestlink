@@ -55,7 +55,7 @@ var deleteModal = new DeleteModal();
 
 $(document).ready(function() {
 	
-	$('.project-tree-view').jstree({
+	$('.projects-tree-view').jstree({
 		"core": {
 			"animation" : 0,
 		    "check_callback" : true,
@@ -97,10 +97,12 @@ $(document).ready(function() {
 		'types': {
 			'default': { icon: 'glyphicon glyphicon-bookmark' }
 		}
-	}).on("select_node.jstree", function (e, data) {
+	}).on("select_node.jstree", function (e, data) {		
 		var key = data.instance.get_node(data.node, true).children('a').data('key');
 		if (key) {
 			document.location = '/ui/projects/'+key
+		}else{
+			data.instance.toggle_node(data.node);
 		}
     });
 	

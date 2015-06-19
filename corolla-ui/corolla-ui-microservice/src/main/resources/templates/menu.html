@@ -2,49 +2,101 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <body>
 
-	<ul class="nav hidden-xs" id="lg-menu" th:fragment="adminMenu" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
-	  <li>
-		  <a href="/ui/admin"> 
-		  	<i class="glyphicon glyphicon-cog"></i> 
-		  	Administration
-		  </a>
-	  </li>
-	  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_USERS')}">
-	  	<a href="/ui/admin/users"> 
-	  		<i class="glyphicon glyphicon-user"></i> 
-	  		Users
-	  	</a>
-	  </li>
-	  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_ROLES')}">
-	  	<a href="/ui/admin/roles"> 
-	  		<i class="glyphicon glyphicon-lock"></i> 
-	  		Roles
-	  	</a>
-	  </li>
-	  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_ROLES')}">
-	  	<a href="/ui/admin/items"> 
-	  		<i class="glyphicon glyphicon-duplicate"></i> 
-	  		Items
-	  	</a>
-	  </li>
-	  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_ROLES')}">
-	  	<a href="/ui/admin/relationships"> 
-	  		<i class="glyphicon glyphicon-transfer"></i> 
-	  		Relationships
-	  	</a>
-	  </li>
-	  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_CONFIG')}">
-	  	<a href="/ui/admin/config"> 
-	  		<i class="glyphicon glyphicon-wrench"></i> 
-	  		Configuration
-	  	</a>
-	  </li>
+	<ul class="sidebar-menu" th:fragment="adminMenu" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+	  
+	  <li class="treeview"> -->
+        <a href="/ui/admin">
+          <i class="glyphicon glyphicon-cog"></i>
+          <span>Administration</span> 
+          <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li>
+          	<a href="/ui/admin/users">
+          		<i class="glyphicon glyphicon-user"></i>
+				Users 
+		  	</a>
+		  </li>
+          <li>
+	  		<a href="/ui/admin/roles"> 
+	  			<i class="glyphicon glyphicon-lock"></i> 
+	  			Roles
+	  		</a>
+	 	 </li>
+	 	 <li>
+		  	<a href="/ui/admin/items"> 
+		  		<i class="glyphicon glyphicon-duplicate"></i> 
+		  		Items
+		  	</a>
+		  </li>
+		  <li>
+		  	<a href="/ui/admin/relationships"> 
+		  		<i class="glyphicon glyphicon-transfer"></i> 
+		  		Relationships
+		  	</a>
+		  </li>
+		  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_CONFIG')}">
+		  	<a href="/ui/admin/config"> 
+		  		<i class="glyphicon glyphicon-wrench"></i> 
+		  		Configuration
+		  	</a>
+		  </li>	
+        </ul>
+      </li>
+      
 	</ul>
  
-	<ul class="nav hidden-xs" id="lg-menu" th:fragment="mainMenu" th:if="${#httpServletRequest.remoteUser != null}">
+	<ul class="sidebar-menu" th:fragment="mainMenu" th:if="${#httpServletRequest.remoteUser != null}">
 		
-		<li><i class="glyphicon glyphicon-book"></i> Projects</li>		 
-		<li><div class="project-tree-view"></div></li>
+		<li>
+			<a href="/ui/portfolio">
+				<i class="glyphicon glyphicon-book"></i> 
+				<span>Portfolio</span>
+			</a>
+		</li>		 
+		
+		<li class="treeview">
+	        <a href="/ui/admin">
+	          <i class="glyphicon glyphicon-cog"></i>
+	          <span>Administration</span> 
+	          <i class="fa fa-angle-left pull-right"></i>
+	        </a>
+	        <ul class="treeview-menu">
+	          <li>
+	          	<a href="/ui/admin/users">
+	          		<i class="glyphicon glyphicon-user"></i>
+					Users 
+			  	</a>
+			  </li>
+	          <li>
+		  		<a href="/ui/admin/roles"> 
+		  			<i class="glyphicon glyphicon-lock"></i> 
+		  			Roles
+		  		</a>
+		 	 </li>
+		 	 <li>
+			  	<a href="/ui/admin/items"> 
+			  		<i class="glyphicon glyphicon-duplicate"></i> 
+			  		Items
+			  	</a>
+			  </li>
+			  <li>
+			  	<a href="/ui/admin/relationships"> 
+			  		<i class="glyphicon glyphicon-transfer"></i> 
+			  		Relationships
+			  	</a>
+			  </li>
+			  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN_CONFIG')}">
+			  	<a href="/ui/admin/config"> 
+			  		<i class="glyphicon glyphicon-wrench"></i> 
+			  		Configuration
+			  	</a>
+			  </li>	
+	        </ul>
+      	</li>
+		
+<!-- 		<li><div class="project-tree-view"></div></li> -->
+
 	 
 	  <!-- <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}"><a href="/ui/admin"> <i class="glyphicon glyphicon-dashboard"></i>Administration
 	  </a></li>
@@ -61,41 +113,45 @@
 	   -->
 	 </ul>
  
- 	<ul class="nav hidden-xs" id="lg-menu" th:fragment="projectMenu">
+ 	<ul class="sidebar-menu" th:fragment="projectMenu">
 		
 		<li>
 			<a href="#">
-				<i class="glyphicon glyphicon-duplicate"></i> Items
+				<i class="glyphicon glyphicon-duplicate"></i> 
+				<span>Items</span>
 			</a>
 		</li>
 		<li>
-			<div class="project-items-tree-view"></div>
-		</li>
-		<li>
 			<a href="#">
-				<i class="glyphicon glyphicon-tags"></i> Releases
+				<i class="glyphicon glyphicon-flash"></i> 
+				<span>Test Cases</span>
 			</a>
 		</li>
 		<li>
-			<div class="project-releases-tree-view"></div>
+			<a href="#">
+				<i class="glyphicon glyphicon-ok"></i> 
+				<span>Test Campaigns</span>
+			</a>
 		</li>
+<!-- 		<li> -->
+<!-- 			<div class="project-items-tree-view"></div> -->
+<!-- 		</li> -->
 		<li>
 			<a href="#">
-				<i class="glyphicon glyphicon-text-color"></i> Variables
+				<i class="glyphicon glyphicon-tags"></i> 
+				<span>Releases</span>
+			</a>
+		</li>
+<!-- 		<li> -->
+<!-- 			<div class="project-releases-tree-view"></div> -->
+<!-- 		</li> -->
+		<li>
+			<a href="#">
+				<i class="glyphicon glyphicon-text-color"></i> 
+				<span>Variables</span>
 			</a>
 		</li>
  
- 	<!-- 
-  <li th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}"><a href="/ui/admin"> <i class="glyphicon glyphicon-dashboard"></i>Administration
-  </a></li>
-  <li><a href="/ui/home"> <i class="glyphicon glyphicon-home"></i> Home
-  </a></li>
-  <li th:if="${#httpServletRequest.isUserInRole('ROLE_APPLICATION')}"><a href="/ui/applications/"> <i class="glyphicon glyphicon-book"></i> Application management
-  </a></li>
-  <li th:if="${#httpServletRequest.isUserInRole('ROLE_APPLICATION')}"><a href="/ui/applications/add"> <i class="glyphicon glyphicon-plus"></i> Add a new application
-  </a></li>
- 	-->
-
  </ul>
 
 </body>

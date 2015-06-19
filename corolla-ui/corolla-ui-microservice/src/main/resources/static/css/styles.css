@@ -102,6 +102,12 @@ hr {
 	color: #fff;
 }
 
+.sidebar-brand {
+    height: 60px;
+    font-size: 20px;
+    line-height: 30px;
+}
+
 #main {
 	background-color: #d9e7de;
 	padding-left: 0;
