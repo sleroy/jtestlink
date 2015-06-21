@@ -55,57 +55,6 @@ var deleteModal = new DeleteModal();
 
 $(document).ready(function() {
 	
-	$('.projects-tree-view').jstree({
-		"core": {
-			"animation" : 0,
-		    "check_callback" : true,
-		    "themes" : { "stripes" : true },
-		    'data' : [
-               'Corolla',
-               {
-            	   'text': 'Komea',
-            	   'children': [{ 
-            	    	'text': 'Komea Rest API'
-            	    }, {
-            	    	'text': 'Komea Dashboard',
-            	    	'a_attr': {
-            	    		'data-key': 'komea-dashboard'
-            	    	}
-            	    }]
-               }
-		    ]
-		},
-		"plugins": ["dnd", "contextmenu", "types"],
-		"contextmenu": {
-			"items": {
-				"add": {
-					label: "Add",
-					action: function(node) {
-						var name = node.reference[0].text;
-						console.log('adding new element in node: '+name);
-					}
-				},
-				"delete": {
-					label: "Delete",
-					action: function(node) {
-						console.log(node);
-						console.log('deleting node: '+node.reference[0].text);
-					}
-				}
-			}
-		},
-		'types': {
-			'default': { icon: 'glyphicon glyphicon-bookmark' }
-		}
-	}).on("select_node.jstree", function (e, data) {		
-		var key = data.instance.get_node(data.node, true).children('a').data('key');
-		if (key) {
-			document.location = '/ui/projects/'+key
-		}else{
-			data.instance.toggle_node(data.node);
-		}
-    });
-	
 	$(document).on('dnd_stop.vakata', function(e, data) {
 		console.log('the tree has been updated!')
 	});
