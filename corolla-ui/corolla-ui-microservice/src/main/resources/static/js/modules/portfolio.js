@@ -17,13 +17,17 @@ $(document).ready(function() {
 		    "check_callback" : true,
 		    "themes" : { "stripes" : true },
 		    'data' : [
-               'Corolla',
                {
+            	   'text': 'Corolla',
+            	   'icon': 'http://lorempixel.com/16/16/'
+               }, {
             	   'text': 'Komea',
             	   'children': [{ 
-            	    	'text': 'Komea Rest API'
+            	    	'text': 'Komea Rest API',
+            	    	'icon': 'http://lorempixel.com/16/16/'
             	    }, {
             	    	'text': 'Komea Dashboard',
+            	    	'icon': 'http://lorempixel.com/16/16/',
             	    	'a_attr': {
             	    		'data-key': 'komea-dashboard'
             	    	}
@@ -51,7 +55,7 @@ $(document).ready(function() {
 			}
 		},
 		'types': {
-			'default': { icon: 'glyphicon glyphicon-bookmark' }
+			'default': { icon: 'glyphicon glyphicon-folder-open' }
 		}
 	}).on("select_node.jstree", function (e, data) {		
 		var key = data.instance.get_node(data.node, true).children('a').data('key');
@@ -118,7 +122,17 @@ $(document).ready(function() {
 
     $(PROJECTS_TREEVIEW).bind("loaded.jstree", function(e, data) {
     	drawSunburst();
+    	//$(PROJECTS_TREEVIEW).off("click.jstree", ".jstree-anchor");
+    	//addMenu();
     });
+    
+   /* $(PROJECTS_TREEVIEW).bind("after_open.jstree", function(e, data) {
+    	addMenu();
+    });
+    
+    var addMenu = function() {
+    	$('.jstree-node').append('<a href="#test" class="label label-success">Requirements</a>');
+    }*/
 	
 	$(window).resize(function() {
 		$(PROJECTS_SUNBURST).html('');
