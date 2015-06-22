@@ -1,10 +1,10 @@
-/**
- * Initialize the main javascript to hide alert box and init ajax error handler
- */
+
 function initMainJS() {
-	$(document).ready(function() {
-		$(".ajaxAlert").hide();
-	});
+	
+	/*
+	 * Initialize the main javascript to hide alert box and init ajax error handler
+	 */
+	$(".ajaxAlert").hide();
 	
 	$(document).ajaxError(
 	        function(event, jqxhr, settings, thrownError) {
@@ -13,6 +13,14 @@ function initMainJS() {
 		                "<strong>Ajax Error</strong> " + settings.url + " -> "
 		                        + thrownError + "<br/>");
 	        });
+	
+	/* 
+	 * Fix issue with sidebar toggle button disapearing
+	 */
+    $('.sidebar-toggle').click(function() {
+    	$('.sidebar-toggle').removeClass('visible-xs');
+    });
+    
 }
 
 function define_yesModalButton_clickAction(action) {

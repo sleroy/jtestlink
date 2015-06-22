@@ -220,7 +220,7 @@
           </form>
           <!-- /.search form -->
           	<!-- sidebar menu: : style can be found in sidebar.less -->
-          	<ul class="sidebar-menu" id="lg-menu" th:include="menu :: mainMenu">
+          	<ul class="sidebar-menu" th:include="menu :: mainMenu">
 <!-- 				th:replace="menu :: ${sideMenu != null ? sideMenu : 'mainMenu'}"> -->
 			</ul>
         </section>
@@ -408,20 +408,14 @@
       <div class='control-sidebar-bg'></div>
     </div><!-- ./wrapper -->
     
-    <!-- script references -->
+    <!-- jQuery -->
 	<script th:src="@{/js/jquery.min.js}"></script>
-	<script th:src="@{/js/bootstrap.min.js}"
-		src="../static/js/bootstrap.min.js"></script>
-	<script th:src="@{/resources/bootbox/bootbox.min.js}"
-		src="../static/resources/bootbox/bootbox.min.js"></script>
-	<script src="../static/js/ui-bootstrap-tpls-0.12.1.min.js"
-		type="text/javascript"></script>
+	
+	<!-- BootStrap -->
+	<script th:src="@{/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
+	<script th:src="@{/resources/bootbox/bootbox.min.js}" src="../static/resources/bootbox/bootbox.min.js"></script>
+	<script src="../static/js/ui-bootstrap-tpls-0.12.1.min.js" type="text/javascript"></script>
 	<script th:src="@{/js/scripts.js}" src="../static/js/scripts.js"></script>
-    
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-      $.widget.bridge('uibutton', $.ui.button);
-    </script>
     
     <!-- daterangepicker -->
 <!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js" type="text/javascript"></script> -->
@@ -450,15 +444,6 @@
         })();
     </script> -->
     
-	<!--  Fix issue with sidebar toggle button disapearing -->
-    <script type="text/javascript">
-    	$(document).ready(function() {
-    		$('.sidebar-toggle').click(function() {
-    			$('.sidebar-toggle').removeClass('visible-xs');
-    		});
-    	});
-    </script>
-    
 	<script
 		th:src="@{/resources/datatable/media/js/jquery.dataTables.min.js}"
 		src="../static/resources/datatable/media/js/jquery.dataTables.min.js" />
@@ -479,7 +464,9 @@
 	<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js"></script>	
 	
 	<script type="text/javascript">
-		initMainJS()
+		$(document).ready(function() {
+			initMainJS()
+		});
 	</script>
 	
 	<!-- D3 JS -->
