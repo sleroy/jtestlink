@@ -1,4 +1,6 @@
-
+/**
+ * Build a sunburst using D3 library
+ */
 function SunburstBuilder(elt) {
 
 	var root;
@@ -38,7 +40,7 @@ function SunburstBuilder(elt) {
 		return this;
 	}
 	
-	this.build = function(data=null) {
+	this.build = function(data) {
 		
 		var radius = this.radius ? this.radius : Math.min(this.width, this.height) / 2;
 		

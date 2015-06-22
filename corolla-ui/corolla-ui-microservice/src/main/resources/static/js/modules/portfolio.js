@@ -4,6 +4,8 @@ var PROJECTS_SUNBURST = '.projects-sunburst';
 
 $(document).ready(function() {
 	
+	$(".textarea").wysihtml5();
+	
 	$(PROJECTS_TREEVIEW).jstree({
 		"core": {
 			"animation" : 0,
@@ -49,14 +51,10 @@ $(document).ready(function() {
 	}).on("select_node.jstree", function (e, data) {		
 		var key = data.instance.get_node(data.node, true).children('a').data('key');
 		if (key) {
-			document.location = '/ui/projects/'+key
+			document.location = '/ui/portfolio/'+key
 		}else{
 			data.instance.toggle_node(data.node);
 		}
-    });
-    
-    $(PROJECTS_TREEVIEW).bind("loaded.jstree", function(e, data) {
-    	drawSunburst();
     });
 	
 	function format_jstree_data(data) {
@@ -68,12 +66,29 @@ $(document).ready(function() {
 			return obj;
 	}
 	
+	function getNodes() {
+		return $(PROJECTS_TREEVIEW).data().jstree.get_json();
+	}
+	
+	function toggleNode(nodes, name) {
+		$.each(nodes, function(i,node) {
+			if (node.text == name) {
+				console.log('toggle node '+name);
+				$(PROJECTS_TREEVIEW).jstree(true).select_node(node);
+			}else{
+				if (node.children) {
+					toggleNode(node.children, name);
+				}
+			}
+		});
+	}
+	
 	function drawSunburst() {
 		
-		var width = $(PROJECTS_SUNBURST).parent().width();
+		var width = $(PROJECTS_SUNBURST).parent().width() * 0.7;
 		console.log( width );
 		
-		var treeview_data = $('.projects-tree-view').data().jstree.get_json();
+		var treeview_data = getNodes();
 		
 		var data = { name: 'Projects', children: [] };
 		$.each(treeview_data, function(i, v) {
@@ -87,13 +102,19 @@ $(document).ready(function() {
 				.setWidth(width)
 				//.setURL('/resources/sunburst_sample.json')
 				.onClick(function(data) {
+					$(PROJECTS_TREEVIEW).jstree(true).deselect_all();
+					$(PROJECTS_TREEVIEW).jstree(true).close_all();
+					toggleNode(getNodes(), data.name);
 					console.log(data);
 				})
 				.build(data);
 		
 	}
+
+    $(PROJECTS_TREEVIEW).bind("loaded.jstree", function(e, data) {
+    	drawSunburst();
+    });
 	
-	//drawSunburst();
 	$(window).resize(function() {
 		$(PROJECTS_SUNBURST).html('');
 		drawSunburst();

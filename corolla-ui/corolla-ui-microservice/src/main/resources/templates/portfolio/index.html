@@ -15,7 +15,7 @@
 	      </h1>
 	      <ol class="breadcrumb">
 	        <li><a href="#"><i class="glyphicon glyphicon-book"></i> Portfolio</a></li>
-	        <li class="active">Portfolio</li>
+	        <li class="active">Komea Dashboard</li>
 	      </ol> 
 	    </section>
 
@@ -34,22 +34,57 @@
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-8">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<h4>Projects</h4>
-						</div>
-						<div>
-							<div class="projects-sunburst"></div>
-						</div>
-<!-- 						<div class="panel-footer"> -->
-<!-- 							<button type="button" class="btn btn-default">View Campaigns</button> -->
-<!-- 						</div> -->
-					</div>
+					<div class="nav-tabs-custom">
+	                <ul class="nav nav-tabs">
+	                  <li class="active"><a href="#tab_1" data-toggle="tab">Projects</a></li>
+	                  <li><a href="#tab_2" data-toggle="tab">Komea Dashboard</a></li>
+	                  <li class="dropdown">
+	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                      Actions <span class="caret"></span>
+	                    </a>
+	                    <ul class="dropdown-menu">
+	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Create sub-project</a></li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Delete project</a></li>
+	                    </ul>
+	                  </li>
+	                  <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+	                </ul>
+	                <div class="tab-content">
+	                  <div class="tab-pane active" id="tab_1">
+	                    <div class="projects-sunburst"></div>
+	                  </div><!-- /.tab-pane -->
+	                  <div class="tab-pane" id="tab_2">
+	                  	<form class="project-form">
+		                    <div class="input-group">
+			                    <span class="input-group-addon">Key</span>
+			                    <input name="key" type="text" class="form-control" placeholder="Key"/>
+			                </div>
+			                <div class="input-group">
+			                    <span class="input-group-addon">Name</span>
+			                    <input name="name" type="text" class="form-control" placeholder="Name"/>
+			                </div>
+		                	<textarea class="textarea" placeholder="Description"></textarea>
+		                	<div class="box-footer">
+		                  		<button type="submit" class="btn btn-primary">Save</button>
+		                  		<a class="btn btn-info" href="#">Create sub-project</a>
+		                  		<a class="btn btn-success" th:href="@{/ui/projects/komea-dashboard}">Show items</a>
+		                  		<a class="btn btn-danger" href="#">Delete project</a>
+	                  		</div>
+	                  	</form>
+	                  </div><!-- /.tab-pane -->
+	                </div><!-- /.tab-content -->
+	              </div><!-- nav-tabs-custom -->
 				</div>
 			</div>
 		</div>
 		<!--/row-->
 		
 	</div>
+	
+	<div layout:fragment="footer">
+  		<script type="text/javascript" src="../../static/js/modules/portfolio.js" th:src="@{/js/modules/portfolio.js}" />
+ 	</div>
+	
 </body>
 </html>

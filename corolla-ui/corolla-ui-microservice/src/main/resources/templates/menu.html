@@ -53,9 +53,40 @@
 				<i class="glyphicon glyphicon-book"></i> 
 				<span>Portfolio</span>
 			</a>
-		</li>		 
+		</li>	
+				
+		<li th:if="${project != null}">
+			<a href="#">
+				<i class="glyphicon glyphicon-duplicate"></i> 
+				<span>Items</span>
+			</a>
+		</li>
+		<li th:if="${project != null}">
+			<a href="#">
+				<i class="glyphicon glyphicon-flash"></i> 
+				<span>Test Cases</span>
+			</a>
+		</li>
+		<li th:if="${project != null}">
+			<a href="#">
+				<i class="glyphicon glyphicon-ok"></i> 
+				<span>Test Campaigns</span>
+			</a>
+		</li>
+		<li th:if="${project != null}">
+			<a href="#">
+				<i class="glyphicon glyphicon-tags"></i> 
+				<span>Releases</span>
+			</a>
+		</li>
+		<li th:if="${project != null}">
+			<a href="#">
+				<i class="glyphicon glyphicon-text-color"></i> 
+				<span>Variables</span>
+			</a>
+		</li> 
 		
-		<li class="treeview">
+		<li class="treeview" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
 	        <a href="/ui/admin">
 	          <i class="glyphicon glyphicon-cog"></i>
 	          <span>Administration</span> 

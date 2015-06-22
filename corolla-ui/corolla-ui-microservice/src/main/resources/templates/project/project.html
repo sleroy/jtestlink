@@ -5,22 +5,120 @@
 >
 <body>
 	<!-- Main -->
-	<div class="content" layout:fragment="content">
-		<!-- content -->
-		<div class="row">
-			<!-- main col left -->
-			<div class="col-sm-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4>Project</h4>
+	<div layout:fragment="content">
+	
+		<!-- Content Header (Page header) -->
+	    <section class="content-header">
+	      <h1>
+	        <span th:text="${project}">Project</span>
+	        <small>Items</small>
+	      </h1>
+	      <ol class="breadcrumb">
+	        <li><a href="#"><i class="glyphicon glyphicon-book"></i> Komea</a></li>
+	        <li class="active">Komea Dashboard</li>
+	      </ol> 
+	    </section>
+
+
+		<!-- Main -->
+		<div class="content">
+			<div class="row">
+				<div class="col-sm-6 col-md-4">
+					<div class="panel panel-primary">
+<!-- 						<div class="panel-heading"> -->
+<!-- 							<h4>Favorite products</h4> -->
+<!-- 						</div> -->
+						<div>
+							<div class="project-items-tree-view"></div>
+						</div>
 					</div>
-					<div class="panel-body">
-						This is a project.
-					</div>
+				</div>
+				<div class="col-sm-6 col-md-8">
+					<div class="nav-tabs-custom">
+	                <ul class="nav nav-tabs">
+	                  <li class="active"><a href="#tab_1" data-toggle="tab">Items</a></li>
+	                  <li><a href="#tab_2" data-toggle="tab">Add a KPI</a></li>
+	                  <li><a href="#tab_3" data-toggle="tab">Edit</a></li>
+	                  <li class="dropdown">
+	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                      Actions <span class="caret"></span>
+	                    </a>
+	                    <ul class="dropdown-menu">
+	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Create sub-project</a></li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Delete project</a></li>
+	                    </ul>
+	                  </li>
+	                  <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+	                </ul>
+	                <div class="tab-content">
+	                  <div class="tab-pane active" id="tab_1">
+	                    <div class="sunburst project-items-sunburst"></div>
+	                  </div><!-- /.tab-pane -->
+	                  <div class="item-details tab-pane" id="tab_2">
+	                  	<div class="row">
+	                  		<div class="col-sm-6 col-md-4">Key</div>
+	                  		<div class="col-sm-6 col-md-8">Add_KPI</div>
+	                  	</div>
+	                  	<div class="row">
+	                  		<div class="col-sm-6 col-md-4">Name</div>
+	                  		<div class="col-sm-6 col-md-8">Add a KPI</div>
+	                  	</div>
+	                  	<div class="row">
+	                  		<div class="col-sm-6 col-md-4">Description</div>
+	                  		<div class="col-sm-6 col-md-8">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit! memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro.
+
+Equitis Romani autem esse filium criminis loco poni ab accusatoribus neque his iudicantibus oportuit neque defendentibus nobis. Nam quod de pietate dixistis, est quidem ista nostra existimatio, sed iudicium certe parentis; quid nos opinemur, audietis ex iuratis; quid parentes sentiant, lacrimae matris incredibilisque maeror, squalor patris et haec praesens maestitia, quam cernitis, luctusque declarat.
+
+Accedat huc suavitas quaedam oportet sermonum atque morum, haudquaquam mediocre condimentum amicitiae. Tristitia autem et in omni re severitas habet illa quidem gravitatem, sed amicitia remissior esse debet et liberior et dulcior et ad omnem comitatem facilitatemque proclivior.
+
+Procedente igitur mox tempore cum adventicium nihil inveniretur, relicta ora maritima in Lycaoniam adnexam Isauriae se contulerunt ibique densis intersaepientes itinera praetenturis provincialium et viatorum opibus pascebantur.
+
+Dum haec in oriente aguntur, Arelate hiemem agens Constantius post theatralis ludos atque circenses ambitioso editos apparatu diem sextum idus Octobres, qui imperii eius annum tricensimum terminabat, insolentiae pondera gravius librans, siquid dubium deferebatur aut falsum, pro liquido accipiens et conperto, inter alia excarnificatum Gerontium Magnentianae comitem partis exulari maerore multavit.
+
+In his tractibus navigerum nusquam visitur flumen sed in locis plurimis aquae suapte natura calentes emergunt ad usus aptae multiplicium medelarum. verum has quoque regiones pari sorte Pompeius Iudaeis domitis et Hierosolymis captis in provinciae speciem delata iuris dictione formavit.
+
+Non ergo erunt homines deliciis diffluentes audiendi, si quando de amicitia, quam nec usu nec ratione habent cognitam, disputabunt. Nam quis est, pro deorum fidem atque hominum! qui velit, ut neque diligat quemquam nec ipse ab ullo diligatur, circumfluere omnibus copiis atque in omnium rerum abundantia vivere? Haec enim est tyrannorum vita nimirum, in qua nulla fides, nulla caritas, nulla stabilis benevolentiae potest esse fiducia, omnia semper suspecta atque sollicita, nullus locus amicitiae.
+
+Eodem tempore Serenianus ex duce, cuius ignavia populatam in Phoenice Celsen ante rettulimus, pulsatae maiestatis imperii reus iure postulatus ac lege, incertum qua potuit suffragatione absolvi, aperte convictus familiarem suum cum pileo, quo caput operiebat, incantato vetitis artibus ad templum misisse fatidicum, quaeritatum expresse an ei firmum portenderetur imperium, ut cupiebat, et cunctum.
+
+At nunc si ad aliquem bene nummatum tumentemque ideo honestus advena salutatum introieris, primitus tamquam exoptatus suscipieris et interrogatus multa coactusque mentiri, miraberis numquam antea visus summatem virum tenuem te sic enixius observantem, ut paeniteat ob haec bona tamquam praecipua non vidisse ante decennium Romam.
+
+Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitrantes Augustae per haec quae strepit incusat iratus nimirum quod contumacem praefectum, quid rerum ordo postulat ignorare dissimulantem formidine tenus iusserim custodiri.</div>
+	                  	</div>
+	                  </div><!-- /.tab-pane -->
+	                  <div class="tab-pane" id="tab_3">
+	                  	<form class="project-form">
+		                    <div class="input-group">
+			                    <span class="input-group-addon">Key</span>
+			                    <input name="key" type="text" class="form-control" placeholder="Key"/>
+			                </div>
+			                <div class="input-group">
+			                    <span class="input-group-addon">Name</span>
+			                    <input name="name" type="text" class="form-control" placeholder="Name"/>
+			                </div>
+		                	<textarea class="textarea" placeholder="Description" style="height: 500px;"></textarea>
+		                	<div class="box-footer">
+		                  		<button type="submit" class="btn btn-primary">Save</button>
+		                  		<a class="btn btn-info" href="#">Create sub-project</a>
+		                  		<a class="btn btn-success" th:href="@{/ui/projects/komea-dashboard}">Show items</a>
+		                  		<a class="btn btn-danger" href="#">Delete project</a>
+	                  		</div>
+	                  	</form>
+	                  </div><!-- /.tab-pane -->
+	                </div><!-- /.tab-content -->
+	              </div><!-- nav-tabs-custom -->
 				</div>
 			</div>
 		</div>
+		<!--/row-->
+		
 	</div>
 	<!--/row-->
+	
+	<div layout:fragment="footer">
+  		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/project.js}" />
+ 	</div>
+	
 </body>
 </html>
