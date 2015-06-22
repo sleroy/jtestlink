@@ -6,6 +6,11 @@ $(document).ready(function() {
 	
 	$(".textarea").wysihtml5();
 	
+	$('.toggle-edit').click(function() {
+		$('.details-view').hide();
+		$('.project-form').show();
+	});
+	
 	$(PROJECTS_TREEVIEW).jstree({
 		"core": {
 			"animation" : 0,
@@ -26,7 +31,7 @@ $(document).ready(function() {
                }
 		    ]
 		},
-		"plugins": ["dnd", "contextmenu", "types"],
+		"plugins": ["dnd", "contextmenu", "types", "search"],
 		"contextmenu": {
 			"items": {
 				"add": {
@@ -85,7 +90,7 @@ $(document).ready(function() {
 	
 	function drawSunburst() {
 		
-		var width = $(PROJECTS_SUNBURST).parent().width() * 0.7;
+		var width = $(PROJECTS_SUNBURST).parent().parent().width() * 0.7;
 		console.log( width );
 		
 		var treeview_data = getNodes();
@@ -99,7 +104,7 @@ $(document).ready(function() {
 		new SunburstBuilder()
 				.setRoot(PROJECTS_SUNBURST)
 				.setHeight(width)
-				.setWidth(width)
+				.setWidth(width * 0.9)
 				//.setURL('/resources/sunburst_sample.json')
 				.onClick(function(data) {
 					$(PROJECTS_TREEVIEW).jstree(true).deselect_all();

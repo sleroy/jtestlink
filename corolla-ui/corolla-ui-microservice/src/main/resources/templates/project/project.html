@@ -37,9 +37,12 @@
 					<div class="nav-tabs-custom">
 	                <ul class="nav nav-tabs">
 	                  <li class="active"><a href="#tab_1" data-toggle="tab">Items</a></li>
-	                  <li><a href="#tab_2" data-toggle="tab">Add a KPI</a></li>
+	                  <li><a href="#tab_2" data-toggle="tab">Details</a></li>
 	                  <li><a href="#tab_3" data-toggle="tab">Edit</a></li>
-	                  <li class="dropdown">
+	                  <li><a href="#tab_4" data-toggle="tab">Comments</a> </li>
+	                   <li><a href="#tab_5" data-toggle="tab">Revisions</a> </li>
+	                   <li><a href="#tab_5" data-toggle="tab">Export</a> </li>
+	                  <li class="dropdown pull-right">
 	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 	                      Actions <span class="caret"></span>
 	                    </a>
@@ -49,13 +52,23 @@
 	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Delete item</a></li>
 	                    </ul>
 	                  </li>
-	                  <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+	                  <li class="dropdown pull-right">
+	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                      Add <span class="caret"></span>
+	                    </a>
+	                    <ul class="dropdown-menu">
+	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Requirement</a></li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">User Story</a></li>
+	                    </ul>
+	                  </li>
+<!-- 	                  <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
 	                </ul>
 	                <div class="tab-content">
 	                  <div class="tab-pane active" id="tab_1">
 	                    <div class="sunburst project-items-sunburst"></div>
 	                  </div><!-- /.tab-pane -->
-	                  <div class="item-details tab-pane" id="tab_2">
+	                  <div class="details-view tab-pane" id="tab_2">
 	                  	<div class="row">
 	                  		<div class="col-sm-6 col-md-4">Key</div>
 	                  		<div class="col-sm-6 col-md-8">Add_KPI</div>

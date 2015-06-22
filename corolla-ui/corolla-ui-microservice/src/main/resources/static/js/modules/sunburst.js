@@ -83,30 +83,36 @@ function SunburstBuilder(elt) {
 		      .style("fill-rule", "evenodd");
 		  
 		  var textBox = d3.select("svg").selectAll("text")
-		      .data(["Click on a path"])
+		      .data([""])
 		    .enter().append("text")
-		      .attr("transform", "translate(" + width + ",0)")
+		      .attr("transform", "translate(" + (width/2) + ",0)")
 		      .attr("text-anchor", "end")
-		      .attr("dy", 16)
+		      .attr("dy", height/2)
+		      .attr("text-anchor", "middle")
+		      .style("font", "300 "+ (width/36) +"px verdana")
 		      .text(String);
 		
 		  var innerG = d3.selectAll("g.inner");
 		
 		  d3.selectAll("path").on("click", function (d, i) {
+			  
 		    var newAngle = - (d.x + d.dx / 2);
 		
 		    innerG
-		      .transition()
+		      	.transition()
 		        .duration(1500)
 		        .attr("transform", "rotate(" + (180 / Math.PI * newAngle) + ")");
 		
 		    path
 		      .classed("selected", function (x) { return d.name == x.name; });
-		
-		    textBox.data(["Clicked: " + d.name])
-		        .text(String);
 		    
 		    if (onClickCallback) onClickCallback(d);
+		    
+		  });
+		  
+		  d3.selectAll("path").on("mouseover", function (d, i) {
+		    		
+		    textBox.data([d.name]).text(String);
 		    
 		  });
 			
