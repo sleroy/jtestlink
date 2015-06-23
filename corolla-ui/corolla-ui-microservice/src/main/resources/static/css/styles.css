@@ -178,11 +178,11 @@ h1, h2, h3 {
 /* 	background-color: #fff; */
 /* } */
 
-.btn-primary, .label-primary, .list-group-item.active, .list-group-item.active:hover,
-	.list-group-item.active:focus {
-	background-color: #5e8c47;
-	color: #fffffe;
-}
+/* .btn-primary, .label-primary, .list-group-item.active, .list-group-item.active:hover, */
+/* 	.list-group-item.active:focus { */
+/* 	background-color: #5e8c47; */
+/* 	color: #fffffe; */
+/* } */
 
 .btn-default {
 	color: #666666;
