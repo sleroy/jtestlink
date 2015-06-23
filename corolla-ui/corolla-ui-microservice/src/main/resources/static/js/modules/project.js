@@ -1,6 +1,5 @@
 
 var ITEMS_TREEVIEW = '.project-items-tree-view';
-
 var SUNBURST = '.project-items-sunburst';
 
 $(document).ready(function() {

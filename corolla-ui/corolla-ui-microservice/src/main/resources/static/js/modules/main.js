@@ -41,6 +41,10 @@ function define_yesModalButton_clickAction(action) {
 	$('#btnModalYes').click(action);
 }
 
+/**
+ * Object for interacting with the modal
+ * asking for a confirmation before deleting
+ */
 function DeleteModal() {
 	
 	var modalSelector = '#modal';
@@ -72,8 +76,10 @@ function DeleteModal() {
 	
 }
 
-
-
+/**
+ * Object for interacting with the modal
+ * to quickly change project
+ */
 function ChangeProjectModal() {
 	
 	var modalSelector = "#modal-change-project";
