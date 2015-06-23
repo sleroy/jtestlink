@@ -7,6 +7,13 @@ $(document).ready(function() {
 	
 	$(".textarea").wysihtml5();
 	
+	$('.toggle-change-project').click(function() {
+		changeProjectModal.onSelect(function(key) {
+			document.location = '/ui/projects/'+key
+		});
+		changeProjectModal.show();
+	});
+	
 	$(ITEMS_TREEVIEW).jstree({
 		"core": {
 			"animation" : 0,

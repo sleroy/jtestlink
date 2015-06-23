@@ -233,6 +233,11 @@ h1, h2, h3 {
 	width: 100%;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
+/*
 .modal-header, .modal-footer {
 	background-color: #f2f2f2;
 	font-weight: 800;
@@ -252,7 +257,7 @@ h1, h2, h3 {
 	resize: none;
 	border: 0;
 	box-shadow: 0 0 0;
-}
+}*/
 
 small.text-muted {
 	font-family: courier, courier-new, monospace;

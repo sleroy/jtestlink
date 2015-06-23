@@ -6,13 +6,14 @@ function initMainJS() {
 	 */
 	$(".ajaxAlert").hide();
 	
-	$(document).ajaxError(
-	        function(event, jqxhr, settings, thrownError) {
-		        $(".ajaxAlert").show();
-		        $(".ajaxAlert").append(
-		                "<strong>Ajax Error</strong> " + settings.url + " -> "
-		                        + thrownError + "<br/>");
-	        });
+	$(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+		$(".ajaxAlert").show();
+		$(".ajaxAlert").append(
+		                "<strong>Ajax Error</strong> "
+						+ settings.url + " -> "
+		                + thrownError + "<br/>"
+		);
+	});
 	
 	/* 
 	 * Fix issue with sidebar toggle button disapearing
@@ -61,6 +62,68 @@ function DeleteModal() {
 }
 
 var deleteModal = new DeleteModal();
+
+function ChangeProjectModal() {
+	
+	var modalSelector = "#modal-change-project";
+	var treeviewSelector = '.change-project-treeview';
+	
+	$(treeviewSelector).jstree({
+		"core": {
+			"animation" : 0,
+		    "check_callback" : true,
+		    "themes" : { "stripes" : true },
+		    'data' : [
+               {
+            	   'text': 'Corolla',
+            	   'icon': 'http://lorempixel.com/16/16/'
+               }, {
+            	   'text': 'Komea',
+            	   'children': [{ 
+            	    	'text': 'Komea Rest API',
+            	    	'icon': 'http://lorempixel.com/16/16/',
+            	    	'a_attr': {
+            	    		'data-key': 'komea-rest-api'
+            	    	}
+            	    }, {
+            	    	'text': 'Komea Dashboard',
+            	    	'icon': 'http://lorempixel.com/16/16/',
+            	    	'a_attr': {
+            	    		'data-key': 'komea-dashboard'
+            	    	}
+            	    }]
+               }
+		    ]
+		},
+		"plugins": ["types", "search"],
+		'types': {
+			'default': { icon: 'glyphicon glyphicon-folder-open' }
+		}
+	});
+	
+	return {
+		
+		'show': function() {
+			$(modalSelector).modal('show');
+		},
+
+		'hide': function() {
+			$(modalSelector).modal('hide');
+		},
+		
+		'onSelect': function(callback) {
+			$(treeviewSelector).bind("select_node.jstree", function(e, data) {
+				var key = data.instance.get_node(data.node, true).children('a').data('key');
+				if (key) {
+					callback(key);
+				}
+			});
+		}
+	}
+	
+}
+
+var changeProjectModal = new ChangeProjectModal();
 
 
 $(document).ready(function() {
