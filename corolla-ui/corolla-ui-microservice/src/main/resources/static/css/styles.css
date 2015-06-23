@@ -287,6 +287,10 @@ small.text-muted {
 	padding: 10px;
 }
 
+.select2-container .select2-selection {
+	height: 35px;
+}
+
 /* adjust the contents on smaller devices */
 @media ( max-width : 768px) {
 	.column .padding {

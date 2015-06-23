@@ -6,6 +6,8 @@ $(document).ready(function() {
 	
 	$(".textarea").wysihtml5();
 	
+	$('.resizable').resizable();
+	
 	$('.toggle-edit').click(function() {
 		$('.details-view').hide();
 		$('.project-form').show();

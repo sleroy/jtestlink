@@ -24,7 +24,7 @@
 		<div class="content">
 			<div class="row">
 				<div class="col-sm-6 col-md-4">
-					<div class="panel panel-primary">
+					<div class="panel panel-primary treeview-box resizable">
 <!-- 						<div class="panel-heading"> -->
 <!-- 							<h4>Favorite products</h4> -->
 <!-- 						</div> -->
@@ -45,12 +45,12 @@
 											<span class="glyphicon glyphicon-filter"></span>
 										</a>
 									</li>
-									<li>
+									<li style="width: 70%;">
 										<div class="input-group">
 											<span class="input-group-addon">
 												<i class="glyphicon glyphicon-search"></i>
 											</span>
-											<input class="form-control" type="text" placeholder="Search"></input>
+											<input class="form-control" type="text" placeholder="Search" style="width: 100%;"></input>
 										</div>
 									</li>
 								</ul>
@@ -154,9 +154,6 @@
 		                	<textarea class="textarea" placeholder="Description"></textarea>
 		                	<div class="box-footer">
 		                  		<button type="submit" class="btn btn-primary">Save</button>
-		                  		<a class="btn btn-info" href="#">Create sub-project</a>
-		                  		<a class="btn btn-success" th:href="@{/ui/projects/komea-dashboard}">Show items</a>
-		                  		<a class="btn btn-danger" href="#">Delete project</a>
 	                  		</div>
 	                  	</form>
 	                  </div><!-- /.tab-pane -->

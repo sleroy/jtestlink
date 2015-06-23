@@ -23,7 +23,10 @@ class PortfolioPageController {
 	@RequestMapping("/ui/portfolio/{project_key}")
 	public ModelAndView getPortfolioPage(@PathVariable project_key) {
 		
-		return new ModelAndView(INDEX_PAGE);
+		def model = new ModelAndView(INDEX_PAGE);
+		model.addObject "project", project_key
+		
+		return model
 	}
 	
 }

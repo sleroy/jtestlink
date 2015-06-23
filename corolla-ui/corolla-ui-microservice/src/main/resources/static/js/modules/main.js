@@ -21,6 +21,8 @@ function initMainJS() {
     	$('.sidebar-toggle').removeClass('visible-xs');
     });
     
+    $('.select2').select2();
+    
 }
 
 function define_yesModalButton_clickAction(action) {
