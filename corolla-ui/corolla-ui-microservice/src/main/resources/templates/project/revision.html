@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout"
+>
+<body>
+	<!-- Main -->
+	<div layout:fragment="content">
+	
+		<!-- Content Header (Page header) -->
+	    <section class="content-header">
+	      	<h1>
+	      		<img src="http://lorempixel.com/24/24/" alt="Komea" />
+	        	<span th:text="${project}">Project</span>
+	        	<small>Requirements</small>
+	      	</h1>
+	      	<ol class="breadcrumb">
+	        	<li><a href="#"><i class="glyphicon glyphicon-book"></i> Komea</a></li>
+	        	<li class="active">Komea Dashboard</li>
+	        	<li class="active">Requirements</li>
+	        	<li class="active">Add a KPI</li>
+	      	</ol>
+	    </section>
+
+		<!-- Main -->
+		<div class="content">
+			<div class="row">
+	            <div class="col-xs-12">
+	              <div class="box">
+	                <div class="box-header">
+	                  <h3 class="box-title"></h3>
+	                  <div class="box-tools">
+							<a href="#" class="btn btn-warning"><i class="fa fa-arrow-left" style="padding-right: 8px;"></i>Return</a>
+	                  </div>
+	                </div><!-- /.box-header -->
+	                <div class="box-body table-responsive no-padding">
+	                  <table class="table table-hover table-bordered revisions-comparison">
+	                    <tr>
+	                    	<td></td>
+	                      	<td>
+	                      		<h3>Version 1</h3>	      
+	                      		<b class="commit-msg">Initial revision</b> <br/>              		
+	                      		<span class="label label-success time"><i class="fa fa-clock-o"></i>23/06/2015 09:25</span>
+	                      		<span class="label label-primary author"><i class="fa fa-user"></i>Jon Snow</span>
+	                      	</td>
+	                      	<td>
+	                      		<h3>Version 2</h3>	      
+	                      		<b class="commit-msg">Update description</b> <br/>              		
+	                      		<span class="label label-success time"><i class="fa fa-clock-o"></i>23/06/2015 10:25</span>
+	                      		<span class="label label-primary author"><i class="fa fa-user"></i>Hodor</span>
+	                      	</td>
+	                    </tr>
+	                    <tr>
+	                    	<td><b>Key</b></td>
+	                      	<td>ADD_KPI</td>
+	                      	<td>ADD_KPI</td>
+	                    </tr>
+	                    <tr>
+	                    	<td><b>Name</b></td>
+	                    	<td>Add a KPI</td>
+	                    	<td>Add a KPI</td>
+	                    </tr>
+	                    <tr>
+	                    	<td><b>Description</b></td>
+	                    	<td class="updated">Haec dum oriens diu perferret, caeli reserato tepore Constantius consulatu suo septies et Caesaris ter egressus Arelate Valentiam petit, in Gundomadum et Vadomarium fratres Alamannorum reges arma moturus, quorum crebris excursibus vastabantur confines limitibus terrae Gallorum.</td>
+	                    	<td class="updated">Quod opera consulta cogitabatur astute, ut hoc insidiarum genere Galli periret avunculus, ne eum ut praepotens acueret in fiduciam exitiosa coeptantem. verum navata est opera diligens hocque dilato Eusebius praepositus cubiculi missus est Cabillona aurum secum perferens, quo per turbulentos seditionum concitores occultius distributo et tumor consenuit militum et salus est in tuto locata praefecti. deinde cibo abunde perlato castra die praedicto sunt mota.</td>
+	                    </tr>
+	                  </table>
+	                </div><!-- /.box-body -->
+	              </div><!-- /.box -->
+	            </div>
+	          </div>
+		</div>
+	</div>
+</body>
+</html>

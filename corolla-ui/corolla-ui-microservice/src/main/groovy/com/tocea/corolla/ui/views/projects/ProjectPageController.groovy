@@ -13,11 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 class ProjectPageController {
 
 	private static String PROJECT_VIEW = "project/project"
-	
-	@ModelAttribute("sideMenu")
-	public String addAccount() {
-		return "projectMenu"
-	}
+	private static String REVISION_VIEW = "project/revision"
 	
 	@RequestMapping("/ui/projects/{id}")
 	public ModelAndView getProjectPage(@PathVariable id) {
@@ -26,6 +22,16 @@ class ProjectPageController {
 		model.addObject "project", id
 		
 		return model
+	}
+	
+	@RequestMapping("/ui/projects/{project_key}/requirements/{req_id}/revisions/{rev_id}")
+	public ModelAndView getRevisionPage(@PathVariable project_key, @PathVariable req_id, @PathVariable rev_id) {
+		
+		def model = new ModelAndView(REVISION_VIEW)
+		model.addObject "project", project_key
+		
+		return model
+		
 	}
 	
 }

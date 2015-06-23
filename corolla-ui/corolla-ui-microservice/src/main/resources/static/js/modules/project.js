@@ -5,13 +5,29 @@ var SUNBURST = '.project-items-sunburst';
 
 $(document).ready(function() {
 	
+	/*
+	 * Enable Bootstrap WYSIHTML5
+	 */
 	$(".textarea").wysihtml5();
 	
+	/*
+	 * Call modal to quickly change project
+	 */
 	$('.toggle-change-project').click(function() {
 		changeProjectModal.onSelect(function(key) {
 			document.location = '/ui/projects/'+key
 		});
 		changeProjectModal.show();
+	});
+	
+	/*
+	 * Handle click on a revision
+	 */
+	$('#revisions tr td.toggle').click(function() {
+		var link = $(this).parent().data('href');
+		if (link) {
+			document.location = link;
+		}
 	});
 	
 	$(ITEMS_TREEVIEW).jstree({

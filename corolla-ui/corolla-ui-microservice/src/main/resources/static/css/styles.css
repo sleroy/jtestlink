@@ -55,19 +55,19 @@ hr {
 	padding-top: 70px;
 }
 
-.box {
-	bottom: 0; /* increase for footer use */
-	left: 0;
-	position: absolute;
-	right: 0;
-	top: 0;
-	background-color: #444444;
-	/*
-    background-image:url('/assets/example/bg_suburb.jpg');
-    background-size:cover;
-    background-attachment:fixed;
-  */
-}
+/* .box { */
+/* 	bottom: 0; increase for footer use */
+/* 	left: 0; */
+/* 	position: absolute; */
+/* 	right: 0; */
+/* 	top: 0; */
+/* 	background-color: #444444; */
+/* 	/* */
+/*     background-image:url('/assets/example/bg_suburb.jpg'); */
+/*     background-size:cover; */
+/*     background-attachment:fixed; */
+/*   */ */
+/* } */
 
 .divider {
 	margin-top: 32px;
@@ -223,11 +223,11 @@ h1, h2, h3 {
 	text-transform: uppercase;
 	letter-spacing: 2px;
 }
-
+/*
 .panel-default .panel-heading {
 	background-color: #f9fafb;
 	color: #555555;
-}
+}*/
 
 .col-sm-9.full {
 	width: 100%;
@@ -235,6 +235,23 @@ h1, h2, h3 {
 
 .pointer {
 	cursor: pointer;
+}
+
+.revisions-comparison .updated {
+	background-color: #faf2cc !important;
+}
+
+.revisions-comparison .time, .revisions-comparison .author {
+	padding: 6px;
+	font-size: 13px;
+}
+
+.revisions-comparison b {
+	display: block;
+}
+
+.revisions-comparison span i {
+	padding-right: 7px;
 }
 
 /*

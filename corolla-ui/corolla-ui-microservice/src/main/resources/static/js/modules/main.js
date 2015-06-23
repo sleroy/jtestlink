@@ -5,7 +5,6 @@ function initMainJS() {
 	 * Initialize the main javascript to hide alert box and init ajax error handler
 	 */
 	$(".ajaxAlert").hide();
-	
 	$(document).ajaxError(function(event, jqxhr, settings, thrownError) {
 		$(".ajaxAlert").show();
 		$(".ajaxAlert").append(
@@ -20,8 +19,20 @@ function initMainJS() {
 	 */
     $('.sidebar-toggle').click(function() {
     	$('.sidebar-toggle').removeClass('visible-xs');
+    	var hidden = $('body').hasClass('sidebar-collapse');
+    	sessionStorage.setItem('sidebar-collapse', hidden);
     });
     
+//    var sidebarHidden = sessionStorage.getItem('sidebar-collapse');
+//    console.log(sidebarHidden);
+//    if (sidebarHidden && sidebarHidden == 'true') {
+//    	//$('body').addClass('sidebar-collapse');
+//    	document.getElementsByTagName('body')[0].className += " sidebar-collapse";
+//    }
+    
+    /*
+     * Initialize select2 components within the page
+     */
     $('.select2').select2();
     
 }
@@ -61,7 +72,7 @@ function DeleteModal() {
 	
 }
 
-var deleteModal = new DeleteModal();
+
 
 function ChangeProjectModal() {
 	
@@ -123,8 +134,11 @@ function ChangeProjectModal() {
 	
 }
 
+/*
+ * Create modal instances
+ */
+var deleteModal = new DeleteModal();
 var changeProjectModal = new ChangeProjectModal();
-
 
 $(document).ready(function() {
 	
