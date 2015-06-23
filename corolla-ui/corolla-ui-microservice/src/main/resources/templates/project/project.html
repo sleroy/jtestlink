@@ -82,15 +82,22 @@
 	                   	<li><a href="#tab_7" data-toggle="tab">Export</a> </li>
 	                  <li class="dropdown pull-right">
 	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	                      Actions <span class="caret"></span>
+	                      <i class="fa fa-paw"/> Actions
 	                    </a>
 	                    <ul class="dropdown-menu">
-	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Delete</a></li>
+	                      <li role="presentation">
+	                      	<a role="menuitem" href="#">
+	                      		<i class="fa fa-flask"></i> Test Cases
+	                      	</a>
+	                      	<a role="menuitem" tabindex="-1" href="#">
+	                      		<i class="glyphicon glyphicon-remove"></i> Delete
+	                      	</a>
+	                      </li>
 	                    </ul>
 	                  </li>
 	                  <li class="dropdown pull-right">
 	                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-	                      Add <span class="caret"></span>
+	                      <i class="glyphicon glyphicon-plus"/> Add 
 	                    </a>
 	                    <ul class="dropdown-menu">
 	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Requirement</a></li>
@@ -98,7 +105,6 @@
 	                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">User Story</a></li>
 	                    </ul>
 	                  </li>
-<!-- 	                  <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li> -->
 	                </ul>
 	                <div class="tab-content">
 	                  <div class="tab-pane active" id="tab_1">
@@ -136,6 +142,7 @@ At nunc si ad aliquem bene nummatum tumentemque ideo honestus advena salutatum i
 Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitrantes Augustae per haec quae strepit incusat iratus nimirum quod contumacem praefectum, quid rerum ordo postulat ignorare dissimulantem formidine tenus iusserim custodiri.</div>
 	                  	</div>
 	                  </div><!-- /.tab-pane -->
+	                  
 	                  <div class="tab-pane" id="tab_3">
 	                  	<form class="project-form">
 		                    <div class="input-group">
@@ -149,12 +156,138 @@ Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitran
 		                	<textarea class="textarea" placeholder="Description" style="height: 500px;"></textarea>
 		                	<div class="box-footer">
 		                  		<button type="submit" class="btn btn-primary">Save</button>
-		                  		<a class="btn btn-info" href="#">Create sub-project</a>
-		                  		<a class="btn btn-success" th:href="@{/ui/projects/komea-dashboard}">Show items</a>
-		                  		<a class="btn btn-danger" href="#">Delete project</a>
 	                  		</div>
 	                  	</form>
 	                  </div><!-- /.tab-pane -->
+	                  
+	                  <div class="tab-pane" id="tab_4">
+	                  		<!-- Conversations are loaded here -->
+		                  	<div class="direct-chat-messages">
+		                  	
+			                    <!-- Message. Default to the left -->
+			                    <div class="direct-chat-msg">
+			                      <div class='direct-chat-info clearfix'>
+			                        <span class='direct-chat-name pull-left'>Olly</span>
+			                        <span class='direct-chat-timestamp pull-right'>23 Jan 2:00 pm</span>
+			                      </div><!-- /.direct-chat-info -->
+			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
+			                      <div class="direct-chat-text">
+			                        For the watch!
+			                      </div><!-- /.direct-chat-text -->
+			                    </div><!-- /.direct-chat-msg -->
+			
+			                    <!-- Message to the right -->
+			                    <div class="direct-chat-msg right">
+			                      <div class='direct-chat-info clearfix'>
+			                        <span class='direct-chat-name pull-right'>Jon Snow</span>
+			                        <span class='direct-chat-timestamp pull-left'>23 Jan 2:05 pm</span>
+			                      </div><!-- /.direct-chat-info -->
+			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
+			                      <div class="direct-chat-text">
+			                        The Apple Watch?
+			                      </div><!-- /.direct-chat-text -->
+			                    </div><!-- /.direct-chat-msg -->
+			                    
+			                    <!-- Message. Default to the left -->
+			                    <div class="direct-chat-msg">
+			                      <div class='direct-chat-info clearfix'>
+			                        <span class='direct-chat-name pull-left'>Olly</span>
+			                        <span class='direct-chat-timestamp pull-right'>23 Jan 2:00 pm</span>
+			                      </div><!-- /.direct-chat-info -->
+			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
+			                      <div class="direct-chat-text">
+			                        For the watch!
+			                      </div><!-- /.direct-chat-text -->
+			                    </div><!-- /.direct-chat-msg -->
+			
+			                    <!-- Message to the right -->
+			                    <div class="direct-chat-msg right">
+			                      <div class='direct-chat-info clearfix'>
+			                        <span class='direct-chat-name pull-right'>Jon Snow</span>
+			                        <span class='direct-chat-timestamp pull-left'>23 Jan 2:05 pm</span>
+			                      </div><!-- /.direct-chat-info -->
+			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
+			                      <div class="direct-chat-text">
+			                        The Apple Watch?
+			                      </div><!-- /.direct-chat-text -->
+			                    </div><!-- /.direct-chat-msg -->
+			                    
+			                    <!-- Message. Default to the left -->
+			                    <div class="direct-chat-msg">
+			                      <div class='direct-chat-info clearfix'>
+			                        <span class='direct-chat-name pull-left'>Olly</span>
+			                        <span class='direct-chat-timestamp pull-right'>23 Jan 2:00 pm</span>
+			                      </div><!-- /.direct-chat-info -->
+			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
+			                      <div class="direct-chat-text">
+			                        For the watch!
+			                      </div><!-- /.direct-chat-text -->
+			                    </div><!-- /.direct-chat-msg -->
+			
+			                    <!-- Message to the right -->
+			                    <div class="direct-chat-msg right">
+			                      <div class='direct-chat-info clearfix'>
+			                        <span class='direct-chat-name pull-right'>Jon Snow</span>
+			                        <span class='direct-chat-timestamp pull-left'>23 Jan 2:05 pm</span>
+			                      </div><!-- /.direct-chat-info -->
+			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
+			                      <div class="direct-chat-text">
+			                        The Apple Watch?
+			                      </div><!-- /.direct-chat-text -->
+			                    </div><!-- /.direct-chat-msg -->
+			                                        
+		                  	</div><!--/.direct-chat-messages-->
+		                  	
+		                  	<div class="box-footer">
+			                  <form action="#" method="post">
+			                    <div class="input-group">
+			                      <input type="text" name="message" placeholder="Type Message ..." class="form-control"/>
+			                      <span class="input-group-btn">
+			                        <button type="button" class="btn btn-success btn-flat">Send</button>
+			                      </span>
+			                    </div>
+			                  </form>
+			                </div><!-- /.box-footer-->
+			                
+	                  </div><!-- /.tab-pane -->
+	                  
+	                  <div class="tab-pane" id="tab_5">
+	                  	<div class="table-responsive">
+							<table id="users" class="table table-hover table-striped" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Version</th>
+										<th>Created on</th>
+										<th>Change details</th>
+										<th>Author</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tr>
+									<td><span class="badge">3</span></td>
+									<td>24/06/2015 12:35</td>
+									<td>Third commit</td>
+									<td><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td><span class="badge">2</span></td>
+									<td>23/06/2015 12:35</td>
+									<td>Second commit</td>
+									<td><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
+									<td><a href="#" class="label label-warning">Restore</a></td>
+								</tr>
+								<tr>
+									<td><span class="badge">1</span></td>
+									<td>23/06/2015 11:25</td>
+									<td>Initial creation</td>
+									<td><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
+									<td><a href="#" class="label label-warning">Restore</a></td>
+								</tr>
+							</table>
+						</div>
+	                  </div>
+	                  
 	                </div><!-- /.tab-content -->
 	              </div><!-- nav-tabs-custom -->
 				</div>

@@ -198,8 +198,8 @@ h1, h2, h3 {
 }
 
 .badge {
-	color: #5e8c47;
-	background-color: #fff;
+/* 	color: #5e8c47; */
+/* 	background-color: #fff; */
 }
 
 .badge:hover, .badge-inverse {
