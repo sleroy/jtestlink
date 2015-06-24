@@ -166,41 +166,91 @@
 												</div>
 											</div>
 										</div>
-										<div class="panel panel-default">
-											<div class="panel-heading" role="tab" id="headingOne">
-												<h4 class="panel-title">
-													<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseRelations"
-														aria-expanded="true" aria-controls="collapseRelations"> <i class="glyphicon glyphicon-transfer" />
-														Relationships
-													</a>
-												</h4>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<h4 class="panel-title">
+												<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseRelations"
+													aria-expanded="true" aria-controls="collapseRelations"> <i class="glyphicon glyphicon-transfer" />
+													Relationships
+												</a>
+											</h4>
+										</div>
+										<div id="collapseRelations" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+											<div class="panel-body">
+												<div class="table-responsive">
+													<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+														<thead>
+															<tr>
+																<th>Requirement</th>
+																<th>Relation Name</th>
+																<th>Relation Type</th>
+																<th>Actions</th>
+															</tr>
+														</thead>
+														<tr>
+															<td><a href="#" class="label label-default">DELETE_KPI</a></td>
+															<td>Manage KPI</td>
+															<td>Related to</td>
+															<td><a href="#" class="label label-info">Edit</a> <a href="#" class="label label-danger">Delete</a></td>
+														</tr>
+														<tr>
+															<td><a href="#" class="label label-default">EDIT_KPI</a></td>
+															<td>Manage KPI</td>
+															<td>Related to</td>
+															<td><a href="#" class="label label-info">Edit</a> <a href="#" class="label label-danger">Delete</a></td>
+														</tr>
+													</table>
+												</div>
 											</div>
-											<div id="collapseRelations" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-												<div class="panel-body">
-													<div class="table-responsive">
-														<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
-															<thead>
-																<tr>
-																	<th>Requirement</th>
-																	<th>Relation Name</th>
-																	<th>Relation Type</th>
-																	<th>Actions</th>
-																</tr>
-															</thead>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<h4 class="panel-title">
+												<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseRevisions"
+													aria-expanded="true" aria-controls="collapseRevisions"> <i class="fa fa-history" /> Revisions
+												</a>
+											</h4>
+										</div>
+										<div id="collapseRevisions" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+											<div class="panel-body">
+												<div class="table-responsive">
+													<table id="revisions" class="table table-hover table-striped" cellspacing="0" width="100%">
+														<thead>
 															<tr>
-																<td><a href="#" class="label label-default">DELETE_KPI</a></td>
-																<td>Manage KPI</td>
-																<td>Related to</td>
-																<td><a href="#" class="label label-info">Edit</a> <a href="#" class="label label-danger">Delete</a></td>
+																<th>Version</th>
+																<th>Created on</th>
+																<th>Change details</th>
+																<th>Author</th>
+																<th>Actions</th>
 															</tr>
-															<tr>
-																<td><a href="#" class="label label-default">EDIT_KPI</a></td>
-																<td>Manage KPI</td>
-																<td>Related to</td>
-																<td><a href="#" class="label label-info">Edit</a> <a href="#" class="label label-danger">Delete</a></td>
-															</tr>
-														</table>
-													</div>
+														</thead>
+														<tr class="pointer" data-href="/ui/projects/komea-dashboard/requirements/13/revisions/2">
+															<td class="toggle"><span class="badge">3</span></td>
+															<td class="toggle">24/06/2015 12:35</td>
+															<td class="toggle">Third commit</td>
+															<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+															<td><a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
+															</td>
+														</tr>
+														<tr class="pointer">
+															<td><span class="badge">2</span></td>
+															<td>23/06/2015 12:35</td>
+															<td>Second commit</td>
+															<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+															<td><a href="#" class="label label-warning">Restore</a> <a
+																href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a></td>
+														</tr>
+														<tr class="pointer">
+															<td><span class="badge">1</span></td>
+															<td>23/06/2015 11:25</td>
+															<td>Initial creation</td>
+															<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+															<td><a href="#" class="label label-warning">Restore</a> <a
+																href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a></td>
+														</tr>
+													</table>
 												</div>
 											</div>
 										</div>
@@ -221,18 +271,14 @@
 										<tr>
 											<td><a href="#" class="label label-default">TEST_ADD_KPI</a></td>
 											<td>Create a kpi</td>
-											<td>
-												<a href="#" class="label label-info">Open</a> 
-												<a href="#" class="label label-danger">Remove relation</a>
-											</td>
+											<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Remove
+													relation</a></td>
 										</tr>
 										<tr>
 											<td><a href="#" class="label label-default">TEST_ADD_KPI_WITH_EMPTY_NAME</a></td>
 											<td>Create a KPI with empty name</td>
-											<td>
-												<a href="#" class="label label-info">Open</a> 
-												<a href="#" class="label label-danger">Remove relation</a>
-											</td>
+											<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Remove
+													relation</a></td>
 										</tr>
 									</table>
 								</div>
@@ -351,43 +397,7 @@
 							</div>
 							<!-- /.tab-pane -->
 							<div class="tab-pane" id="tab_5">
-								<div class="table-responsive">
-									<table id="revisions" class="table table-hover table-striped" cellspacing="0" width="100%">
-										<thead>
-											<tr>
-												<th>Version</th>
-												<th>Created on</th>
-												<th>Change details</th>
-												<th>Author</th>
-												<th>Actions</th>
-											</tr>
-										</thead>
-										<tr class="pointer" data-href="/ui/projects/komea-dashboard/requirements/13/revisions/2">
-											<td class="toggle"><span class="badge">3</span></td>
-											<td class="toggle">24/06/2015 12:35</td>
-											<td class="toggle">Third commit</td>
-											<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-											<td><a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
-											</td>
-										</tr>
-										<tr class="pointer">
-											<td><span class="badge">2</span></td>
-											<td>23/06/2015 12:35</td>
-											<td>Second commit</td>
-											<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-											<td><a href="#" class="label label-warning">Restore</a> <a
-												href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a></td>
-										</tr>
-										<tr class="pointer">
-											<td><span class="badge">1</span></td>
-											<td>23/06/2015 11:25</td>
-											<td>Initial creation</td>
-											<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-											<td><a href="#" class="label label-warning">Restore</a> <a
-												href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a></td>
-										</tr>
-									</table>
-								</div>
+								<div class="table-responsive">...</div>
 							</div>
 							<div class="tab-pane" id="tab_6">
 								<ul class="timeline">
@@ -451,15 +461,12 @@
 				</div>
 			</div>
 		</div>
-		<!--/row-->
 	</div>
+	<!--/row-->
+	<div />
 	<!--/row-->
 	<div layout:fragment="footer">
 		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/project.js}" />
 	</div>
-	<div />
-	<div />
-	<div />
-	<div />
 </body>
 </html>
