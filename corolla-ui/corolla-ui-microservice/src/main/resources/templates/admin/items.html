@@ -10,7 +10,7 @@
 		    	Manage items
 		    </h1>
 		    <ol class="breadcrumb">
-		       <li><a th:href="@{/ui/admin}"><i class="glyphicon glyphicon-book"></i> Administration</a></li>
+		       <li><a th:href="@{/ui/admin}"><i class="fa fa-gear"></i> Administration</a></li>
 		       <li class="active">Items</li>
 		    </ol> 
 	    </section>
@@ -48,7 +48,7 @@
 					         <th></th>
 					        </tr>
 					       </thead>
-					       <tr>
+					       <tr data-id="REQ">
 					       		<td><i class="fa fa-bell"></i></td>
 					       		<td>REQ</td>
 					       		<td>Requirement</td>
@@ -68,13 +68,13 @@
 					       			</a>
 					       		</td>
 					       		<td>
-					       			<button class="btn btn-danger btn-xs">
+					       			<button class="btn btn-danger btn-xs itemDelete">
 					       				<span class="glyphicon glyphicon-trash"></span>
 					       				Delete
 					       			</button>
 					       		</td>
 					       </tr>
-					       <tr>
+					       <tr data-id="US">
 					       		<td><i class="fa fa-bed"></i></td>
 					       		<td>US</td>
 					       		<td>User Story</td>
@@ -94,7 +94,7 @@
 					       			</a>
 					       		</td>
 					       		<td>
-					       			<button class="btn btn-danger btn-xs">
+					       			<button class="btn btn-danger btn-xs itemDelete">
 					       				<span class="glyphicon glyphicon-trash"></span>
 					       				Delete
 					       			</button>
