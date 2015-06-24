@@ -1,469 +1,465 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout"
->
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
 <body>
 	<!-- Main -->
 	<div layout:fragment="content">
-	
 		<!-- Content Header (Page header) -->
-	    <section class="content-header">
-	      	<h1>
-	      		<i class="fa fa-sign-out toggle-change-project pointer"></i>
-	      		<img src="http://lorempixel.com/24/24/" alt="Komea" />
-	        	<span th:text="${project}">Project</span>
-	        	<small>Requirements</small>
-	      	</h1>
-	      	<ol class="breadcrumb">
-	        	<li><a href="#"><i class="glyphicon glyphicon-book"></i> Komea</a></li>
-	        	<li class="active">Komea Dashboard</li>
-	      	</ol>
-	    </section>
-
+		<section class="content-header">
+		<h1>
+			<i class="fa fa-sign-out toggle-change-project pointer" /> <img src="http://lorempixel.com/24/24/" alt="Komea" /> <span
+				th:text="${project}">Project</span>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a th:href="@{/ui/portfolio/}"><i class="glyphicon glyphicon-book" /> Komea</a></li>
+			<li><a th:href="@{/ui/portfolio/}+${project}">Komea Dashboard</a></li>
+			<li class="active">Requirements</li>
+		</ol>
+		</section>
 		<!-- Main -->
 		<div class="content">
 			<div class="row">
 				<div class="col-sm-6 col-md-4">
 					<div class="panel panel-primary">
-<!-- 						<div class="panel-heading"> -->
-<!-- 							<h4>Favorite products</h4> -->
-<!-- 						</div> -->
+						<!-- 						<div class="panel-heading"> -->
+						<!-- 							<h4>Favorite products</h4> -->
+						<!-- 						</div> -->
 						<div>
 							<div>
 								<ul class="wysihtml5-toolbar" style="margin: 8px;">
-									<li class="dropdown">
-										<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-											Add <b class="caret"></b>
-										</a>
+									<li class="dropdown"><a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> Add <b
+											class="caret" />
+									</a>
 										<ul class="dropdown-menu">
 											<li><a href="#">Requirement</a></li>
 											<li><a href="#">User Story</a></li>
-										</ul>
-									</li>
-									<li>
-										<a href="#" class="btn btn-default">
-											<span class="glyphicon glyphicon-filter"></span>
-										</a>
-									</li>
-									<li style="width: 30%;">
-										<select class="form-control select2" style="width: 100%">
-                      						<option selected="selected">Branch 1</option>
-                      						<option>Branch 2</option>
-					                      	<option>Branch 3</option>
-					                      	<option>Branch 4</option>
-					                      	<option>Branch 5</option>
-					                      	<option>Branch 6</option>
-					                    	<option>Branch 7</option>
-					                    </select>
-									</li>
+										</ul></li>
+									<li><a href="#" class="btn btn-default"> <span class="glyphicon glyphicon-filter" />
+									</a></li>
+									<li style="width: 30%;"><select class="form-control select2" style="width: 100%">
+											<option selected="selected">Branch 1</option>
+											<option>Branch 2</option>
+											<option>Branch 3</option>
+											<option>Branch 4</option>
+											<option>Branch 5</option>
+											<option>Branch 6</option>
+											<option>Branch 7</option>
+									</select></li>
 									<li style="width: 40%;">
 										<div class="input-group">
-											<span class="input-group-addon">
-												<i class="glyphicon glyphicon-search"></i>
-											</span>
-											<input class="form-control" type="text" placeholder="Search" style="width: 100%;"></input>
+											<span class="input-group-addon"> <i class="glyphicon glyphicon-search" />
+											</span> <input class="form-control" type="text" placeholder="Search" style="width: 100%;" />
 										</div>
 									</li>
 								</ul>
 							</div>
-							<div class="project-items-tree-view"></div>
+							<div class="project-items-tree-view" />
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-6 col-md-8">
 					<div class="nav-tabs-custom">
-	                <ul class="nav nav-tabs">
-	                	<li class="active"><a href="#tab_2" data-toggle="tab">Details</a></li>
-	                	<li><a href="#requirements" data-toggle="tab" class="toggle-sunburst">Requirements</a></li>
-	                	<li><a href="#relationships" data-toggle="tab">Relationships</a></li>
-	                 	<li><a href="#tab_4" data-toggle="tab">Comments</a> </li>
-	                   	<li><a href="#tab_5" data-toggle="tab">Revisions</a> </li>
-	                   	<li><a href="#tab_6" data-toggle="tab">Activity</a> </li>
-	                	<li class="dropdown pull-right">
-		                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
-		                      <i class="fa fa-paw"/> Actions
-		                    </a>
-		                    <ul class="dropdown-menu">
-		                      <li role="presentation">
-		                      	<a role="menuitem" href="#">
-		                      		<i class="fa fa-flask"></i> View Test Cases
-		                      	</a>
-		                      	<a role="menuitem" tabindex="-1" href="#">
-		                      		<i class="glyphicon glyphicon-remove"></i> Delete
-		                      	</a>
-		                      </li>
-		                    </ul>
-	                  	</li>
-	                  	<li class="pull-right">
-		                  	<a class="btn btn-app" data-toggle="tab" href="#tab_3">
-		                      <i class="glyphicon glyphicon-edit"/> Edit 
-		                    </a>
-	                  	</li>
-	                  	<li class="pull-right dropdown">
-		                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
-		                      <i class="fa fa-location-arrow"></i> Export
-		                    </a>
-		                    <ul class="dropdown-menu">
-		                      <li role="presentation">
-		                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/projects/komea-dashboard}">
-		                      		<i class="fa fa-file-pdf-o"></i>
-		                      		PDF
-		                      	</a>
-		                      </li>
-		                    </ul>
-		                </li>
-	                  	<li class="dropdown pull-right">
-		                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
-		                      <i class="glyphicon glyphicon-plus"/> Add 
-		                    </a>
-		                    <ul class="dropdown-menu">
-		                      <li role="presentation">
-		                      	<a role="menuitem" tabindex="-1" href="#">
-		                      		<i class="glyphicon glyphicon-list-alt"></i> Requirement
-		                      	</a>
-		                      </li>
-		                      <li role="presentation">
-		                      	<a role="menuitem" tabindex="-1" href="#">
-		                      		<i class="glyphicon glyphicon-list-alt"></i> User Story
-		                      	</a>
-		                      </li>
-		                      <li role="presentation" class="divider"></li>
-		                      <li role="presentation">
-		                      	<a role="menuitem" tabindex="-1" href="#">
-		                      		<i class="glyphicon glyphicon-transfer"></i> Relationship
-		                      	</a>
-		                      </li>
-		                    </ul>
-	                  	</li>
-	                </ul>
-	                <div class="tab-content">
-	                  <div class="tab-pane" id="requirements">
-	                    <div class="sunburst project-items-sunburst"></div>
-	                  </div><!-- /.tab-pane -->
-	                  <div class="details-view tab-pane active" id="tab_2">
-	                  	<div class="row">
-	                  		<div class="col-sm-3 col-md-2 field-name">Key</div>
-	                  		<div class="col-sm-9 col-md-10 entity-key">ADD_KPI</div>
-	                  	</div>
-	                  	<div class="row">
-	                  		<div class="col-sm-3 col-md-2 field-name">Name</div>
-	                  		<div class="col-sm-9 col-md-10">Add a KPI</div>
-	                  	</div>
-	                  	<div class="row">
-	                  		<div class="col-sm-3 col-md-2 field-name">Description</div>
-	                  		<div class="col-sm-9 col-md-10">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit! memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro.
-
-Equitis Romani autem esse filium criminis loco poni ab accusatoribus neque his iudicantibus oportuit neque defendentibus nobis. Nam quod de pietate dixistis, est quidem ista nostra existimatio, sed iudicium certe parentis; quid nos opinemur, audietis ex iuratis; quid parentes sentiant, lacrimae matris incredibilisque maeror, squalor patris et haec praesens maestitia, quam cernitis, luctusque declarat.
-
-Accedat huc suavitas quaedam oportet sermonum atque morum, haudquaquam mediocre condimentum amicitiae. Tristitia autem et in omni re severitas habet illa quidem gravitatem, sed amicitia remissior esse debet et liberior et dulcior et ad omnem comitatem facilitatemque proclivior.
-
-Procedente igitur mox tempore cum adventicium nihil inveniretur, relicta ora maritima in Lycaoniam adnexam Isauriae se contulerunt ibique densis intersaepientes itinera praetenturis provincialium et viatorum opibus pascebantur.
-
-Dum haec in oriente aguntur, Arelate hiemem agens Constantius post theatralis ludos atque circenses ambitioso editos apparatu diem sextum idus Octobres, qui imperii eius annum tricensimum terminabat, insolentiae pondera gravius librans, siquid dubium deferebatur aut falsum, pro liquido accipiens et conperto, inter alia excarnificatum Gerontium Magnentianae comitem partis exulari maerore multavit.
-
-In his tractibus navigerum nusquam visitur flumen sed in locis plurimis aquae suapte natura calentes emergunt ad usus aptae multiplicium medelarum. verum has quoque regiones pari sorte Pompeius Iudaeis domitis et Hierosolymis captis in provinciae speciem delata iuris dictione formavit.
-
-Non ergo erunt homines deliciis diffluentes audiendi, si quando de amicitia, quam nec usu nec ratione habent cognitam, disputabunt. Nam quis est, pro deorum fidem atque hominum! qui velit, ut neque diligat quemquam nec ipse ab ullo diligatur, circumfluere omnibus copiis atque in omnium rerum abundantia vivere? Haec enim est tyrannorum vita nimirum, in qua nulla fides, nulla caritas, nulla stabilis benevolentiae potest esse fiducia, omnia semper suspecta atque sollicita, nullus locus amicitiae.
-
-Eodem tempore Serenianus ex duce, cuius ignavia populatam in Phoenice Celsen ante rettulimus, pulsatae maiestatis imperii reus iure postulatus ac lege, incertum qua potuit suffragatione absolvi, aperte convictus familiarem suum cum pileo, quo caput operiebat, incantato vetitis artibus ad templum misisse fatidicum, quaeritatum expresse an ei firmum portenderetur imperium, ut cupiebat, et cunctum.
-
-At nunc si ad aliquem bene nummatum tumentemque ideo honestus advena salutatum introieris, primitus tamquam exoptatus suscipieris et interrogatus multa coactusque mentiri, miraberis numquam antea visus summatem virum tenuem te sic enixius observantem, ut paeniteat ob haec bona tamquam praecipua non vidisse ante decennium Romam.
-
-Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitrantes Augustae per haec quae strepit incusat iratus nimirum quod contumacem praefectum, quid rerum ordo postulat ignorare dissimulantem formidine tenus iusserim custodiri.</div>
-	                  	</div>
-	                  </div><!-- /.tab-pane -->
-	                  
-	                  <div class="tab-pane" id="tab_3">
-	                  	<form class="project-form">
-		                    <div class="input-group">
-			                    <span class="input-group-addon">Key</span>
-			                    <input name="key" type="text" class="form-control" placeholder="Key"/>
-			                </div>
-			                <div class="input-group">
-			                    <span class="input-group-addon">Name</span>
-			                    <input name="name" type="text" class="form-control" placeholder="Name"/>
-			                </div>
-		                	<textarea class="textarea" placeholder="Description" style="height: 500px;"></textarea>
-		                	<div class="box-footer">
-		                  		<button type="submit" class="btn btn-primary">Save</button>
-	                  		</div>
-	                  	</form>
-	                  </div><!-- /.tab-pane -->
-	                  
-	                  <div class="tab-pane" id="relationships">
-	                  	<div class="table-responsive">
-							<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
-								<thead>
-									<tr>
-										<th>Requirement</th>
-										<th>Relation Name</th>
-										<th>Relation Type</th>
-										<th>Actions</th>
-									</tr>
-								</thead>
-								<tr>
-									<td>
-										<a href="#" class="label label-default">DELETE_KPI</a>
-									</td>
-									<td>Manage KPI</td>
-									<td>Related to</td>
-									<td>
-										<a href="#" class="label label-info">Edit</a>
-										<a href="#" class="label label-danger">Delete</a>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<a href="#" class="label label-default">EDIT_KPI</a>
-									</td>
-									<td>Manage KPI</td>
-									<td>Related to</td>
-									<td>
-										<a href="#" class="label label-info">Edit</a>
-										<a href="#" class="label label-danger">Delete</a>
-									</td>
-								</tr>
-							</table>
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab_2" data-toggle="tab">Details</a></li>
+							<li><a href="#requirements" data-toggle="tab" class="toggle-sunburst">Requirements</a></li>
+							<li><a href="#test-cases-panel" data-toggle="tab">Test Cases</a></li>
+							<li><a href="#tab_4" data-toggle="tab">Comments</a></li>
+							<li><a href="#tab_5" data-toggle="tab">Revisions</a></li>
+							<li><a href="#tab_6" data-toggle="tab">Activity</a></li>
+							<li class="dropdown pull-right"><a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
+									<i class="fa fa-paw" /> Actions
+							</a>
+								<ul class="dropdown-menu">
+									<li role="presentation"><a role="menuitem" href="#"> <i class="fa fa-flask" /> View Test Cases
+									</a> <a role="menuitem" tabindex="-1" href="#"> <i class="glyphicon glyphicon-remove" /> Delete
+									</a></li>
+								</ul></li>
+							<li class="pull-right"><a class="btn btn-app" data-toggle="tab" href="#tab_3"> <i
+									class="glyphicon glyphicon-edit" /> Edit
+							</a></li>
+							<li class="pull-right dropdown"><a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
+									<i class="fa fa-location-arrow" /> Export
+							</a>
+								<ul class="dropdown-menu">
+									<li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{/ui/projects/komea-dashboard}"> <i
+											class="fa fa-file-pdf-o" /> PDF
+									</a></li>
+								</ul></li>
+							<li class="dropdown pull-right"><a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
+									<i class="glyphicon glyphicon-plus" /> Add
+							</a>
+								<ul class="dropdown-menu">
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#"> <i
+											class="glyphicon glyphicon-list-alt" /> Requirement
+									</a></li>
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#"> <i
+											class="glyphicon glyphicon-list-alt" /> User Story
+									</a></li>
+									<li role="presentation" class="divider" />
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#"> <i
+											class="glyphicon glyphicon-transfer" /> Relationship
+									</a></li>
+								</ul></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane" id="requirements">
+								<div class="sunburst project-items-sunburst" />
+							</div>
+							<!-- /.tab-pane -->
+							<div class="details-view tab-pane active" id="tab_2">
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<h4 class="panel-title">
+												<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+													aria-controls="collapseOne"> <i class="fa fa-database" /> Informations
+												</a>
+											</h4>
+										</div>
+										<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-sm-3 col-md-2 field-name">Key</div>
+													<div class="col-sm-9 col-md-10 entity-key">ADD_KPI</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-3 col-md-2 field-name">Name</div>
+													<div class="col-sm-9 col-md-10">Add a KPI</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-3 col-md-2 field-name">Description</div>
+													<div class="col-sm-9 col-md-10">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec
+														adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod
+														quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit!
+														memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro. Equitis Romani autem
+														esse filium criminis loco poni ab accusatoribus neque his iudicantibus oportuit neque defendentibus nobis.
+														Nam quod de pietate dixistis, est quidem ista nostra existimatio, sed iudicium certe parentis; quid nos
+														opinemur, audietis ex iuratis; quid parentes sentiant, lacrimae matris incredibilisque maeror, squalor
+														patris et haec praesens maestitia, quam cernitis, luctusque declarat. Accedat huc suavitas quaedam oportet
+														sermonum atque morum, haudquaquam mediocre condimentum amicitiae. Tristitia autem et in omni re severitas
+														habet illa quidem gravitatem, sed amicitia remissior esse debet et liberior et dulcior et ad omnem
+														comitatem facilitatemque proclivior. Procedente igitur mox tempore cum adventicium nihil inveniretur,
+														relicta ora maritima in Lycaoniam adnexam Isauriae se contulerunt ibique densis intersaepientes itinera
+														praetenturis provincialium et viatorum opibus pascebantur. Dum haec in oriente aguntur, Arelate hiemem
+														agens Constantius post theatralis ludos atque circenses ambitioso editos apparatu diem sextum idus
+														Octobres, qui imperii eius annum tricensimum terminabat, insolentiae pondera gravius librans, siquid
+														dubium deferebatur aut falsum, pro liquido accipiens et conperto, inter alia excarnificatum Gerontium
+														Magnentianae comitem partis exulari maerore multavit. In his tractibus navigerum nusquam visitur flumen
+														sed in locis plurimis aquae suapte natura calentes emergunt ad usus aptae multiplicium medelarum. verum
+														has quoque regiones pari sorte Pompeius Iudaeis domitis et Hierosolymis captis in provinciae speciem
+														delata iuris dictione formavit. Non ergo erunt homines deliciis diffluentes audiendi, si quando de
+														amicitia, quam nec usu nec ratione habent cognitam, disputabunt. Nam quis est, pro deorum fidem atque
+														hominum! qui velit, ut neque diligat quemquam nec ipse ab ullo diligatur, circumfluere omnibus copiis
+														atque in omnium rerum abundantia vivere? Haec enim est tyrannorum vita nimirum, in qua nulla fides, nulla
+														caritas, nulla stabilis benevolentiae potest esse fiducia, omnia semper suspecta atque sollicita, nullus
+														locus amicitiae. Eodem tempore Serenianus ex duce, cuius ignavia populatam in Phoenice Celsen ante
+														rettulimus, pulsatae maiestatis imperii reus iure postulatus ac lege, incertum qua potuit suffragatione
+														absolvi, aperte convictus familiarem suum cum pileo, quo caput operiebat, incantato vetitis artibus ad
+														templum misisse fatidicum, quaeritatum expresse an ei firmum portenderetur imperium, ut cupiebat, et
+														cunctum. At nunc si ad aliquem bene nummatum tumentemque ideo honestus advena salutatum introieris,
+														primitus tamquam exoptatus suscipieris et interrogatus multa coactusque mentiri, miraberis numquam antea
+														visus summatem virum tenuem te sic enixius observantem, ut paeniteat ob haec bona tamquam praecipua non
+														vidisse ante decennium Romam. Montius nos tumore inusitato quodam et novo ut rebellis et maiestati
+														recalcitrantes Augustae per haec quae strepit incusat iratus nimirum quod contumacem praefectum, quid
+														rerum ordo postulat ignorare dissimulantem formidine tenus iusserim custodiri.</div>
+												</div>
+											</div>
+										</div>
+										<div class="panel panel-default">
+											<div class="panel-heading" role="tab" id="headingOne">
+												<h4 class="panel-title">
+													<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseRelations"
+														aria-expanded="true" aria-controls="collapseRelations"> <i class="glyphicon glyphicon-transfer" />
+														Relationships
+													</a>
+												</h4>
+											</div>
+											<div id="collapseRelations" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+												<div class="panel-body">
+													<div class="table-responsive">
+														<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+															<thead>
+																<tr>
+																	<th>Requirement</th>
+																	<th>Relation Name</th>
+																	<th>Relation Type</th>
+																	<th>Actions</th>
+																</tr>
+															</thead>
+															<tr>
+																<td><a href="#" class="label label-default">DELETE_KPI</a></td>
+																<td>Manage KPI</td>
+																<td>Related to</td>
+																<td><a href="#" class="label label-info">Edit</a> <a href="#" class="label label-danger">Delete</a></td>
+															</tr>
+															<tr>
+																<td><a href="#" class="label label-default">EDIT_KPI</a></td>
+																<td>Manage KPI</td>
+																<td>Related to</td>
+																<td><a href="#" class="label label-info">Edit</a> <a href="#" class="label label-danger">Delete</a></td>
+															</tr>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /.tab-pane -->
+							<div class="tab-pane" id="test-cases-panel">
+								<div class="table-responsive">
+									<table id="test-cases-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+										<thead>
+											<tr>
+												<th>Key</th>
+												<th>Name</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><a href="#" class="label label-default">TEST_ADD_KPI</a></td>
+											<td>Create a kpi</td>
+											<td>
+												<a href="#" class="label label-info">Open</a> 
+												<a href="#" class="label label-danger">Remove relation</a>
+											</td>
+										</tr>
+										<tr>
+											<td><a href="#" class="label label-default">TEST_ADD_KPI_WITH_EMPTY_NAME</a></td>
+											<td>Create a KPI with empty name</td>
+											<td>
+												<a href="#" class="label label-info">Open</a> 
+												<a href="#" class="label label-danger">Remove relation</a>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab_3">
+								<form class="project-form" action="">
+									<div class="input-group">
+										<span class="input-group-addon">Key</span> <input name="key" type="text" class="form-control"
+											placeholder="Key" />
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon">Name</span> <input name="name" type="text" class="form-control"
+											placeholder="Name" />
+									</div>
+									<textarea class="textarea" placeholder="Description" style="height: 500px;" cols="" rows="" />
+									<div class="box-footer">
+										<button type="submit" class="btn btn-primary">Save</button>
+									</div>
+								</form>
+							</div>
+							<!-- /.tab-pane -->
+							<div class="tab-pane" id="tab_4">
+								<!-- Conversations are loaded here -->
+								<div class="direct-chat-messages">
+									<!-- Message. Default to the left -->
+									<div class="direct-chat-msg">
+										<div class='direct-chat-info clearfix'>
+											<span class='direct-chat-name pull-left'>Olly</span> <span class='direct-chat-timestamp pull-right'>23
+												Jan 2:00 pm</span>
+										</div>
+										<!-- /.direct-chat-info -->
+										<img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" />
+										<!-- /.direct-chat-img -->
+										<div class="direct-chat-text">For the watch!</div>
+										<!-- /.direct-chat-text -->
+									</div>
+									<!-- /.direct-chat-msg -->
+									<!-- Message to the right -->
+									<div class="direct-chat-msg right">
+										<div class='direct-chat-info clearfix'>
+											<span class='direct-chat-name pull-right'>Jon Snow</span> <span class='direct-chat-timestamp pull-left'>23
+												Jan 2:05 pm</span>
+										</div>
+										<!-- /.direct-chat-info -->
+										<img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" />
+										<!-- /.direct-chat-img -->
+										<div class="direct-chat-text">The Apple Watch?</div>
+										<!-- /.direct-chat-text -->
+									</div>
+									<!-- /.direct-chat-msg -->
+									<!-- Message. Default to the left -->
+									<div class="direct-chat-msg">
+										<div class='direct-chat-info clearfix'>
+											<span class='direct-chat-name pull-left'>Olly</span> <span class='direct-chat-timestamp pull-right'>23
+												Jan 2:00 pm</span>
+										</div>
+										<!-- /.direct-chat-info -->
+										<img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" />
+										<!-- /.direct-chat-img -->
+										<div class="direct-chat-text">For the watch!</div>
+										<!-- /.direct-chat-text -->
+									</div>
+									<!-- /.direct-chat-msg -->
+									<!-- Message to the right -->
+									<div class="direct-chat-msg right">
+										<div class='direct-chat-info clearfix'>
+											<span class='direct-chat-name pull-right'>Jon Snow</span> <span class='direct-chat-timestamp pull-left'>23
+												Jan 2:05 pm</span>
+										</div>
+										<!-- /.direct-chat-info -->
+										<img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" />
+										<!-- /.direct-chat-img -->
+										<div class="direct-chat-text">The Apple Watch?</div>
+										<!-- /.direct-chat-text -->
+									</div>
+									<!-- /.direct-chat-msg -->
+									<!-- Message. Default to the left -->
+									<div class="direct-chat-msg">
+										<div class='direct-chat-info clearfix'>
+											<span class='direct-chat-name pull-left'>Olly</span> <span class='direct-chat-timestamp pull-right'>23
+												Jan 2:00 pm</span>
+										</div>
+										<!-- /.direct-chat-info -->
+										<img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" />
+										<!-- /.direct-chat-img -->
+										<div class="direct-chat-text">For the watch!</div>
+										<!-- /.direct-chat-text -->
+									</div>
+									<!-- /.direct-chat-msg -->
+									<!-- Message to the right -->
+									<div class="direct-chat-msg right">
+										<div class='direct-chat-info clearfix'>
+											<span class='direct-chat-name pull-right'>Jon Snow</span> <span class='direct-chat-timestamp pull-left'>23
+												Jan 2:05 pm</span>
+										</div>
+										<!-- /.direct-chat-info -->
+										<img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" />
+										<!-- /.direct-chat-img -->
+										<div class="direct-chat-text">The Apple Watch?</div>
+										<!-- /.direct-chat-text -->
+									</div>
+									<!-- /.direct-chat-msg -->
+								</div>
+								<!--/.direct-chat-messages-->
+								<div class="box-footer">
+									<form action="#" method="post">
+										<div class="input-group">
+											<input type="text" name="message" placeholder="Type Message ..." class="form-control" /> <span
+												class="input-group-btn">
+												<button type="button" class="btn btn-success btn-flat">Send</button>
+											</span>
+										</div>
+									</form>
+								</div>
+								<!-- /.box-footer-->
+							</div>
+							<!-- /.tab-pane -->
+							<div class="tab-pane" id="tab_5">
+								<div class="table-responsive">
+									<table id="revisions" class="table table-hover table-striped" cellspacing="0" width="100%">
+										<thead>
+											<tr>
+												<th>Version</th>
+												<th>Created on</th>
+												<th>Change details</th>
+												<th>Author</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tr class="pointer" data-href="/ui/projects/komea-dashboard/requirements/13/revisions/2">
+											<td class="toggle"><span class="badge">3</span></td>
+											<td class="toggle">24/06/2015 12:35</td>
+											<td class="toggle">Third commit</td>
+											<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+											<td><a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
+											</td>
+										</tr>
+										<tr class="pointer">
+											<td><span class="badge">2</span></td>
+											<td>23/06/2015 12:35</td>
+											<td>Second commit</td>
+											<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+											<td><a href="#" class="label label-warning">Restore</a> <a
+												href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a></td>
+										</tr>
+										<tr class="pointer">
+											<td><span class="badge">1</span></td>
+											<td>23/06/2015 11:25</td>
+											<td>Initial creation</td>
+											<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+											<td><a href="#" class="label label-warning">Restore</a> <a
+												href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab_6">
+								<ul class="timeline">
+									<!-- timeline time label -->
+									<li class="time-label"><span class="bg-gray"> 24/06/2015 </span></li>
+									<li>
+										<!-- timeline icon --> <i class="fa fa-comments bg-aqua" />
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o" /> 09:25</span>
+											<h3 class="timeline-header">
+												<a href="#">Hodor</a> commented on this requirement
+											</h3>
+											<div class='timeline-footer'>
+												<a class="btn btn-primary btn-xs">View comment</a>
+											</div>
+										</div>
+									</li>
+									<!-- timeline time label -->
+									<li class="time-label"><span class="bg-gray"> 23/06/2015 </span></li>
+									<li>
+										<!-- timeline icon --> <i class="fa fa-flask bg-yellow" />
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o" /> 10:25</span>
+											<h3 class="timeline-header">
+												<a href="#">Jon Snow</a> added a test case to this requirement
+											</h3>
+											<div class='timeline-footer'>
+												<a class="btn btn-warning btn-xs">Open</a> <a class="btn btn-primary btn-xs">Show all test cases related
+													to this requirement</a>
+											</div>
+										</div>
+									</li>
+									<li>
+										<!-- timeline icon --> <i class="fa fa-edit bg-blue" />
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o" /> 10:05</span>
+											<h3 class="timeline-header">
+												<a href="#">Jon Snow</a> edited this requirement
+											</h3>
+											<div class='timeline-footer'>
+												<a class="btn btn-warning btn-xs">Show changelog</a> <a class="btn btn-primary btn-xs">Show all versions</a>
+											</div>
+										</div>
+									</li>
+									<!-- timeline time label -->
+									<li class="time-label"><span class="bg-gray"> 10/06/2015 </span></li>
+									<!-- /.timeline-label -->
+									<li><i class="fa fa-clock-o bg-gray" />
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o" /> 12:05</span>
+											<h3 class="timeline-header">
+												<a href="#">Jon Snow</a> created this requirement
+											</h3>
+										</div></li>
+								</ul>
+							</div>
 						</div>
-	                  </div><!-- /.tab-pane -->
-	                  
-	                  <div class="tab-pane" id="tab_4">
-	                  		<!-- Conversations are loaded here -->
-		                  	<div class="direct-chat-messages">
-		                  	
-			                    <!-- Message. Default to the left -->
-			                    <div class="direct-chat-msg">
-			                      <div class='direct-chat-info clearfix'>
-			                        <span class='direct-chat-name pull-left'>Olly</span>
-			                        <span class='direct-chat-timestamp pull-right'>23 Jan 2:00 pm</span>
-			                      </div><!-- /.direct-chat-info -->
-			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
-			                      <div class="direct-chat-text">
-			                        For the watch!
-			                      </div><!-- /.direct-chat-text -->
-			                    </div><!-- /.direct-chat-msg -->
-			
-			                    <!-- Message to the right -->
-			                    <div class="direct-chat-msg right">
-			                      <div class='direct-chat-info clearfix'>
-			                        <span class='direct-chat-name pull-right'>Jon Snow</span>
-			                        <span class='direct-chat-timestamp pull-left'>23 Jan 2:05 pm</span>
-			                      </div><!-- /.direct-chat-info -->
-			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
-			                      <div class="direct-chat-text">
-			                        The Apple Watch?
-			                      </div><!-- /.direct-chat-text -->
-			                    </div><!-- /.direct-chat-msg -->
-			                    
-			                    <!-- Message. Default to the left -->
-			                    <div class="direct-chat-msg">
-			                      <div class='direct-chat-info clearfix'>
-			                        <span class='direct-chat-name pull-left'>Olly</span>
-			                        <span class='direct-chat-timestamp pull-right'>23 Jan 2:00 pm</span>
-			                      </div><!-- /.direct-chat-info -->
-			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
-			                      <div class="direct-chat-text">
-			                        For the watch!
-			                      </div><!-- /.direct-chat-text -->
-			                    </div><!-- /.direct-chat-msg -->
-			
-			                    <!-- Message to the right -->
-			                    <div class="direct-chat-msg right">
-			                      <div class='direct-chat-info clearfix'>
-			                        <span class='direct-chat-name pull-right'>Jon Snow</span>
-			                        <span class='direct-chat-timestamp pull-left'>23 Jan 2:05 pm</span>
-			                      </div><!-- /.direct-chat-info -->
-			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
-			                      <div class="direct-chat-text">
-			                        The Apple Watch?
-			                      </div><!-- /.direct-chat-text -->
-			                    </div><!-- /.direct-chat-msg -->
-			                    
-			                    <!-- Message. Default to the left -->
-			                    <div class="direct-chat-msg">
-			                      <div class='direct-chat-info clearfix'>
-			                        <span class='direct-chat-name pull-left'>Olly</span>
-			                        <span class='direct-chat-timestamp pull-right'>23 Jan 2:00 pm</span>
-			                      </div><!-- /.direct-chat-info -->
-			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
-			                      <div class="direct-chat-text">
-			                        For the watch!
-			                      </div><!-- /.direct-chat-text -->
-			                    </div><!-- /.direct-chat-msg -->
-			
-			                    <!-- Message to the right -->
-			                    <div class="direct-chat-msg right">
-			                      <div class='direct-chat-info clearfix'>
-			                        <span class='direct-chat-name pull-right'>Jon Snow</span>
-			                        <span class='direct-chat-timestamp pull-left'>23 Jan 2:05 pm</span>
-			                      </div><!-- /.direct-chat-info -->
-			                      <img class="direct-chat-img" src="http://www.gravatar.com/avatar/?s=128" alt="message user image" /><!-- /.direct-chat-img -->
-			                      <div class="direct-chat-text">
-			                        The Apple Watch?
-			                      </div><!-- /.direct-chat-text -->
-			                    </div><!-- /.direct-chat-msg -->
-			                                        
-		                  	</div><!--/.direct-chat-messages-->
-		                  	
-		                  	<div class="box-footer">
-			                  <form action="#" method="post">
-			                    <div class="input-group">
-			                      <input type="text" name="message" placeholder="Type Message ..." class="form-control"/>
-			                      <span class="input-group-btn">
-			                        <button type="button" class="btn btn-success btn-flat">Send</button>
-			                      </span>
-			                    </div>
-			                  </form>
-			                </div><!-- /.box-footer-->
-			                
-	                  </div><!-- /.tab-pane -->
-	                  
-	                  <div class="tab-pane" id="tab_5">
-	                  	<div class="table-responsive">
-							<table id="revisions" class="table table-hover table-striped" cellspacing="0" width="100%">
-								<thead>
-									<tr>
-										<th>Version</th>
-										<th>Created on</th>
-										<th>Change details</th>
-										<th>Author</th>
-										<th>Actions</th>
-									</tr>
-								</thead>
-								<tr class="pointer" data-href="/ui/projects/komea-dashboard/requirements/13/revisions/2">
-									<td class="toggle"><span class="badge">3</span></td>
-									<td class="toggle">24/06/2015 12:35</td>
-									<td class="toggle">Third commit</td>
-									<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
-									<td>
-										<a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
-									</td>
-								</tr>
-								<tr class="pointer">
-									<td><span class="badge">2</span></td>
-									<td>23/06/2015 12:35</td>
-									<td>Second commit</td>
-									<td><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
-									<td>
-										<a href="#" class="label label-warning">Restore</a>
-										<a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
-									</td>
-								</tr>
-								<tr class="pointer">
-									<td><span class="badge">1</span></td>
-									<td>23/06/2015 11:25</td>
-									<td>Initial creation</td>
-									<td><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
-									<td>
-										<a href="#" class="label label-warning">Restore</a>
-										<a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
-									</td>
-								</tr>
-							</table>
-						</div>
-	                  </div>
-	                
-		                <div class="tab-pane" id="tab_6">
-		                  <ul class="timeline">
-							
-								<!-- timeline time label -->
-							    <li class="time-label">
-							        <span class="bg-gray">
-							            24/06/2015
-							        </span>
-							    </li>
-							    
-							    <li>
-							        <!-- timeline icon -->
-							        <i class="fa fa-comments bg-aqua"></i>
-							        <div class="timeline-item">
-							            <span class="time"><i class="fa fa-clock-o"></i> 09:25</span>
-							            <h3 class="timeline-header">
-							            	<a href="#">Hodor</a> 
-							            	commented on this requirement
-							            </h3>
-							            <div class='timeline-footer'>
-							                <a class="btn btn-primary btn-xs">View comment</a>
-							            </div>
-							        </div>
-							    </li>
-							
-								<!-- timeline time label -->
-							    <li class="time-label">
-							        <span class="bg-gray">
-							            23/06/2015
-							        </span>
-							    </li>
-							    
-							    <li>
-							        <!-- timeline icon -->
-							        <i class="fa fa-flask bg-yellow"></i>
-							        <div class="timeline-item">
-							            <span class="time"><i class="fa fa-clock-o"></i> 10:25</span>
-							            <h3 class="timeline-header">
-							            	<a href="#">Jon Snow</a> 
-							            	added a test case to this requirement
-							            </h3>
-							            <div class='timeline-footer'>
-							                <a class="btn btn-warning btn-xs">Open</a>
-							                <a class="btn btn-primary btn-xs">Show all test cases related to this requirement</a>
-							            </div>
-							        </div>
-							    </li>
-							    
-							    <li>
-							        <!-- timeline icon -->
-							        <i class="fa fa-edit bg-blue"></i>
-							        <div class="timeline-item">
-							            <span class="time"><i class="fa fa-clock-o"></i> 10:05</span>
-							            <h3 class="timeline-header">
-							            	<a href="#">Jon Snow</a> 
-							            	edited this requirement
-							            </h3>
-							            <div class='timeline-footer'>
-							                <a class="btn btn-warning btn-xs">Show changelog</a>
-							                <a class="btn btn-primary btn-xs">Show all versions</a>
-							            </div>
-							        </div>
-							    </li>
-							
-							    <!-- timeline time label -->
-							    <li class="time-label">
-							        <span class="bg-gray">
-							            10/06/2015
-							        </span>
-							    </li>
-							    <!-- /.timeline-label -->
-							
-								<li>
-									<i class="fa fa-clock-o bg-gray"></i>
-									<div class="timeline-item">
-							            <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-							            <h3 class="timeline-header">
-							            	<a href="#">Jon Snow</a> 
-							            	created this requirement
-							            </h3>
-							        </div>
-								</li>
-							
-							</ul>
-						</div>
-						
-	                </div><!-- /.tab-content -->
-	                
-	              </div><!-- nav-tabs-custom -->
+						<!-- /.tab-content -->
+					</div>
+					<!-- nav-tabs-custom -->
 				</div>
 			</div>
 		</div>
 		<!--/row-->
-		
 	</div>
 	<!--/row-->
-	
 	<div layout:fragment="footer">
-  		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/project.js}" />
- 	</div>
-	
+		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/project.js}" />
+	</div>
+	<div />
+	<div />
+	<div />
+	<div />
 </body>
 </html>
