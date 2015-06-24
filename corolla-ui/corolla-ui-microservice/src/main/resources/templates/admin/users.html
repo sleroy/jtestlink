@@ -5,96 +5,98 @@
 >
 <body>
 	<!-- Main -->
-	<div class="content" layout:fragment="content">
+	<div layout:fragment="content">
+		
+		<!-- Content Header (Page header) -->
+	    <section class="content-header">
+		    <h1>
+		    	Manage Users
+		    </h1>
+		    <ol class="breadcrumb">
+		       <li><a th:href="@{/ui/admin}"><i class="fa fa-gear"></i> Administration</a></li>
+		       <li class="active">Users</li>
+		    </ol> 
+	    </section>
+	
 		<!-- content -->
-		<div class="row">
-			<!-- main col left -->
-			<div class="col-sm-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4>Manage Users</h4>
-						<i>Click on a username below to view or edit user details. Click 'Add User' to add an user</i>
-					</div>
-					<nav class="navbar navbar-default navbar-static-top" role="navigation">
-					<div class="container">
-						<!-- Brand and toggle get grouped for better mobile display -->
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-								data-target="#bs-example-navbar-collapse-1"
-							>
-								<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span
-									class="icon-bar"
-								></span>
-							</button>
-						</div>
-						<!-- Collect the nav links, forms, and other content for toggling -->
-						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							<div class="btn-compose pull-left">
-								<a type="button" href="/ui/admin/users/add" class="btn btn-danger navbar-btn"> <span
-									class="glyphicon glyphicon-pencil"
-								></span> Add User
-								</a>
-							</div>
-							<ul class="nav navbar-nav">
-								<li><a href="#filter" role="tab" data-toggle="tab">Filter administrators</a></li>
-							</ul>
-						</div>
-						<!-- /.navbar-collapse -->
-					</div>
-					<!-- /.container-fluid --> </nav>
-					<div class="table-responsive">
-						<table id="users" class="table table-hover table-striped" cellspacing="0" width="100%">
-							<thead>
-								<tr>
-									<th></th>
-									<th>Login</th>
-									<th>First name</th>
-									<th>Last name</th>
-									<th>Email</th>
-									<th>Role</th>
-									<th>Edit</th>
-									<th>Delete</th>
-								</tr>
-							</thead>
-							<tr th:each="user : ${users}" th:attr="data-id=${user.login}" th:class="${user.active ? '' : 'warning'}">
-								<td><img th:src="'http://www.gravatar.com/avatar/'+ ${user.gravatar} + '?s=48'" class="img-responsive" /></td>
-								<td><a data-toggle="tooltip" title="Edit this user" th:href="@{'/ui/admin/users/edit/' + ${user.login}}"
-									th:text="${user.login}"
-								>login</a></td>
-								<td th:text="${user.firstName}">First name</td>
-								<td th:text="${user.lastName}">Last name</td>
-								<td th:text="${user.email}">Email</td>
-								<td th:text="${user.role}">Role</td>
-								<td><a th:href="@{'/ui/admin/users/edit/' + ${user.login}}" data-placement="top" data-toggle="tooltip"
-									title="Edit"
-								>
-										<button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
-											<span class="glyphicon glyphicon-pencil"></span>
-										</button>
-								</a></td>
-								<td class="warning"><p th:if="${#httpServletRequest.remoteUser != user.login}" data-placement="top" data-toggle="tooltip"
-										title="Delete"
+		<div class="content">
+			<div class="row">
+				<!-- main col left -->
+				<div class="col-xs-12">
+					<div class="box">
+		
+						<div class="box-header">
+			                  <h3 class="box-title"></h3>
+			                  <div class="box-tools nav-tabs-custom">
+			                  	<ul class="nav nav-tabs">
+			                  		<li>
+				                  		<a th:href="@{/ui/admin/users/add}" class="btn btn-app">
+											<i class="glyphicon glyphicon-plus"></i>
+											Add
+										</a>
+			                  		</li>
+			                  		<li>
+				                  		<a th:href="@{/ui/admin/users/add}" class="btn btn-app">
+											<i class="glyphicon glyphicon-filter"></i>
+											Filter
+										</a>
+			                  		</li>
+			                  	</ul>			
+			                  </div>
+			            </div><!-- /.box-header -->
+						
+						<div class="table-responsive" style="padding: 10px;">
+							<table id="users" class="table table-hover table-striped" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Login</th>
+										<th>First name</th>
+										<th>Last name</th>
+										<th>Email</th>
+										<th>Role</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tr th:each="user : ${users}" th:attr="data-id=${user.login}" th:class="${user.active ? '' : 'warning'}">
+									<td><img th:src="'http://www.gravatar.com/avatar/'+ ${user.gravatar} + '?s=48'" class="img-responsive" /></td>
+									<td><a data-toggle="tooltip" title="Edit this user" th:href="@{'/ui/admin/users/edit/' + ${user.login}}"
+										th:text="${user.login}"
+									>login</a></td>
+									<td th:text="${user.firstName}">First name</td>
+									<td th:text="${user.lastName}">Last name</td>
+									<td th:text="${user.email}">Email</td>
+									<td th:text="${user.role}">Role</td>
+									<td><a th:href="@{'/ui/admin/users/edit/' + ${user.login}}" data-placement="top" data-toggle="tooltip"
+										title="Edit"
 									>
-										<button class="btn btn-danger btn-xs userDelete" data-title="Delete">
-											<span class="glyphicon glyphicon-trash"></span>
-										</button>
-									</p></td>
-							</tr>
-							<tfoot>
-								<tr>
-									<th></th>
-									<th>Login</th>
-									<th>First name</th>
-									<th>Last name</th>
-									<th>Email</th>
-									<th>Role</th>
-									<th>Edit</th>
-									<th>Delete</th>
+											<button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
+												<span class="glyphicon glyphicon-pencil"></span>
+											</button>
+									</a></td>
+									<td class="warning"><p th:if="${#httpServletRequest.remoteUser != user.login}" data-placement="top" data-toggle="tooltip"
+											title="Delete"
+										>
+											<button class="btn btn-danger btn-xs userDelete" data-title="Delete">
+												<span class="glyphicon glyphicon-trash"></span>
+											</button>
+										</p></td>
 								</tr>
-							</tfoot>
-						</table>
-						<!-- include modal deletion -->
-						<div th:replace="modal :: deleteModal"></div>
+								<tfoot>
+									<tr>
+										<th></th>
+										<th>Login</th>
+										<th>First name</th>
+										<th>Last name</th>
+										<th>Email</th>
+										<th>Role</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

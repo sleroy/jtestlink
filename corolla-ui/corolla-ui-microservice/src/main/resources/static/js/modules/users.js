@@ -27,6 +27,12 @@ function userTable() {
 		
 	});
 	
+	/*
+	 * Replace datatable buttons with icons
+	 */
+	$('a.previous').html('<i class="fa fa-long-arrow-left"></i>');
+	$('a.next').html('<i class="fa fa-long-arrow-right"></i>');
+	
 }
 
 var rand = function() {
