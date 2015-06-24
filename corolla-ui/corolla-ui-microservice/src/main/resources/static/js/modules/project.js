@@ -123,17 +123,24 @@ $(document).ready(function() {
 	
 	function drawSunburst() {
 		
-		var width = $(SUNBURST).parent().width() * 0.7;
+		/* Clear the div content */
+		$(SUNBURST).html('');
+		
+		/* Get the container's width */
+		var width = $(SUNBURST).parent().parent().width() * 0.7;
 		console.log( width );
 		
+		/* Retrieve the treeview data */
 		var treeview_data = getNodes();
 		
+		/* Format treeview data to sunburst expected data format */
 		var data = { name: 'Projects', children: [] };
 		$.each(treeview_data, function(i, v) {
 			data.children.push(format_jstree_data(v));
 		});
 		console.log(data);
 		
+		/* build the sunburst */
 		new SunburstBuilder()
 				.setRoot(SUNBURST)
 				.setHeight(width)
@@ -149,12 +156,18 @@ $(document).ready(function() {
 		
 	}
 	
+	/* Draw the sunburst when the user clicks on the tab Requirements */
+	$('.toggle-sunburst').click(function() {
+		drawSunburst();
+	});
+	
+	/* Draw the sunburst when the treeview is completely loaded */
 	$(ITEMS_TREEVIEW).bind("loaded.jstree", function(e, data) {
 		drawSunburst();
 	});
 	
+	/* Refresh the sunburst when the window is being resized */
 	$(window).resize(function() {
-		$(SUNBURST).html('');
 		drawSunburst();
 	});
 	

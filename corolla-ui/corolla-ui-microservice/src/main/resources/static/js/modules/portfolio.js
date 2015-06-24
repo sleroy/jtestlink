@@ -8,11 +8,6 @@ $(document).ready(function() {
 	
 	$('.resizable').resizable();
 	
-	$('.toggle-edit').click(function() {
-		$('.details-view').hide();
-		$('.project-form').show();
-	});
-	
 	$(PROJECTS_TREEVIEW).jstree({
 		"core": {
 			"animation" : 0,
