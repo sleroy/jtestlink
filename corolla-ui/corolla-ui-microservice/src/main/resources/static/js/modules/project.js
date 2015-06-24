@@ -35,28 +35,31 @@ $(document).ready(function() {
 		    "check_callback" : true,
 		    "themes" : { "stripes" : true },
 		    'data' : [{
-		    	'text': 'Requirements',
-		    	'children': [{
-		    		'text': 'CRUD KPI Operations',
-	            	'children': [{ 
-	            	    	'text': 'Add a KPI'
-	            	    }, {
-	            	    	'text': 'Edit a KPI'
-	            	    }, {
-	            	    	'text': 'Delete a KPI'
-	            	    }]
-		    	}]
-		    },{
-		    	'text': 'Test Cases',
-		    	'type': 'testcase',
-		    	'children': [{
-		    		'text': 'Create a KPI',
-		    		'type': 'testcase'
-		    	},{
-		    		'text': 'Delete a KPI',
-		    		'type': 'testcase'
-		    	}]
-		    }]
+		    	'text': 'komea Dashboard',
+		    	'children': [
+		              {
+			    	'text': 'Requirements',
+			    	'children': [{
+			    		'text': 'CRUD KPI Operations',
+		            	'children': [{ 
+		            	    	'text': 'Add a KPI'
+		            	    }, {
+		            	    	'text': 'Edit a KPI'
+		            	    }, {
+		            	    	'text': 'Delete a KPI'
+		            	    }]
+			    	}]
+			    },{
+			    	'text': 'Test Cases',
+			    	'type': 'testcase',
+			    	'children': [{
+			    		'text': 'Create a KPI',
+			    		'type': 'testcase'
+			    	},{
+			    		'text': 'Delete a KPI',
+			    		'type': 'testcase'
+			    	}]
+			    }]}] 
 		},
 		"plugins": ["dnd", "contextmenu", "types"],
 		"contextmenu": {

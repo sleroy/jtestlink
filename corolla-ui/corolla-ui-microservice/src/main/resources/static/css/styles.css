@@ -254,6 +254,14 @@ h1, h2, h3 {
 	padding-right: 7px;
 }
 
+.entity-key {
+	color: #01A9DB;
+}
+
+.field-name {
+	color: #AFAFAF;
+}
+
 /*
 .modal-header, .modal-footer {
 	background-color: #f2f2f2;

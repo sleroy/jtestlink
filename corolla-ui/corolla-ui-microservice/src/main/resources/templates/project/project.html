@@ -80,7 +80,6 @@
 	                 	<li><a href="#tab_4" data-toggle="tab">Comments</a> </li>
 	                   	<li><a href="#tab_5" data-toggle="tab">Revisions</a> </li>
 	                   	<li><a href="#tab_6" data-toggle="tab">Activity</a> </li>
-	                   	<li><a href="#tab_7" data-toggle="tab">Export</a> </li>
 	                	<li class="dropdown pull-right">
 		                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
 		                      <i class="fa fa-paw"/> Actions
@@ -101,6 +100,19 @@
 		                      <i class="glyphicon glyphicon-edit"/> Edit 
 		                    </a>
 	                  	</li>
+	                  	<li class="pull-right dropdown">
+		                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
+		                      <i class="fa fa-location-arrow"></i> Export
+		                    </a>
+		                    <ul class="dropdown-menu">
+		                      <li role="presentation">
+		                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/projects/komea-dashboard}">
+		                      		<i class="fa fa-file-pdf-o"></i>
+		                      		PDF
+		                      	</a>
+		                      </li>
+		                    </ul>
+		                </li>
 	                  	<li class="dropdown pull-right">
 		                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
 		                      <i class="glyphicon glyphicon-plus"/> Add 
@@ -131,16 +143,16 @@
 	                  </div><!-- /.tab-pane -->
 	                  <div class="details-view tab-pane active" id="tab_2">
 	                  	<div class="row">
-	                  		<div class="col-sm-6 col-md-4">Key</div>
-	                  		<div class="col-sm-6 col-md-8">Add_KPI</div>
+	                  		<div class="col-sm-3 col-md-2 field-name">Key</div>
+	                  		<div class="col-sm-9 col-md-10 entity-key">ADD_KPI</div>
 	                  	</div>
 	                  	<div class="row">
-	                  		<div class="col-sm-6 col-md-4">Name</div>
-	                  		<div class="col-sm-6 col-md-8">Add a KPI</div>
+	                  		<div class="col-sm-3 col-md-2 field-name">Name</div>
+	                  		<div class="col-sm-9 col-md-10">Add a KPI</div>
 	                  	</div>
 	                  	<div class="row">
-	                  		<div class="col-sm-6 col-md-4">Description</div>
-	                  		<div class="col-sm-6 col-md-8">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit! memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro.
+	                  		<div class="col-sm-3 col-md-2 field-name">Description</div>
+	                  		<div class="col-sm-9 col-md-10">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit! memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro.
 
 Equitis Romani autem esse filium criminis loco poni ab accusatoribus neque his iudicantibus oportuit neque defendentibus nobis. Nam quod de pietate dixistis, est quidem ista nostra existimatio, sed iudicium certe parentis; quid nos opinemur, audietis ex iuratis; quid parentes sentiant, lacrimae matris incredibilisque maeror, squalor patris et haec praesens maestitia, quam cernitis, luctusque declarat.
 
@@ -316,7 +328,7 @@ Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitran
 										<th>Created on</th>
 										<th>Change details</th>
 										<th>Author</th>
-										<th>Action</th>
+										<th>Actions</th>
 									</tr>
 								</thead>
 								<tr class="pointer" data-href="/ui/projects/komea-dashboard/requirements/13/revisions/2">
@@ -324,21 +336,29 @@ Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitran
 									<td class="toggle">24/06/2015 12:35</td>
 									<td class="toggle">Third commit</td>
 									<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
-									<td></td>
+									<td>
+										<a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
+									</td>
 								</tr>
 								<tr class="pointer">
 									<td><span class="badge">2</span></td>
 									<td>23/06/2015 12:35</td>
 									<td>Second commit</td>
 									<td><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
-									<td><a href="#" class="label label-warning">Restore</a></td>
+									<td>
+										<a href="#" class="label label-warning">Restore</a>
+										<a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
+									</td>
 								</tr>
 								<tr class="pointer">
 									<td><span class="badge">1</span></td>
 									<td>23/06/2015 11:25</td>
 									<td>Initial creation</td>
 									<td><img src="http://www.gravatar.com/avatar/?s=16"/> jsnow</td>
-									<td><a href="#" class="label label-warning">Restore</a></td>
+									<td>
+										<a href="#" class="label label-warning">Restore</a>
+										<a href="/ui/projects/komea-dashboard/requirements/13/revisions/2" class="label label-primary">Changelog</a>
+									</td>
 								</tr>
 							</table>
 						</div>
