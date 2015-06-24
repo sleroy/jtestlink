@@ -76,7 +76,7 @@
 	                <ul class="nav nav-tabs">
 	                	<li class="active"><a href="#tab_2" data-toggle="tab">Details</a></li>
 	                	<li><a href="#requirements" data-toggle="tab" class="toggle-sunburst">Requirements</a></li>
-	                  	<li><a href="#tab_2" data-toggle="tab">Details</a></li>
+	                	<li><a href="#relationships" data-toggle="tab">Relationships</a></li>
 	                 	<li><a href="#tab_4" data-toggle="tab">Comments</a> </li>
 	                   	<li><a href="#tab_5" data-toggle="tab">Revisions</a> </li>
 	                   	<li><a href="#tab_6" data-toggle="tab">Activity</a> </li>
@@ -106,9 +106,22 @@
 		                      <i class="glyphicon glyphicon-plus"/> Add 
 		                    </a>
 		                    <ul class="dropdown-menu">
-		                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Requirement</a></li>
+		                      <li role="presentation">
+		                      	<a role="menuitem" tabindex="-1" href="#">
+		                      		<i class="glyphicon glyphicon-list-alt"></i> Requirement
+		                      	</a>
+		                      </li>
+		                      <li role="presentation">
+		                      	<a role="menuitem" tabindex="-1" href="#">
+		                      		<i class="glyphicon glyphicon-list-alt"></i> User Story
+		                      	</a>
+		                      </li>
 		                      <li role="presentation" class="divider"></li>
-		                      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">User Story</a></li>
+		                      <li role="presentation">
+		                      	<a role="menuitem" tabindex="-1" href="#">
+		                      		<i class="glyphicon glyphicon-transfer"></i> Relationship
+		                      	</a>
+		                      </li>
 		                    </ul>
 	                  	</li>
 	                </ul>
@@ -164,6 +177,43 @@ Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitran
 		                  		<button type="submit" class="btn btn-primary">Save</button>
 	                  		</div>
 	                  	</form>
+	                  </div><!-- /.tab-pane -->
+	                  
+	                  <div class="tab-pane" id="relationships">
+	                  	<div class="table-responsive">
+							<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Requirement</th>
+										<th>Relation Name</th>
+										<th>Relation Type</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tr>
+									<td>
+										<a href="#" class="label label-default">DELETE_KPI</a>
+									</td>
+									<td>Manage KPI</td>
+									<td>Related to</td>
+									<td>
+										<a href="#" class="label label-info">Edit</a>
+										<a href="#" class="label label-danger">Delete</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<a href="#" class="label label-default">EDIT_KPI</a>
+									</td>
+									<td>Manage KPI</td>
+									<td>Related to</td>
+									<td>
+										<a href="#" class="label label-info">Edit</a>
+										<a href="#" class="label label-danger">Delete</a>
+									</td>
+								</tr>
+							</table>
+						</div>
 	                  </div><!-- /.tab-pane -->
 	                  
 	                  <div class="tab-pane" id="tab_4">
