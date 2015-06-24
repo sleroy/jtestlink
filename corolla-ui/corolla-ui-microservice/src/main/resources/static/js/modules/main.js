@@ -109,7 +109,7 @@ function ChangeProjectModal() {
             	    		'data-key': 'komea-dashboard'
             	    	}
             	    }]
-               }
+               } 
 		    ]
 		},
 		"plugins": ["types", "search"],
