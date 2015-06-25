@@ -104,6 +104,10 @@
 											Case
 									</a></li>
 									<li role="presentation" class="divider" />
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-paperclip" />
+											Attachment
+									</a></li>
+									<li role="presentation" class="divider" />
 									<li role="presentation"><a role="menuitem" tabindex="-1" href="#"> <i class="fa fa-download" />
 											Import
 									</a></li>
@@ -177,15 +181,51 @@
 									<div class="panel panel-default">
 										<div class="panel-heading" role="tab" id="headingOne">
 											<h4 class="panel-title">
-												<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTags"
-													aria-expanded="true" aria-controls="collapseTags"> <i class="glyphicon glyphicon-tags" />
-													Tags
+												<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTags" aria-expanded="true"
+													aria-controls="collapseTags"> <i class="glyphicon glyphicon-tags" /> Tags
 												</a>
 											</h4>
 										</div>
 										<div id="collapseTags" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 											<div class="panel-body">
-												<input type="text" name="tags" placeholder="Tags" class="tm-input tm-input-info"/>
+												<input type="text" name="tags" placeholder="Tags" class="tm-input tm-input-info" />
+											</div>
+										</div>
+									</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingOne">
+											<h4 class="panel-title">
+												<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAttachments"
+													aria-expanded="true" aria-controls="collapseAttachments"> <i class="fa fa-paperclip" /> Attachments
+												</a>
+											</h4>
+										</div>
+										<div id="collapseAttachments" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+											<div class="panel-body">
+												<div class="table-responsive">
+													<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+														<thead>
+															<tr>
+																<th>File</th>
+																<th>Date</th>
+																<th>Size</th>
+																<th>Actions</th>
+															</tr>
+														</thead>
+														<tr>
+															<td><a href="#">note.pdf</a></td>
+															<td>25/06/2015 11:30</td>
+															<td>49.98 Mo</td>
+															<td><a href="#" class="label label-danger">Delete</a></td>
+														</tr>
+														<tr>
+															<td><a href="#">image.png</a></td>
+															<td>25/06/2015 11:28</td>
+															<td>4.78 Mo</td>
+															<td><a href="#" class="label label-danger">Delete</a></td>
+														</tr>
+													</table>
+												</div>
 											</div>
 										</div>
 									</div>
