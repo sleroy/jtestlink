@@ -21,6 +21,15 @@ $(document).ready(function() {
 	 */
 	$('.datepicker').datepicker()
 	
+	/*
+	 * Initialize TagManager widget
+	 */
+	$(".tm-input").tagsManager({
+		 prefilled: ["Komea", "Java", "Spring", "KPI Manager", "Dashboard"],
+		 AjaxPush: null,
+		 AjaxPushAllTags: true
+	});
+	
 	//$('.resizable').resizable();
 	
 	/*

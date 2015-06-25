@@ -5,10 +5,26 @@ var SUNBURST = '.project-items-sunburst';
 $(document).ready(function() {
 	
 	/*
-	 * Enable Bootstrap WYSIHTML5
+	 * Initialize Bootstrap WYSIHTML5
 	 */
 	$(".textarea").wysihtml5();
 	
+	/*
+	 * Initialize TagManager widget
+	 */
+	$(".tm-input").tagsManager({
+		 prefilled: ["KPI", "CRUD Operation"],
+		 AjaxPush: null,
+		 AjaxPushAllTags: true
+	});
+	
+	$(".tm-input").on('tm:afterPush', function(e, tag) {
+		console.log(tag + " was pushed!");
+	});
+	
+	$(".tm-input").on('tm:afterSplice', function(e, tag) {
+		console.log(tag + " was removed!");
+	});
 	/*
 	 * Call modal to quickly change project
 	 */
