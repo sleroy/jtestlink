@@ -1,8 +1,9 @@
 
 var PROJECTS_TREEVIEW = '.projects-tree-view';
 var PROJECTS_SUNBURST = '.projects-sunburst';
+var PROJECTS_TREEMAP = '.zoomable-treemap';
 
-$(document).ready(function() {
+function initPortfolio() {
 	
 	/*
 	 * Initialize Bootstrap WYSIHTML5 widget
@@ -178,4 +179,36 @@ $(document).ready(function() {
 		drawSunburst();
 	});
 	
-});
+}
+
+function initTreemapView() {
+	
+	function drawTreemap() {
+		
+		$(PROJECTS_TREEMAP).html('');
+		
+		var width =  $(PROJECTS_TREEMAP).width() * 0.99;
+		console.log(width);
+		var height = width * 0.6;
+		
+		/*$('PROJECTS_TREEMAP').css('width', width);
+		$('PROJECTS_TREEMAP').css('height', height);*/
+
+		new ZoomableTreemapBuilder()
+			.setRoot(PROJECTS_TREEMAP)
+			.setHeight(height)
+			.setWidth(width)
+			.setURL('http://bost.ocks.org/mike/treemap/flare.json')
+			.onClick(function(data) {
+				console.log(data);
+			}).build(null);
+		
+	}
+	
+	drawTreemap();
+	
+	$(window).resize(function() {
+		drawTreemap();
+	});
+	
+}

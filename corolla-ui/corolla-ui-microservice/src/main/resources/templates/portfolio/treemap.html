@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<body>
+	<div layout:fragment="content">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+		<h1>
+			Portfolio <small>Control panel</small>
+		</h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="glyphicon glyphicon-book" /> Portfolio</a></li>
+			<li class="active">Komea Dashboard</li>
+		</ol>
+		</section>
+		<!-- Main -->
+		<div class="content">
+			<div class="zoomable-treemap"></div>
+		</div>
+	</div>
+	<div layout:fragment="footer">
+		<script type="text/javascript" src="../../static/js/modules/portfolio.js" th:src="@{/js/modules/portfolio.js}" />
+		<script type="text/javascript" src="../../static/js/modules/treemap.js" th:src="@{/js/modules/treemap.js}" />
+		<script type="text/javascript">
+			$(document).ready(initTreemapView());
+		</script>
+	</div>
+</body>
+</html>

@@ -13,11 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 class PortfolioPageController {
 	
 	def static final String INDEX_PAGE = "portfolio/index";
+	def static final String TREEMAP_PAGE = "portfolio/treemap";
 
 	@RequestMapping("/ui/portfolio")
 	public ModelAndView getPortfolioPage() {
 		
-		return new ModelAndView(INDEX_PAGE);
+		return new ModelAndView(TREEMAP_PAGE);
 	}
 	
 	@RequestMapping("/ui/portfolio/{project_key}")
