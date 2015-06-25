@@ -61,11 +61,11 @@
 				<div class="col-sm-6 col-md-8">
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs">
-							<li class="active"><a href="#tab_2" data-toggle="tab">Details</a></li>
+							<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
 							<li><a href="#requirements" data-toggle="tab" class="toggle-sunburst">Requirements</a></li>
 							<li><a href="#test-cases-panel" data-toggle="tab">Test Cases</a></li>
-							<li><a href="#tab_4" data-toggle="tab">Comments</a></li>
-							<li><a href="#tab_6" data-toggle="tab">Activity</a></li>
+							<li><a href="#comments" data-toggle="tab">Comments</a></li>
+							<li><a href="#activity" data-toggle="tab">Activity</a></li>
 							<li class="dropdown pull-right"><a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
 									<i class="fa fa-paw" /> Actions
 							</a>
@@ -118,7 +118,7 @@
 								<div class="sunburst project-items-sunburst" />
 							</div>
 							<!-- /.tab-pane -->
-							<div class="details-view tab-pane active" id="tab_2">
+							<div class="details-view tab-pane active" id="details">
 								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 									<div class="panel panel-default">
 										<div class="panel-heading" role="tab" id="headingOne">
@@ -362,7 +362,7 @@
 								</form>
 							</div>
 							<!-- /.tab-pane -->
-							<div class="tab-pane" id="tab_4">
+							<div class="tab-pane" id="comments">
 								<!-- Conversations are loaded here -->
 								<div class="direct-chat-messages">
 									<!-- Message. Default to the left -->
@@ -458,7 +458,7 @@
 								<!-- /.box-footer-->
 							</div>
 							<!-- /.tab-pane -->
-							<div class="tab-pane" id="tab_6">
+							<div class="tab-pane" id="activity">
 								<ul class="timeline">
 									<!-- timeline time label -->
 									<li class="time-label"><span class="bg-gray"> 24/06/2015 </span></li>
@@ -526,6 +526,9 @@
 	<!--/row-->
 	<div layout:fragment="footer">
 		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/project.js}" />
+		<script type="text/javascript">
+			$(document).ready(tabRooting);
+		</script>
 	</div>
 </body>
 </html>

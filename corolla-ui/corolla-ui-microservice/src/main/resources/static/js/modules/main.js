@@ -193,3 +193,21 @@ $(document).ready(function() {
 	});
 	
 });
+
+/**
+ * Automatically toggle a tab
+ * if the tab id is specified in the URL
+ */
+function tabRooting() {
+	
+	var target = window.location.hash; 
+	if(target) {		
+		$.each($('.nav-tabs li'), function(i, elt){
+			var toggleButton = $(elt).find('a');
+			if (toggleButton.attr('href') == target) {
+				toggleButton.click();
+			}
+		});
+	}
+	
+}
