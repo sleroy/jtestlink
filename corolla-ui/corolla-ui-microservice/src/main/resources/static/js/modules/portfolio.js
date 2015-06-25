@@ -40,8 +40,23 @@ $(document).ready(function() {
 			"animation" : 0,
 		    "check_callback" : true,
 		    "themes" : { "stripes" : true },
-		    'data' : [
-               {
+		    'data' : [{
+		    		'text': 'Recently Viewed Projects',
+		    		'icon': 'fa fa-history',
+		    		'children': [{
+		    			 	'text': 'Corolla',
+		    			 	'icon': 'http://lorempixel.com/16/16/'
+		    			},{ 
+	            	    	'text': 'Komea Rest API',
+	            	    	'icon': 'http://lorempixel.com/16/16/'
+	            	    }, {
+	            	    	'text': 'Komea Dashboard',
+	            	    	'icon': 'http://lorempixel.com/16/16/',
+	            	    	'a_attr': {
+	            	    		'data-key': 'komea-dashboard'
+	            	    	}
+	            	    }]
+		    	},{
             	   'text': 'Corolla',
             	   'icon': 'http://lorempixel.com/16/16/'
                }, {
@@ -124,7 +139,7 @@ $(document).ready(function() {
 		var treeview_data = getNodes();
 		
 		var data = { name: 'Projects', children: [] };
-		$.each(treeview_data, function(i, v) {
+		$.each(treeview_data.slice(1), function(i, v) {
 			data.children.push(format_jstree_data(v));
 		});
 		console.log(data);
@@ -137,7 +152,7 @@ $(document).ready(function() {
 				.onClick(function(data) {
 					$(PROJECTS_TREEVIEW).jstree(true).deselect_all();
 					$(PROJECTS_TREEVIEW).jstree(true).close_all();
-					toggleNode(getNodes(), data.name);
+					toggleNode(getNodes().slice(1), data.name);
 					console.log(data);
 				})
 				.build(data);
@@ -146,8 +161,8 @@ $(document).ready(function() {
 
     $(PROJECTS_TREEVIEW).bind("loaded.jstree", function(e, data) {
     	drawSunburst();
+    	$(PROJECTS_TREEVIEW).jstree(true).select_node(getNodes()[0]);
     	//$(PROJECTS_TREEVIEW).off("click.jstree", ".jstree-anchor");
-    	//addMenu();
     });
     
    /* $(PROJECTS_TREEVIEW).bind("after_open.jstree", function(e, data) {

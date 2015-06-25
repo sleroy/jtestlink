@@ -51,11 +51,8 @@ $(document).ready(function() {
 		    "check_callback" : true,
 		    "themes" : { "stripes" : true },
 		    'data' : [{
-		    	'text': 'komea Dashboard',
-		    	'children': [
-		              {
-			    	'text': 'Requirements',
-			    	'children': [{
+		    	'text': 'Komea Dashboard',
+		    	'children': [{
 			    		'text': 'CRUD KPI Operations',
 		            	'children': [{ 
 		            	    	'text': 'Add a KPI'
@@ -64,18 +61,17 @@ $(document).ready(function() {
 		            	    }, {
 		            	    	'text': 'Delete a KPI'
 		            	    }]
+			    	}, {
+			    		'text': 'CRUD Users Operations',
+			    		'children': [{
+			    			'text': 'Add an user'
+			    		},{
+			    			'text': 'Edit an user'
+			    		},{
+			    			'text': 'Delete an user'
+			    		}]
 			    	}]
-			    },{
-			    	'text': 'Test Cases',
-			    	'type': 'testcase',
-			    	'children': [{
-			    		'text': 'Create a KPI',
-			    		'type': 'testcase'
-			    	},{
-			    		'text': 'Delete a KPI',
-			    		'type': 'testcase'
-			    	}]
-			    }]}] 
+			    }]
 		},
 		"plugins": ["dnd", "contextmenu", "types"],
 		"contextmenu": {
@@ -132,6 +128,7 @@ $(document).ready(function() {
 			if (node.text == name) {
 				console.log('toggle node '+name);
 				$(ITEMS_TREEVIEW).jstree(true).select_node(node);
+				$(ITEMS_TREEVIEW).jstree(true).toggle_node(node);
 			}else{
 				if (node.children) {
 					toggleNode(node.children, name);
@@ -182,6 +179,7 @@ $(document).ready(function() {
 	
 	/* Draw the sunburst when the treeview is completely loaded */
 	$(ITEMS_TREEVIEW).bind("loaded.jstree", function(e, data) {
+		$(ITEMS_TREEVIEW).jstree(true).toggle_node(getNodes()[0]);
 		drawSunburst();
 	});
 	
