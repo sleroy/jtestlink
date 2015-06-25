@@ -270,6 +270,19 @@ h1, h2, h3 {
 	margin-right: 6px;
 }
 
+.form-row {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.project-form .text-editor {
+	margin-top: 30px;
+}
+
+.project-form iframe {
+	//height: 1000px !important;
+}
+
 /*
 .modal-header, .modal-footer {
 	background-color: #f2f2f2;

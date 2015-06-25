@@ -4,10 +4,28 @@ var PROJECTS_SUNBURST = '.projects-sunburst';
 
 $(document).ready(function() {
 	
+	/*
+	 * Initialize Bootstrap WYSIHTML5 widget
+	 */
 	$(".textarea").wysihtml5();
 	
-	$('.resizable').resizable();
+	/*
+	 * Initialize Select2 widget
+	 */
+	$('.select2').select2({
+		minimumResultsForSearch: Infinity
+	});
 	
+	/*
+	 * Initialize DatePicker widget
+	 */
+	$('.datepicker').datepicker()
+	
+	//$('.resizable').resizable();
+	
+	/*
+	 * Initialize JsTree widget
+	 */
 	$(PROJECTS_TREEVIEW).jstree({
 		"core": {
 			"animation" : 0,

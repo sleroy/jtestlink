@@ -146,6 +146,29 @@
 		                  		<div class="col-sm-9 col-md-10">Komea Dashboard</div>
 		                  	</div>
 		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Status</div>
+		                  		<div class="col-sm-9 col-md-10">Active</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Category</div>
+		                  		<div class="col-sm-9 col-md-10">New development</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Date Start</div>
+		                  		<div class="col-sm-9 col-md-10">20/06/2015</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Date End</div>
+		                  		<div class="col-sm-9 col-md-10">20/08/2015</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Product Manager</div>
+		                  		<div class="col-sm-9 col-md-10">
+		                  			<img src="http://www.gravatar.com/avatar/?s=16"/>
+		                  			<a href="#">Hodor</a>
+		                  		</div>
+		                  	</div>
+		                  	<div class="row">
 		                  		<div class="col-sm-3 col-md-2 field-name">Description</div>
 		                  		<div class="col-sm-9 col-md-10">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit! memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro.
 	
@@ -171,19 +194,67 @@
 		            </div>
 		            <div class="tab-pane" id="edit">
 	                  	<form class="project-form">
-		                    <div class="input-group">
-			                    <span class="input-group-addon">Key*</span>
-			                    <input name="key" type="text" class="form-control" placeholder="Key"/>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2">
+			                    	<span class="">Key*</span>
+			                    </div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<input name="key" type="text" class="form-control" placeholder="Key"/>
+			                    </div>
 			                </div>
-			                <div class="input-group">
-			                    <span class="input-group-addon">Name*</span>
-			                    <input name="name" type="text" class="form-control" placeholder="Name"/>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2">
+			                    	<span class="">Name*</span>
+			                    </div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<input name="name" type="text" class="form-control" placeholder="Name"/>
+			                    </div>
 			                </div>
-			                <div class="row">
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Status</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<select name="status" class="select2">
+			                    		<option>Active</option>
+			                    		<option>Closed</option>
+			                    	</select>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Category</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<select name="status" class="select2">
+			                    		<option>New Development</option>
+			                    	</select>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Date Start</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<input name="dateStart" type="text" class="form-control datepicker"/>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Date End</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<input name="dateEnd" type="text" class="form-control datepicker"/>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Product Manager</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<select name="status" class="select2">
+			                    		<option>Jon Snow</option>
+			                    		<option>Hodor</option>
+			                    	</select>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
 			                    <div class="col-sm-3 col-md-2"><span class="">Icon</span></div>
 			                    <div class="col-sm-9 col-md-10"><input name="icon" type="file" class=""/></div>
 			                </div>
-		                	<textarea class="textarea" placeholder="Description"></textarea>
+			                <div class="text-editor">
+			                	<textarea class="textarea" placeholder="Description" style="height: 600px;"></textarea>
+			                </div>
 		                	<div class="box-footer">
 		                  		<button type="submit" class="btn btn-primary">Save</button>
 	                  		</div>

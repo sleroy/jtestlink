@@ -35,6 +35,11 @@ function initMainJS() {
      */
     $('.select2').select2();
     
+    /*
+     * Set default date format for datepicker widgets
+     */
+    $.fn.datepicker.defaults.format = "dd/mm/yyyy";
+    
 }
 
 function define_yesModalButton_clickAction(action) {
