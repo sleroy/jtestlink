@@ -19,9 +19,7 @@ function initMainJS() {
 	 */
     $('.sidebar-toggle').click(function() {
     	
-    	$('.sidebar-toggle').removeClass('visible-xs');
-    	
-    	$(window).trigger('resize');
+    	$('.sidebar-toggle').removeClass('visible-xs');   	
     	
 //    	var hidden = $('body').hasClass('sidebar-collapse');
 //    	sessionStorage.setItem('sidebar-collapse', hidden);

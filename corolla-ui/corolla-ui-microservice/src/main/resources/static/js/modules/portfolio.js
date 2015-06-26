@@ -279,4 +279,9 @@ function initTiles() {
 		$container.isotope({ filter: filterFn });
 	}
 	
+	$('.content').resize(function() {
+		console.log('resized');
+		$container.isotope('layout');
+	});
+	
 }
