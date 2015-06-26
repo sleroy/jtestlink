@@ -18,9 +18,13 @@ function initMainJS() {
 	 * Fix issue with sidebar toggle button disapearing
 	 */
     $('.sidebar-toggle').click(function() {
+    	
     	$('.sidebar-toggle').removeClass('visible-xs');
-    	var hidden = $('body').hasClass('sidebar-collapse');
-    	sessionStorage.setItem('sidebar-collapse', hidden);
+    	
+    	$(window).trigger('resize');
+    	
+//    	var hidden = $('body').hasClass('sidebar-collapse');
+//    	sessionStorage.setItem('sidebar-collapse', hidden);
     });
     
 //    var sidebarHidden = sessionStorage.getItem('sidebar-collapse');

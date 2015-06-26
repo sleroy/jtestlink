@@ -217,18 +217,6 @@ function initTreemapView() {
 
 function initTiles() {
 	
-//	console.log('init tiles...');
-//	
-//	var wall = new freewall(TILES_CONTAINER);
-//	wall.reset({
-//		animate: true,
-//		selector: '.item',
-//		cellW: 250,
-//		cellH: 'auto'
-//	});
-//	wall.fitWidth();
-//	wall.fitHeight();
-	
 	var $container = $('.isotope').isotope({
 	    itemSelector: '.element-item',
 	    layoutMode: 'fitRows',
@@ -269,7 +257,8 @@ function initTiles() {
 		return false;
 	});
 	
-	$('.search-bar #query').keypress(function() {
+	$('.search-bar #query').on('input', function() {
+		console.log($(this).val());
 		searchTiles( $(this).val() );
 	});
 	
