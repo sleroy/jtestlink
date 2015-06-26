@@ -2,7 +2,7 @@
 var ITEMS_TREEVIEW = '.project-items-tree-view';
 var SUNBURST = '.project-items-sunburst';
 
-$(document).ready(function() {
+function initRequirementView() {
 	
 	/*
 	 * Initialize Bootstrap WYSIHTML5
@@ -174,18 +174,18 @@ $(document).ready(function() {
 	
 	/* Draw the sunburst when the user clicks on the tab Requirements */
 	$('.toggle-sunburst').click(function() {
-		drawSunburst();
+//		drawSunburst();
 	});
 	
 	/* Draw the sunburst when the treeview is completely loaded */
 	$(ITEMS_TREEVIEW).bind("loaded.jstree", function(e, data) {
 		$(ITEMS_TREEVIEW).jstree(true).toggle_node(getNodes()[0]);
-		drawSunburst();
+//		drawSunburst();
 	});
 	
 	/* Refresh the sunburst when the window is being resized */
 	$(window).resize(function() {
-		drawSunburst();
+//		drawSunburst();
 	});
 	
-});
+}

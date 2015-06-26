@@ -26,15 +26,14 @@
 						<!-- 							<h4>Favorite products</h4> -->
 						<!-- 						</div> -->
 						<div class="tab-header">
-		                	<img src="http://lorempixel.com/56/56/"/>	                	
-		                	<h3>Add a KPI</h3>
-		                	<div class="properties">
-		                		<a href="#" class="entity-key">
-		                			<i class="fa fa-key"></i> ADD_KPI
-		                		</a>
-		                	</div>
-		                	<br style="clear: both;"/>
-		                </div>
+							<img src="http://lorempixel.com/56/56/" alt="" />
+							<h3>Add a KPI</h3>
+							<div class="properties">
+								<a href="#" class="entity-key"> <i class="fa fa-key" /> ADD_KPI
+								</a>
+							</div>
+							<br style="clear: both;" />
+						</div>
 						<div>
 							<div>
 								<ul class="wysihtml5-toolbar" style="margin: 8px;">
@@ -80,8 +79,8 @@
 									<i class="fa fa-paw" /> Actions
 							</a>
 								<ul class="dropdown-menu">
-									<li role="presentation">
-										<a role="menuitem" tabindex="-1" href="#"> <i class="glyphicon glyphicon-remove" /> Delete
+									<li role="presentation"><a role="menuitem" tabindex="-1" href="#"> <i
+											class="glyphicon glyphicon-remove" /> Delete
 									</a></li>
 								</ul></li>
 							<li class="pull-right"><a class="btn btn-app" data-toggle="tab" href="#tab_3"> <i
@@ -125,7 +124,33 @@
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane" id="requirements">
-								<div class="sunburst project-items-sunburst" />
+								<!-- 								<div class="sunburst project-items-sunburst" /> -->
+								<div class="table-responsive">
+									<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+										<thead>
+											<tr>
+												<th>Key</th>
+												<th>Name</th>
+												<th>Actions</th>
+											</tr>
+										</thead>
+										<tr>
+											<td><a href="#" class="label label-default">ADD_KPI</a></td>
+											<td>Add a KPI</td>
+											<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
+										</tr>
+										<tr>
+											<td><a href="#" class="label label-default">EDIT_KPI</a></td>
+											<td>Edit a KPI</td>
+											<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
+										</tr>
+										<tr>
+											<td><a href="#" class="label label-default">DELETE_KPI</a></td>
+											<td>Delete a KPI</td>
+											<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
+										</tr>
+									</table>
+								</div>
 							</div>
 							<!-- /.tab-pane -->
 							<div class="details-view tab-pane active" id="details">
@@ -213,7 +238,7 @@
 										<div id="collapseAttachments" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 											<div class="panel-body">
 												<div class="table-responsive">
-													<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+													<table id="attachments-table" class="table table-hover table-striped" cellspacing="0" width="100%">
 														<thead>
 															<tr>
 																<th>File</th>
@@ -535,11 +560,14 @@
 	<div />
 	<!--/row-->
 	<div layout:fragment="footer">
-		<script type="text/javascript" th:src="@{/js/d3.min.js}" src="../static/js/d3.min.js" />
-		<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js" />
+<!-- 		<script type="text/javascript" th:src="@{/js/d3.min.js}" src="../static/js/d3.min.js" /> -->
+<!-- 		<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js" /> -->
 		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/project.js}" />
 		<script type="text/javascript">
-			$(document).ready(tabRooting);
+			$(document).ready(function() {
+				initRequirementView();
+				tabRooting();
+			});
 		</script>
 	</div>
 </body>
