@@ -16,14 +16,95 @@
 		</section>
 		<!-- Main -->
 		<div class="content">
-			<div class="zoomable-treemap"></div>
+			<div class="zoomable-treemap" />
+			<div class="tiles-container row">
+				<div class="toolbar col-sm-2 col-md-1">
+					<span class="label label-default" data-filter="*">All</span> <span class="label label-info">Komea</span> <span
+						class="label label-info">Dashboard</span> <span class="label label-info">Java</span> <span
+						class="label label-info">Rest API</span> <span class="label label-info">Plugin</span> <span
+						class="label label-info">Redmine</span>
+				</div>
+				<div class="col-sm-10 col-md-11">
+					<form class="search-bar">
+						<div class="input-group">
+							<input id="query" type="text" class="form-control" placeholder="Search..." />
+							<span class="input-group-btn">
+								<button type="submit" name="search" id="search-iso-btn" class="btn">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+					</form>
+					<div class="isotope">
+						<div class="element-item metalloid" data-tags="komea dashboard java">
+							<h3 class="name">Komea Dashboard</h3>
+							<p class="symbol">KD</p>
+						</div>
+						<div class="element-item metalloid " data-tags="komea rest api java">
+							<h3 class="name">Komea Rest API</h3>
+							<img src="http://lorempixel.com/256/256/" alt="" />
+						</div>
+						<div class="element-item metalloid " data-tags="komea redmine java">
+							<h3 class="name">Komea - Plugin Redmine</h3>
+							<img src="http://lorempixel.com/256/256/" alt="" />
+						</div>
+						<div class="element-item metalloid " data-tags="komea bugzilla plugin">
+							<h3 class="name">Komea - Plugin Bugzilla</h3>
+							<img src="http://lorempixel.com/256/256/" alt="" />
+						</div>
+						<div class="element-item metal" data-tags="corolla java">
+							<h3 class="name">Corolla</h3>
+							<img src="http://lorempixel.com/256/256/" alt="" />
+						</div>
+						<div class="element-item metal" data-tags="corolla java">
+							<h3 class="name">Corolla - Plugin Redmine</h3>
+							<img src="http://lorempixel.com/256/256/" alt="" />
+						</div>
+						<div class="element-item alkaline-earth" data-tags="plugin redmine">
+							<h3 class="name">Audit Assistant</h3>
+							<img src="http://lorempixel.com/256/256/" alt="" />
+						</div>
+						<div class="element-item alkali">
+							<h3 class="name">Cobos</h3>
+							<p class="symbol">CB</p>
+						</div>
+						<div class="element-item transition">
+							<h3 class="name">Mainframe Integrator</h3>
+							<p class="symbol">MI</p>
+						</div>
+						<div class="element-item noble-gas" data-tags="java">
+							<h3 class="name">Coffee Machine</h3>
+							<p class="symbol">CM</p>
+						</div>
+						<div class="element-item noble-gas" data-tags="rest api java">
+							<h3 class="name">Coffee Machine - Rest API</h3>
+							<p class="symbol">CM</p>
+						</div>
+						<div class="element-item noble-gas" data-tags="plugin java">
+							<h3 class="name">Coffee Machine - Plugin Redmine</h3>
+							<p class="symbol">CM</p>
+						</div>
+						<div class="element-item noble-gas" data-tags="plugin java">
+							<h3 class="name">Coffee Machine - Plugin JIRA</h3>
+							<p class="symbol">CM</p>
+						</div>
+						<div class="element-item noble-gas" data-tags="plugin java">
+							<h3 class="name">Coffee Machine - Plugin Jenkins</h3>
+							<p class="symbol">CM</p>
+						</div>
+					</div>
+				</div>
+				<br style="clear: both;" />
+			</div>
 		</div>
 	</div>
 	<div layout:fragment="footer">
+		<script type="text/javascript" src="../../static/resources/isotope/isotope.pkgd.min.js"
+			th:src="@{/resources/isotope/isotope.pkgd.min.js}" />
 		<script type="text/javascript" src="../../static/js/modules/portfolio.js" th:src="@{/js/modules/portfolio.js}" />
-		<script type="text/javascript" src="../../static/js/modules/treemap.js" th:src="@{/js/modules/treemap.js}" />
+		<!-- 		<script type="text/javascript" src="../../static/js/modules/treemap.js" th:src="@{/js/modules/treemap.js}" /> -->
 		<script type="text/javascript">
-			$(document).ready(initTreemapView());
+			$(document).ready(initTiles());
 		</script>
 	</div>
 </body>

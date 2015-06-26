@@ -2,6 +2,7 @@
 var PROJECTS_TREEVIEW = '.projects-tree-view';
 var PROJECTS_SUNBURST = '.projects-sunburst';
 var PROJECTS_TREEMAP = '.zoomable-treemap';
+var TILES_CONTAINER = '#tiles-container';
 
 function initPortfolio() {
 	
@@ -198,7 +199,8 @@ function initTreemapView() {
 			.setRoot(PROJECTS_TREEMAP)
 			.setHeight(height)
 			.setWidth(width)
-			.setURL('http://bost.ocks.org/mike/treemap/flare.json')
+			//.setURL('http://bost.ocks.org/mike/treemap/flare.json')
+			.setURL('http://sushanthece.github.io/D3-Zoomable-treemap/portaldata.json')
 			.onClick(function(data) {
 				console.log(data);
 			}).build(null);
@@ -210,5 +212,82 @@ function initTreemapView() {
 	$(window).resize(function() {
 		drawTreemap();
 	});
+	
+}
+
+function initTiles() {
+	
+//	console.log('init tiles...');
+//	
+//	var wall = new freewall(TILES_CONTAINER);
+//	wall.reset({
+//		animate: true,
+//		selector: '.item',
+//		cellW: 250,
+//		cellH: 'auto'
+//	});
+//	wall.fitWidth();
+//	wall.fitHeight();
+	
+	var $container = $('.isotope').isotope({
+	    itemSelector: '.element-item',
+	    layoutMode: 'fitRows',
+	    getSortData: {
+	      name: '.name',
+	      symbol: '.symbol',
+	      number: '.number parseInt',
+	      category: '[data-category]',
+	      weight: function( itemElem ) {
+	        var weight = $( itemElem ).find('.weight').text();
+	        return parseFloat( weight.replace( /[\(\)]/g, '') );
+	      }
+	    }
+	});
+	
+	// bind filter button click
+	$('.toolbar').on( 'click', 'span', function() {
+		var filterValue;
+		if ($(this).data('filter')) {
+			filterValue = $(this).data('filter');
+		}else{
+			filterValue = $( this ).text();
+		}
+		filterValue = filterValue.toLowerCase();
+		var filterFn = function() {
+			var tags = $(this).data('tags');
+			if (tags) {
+				tags = tags.toLowerCase();
+				return (tags.indexOf(filterValue) > -1);
+			}
+			return false;
+		}
+		$container.isotope({ filter: filterValue == '*' ? filterValue : filterFn });
+	});
+	
+	$('.search-bar').submit(function() {
+		searchTiles( $(this).find('#query').val() );
+		return false;
+	});
+	
+	$('.search-bar #query').keypress(function() {
+		searchTiles( $(this).val() );
+	});
+	
+	function searchTiles(q) {
+		var filterFn;
+		if (q && q != '') {
+			q = q.toLowerCase();
+			filterFn = function() {
+				var name = $(this).find('.name').text();
+				if (name) {
+					name = name.toLowerCase();
+					return (name.indexOf(q) > -1);
+				}
+			}
+		}else{
+			filterFn = '*';
+		}
+		$container.isotope({ filter: filterFn });
+	}
 	
 }

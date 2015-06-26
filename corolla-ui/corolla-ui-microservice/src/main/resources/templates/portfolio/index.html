@@ -443,7 +443,10 @@
 	<div layout:fragment="footer">
   		<script type="text/javascript" src="../../static/js/modules/portfolio.js" th:src="@{/js/modules/portfolio.js}" />
   		<script type="text/javascript">
-			$(document).ready(tabRooting);
+			$(document).ready(function() {
+				tabRooting();
+				initPortfolio();
+			});
 		</script>
  	</div>
 	
