@@ -463,6 +463,10 @@ rect.parent, .grandparent rect {
 	margin-bottom: 20px;
 }
 
+.tiles-container .toolbar span.active {
+	background-color: #424242 !important;
+}
+
 .tiles-container .toolbar .label {
 	font-size: 13px;
 	display: inline-block;

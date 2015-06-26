@@ -225,6 +225,9 @@ function initTreemapView() {
 
 }
 
+/**
+ * Initialize tiles grid
+ */
 function initTiles() {
 
 	/**
@@ -249,6 +252,8 @@ function initTiles() {
 	 * Filter by tags
 	 */
 	$('.toolbar').on('click', 'span', function() {
+		$('.toolbar span').removeClass('active');
+		$(this).addClass('active');
 		var filterValue;
 		if ($(this).data('filter')) {
 			filterValue = $(this).data('filter');
@@ -289,6 +294,8 @@ function initTiles() {
 	 */
 	function searchTiles(q) {
 		var filterFn;
+		$('.toolbar span').removeClass('active');
+		$('.toolbar span').first().addClass('active');
 		if (q && q != '') {
 			q = q.toLowerCase();
 			filterFn = function() {
