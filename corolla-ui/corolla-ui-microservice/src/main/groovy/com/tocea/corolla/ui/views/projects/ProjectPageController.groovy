@@ -16,16 +16,25 @@ class ProjectPageController {
 	private static String REVISION_VIEW = "project/revision"
 	private static String RELEASES_VIEW = "project/releases"
 	
-	@RequestMapping("/ui/projects/{id}")
-	public ModelAndView getProjectPage(@PathVariable id) {
+	@RequestMapping("/ui/requirements/{project_key}")
+	public ModelAndView getRequirementsPage(@PathVariable project_key) {
 		
 		def model = new ModelAndView(PROJECT_VIEW)
-		model.addObject "project", id
+		model.addObject "project", project_key
 		
 		return model
 	}
 	
-	@RequestMapping("/ui/projects/{project_key}/requirements/{req_id}/revisions/{rev_id}")
+	@RequestMapping("/ui/requirements/{project_key}/{req_id}")
+	public ModelAndView getRequirementPage(@PathVariable project_key, @PathVariable req_id) {
+		
+		def model = new ModelAndView(PROJECT_VIEW)
+		model.addObject "project", project_key
+		
+		return model
+	}
+	
+	@RequestMapping("/ui/requirements/{project_key}/{req_id}/revisions/{rev_id}")
 	public ModelAndView getRevisionPage(@PathVariable project_key, @PathVariable req_id, @PathVariable rev_id) {
 		
 		def model = new ModelAndView(REVISION_VIEW)
