@@ -15,6 +15,7 @@ class ProjectPageController {
 	private static String PROJECT_VIEW = "project/project"
 	private static String REVISION_VIEW = "project/revision"
 	private static String RELEASES_VIEW = "project/releases"
+	private static String VARIABLES_VIEW = "project/variables"
 	
 	@RequestMapping("/ui/requirements/{project_key}")
 	public ModelAndView getRequirementsPage(@PathVariable project_key) {
@@ -48,6 +49,16 @@ class ProjectPageController {
 	public ModelAndView getReleasePage(@PathVariable project_key) {
 		
 		def model = new ModelAndView(RELEASES_VIEW)
+		model.addObject "project", project_key
+		
+		return model
+		
+	}
+	
+	@RequestMapping("/ui/variables/{project_key}")
+	public ModelAndView getVariablesPage(@PathVariable project_key) {
+		
+		def model = new ModelAndView(VARIABLES_VIEW)
 		model.addObject "project", project_key
 		
 		return model
