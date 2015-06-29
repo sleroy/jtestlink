@@ -356,6 +356,18 @@ small.text-muted {
 	font-size: 20px;
 }
 
+.dataTables_length {
+	float: left;
+}
+
+.dataTables_filter {
+	float: right;
+}
+
+.dataTable {
+	clear: both;
+}
+
 /* adjust the contents on smaller devices */
 @media ( max-width : 768px) {
 	.column .padding {
