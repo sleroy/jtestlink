@@ -37,16 +37,30 @@
 						<div>
 							<div>
 								<ul class="wysihtml5-toolbar" style="margin: 8px;">
-									<li class="dropdown"><a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> Add <b
+									<li class="dropdown">
+										<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"> Add <b
 											class="caret" />
-									</a>
+										</a>
 										<ul class="dropdown-menu">
 											<li><a href="#">Requirement</a></li>
 											<li><a href="#">User Story</a></li>
 										</ul></li>
-									<li><a href="#" class="btn btn-default"> <span class="glyphicon glyphicon-filter" />
-									</a></li>
-									<li style="width: 30%;"><select class="form-control select2" style="width: 100%">
+									<li>
+										<a href="#" class="btn btn-default"> 
+											<span class="glyphicon glyphicon-filter" />
+										</a>
+									</li>
+									<li>
+										<a href="#" class="btn btn-default" onclick="expandTreeview()">
+											<span class="fa fa-expand"></span>
+										</a>
+									</li>
+									<li>
+										<a href="#" class="btn btn-default" onclick="collapseTreeview()">
+											<span class="fa fa-compress"></span>
+										</a>
+									</li>
+									<li style="width: 25%;"><select class="form-control select2" style="width: 100%">
 											<option selected="selected">Branch 1</option>
 											<option>Branch 2</option>
 											<option>Branch 3</option>
@@ -55,7 +69,7 @@
 											<option>Branch 6</option>
 											<option>Branch 7</option>
 									</select></li>
-									<li style="width: 40%;">
+									<li style="width: 30%;">
 										<div class="input-group">
 											<span class="input-group-addon"> <i class="glyphicon glyphicon-search" />
 											</span> <input class="form-control" type="text" placeholder="Search" style="width: 100%;" />
@@ -560,8 +574,8 @@
 	<div />
 	<!--/row-->
 	<div layout:fragment="footer">
-<!-- 		<script type="text/javascript" th:src="@{/js/d3.min.js}" src="../static/js/d3.min.js" /> -->
-<!-- 		<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js" /> -->
+		<!-- 		<script type="text/javascript" th:src="@{/js/d3.min.js}" src="../static/js/d3.min.js" /> -->
+		<!-- 		<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js" /> -->
 		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/project.js}" />
 		<script type="text/javascript">
 			$(document).ready(function() {

@@ -189,3 +189,21 @@ function initRequirementView() {
 	});
 	
 }
+
+/**
+ * expand all branches in treeview
+ */
+function expandTreeview() {
+	
+	$(ITEMS_TREEVIEW).jstree(true).open_all();
+	
+}
+
+/**
+ * collapse treeview
+ */
+function collapseTreeview() {
+	
+	$(ITEMS_TREEVIEW).jstree(true).close_all();
+	
+}
