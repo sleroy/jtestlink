@@ -112,6 +112,12 @@
 									<div class="col-sm-9 col-md-10">29/06/2015</div>
 								</div>
 								<div class="row">
+									<div class="col-sm-3 col-md-2 field-name">Project Version</div>
+									<div class="col-sm-9 col-md-10">
+										<a href="#">6411a54d8a1e50aada05c</a>
+									</div>
+								</div>
+								<div class="row">
 									<div class="col-sm-3 col-md-2 field-name">Description</div>
 									<div class="col-sm-9 col-md-10">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco
 										nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis
@@ -125,17 +131,38 @@
 										gravitatem, sed amicitia remissior esse debet et liberior et dulcior et ad omnem comitatem facilitatemque
 										proclivior. Procedente igitur mox tempore cum adventicium nihil inveniretur, relicta ora maritima in Lycaoniam
 										adnexam Isauriae se contulerunt ibique densis intersaepientes itinera praetenturis provincialium et viatorum
-										opibus pascebantur. </div>
+										opibus pascebantur.</div>
 								</div>
 							</div>
 							<div class="tab-pane" id="edit">
 								<form class="project-form" action="">
-									<div class="input-group">
-										<span class="input-group-addon">Name</span> <input name="name" type="text" class="form-control"
-											placeholder="Name" />
+									<div class="row form-row">
+										<div class="col-sm-3 col-md-2">
+											<span class="">Name</span>
+										</div>
+										<div class="col-sm-9 col-md-10">
+											<input name="name" type="text" class="form-control" />
+										</div>
 									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Date</span> <input name="date" type="text" class="form-control datepicker" />
+									<div class="row form-row">
+										<div class="col-sm-3 col-md-2">
+											<span class="">Date</span>
+										</div>
+										<div class="col-sm-9 col-md-10">
+											<input name="date" type="text" class="form-control datepicker" />
+										</div>
+									</div>
+									<div class="row form-row">
+										<div class="col-sm-3 col-md-2">
+											<span class="">Project Version</span>
+										</div>
+										<div class="col-sm-9 col-md-10">
+											<select name="status" class="select2">
+												<option>3 - 24/06/2015 12:35</option>
+												<option>2 - 23/06/2015 12:35</option>
+												<option>1 - 23/06/2015 11:25</option>
+											</select>
+										</div>
 									</div>
 									<textarea class="textarea" placeholder="Description" style="height: 500px;" cols="" rows="" />
 									<div class="box-footer">
@@ -199,7 +226,7 @@
 									<table id="test-cases-table" class="table table-hover table-striped" cellspacing="0" width="100%">
 										<thead>
 											<tr>
-												<th></th>
+												<th />
 												<th>Key</th>
 												<th>Name</th>
 												<th>Date</th>
@@ -209,36 +236,30 @@
 											</tr>
 										</thead>
 										<tr class="">
-											<td><b class="fa fa-spinner"></b></td>
+											<td><b class="fa fa-spinner" /></td>
 											<td><a href="#" class="label label-default">Campaign #003</a></td>
 											<td>Campaign #003</td>
 											<td>30/06/2015</td>
 											<td><a href="#" class="label label-default">In Progress</a></td>
-											<td>
-												<a href="#" class="badge">5/35</a>
-											</td>
+											<td><a href="#" class="badge">5/35</a></td>
 											<td><a href="#" class="label label-info">Open</a></td>
 										</tr>
 										<tr class="success">
-											<td><b class="fa fa-check"></b></td>
+											<td><b class="fa fa-check" /></td>
 											<td><a href="#" class="label label-default">Campaign #002</a></td>
 											<td>Campaign #002</td>
 											<td>29/06/2015</td>
 											<td><a href="#" class="label label-default">Completed</a></td>
-											<td>	
-												<a href="#" class="badge">35/35</a>
-											</td>
+											<td><a href="#" class="badge">35/35</a></td>
 											<td><a href="#" class="label label-info">Open</a></td>
 										</tr>
 										<tr class="danger">
-											<td><b class="fa fa-remove"></b></td>
+											<td><b class="fa fa-remove" /></td>
 											<td><a href="#" class="label label-default">Campaign #001</a></td>
 											<td>Campaign #001</td>
 											<td>28/06/2015</td>
 											<td><a href="#" class="label label-default">Completed</a></td>
-											<td>												
-												<a href="#" class="badge">25/35</a>
-											</td>
+											<td><a href="#" class="badge">25/35</a></td>
 											<td><a href="#" class="label label-info">Open</a></td>
 										</tr>
 									</table>
