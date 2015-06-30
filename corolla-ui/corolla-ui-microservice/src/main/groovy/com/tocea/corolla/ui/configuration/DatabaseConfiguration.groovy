@@ -7,12 +7,18 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress
 
 import org.hibernate.cfg.ExtendsQueueEntry;
+import org.javers.core.Javers
+import org.javers.core.JaversBuilder;
+import org.javers.repository.mongo.MongoRepository;
+import org.javers.spring.auditable.AuthorProvider;
 import org.springframework.aop.ThrowsAdvice;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+
 
 @Profile("default")
 @Component

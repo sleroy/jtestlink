@@ -7,6 +7,7 @@ import groovy.util.logging.Slf4j;
 
 import javax.annotation.PostConstruct
 
+import org.javers.core.Javers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 

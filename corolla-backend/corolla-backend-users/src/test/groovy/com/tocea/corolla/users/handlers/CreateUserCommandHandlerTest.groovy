@@ -5,6 +5,7 @@ package com.tocea.corolla.users.handlers
 
 import static org.mockito.Mockito.*
 
+import org.javers.core.Javers;
 import org.junit.Rule
 import org.mockito.Mockito
 
@@ -37,7 +38,8 @@ class CreateUserCommandHandlerTest extends Specification{
 	def IRoleDAO roleDao = Mockito.mock(IRoleDAO)
 	def emailValid = new EmailValidationService()
 	def defaultRole = new Role(id:1, name:'Guest', note:'Guest role', permissions:"ALL")
-
+	def Javers javers = Mockito.mock(Javers)
+	
 	def CreateUserCommandHandler	handler
 
 	def User validUser
@@ -48,8 +50,9 @@ class CreateUserCommandHandlerTest extends Specification{
 	def setup() {
 		handler = new CreateUserCommandHandler(
 				userDAO : userDao,
-				roleDAO : roleDao,
-				emailValidationService : emailValid
+				roleDAO : roleDao,				
+				emailValidationService : emailValid,
+				javers : javers
 				)
 		validUser = 		new User(
 				activationToken:"",
