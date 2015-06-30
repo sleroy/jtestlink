@@ -382,6 +382,11 @@ small.text-muted {
 	font-size: 20px;
 }
 
+.content-header h1 i {
+	font-size: 18px;
+	margin-right: 5px;
+}
+
 /* adjust the contents on smaller devices */
 @media ( max-width : 768px) {
 	.column .padding {
