@@ -10,11 +10,11 @@
 		<!-- Content Header (Page header) -->
 	    <section class="content-header">
 		    <h1>
-		    	Portfolio
+		    	Portfolio Manager
 				<small>Control panel</small>
 		    </h1>
 		    <ol class="breadcrumb">
-		       <li><a href="/ui/portfolio"><i class="glyphicon glyphicon-book"></i> Portfolio</a></li>
+		       <li><a href="/ui/portfolio/manager"><i class="glyphicon glyphicon-book"></i> Portfolio Manager</a></li>
 		       <li class="active">Komea Dashboard</li>
 		    </ol> 
 	    </section>
@@ -109,6 +109,8 @@
 	                <ul class="nav nav-tabs">
 	                  <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
 	                  <li><a href="#projects" data-toggle="tab">Projects</a></li>
+	                  <li><a href="#branches" data-toggle="tab">Branches</a></li>
+	                  <li><a href="#revisions" data-toggle="tab">Revisions</a></li>
 	                  <li><a href="#activity" data-toggle="tab">Activity</a></li>
 	                  <li class="pull-right dropdown">
 	                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
@@ -184,14 +186,6 @@
 	                  	</a>
 	                  </li>
 	                </ul>
-<!-- 	                <div class="tab-header"> -->
-<!-- 	                	<img src="http://lorempixel.com/56/56/"/>	                	 -->
-<!-- 	                	<h3>Komea Dashboard</h3> -->
-<!-- 	                	<div class="properties"> -->
-<!-- 	                		<a href="#" class="entity-key">komea-dashboard</a> -->
-<!-- 	                	</div> -->
-<!-- 	                	<br style="clear: both;"/> -->
-<!-- 	                </div> -->
 	                <div class="tab-content">
 	                	
 	                  <div class="tab-pane" id="projects">
@@ -331,6 +325,92 @@
 	                  		</div>
 	                  	</form>
 	                  </div><!-- /.tab-pane -->
+	                  
+	                  <div class="tab-pane" id="branches">
+	                  	<a href="#" class="btn btn-primary pull-right">
+	                  		<span class="fa fa-plus"></span> New Branch
+	                  	</a>
+	                  	<br style="clear: both;"/>
+	                 	 <div class="table-responsive">
+							<table class="table table-hover table-striped" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Branch</th>
+										<th>Edit</th>
+										<th>Switch</th>
+										<th>Merge</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tr data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
+									<td>Master</td>
+									<td>
+										<a href="#" class="btn btn-primary btn-xs">
+											<span class="glyphicon glyphicon-pencil"></span>
+										</a>
+									</td>
+									<td>
+										<a href="#" class="btn btn-info btn-xs">
+											<span class="fa fa-exchange"></span>
+										</a>
+									</td>
+									<td>
+										<a href="#" class="btn btn-info btn-xs">
+											<span class="fa fa-flash"></span>
+										</a>
+									</td>
+									<td>
+										<a href="#" class="btn btn-danger btn-xs">
+											<span class="glyphicon glyphicon-trash"></span>
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+	                  
+	                  </div>
+	                  
+	                  <div class="tab-pane" id="revisions">
+	                  
+	                  	<div class="table-responsive">
+							<table class="table table-hover table-striped" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Version</th>
+										<th>Created on</th>
+										<th>Change details</th>
+										<th>Author</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tr class="pointer" data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
+									<td class="toggle"><span class="badge">3</span></td>
+									<td class="toggle">24/06/2015 12:35</td>
+									<td class="toggle">Third commit</td>
+									<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+									<td><a href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a>
+									</td>
+								</tr>
+								<tr class="pointer">
+									<td><span class="badge">2</span></td>
+									<td>23/06/2015 12:35</td>
+									<td>Second commit</td>
+									<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+									<td><a href="#" class="label label-warning">Restore</a> <a
+										href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a></td>
+								</tr>
+								<tr class="pointer">
+									<td><span class="badge">1</span></td>
+									<td>23/06/2015 11:25</td>
+									<td>Initial creation</td>
+									<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+									<td><a href="#" class="label label-warning">Restore</a> <a
+										href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a></td>
+								</tr>
+							</table>
+						</div>
+	                  
+	                  </div>
 	                  
 	                  <div class="tab-pane" id="activity">
 		                  <ul class="timeline">

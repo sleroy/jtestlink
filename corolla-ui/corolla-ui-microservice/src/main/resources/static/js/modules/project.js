@@ -27,16 +27,6 @@ function initRequirementView() {
 	});
 	
 	/*
-	 * Call modal to quickly change project
-	 */
-	$('.toggle-change-project').click(function() {
-		changeProjectModal.onSelect(function(key) {
-			document.location = '/ui/requirements/'+key
-		});
-		changeProjectModal.show();
-	});
-	
-	/*
 	 * Handle click on a revision
 	 */
 	$('#revisions tr td.toggle').click(function() {

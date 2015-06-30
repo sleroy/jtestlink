@@ -185,7 +185,7 @@ function initJsTree() {
 				var key = data.instance.get_node(data.node, true).children('a')
 						.data('key');
 				if (key) {
-					document.location = '/ui/portfolio/' + key
+					document.location = '/ui/portfolio/manager/' + key
 				} else {
 					data.instance.toggle_node(data.node);
 				}

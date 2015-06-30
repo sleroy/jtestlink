@@ -53,6 +53,24 @@
 				<i class="glyphicon glyphicon-book"></i> 
 				<span>Portfolio</span>
 			</a>
+		</li>
+		<li th:if="${project != null}">
+			<a href="/ui/portfolio/manager/komea-dashboard">
+				<i class="fa fa-info"></i> 
+				<span>Project details</span>
+			</a>
+		</li>
+		<li th:if="${project != null}">
+			<a href="/ui/portfolio/manager/komea-dashboard#branches">
+				<i class="fa fa-share-alt"></i> 
+				<span>Branches</span>
+			</a>
+		</li>
+		<li th:if="${project != null}">
+			<a href="/ui/portfolio/manager/komea-dashboard#activity">
+				<i class="fa fa-history"></i> 
+				<span>Activity</span>
+			</a>
 		</li>	
 		<li th:if="${project != null}">
 			<a href="/ui/requirements/komea-dashboard">
@@ -84,6 +102,13 @@
 				<span>Variables</span>
 			</a>
 		</li> 
+		
+		<li>
+			<a href="/ui/portfolio/manager">
+				<i class="fa fa-wrench"></i> 
+				<span>Portfolio Management</span>
+			</a>
+		</li>
 		
 		<li class="treeview" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
 	        <a href="/ui/admin">

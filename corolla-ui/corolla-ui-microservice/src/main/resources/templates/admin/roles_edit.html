@@ -30,6 +30,16 @@
           		<input id="note" name="note" placeholder="Guest" class="form-control input-md" required="required" data-parsley-trigger="focusin focusout change" data-parsley-range="[3, 30]" type="text" th:field="*{note}"></input>         
            </div>
           </div>
+          <!-- Permission input-->
+          <div class="form-group">
+          	<label class="col-md-2 control-label" for="permissions">Permissions</label>
+          	<div class="col-md-4">
+          		<div class="permission-cb"><input type="checkbox" name="permissions[]" value="ROLE_ADMIN" /> Administrator</div>
+          		<div class="permission-cb"><input type="checkbox" name="permissions[]" value="ROLE_REQUIREMENT" /> Requirements</div>
+          		<div class="permission-cb"><input type="checkbox" name="permissions[]" value="ROLE_REST" /> REST API</div>
+          		<div class="permission-cb"><input type="checkbox" name="permissions[]" value="ROLE_PORTFOLIO" /> Portfolio management</div>
+          	</div>
+          </div>
           <!-- Button (Double) -->
           <div class="form-group">
            <label class="col-md-2 control-label" for="saveButton"></label>

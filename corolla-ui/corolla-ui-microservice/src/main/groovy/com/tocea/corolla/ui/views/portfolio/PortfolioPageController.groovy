@@ -12,19 +12,25 @@ import org.springframework.web.servlet.ModelAndView;
 @Slf4j
 class PortfolioPageController {
 	
-	def static final String INDEX_PAGE = "portfolio/index";
-	def static final String TREEMAP_PAGE = "portfolio/treemap";
+	def static final String MANAGER_PAGE = "portfolio/manager";
+	def static final String PORTFOLIO_PAGE = "portfolio/portfolio";
 
 	@RequestMapping("/ui/portfolio")
-	public ModelAndView getPortfolioPage() {
+	public ModelAndView getPortfolio() {
 		
-		return new ModelAndView(TREEMAP_PAGE);
+		return new ModelAndView(PORTFOLIO_PAGE);
 	}
 	
-	@RequestMapping("/ui/portfolio/{project_key}")
-	public ModelAndView getPortfolioPage(@PathVariable project_key) {
+	@RequestMapping("/ui/portfolio/manager")
+	public ModelAndView getPortfolioManagerIndex() {
 		
-		def model = new ModelAndView(INDEX_PAGE);
+		return new ModelAndView(MANAGER_PAGE);
+	}
+	
+	@RequestMapping("/ui/portfolio/manager/{project_key}")
+	public ModelAndView getPortfolioManager(@PathVariable project_key) {
+		
+		def model = new ModelAndView(MANAGER_PAGE);
 		model.addObject "project", project_key
 		
 		return model

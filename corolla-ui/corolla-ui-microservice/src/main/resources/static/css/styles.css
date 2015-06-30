@@ -364,8 +364,22 @@ small.text-muted {
 	float: right;
 }
 
+.dataTables_filter input {
+	margin-left: 6px;
+}
+
 .dataTable {
 	clear: both;
+}
+
+.permission-cb {
+	display: inline;
+	margin-right: 15px;
+}
+
+.selected-project {
+	color: white; 
+	font-size: 20px;
 }
 
 /* adjust the contents on smaller devices */

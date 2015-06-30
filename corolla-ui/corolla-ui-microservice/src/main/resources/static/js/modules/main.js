@@ -42,6 +42,16 @@ function initMainJS() {
      */
     $.fn.datepicker.defaults.format = "dd/mm/yyyy";
     
+    /*
+	 * Call modal to quickly change project
+	 */
+	$('.toggle-change-project').click(function() {
+		changeProjectModal.onSelect(function(key) {
+			document.location = '/ui/requirements/'+key
+		});
+		changeProjectModal.show();
+	});
+    
 }
 
 function define_yesModalButton_clickAction(action) {
