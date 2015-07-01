@@ -3,7 +3,11 @@
  */
 package com.tocea.corolla.users.commands;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.users.domain.Role;
@@ -32,10 +36,17 @@ public class CreateRoleCommand {
 	}
 	
 	public CreateRoleCommand(final RoleDTO _roleDTO) {
+		
 		super();
 		this.role = new Role();
 		this.role.setName(_roleDTO.getName());
 		this.role.setNote(_roleDTO.getNote());
+		
+		List<String> permissions = _roleDTO.getPermissions();
+		if (permissions != null) {
+			this.role.setPermissions(StringUtils.join(permissions, ", "));
+		}
+		
 	}
 
 	/**

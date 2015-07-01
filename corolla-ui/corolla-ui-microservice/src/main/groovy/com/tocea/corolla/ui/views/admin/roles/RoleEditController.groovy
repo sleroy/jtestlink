@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.ModelAttribute
 
+import java.lang.reflect.Field
 import javax.validation.Valid
 
+import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.users.commands.CreateRoleCommand;
 import com.tocea.corolla.users.commands.EditRoleCommand;
@@ -40,10 +42,10 @@ public class RoleEditController {
 	
 	@Autowired
 	private Gate gate
-
-	@ModelAttribute("sideMenu")
-	public String addAccount() {
-		return "adminMenu"
+	
+	@ModelAttribute("permissions")
+	public List<String> permissions() {
+		return Permission.list()
 	}
 	
 	@RequestMapping("/add")
