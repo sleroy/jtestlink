@@ -387,6 +387,10 @@ small.text-muted {
 	margin-right: 5px;
 }
 
+#modal-select-user .modal-dialog {
+	width: 75%;
+}
+
 /* adjust the contents on smaller devices */
 @media ( max-width : 768px) {
 	.column .padding {
