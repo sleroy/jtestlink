@@ -2,6 +2,35 @@
 var SELECTED_USERS = '#selected-users';
 var INPUT_USER_IDS = 'input[name=userIds]';
 
+function initGroupsView() {
+		
+	$('.datatable').dataTable();
+	
+	$('.groupDelete').on('click', function(e) {
+
+		e.preventDefault();
+		var id = $(this).closest('tr').data('id');
+		
+		deleteModal.set('id', id);
+		deleteModal.show();
+		
+	});
+	
+	deleteModal.onYesAction(function() {
+		
+		var id = deleteModal.get('id');
+		
+		restAPI.userGroups.delete(id, function(data, status) {
+			consoleLog("User " + id + " removed")
+			$('[data-id=' + id + ']').remove();
+		});
+		
+		deleteModal.hide();
+		
+	});
+	
+}
+
 function initGroupForm() {
 	
 	$('.pick-user').click(function() {

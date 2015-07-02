@@ -32,7 +32,7 @@
 						<!-- /.box-header -->
 						<!-- /.container-fluid -->
 						<div class="table-responsive" style="padding: 10px;">
-							<table id="roles" class="table table-hover table-striped" cellspacing="0" width="100%">
+							<table class="table table-hover table-striped datatable" cellspacing="0" width="100%">
 								<thead>
 									<tr>
 										<th>Name</th>
@@ -50,7 +50,7 @@
 		 									</a>
 										</td>
 										<td>
-											<button class="btn btn-danger btn-xs roleDelete" data-title="Delete this role">
+											<button class="btn btn-danger btn-xs groupDelete" data-title="Delete this role">
 												<span class="glyphicon glyphicon-trash" />
 											</button>
 										</td>
@@ -65,9 +65,9 @@
 	<div />
 	<!--/row-->
 	<div layout:fragment="footer">
-		<script type="text/javascript" src="../../static/js/modules/roles.js" th:src="@{/js/modules/roles.js}" />
+		<script type="text/javascript" src="../../static/js/modules/roles.js" th:src="@{/js/modules/group.js}" />
 		<script type="text/javascript">
-			$(document).ready(roleTable);
+			$(document).ready(initGroupsView);
 		</script>
 	</div>
 </body>

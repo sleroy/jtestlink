@@ -38,12 +38,13 @@ function RestAPI() {
 			
 		},
 		
-		"applications": {
+		"userGroups": {
 			
 			"delete": function(id, callback) {
-				call('applications/delete/'+id, callback);
+				call("groups/delete/"+id, callback);
 			}
 		}
+
 	}
 	
 }
