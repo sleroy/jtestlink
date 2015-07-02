@@ -18,13 +18,19 @@ class PortfolioPageController {
 	@RequestMapping("/ui/portfolio")
 	public ModelAndView getPortfolio() {
 		
-		return new ModelAndView(PORTFOLIO_PAGE);
+		def model = new ModelAndView(PORTFOLIO_PAGE)
+		model.addObject "menu", "portfolio"
+		
+		return model
 	}
 	
 	@RequestMapping("/ui/portfolio/manager")
 	public ModelAndView getPortfolioManagerIndex() {
 		
-		return new ModelAndView(MANAGER_PAGE);
+		def model = new ModelAndView(MANAGER_PAGE);
+		model.addObject "menu", "portfolioManager"
+		
+		return model
 	}
 	
 	@RequestMapping("/ui/portfolio/manager/{project_key}")
@@ -32,6 +38,7 @@ class PortfolioPageController {
 		
 		def model = new ModelAndView(MANAGER_PAGE);
 		model.addObject "project", project_key
+		model.addObject "menu", "portfolioManager"
 		
 		return model
 	}

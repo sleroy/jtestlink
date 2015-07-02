@@ -43,6 +43,11 @@ class GroupController {
 	@Autowired
 	private Gate gate;
 	
+	@ModelAttribute("menu")
+	public String setMenu() {
+		return "admin"
+	}
+	
 	@Secured([Permission.ADMIN, Permission.ADMIN_USER_GROUPS])
 	@RequestMapping("/ui/admin/groups")
 	public ModelAndView getGroups() {

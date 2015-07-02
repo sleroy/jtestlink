@@ -41,11 +41,10 @@ public class UserAdminController {
 
 	private UserValidation validation
 
-	@ModelAttribute("sideMenu")
-	public String addAccount() {
-		return "adminMenu"
+	@ModelAttribute("menu")
+	public String setMenu() {
+		return "admin"
 	}
-
 
 	@RequestMapping("/ui/admin/users")
 	public ModelAndView getHomePage() {

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.annotation.ModelAttribute
 
 import java.lang.reflect.Field
+
 import javax.validation.Valid
 
 import com.google.common.collect.Lists;
@@ -42,6 +43,11 @@ public class RoleEditController {
 	
 	@Autowired
 	private Gate gate
+	
+	@ModelAttribute("menu")
+	public String setMenu() {
+		return "admin"
+	}
 	
 	@ModelAttribute("permissions")
 	public List<String> permissions() {
