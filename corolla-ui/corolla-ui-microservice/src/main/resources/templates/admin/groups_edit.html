@@ -32,7 +32,7 @@
 										<label class="col-md-2 control-label" for="users">Users</label>
 										<div class="col-md-8">
 											<a href="#" class="btn btn-primary pick-user">Add user</a>
-											<input type="text" name="userIds" th:value="${group.userIds}" />
+											<input type="hidden" name="userIds" th:value="${group.userIds}" />
 											<div class="table-responsive" style="padding: 10px;">
 												<table id="selected-users" class="table table-hover table-striped" cellspacing="0" width="100%">
 													<thead>
@@ -44,19 +44,19 @@
 															<th />
 														</tr>
 													</thead>
-<!-- 													<tr th:each="user : ${users}" th:attr="data-id=${user.login}" th:class="${user.active ? '' : 'warning'}"> -->
-<!-- 														<td><img th:src="'http://www.gravatar.com/avatar/'+ ${user.gravatar} + '?s=48'" -->
-<!-- 															class="img-responsive" src="" alt="" /></td> -->
-<!-- 														<td><a data-toggle="tooltip" title="Edit this user" -->
-<!-- 															th:href="@{'/ui/admin/users/edit/' + ${user.login}}" th:text="${user.login}">login</a></td> -->
-<!-- 														<td th:text="${user.firstName}">First name</td> -->
-<!-- 														<td th:text="${user.lastName}">Last name</td> -->
-<!-- 														<td> -->
-<!-- 															<button class="btn-pick btn btn-danger btn-xs" data-title="Select"> -->
-<!-- 																<span class="fa fa-trash" /> -->
-<!-- 															</button> -->
-<!-- 														</td> -->
-<!-- 													</tr> -->
+													<tr th:each="user : ${users_in_group}" th:attr="data-id=${user.login}">
+														<td><img th:src="'http://www.gravatar.com/avatar/'+ ${user.gravatar} + '?s=48'"
+															class="img-responsive" src="" alt="" /></td>
+														<td><a data-toggle="tooltip" title="Edit this user"
+															th:href="@{'/ui/admin/users/edit/' + ${user.login}}" th:text="${user.login}">login</a></td>
+														<td th:text="${user.firstName}">First name</td>
+														<td th:text="${user.lastName}">Last name</td>
+														<td>
+															<button class="btnDelete btn btn-danger btn-xs" data-title="Select">
+																<span class="fa fa-trash" />
+															</button>
+														</td>
+													</tr>
 												</table>
 											</div>
 										</div>

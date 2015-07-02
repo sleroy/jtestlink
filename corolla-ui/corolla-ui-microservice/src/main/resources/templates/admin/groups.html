@@ -42,7 +42,7 @@
 									</tr>
 								</thead>
 									<tr th:each="group : ${groups}" th:attr="data-id=${group.id}">
-										<td><a th:href="@{'/ui/admin/groups/edit'}" th:text="${group.name}">Group 1</a></td>
+										<td><a th:href="@{'/ui/admin/groups/edit/'+${group.id}}" th:text="${group.name}">Group 1</a></td>
 										<td><span th:text="${#lists.size(group.userIds)}">16</span></td>
 										<td>
 											<a th:href="@{'/ui/admin/groups/edit/'+${group.id}}" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"> 

@@ -39,7 +39,7 @@ public class EditUserGroupCommandHandler implements
 		
 		UserGroup groupWithSameName = groupDAO.findByName(group.getName());
 		
-		if (groupWithSameName != null && groupWithSameName.getId() != group.getId()) {
+		if (groupWithSameName != null && !groupWithSameName.getId().equals(group.getId())) {
 			throw new UserGroupAlreadyExistException();
 		}
 		

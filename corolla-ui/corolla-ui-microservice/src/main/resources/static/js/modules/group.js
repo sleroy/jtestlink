@@ -11,6 +11,16 @@ function initGroupForm() {
 	
 	bindButtons();
 	
+	/*
+	 * Fix bug with the String list retrieved from thymeleaf
+	 */
+	var s = $(INPUT_USER_IDS).val();
+	s = s
+		.replace('[', '')
+		.replace(']', '')
+		.replace(/ +?/g, '');
+	$(INPUT_USER_IDS).val(s);
+	
 }
 
 
