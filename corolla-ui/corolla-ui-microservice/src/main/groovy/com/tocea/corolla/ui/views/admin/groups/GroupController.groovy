@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.collect.Lists;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.tocea.corolla.cqrs.gate.Gate
+import com.tocea.corolla.users.commands.CreateUserGroupCommand
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.dao.IUserGroupDAO;
 import com.tocea.corolla.users.dao.UserDtoService;
@@ -34,6 +35,9 @@ class GroupController {
 	
 	@Autowired
 	private IUserDAO userDAO
+	
+	@Autowired
+	private Gate gate;
 	
 	@RequestMapping("/ui/admin/groups")
 	public ModelAndView getGroups() {
@@ -58,21 +62,23 @@ class GroupController {
 	}
 	
 	@RequestMapping(value = "/ui/admin/groups/add", method = RequestMethod.POST)
-	public ModelAndView addGroup(@Valid @ModelAttribute group, BindingResult _result) {
+	public ModelAndView addGroup(@Valid @ModelAttribute("group") UserGroup group, BindingResult _result) {
 		
+		group = _result.model.get("group")
+				
 		if (_result.hasErrors()) {
 			
 			def model = new ModelAndView(EDIT_PAGE)
-			model.addObject "group", new UserGroup()
+			model.addObject "group", group
 			model.addObject "users", userDTODAO.getUsersWithRoleList()
 			
 			return model
 			
 		}
 		
+		this.gate.dispatch new CreateUserGroupCommand(group)
 		
-		
-		return new ModelAndView(INDEX_PAGE)
+		return new ModelAndView("redirect:/ui/admin/groups")
 		
 	}
 	

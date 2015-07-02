@@ -12,6 +12,9 @@ import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 
+import com.google.common.base.Function
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
 import com.tocea.corolla.products.dao.IApplicationDAO
@@ -23,6 +26,7 @@ import com.tocea.corolla.products.domain.Component
 import com.tocea.corolla.products.domain.ComponentType
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
+import com.tocea.corolla.users.commands.CreateUserGroupCommand
 import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
@@ -119,7 +123,7 @@ public class DemoDataBean {
 		/*
 		 * User Groups
 		 */
-		def developers = this.newGroup("developers", [jsnow.id, scarreau.id])
+		def developers = this.newGroup("developers", [jsnow, scarreau])
 				
 				
 		/*final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
@@ -263,13 +267,14 @@ public class DemoDataBean {
 		return user
 	}
 	
-	public UserGroup newGroup(final String name, List<String> userIds) {
+	public UserGroup newGroup(final String name, List<User> users) {
 		
 		def group = new UserGroup();
 		group.setName(name)
-		group.setUserIds(userIds)
+		group.setUserIds(users.collect { it.login })
 		
-		groupDAO.save group
+		this.gate.dispatch new CreateUserGroupCommand(group);
+		log.info("new user group created [_id: {}", group.getId());
 		
 		return group
 		
