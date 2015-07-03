@@ -52,7 +52,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="skin-green sidebar-mini">
+<body class="skin-green sidebar-mini" th:with="currentUser=${@authService.getCurrentUser()}">
 	<div class="wrapper">
 		<header class="main-header"> 
 			<!-- Logo --> 
@@ -179,18 +179,20 @@
 						<li class="footer"><a href="#">View all tasks</a></li>
 					</ul></li>
 				<!-- User Account: style can be found in dropdown.less -->
-				<li class="dropdown user user-menu" th:if="${#httpServletRequest.remoteUser != null}"><a href="#"
-					class="dropdown-toggle" data-toggle="dropdown"> <img th:src="@{/resources/adminlte/dist/img/user2-160x160.jpg}"
-						class="user-image" alt="User Image" src="" /> <span class="hidden-xs" th:text="${#httpServletRequest.remoteUser}">Alexander
-							Pierce</span>
-				</a>
+				<li class="dropdown user user-menu" th:if="${#httpServletRequest.remoteUser != null}">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+						<img th:src="'http://www.gravatar.com/avatar/'+ ${currentUser.gravatar} + '?s=48'" class="user-image" alt="User Image" src="" />
+						<span class="hidden-xs" th:text="${currentUser.login}">Alexander Pierce</span>
+					</a>
 					<ul class="dropdown-menu" th:if="${#httpServletRequest.remoteUser != null}">
 						<!-- User image -->
-						<li class="user-header"><img th:src="@{/resources/adminlte/dist/img/user2-160x160.jpg}" class="img-circle"
-							alt="User Image" src="" />
+						<li class="user-header">
+							<img th:src="'http://www.gravatar.com/avatar/'+ ${currentUser.gravatar} + '?s=48'" class="img-circle" alt="User Image" src="" />
 							<p>
-								<span th:text="${#httpServletRequest.remoteUser}">Alexander Pierce</span>
-							</p></li>
+								<span th:text="${currentUser.firstName}">Alexander</span>
+								<span th:text="${currentUser.lastName}"> Pierce</span>
+							</p>
+						</li>
 						<!-- Menu Footer-->
 						<li class="user-footer">
 							<div class="pull-left">
