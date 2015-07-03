@@ -50,7 +50,6 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
-	
 	<!-- Select User Modal -->
 	<div th:fragment="selectUserModal" id="modal-select-user" class="modal">
 		<div class="modal-dialog">
@@ -109,7 +108,16 @@
 			<!-- /.modal-dialog -->
 		</div>
 		<!-- /.modal -->
-		
 	</div>
+	
+	<!-- HelpBox -->
+	<div th:fragment="helpbox(helpMsg)" class="alert alert-dismissible bg-gray" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<i class="icon fa fa-question-circle"></i> <span th:text="${helpMsg}"></span>
+	</div>
+	<!-- /.HelpBox -->
+	
 </body>
 </html>

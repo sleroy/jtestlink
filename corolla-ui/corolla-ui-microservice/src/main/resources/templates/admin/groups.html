@@ -7,7 +7,7 @@
 	<div layout:fragment="content">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
-		<h1>Manage Groups</h1>
+		<h1><i class="fa fa-group"></i> Manage Groups</h1>
 		<ol class="breadcrumb">
 			<li><a th:href="@{/ui/admin}"><i class="fa fa-gear" /> Administration</a></li>
 			<li class="active">Groups</li>
@@ -21,6 +21,9 @@
 					<div class="box">
 						<div class="box-header">
 							<h3 class="box-title" />
+							<div style="max-width: 80%;" class="pull-left">
+								<div th:replace="modal :: helpbox('Click on a user group below to view or edit its information. Click on the \'Add\' button to create a new user group.')"></div>
+							</div>
 							<div class="pull-right nav-tabs-custom">
 								<ul class="nav nav-tabs">
 									<li><a th:href="@{/ui/admin/groups/add}" class="btn btn-app"> <i class="glyphicon glyphicon-plus" />
@@ -41,20 +44,18 @@
 										<th>Delete</th>
 									</tr>
 								</thead>
-									<tr th:each="group : ${groups}" th:attr="data-id=${group.id}">
-										<td><a th:href="@{'/ui/admin/groups/edit/'+${group.id}}" th:text="${group.name}">Group 1</a></td>
-										<td><span th:text="${#lists.size(group.userIds)}">16</span></td>
-										<td>
-											<a th:href="@{'/ui/admin/groups/edit/'+${group.id}}" class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal"> 
-												<span class="glyphicon glyphicon-pencil" />
-		 									</a>
-										</td>
-										<td>
-											<button class="btn btn-danger btn-xs groupDelete" data-title="Delete this role">
-												<span class="glyphicon glyphicon-trash" />
-											</button>
-										</td>
-									</tr>
+								<tr th:each="group : ${groups}" th:attr="data-id=${group.id}">
+									<td><a th:href="@{'/ui/admin/groups/edit/'+${group.id}}" th:text="${group.name}">Group 1</a></td>
+									<td><span th:text="${#lists.size(group.userIds)}">16</span></td>
+									<td><a th:href="@{'/ui/admin/groups/edit/'+${group.id}}" class="btn btn-primary btn-xs" data-title="Edit"
+										data-toggle="modal"> <span class="glyphicon glyphicon-pencil" />
+									</a></td>
+									<td>
+										<button class="btn btn-danger btn-xs groupDelete" data-title="Delete this role">
+											<span class="glyphicon glyphicon-trash" />
+										</button>
+									</td>
+								</tr>
 							</table>
 						</div>
 					</div>

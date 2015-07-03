@@ -7,7 +7,7 @@
 	<div layout:fragment="content">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
-		<h1>Manage Roles</h1>
+		<h1><i class="glyphicon glyphicon-lock"></i> Manage Roles</h1>
 		<ol class="breadcrumb">
 			<li><a th:href="@{/ui/admin}"><i class="fa fa-gear" /> Administration</a></li>
 			<li class="active">Roles</li>
@@ -21,6 +21,9 @@
 					<div class="box">
 						<div class="box-header">
 							<h3 class="box-title" />
+							<div style="max-width: 80%;" class="pull-left">
+								<div th:replace="modal :: helpbox('Click on a role below to view or edit its associated permissions. Click on the \'Add\' button to define a new role.')"></div>
+							</div>
 							<div class="pull-right nav-tabs-custom">
 								<ul class="nav nav-tabs">
 									<li><a th:href="@{/ui/admin/roles/add}" class="btn btn-app"> <i class="glyphicon glyphicon-plus" />
