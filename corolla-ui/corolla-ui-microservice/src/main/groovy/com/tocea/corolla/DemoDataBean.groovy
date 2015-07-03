@@ -27,6 +27,7 @@ import com.tocea.corolla.products.domain.ComponentType
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.CreateUserGroupCommand
+import com.tocea.corolla.users.commands.EditRoleCommand
 import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
@@ -89,7 +90,7 @@ public class DemoDataBean {
 			Permission.REST]
 		)
 		roleAdmin.roleProtected = true
-		this.gate.dispatch new CreateRoleCommand(roleAdmin)
+		this.gate.dispatch new EditRoleCommand(roleAdmin)
 
 		/*
 		 * Roles
