@@ -18,13 +18,16 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
+import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.dao.IApplicationDAO
 import com.tocea.corolla.products.dao.IComponentDAO
 import com.tocea.corolla.products.dao.IComponentTypeDAO
+import com.tocea.corolla.products.dao.IProjectDAO
 import com.tocea.corolla.products.domain.Application
 import com.tocea.corolla.products.domain.ApplicationStatus
 import com.tocea.corolla.products.domain.Component
 import com.tocea.corolla.products.domain.ComponentType
+import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.CreateUserGroupCommand
@@ -57,6 +60,9 @@ public class DemoDataBean {
 	@Autowired
 	def IUserGroupDAO				groupDAO
 
+	@Autowired
+	def IProjectDAO					projectDAO
+	
 	@Autowired
 	def IApplicationDAO					applicationDAO
 
@@ -128,6 +134,15 @@ public class DemoDataBean {
 		def developers = this.newGroup("developers", [jsnow, scarreau])
 				
 				
+		/*
+		 * Projects
+		 */
+		def corolla = this.saveProject(new Project(
+				key: 'corolla', 
+				name: 'Corolla', 
+				description: 'Corolla is a tool to manage software requirements'
+		))
+		
 		/*final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
 				"<b>Corolla</b> is a tool to manage softare requirements....")
 
@@ -282,9 +297,18 @@ public class DemoDataBean {
 		
 	}
 	
+	public Project saveProject(project) {
+		
+		this.gate.dispatch new CreateProjectCommand(project)
+		
+		return project
+		
+	}
+	
 	@PreDestroy
 	public void destroy() {
 		
+		projectDAO.deleteAll()	
 		userDAO.deleteAll()
 		roleDAO.deleteAll()
 		groupDAO.deleteAll()

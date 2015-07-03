@@ -68,7 +68,7 @@ ICommandHandler<CreateUserCommand, User> {
 		}
 
 		this.userDAO.save(user);
-		this.javers.commit("unknown", user);
+		
 		return user;
 	}
 
