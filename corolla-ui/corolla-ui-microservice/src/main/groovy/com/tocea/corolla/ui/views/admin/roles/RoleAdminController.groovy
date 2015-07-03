@@ -39,9 +39,9 @@ public class RoleAdminController {
 	@Autowired
 	private Gate gate
 
-	@ModelAttribute("sideMenu")
-	public String addAccount() {
-		return "adminMenu"
+	@ModelAttribute("menu")
+	public String setMenu() {
+		return "admin"
 	}
 
 	@RequestMapping("/ui/admin/roles")

@@ -7,6 +7,7 @@
   		<!-- Content Header (Page header) -->
 	    <section class="content-header">
 		    <h1>
+		    	<i class="glyphicon glyphicon-duplicate"/>
 		    	Manage item types
 		    </h1>
 		    <ol class="breadcrumb">
@@ -24,6 +25,9 @@
 	              	
 		                <div class="box-header">
 		                  <h3 class="box-title"></h3>
+		                  <div style="max-width: 80%;" class="pull-left">
+		                  	<div th:replace="modal :: helpbox('In this panel you can manage item types. Click on the \'Edit\' button of a type to edit its information or on the \'Configure\' button to configure the custom fields of the type. Click on the \'Add\' button to define a new item type.')"></div>
+		                  </div>
 		                  <div class="box-tools nav-tabs-custom">
 		                  	<ul class="nav nav-tabs">
 		                  		<li>

@@ -152,6 +152,12 @@ hr {
 	text-shadow: 0 0 1px;
 	border-radius: 2px;
 }*/
+
+.logo img {
+	margin-right: 5px;
+	border: none;
+}
+
 #sidebar-footer {
 	background-color: #444;
 	position: absolute;
@@ -373,8 +379,8 @@ small.text-muted {
 }
 
 .permission-cb {
-	display: inline;
-	margin-right: 15px;
+	margin-top: 3px;
+	margin-bottom: 3px;
 }
 
 .selected-project {
@@ -385,6 +391,10 @@ small.text-muted {
 .content-header h1 i {
 	font-size: 18px;
 	margin-right: 5px;
+}
+
+#modal-select-user .modal-dialog {
+	width: 75%;
 }
 
 /* adjust the contents on smaller devices */

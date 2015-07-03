@@ -7,16 +7,20 @@
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 		<h1>
-			Portfolio <small>Control panel</small>
+			<i class="glyphicon glyphicon-book"></i> Portfolio 
+			<small>Control panel</small>
 		</h1>
-		<ol class="breadcrumb">
-			<li><a href="#"><i class="glyphicon glyphicon-book" /> Portfolio</a></li>
-			<li class="active">Komea Dashboard</li>
-		</ol>
+<!-- 		<ol class="breadcrumb"> -->
+<!-- 			<li><a href="#"><i class="glyphicon glyphicon-book" /> Portfolio</a></li> -->
+<!-- 		</ol> -->
 		</section>
 		<!-- Main -->
 		<div class="content">
-			<div class="zoomable-treemap" />
+			<div th:replace="modal :: helpbox('
+				From this panel, you can quickly open a project to manage its requirements, 
+				test cases or test campaigns. You can use the search bar below to look up for a 
+				specific project or you can click on a tag to display all associated projects. To manage the projects(create, delete, etc...), please go to \'Portfolio Management\' from sidebar menu.')"></div>
+			<br style="clear: both;"/>
 			<div class="tiles-container row">
 				<div class="toolbar col-sm-2 col-md-1">
 					<span class="label label-info active" data-filter="*">All</span> <span class="label label-info">Komea</span> <span

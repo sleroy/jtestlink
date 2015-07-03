@@ -157,11 +157,45 @@ function ChangeProjectModal() {
 	
 }
 
+/**
+ * Object for interacting with the modal
+ * to quiclky select a user
+ */
+function SelectUserModal() {
+	
+	var modalSelector = "#modal-select-user";
+	
+	return {
+		
+		'show': function() {
+			$(modalSelector+' table').dataTable();
+			$(modalSelector).modal('show');
+		},
+
+		'hide': function() {
+			$(modalSelector).modal('hide');
+		},
+		
+		'onSelect': function(callback) {
+			$(modalSelector+' .btn-pick').off("click");
+			$(modalSelector+' .btn-pick').click(function() {
+				var tr = $(this).closest('tr');
+				var id = tr.data('id');
+				if (id) {
+					callback(id, tr);
+				}
+			});
+		}
+	}
+	
+}
+
 /*
  * Create modal instances
  */
 var deleteModal = new DeleteModal();
 var changeProjectModal = new ChangeProjectModal();
+var selectUserModal = new SelectUserModal();
 
 $(document).ready(function() {
 	

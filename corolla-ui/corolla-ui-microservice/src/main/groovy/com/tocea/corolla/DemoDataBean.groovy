@@ -3,14 +3,19 @@
  */
 package com.tocea.corolla
 
+import groovy.transform.AutoClone;
 import groovy.util.logging.Slf4j;
 
 import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy;
 
 import org.javers.core.Javers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 
+import com.google.common.base.Function
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
 import com.tocea.corolla.products.dao.IApplicationDAO
@@ -22,12 +27,16 @@ import com.tocea.corolla.products.domain.Component
 import com.tocea.corolla.products.domain.ComponentType
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
+import com.tocea.corolla.users.commands.CreateUserGroupCommand
+import com.tocea.corolla.users.commands.EditRoleCommand
 import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
+import com.tocea.corolla.users.dao.IUserGroupDAO
 import com.tocea.corolla.users.domain.Permission
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.domain.User
+import com.tocea.corolla.users.domain.UserGroup
 
 /**
  * @author sleroy
@@ -44,6 +53,9 @@ public class DemoDataBean {
 
 	@Autowired
 	def IUserDAO					userDAO
+	
+	@Autowired
+	def IUserGroupDAO				groupDAO
 
 	@Autowired
 	def IApplicationDAO					applicationDAO
@@ -63,7 +75,10 @@ public class DemoDataBean {
 	@SuppressWarnings("nls")
 	@PostConstruct
 	public void init() throws MalformedURLException {
-
+		
+		/*
+		 * Admin role
+		 */
 		final Role roleAdmin = this.newRole("Administrator", "Administrator role", [
 			Permission.ADMIN,
 			Permission.ADMIN_ROLES,
@@ -76,17 +91,23 @@ public class DemoDataBean {
 			Permission.REST]
 		)
 		roleAdmin.roleProtected = true
-		this.gate.dispatch new CreateRoleCommand(roleAdmin)
+		this.gate.dispatch new EditRoleCommand(roleAdmin)
 
+		/*
+		 * Roles
+		 */
 		final Role roleGuest = this.newRole("Guest", "Guest", [], true)
 		final Role roleTester = this.newRole("Tester", "Tester", [Permission.REST])
 		final Role roleTestManager = this.newRole("Test manager", "Test Manager", [Permission.REST])
 		final Role roleApplicationManager = this.newRole(	"Application manager",
 				"Application manager", [Permission.REST])
 
-		this.newUser(	"John", "Snow", "john.snow@email.com", "jsnow",
+		/*
+		 * Users
+		 */
+		def jsnow = this.newUser(	"John", "Snow", "john.snow@email.com", "jsnow",
 				"password", roleAdmin)
-		this.newUser(	"Sébastien", "Carreau", "sebastien.carreau@tocea.com", "scarreau",
+		def scarreau = this.newUser(	"Sébastien", "Carreau", "sebastien.carreau@tocea.com", "scarreau",
 				"scarreau", roleAdmin)
 		this.newUser(	"Jack", "Pirate", "jack.pirate@email.com", "jpirate",
 				"password", roleGuest)
@@ -100,6 +121,12 @@ public class DemoDataBean {
 		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
 				"saroumane",
 				"fuckSauron..", roleAdmin)
+		
+		/*
+		 * User Groups
+		 */
+		def developers = this.newGroup("developers", [jsnow, scarreau])
+				
 				
 		/*final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
 				"<b>Corolla</b> is a tool to manage softare requirements....")
@@ -241,4 +268,27 @@ public class DemoDataBean {
 		log.info("new user created [_id:"+user.getId()+"]");
 		return user
 	}
+	
+	public UserGroup newGroup(final String name, List<User> users) {
+		
+		def group = new UserGroup();
+		group.setName(name)
+		group.setUserIds(users.collect { it.login })
+		
+		this.gate.dispatch new CreateUserGroupCommand(group);
+		log.info("new user group created [_id: {}", group.getId());
+		
+		return group
+		
+	}
+	
+	@PreDestroy
+	public void destroy() {
+		
+		userDAO.deleteAll()
+		roleDAO.deleteAll()
+		groupDAO.deleteAll()
+		
+	}
+	
 }

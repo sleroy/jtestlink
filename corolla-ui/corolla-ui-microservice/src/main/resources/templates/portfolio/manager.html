@@ -10,7 +10,7 @@
 		<!-- Content Header (Page header) -->
 	    <section class="content-header">
 		    <h1>
-		    	Portfolio Manager
+		    	<i class="fa fa-wrench"></i> Portfolio Manager
 				<small>Control panel</small>
 		    </h1>
 		    <ol class="breadcrumb">
@@ -22,18 +22,10 @@
 
 		<!-- Main -->
 		<div class="content">
+			<div th:replace="modal :: helpbox('
+				From this panel, you can navigate through your projects, create new projects, edit a project\'s information.')"></div>							
 			<div class="row">
 				<div class="col-sm-6 col-md-4">
-<!-- 					<div class="tab-header"> -->
-<!-- 	                	<img src="http://lorempixel.com/56/56/"/>	                	 -->
-<!-- 	                	<h3>Komea Dashboard</h3> -->
-<!-- 	                	<div class="properties"> -->
-<!-- 	                		<a href="#" class="entity-key"> -->
-<!-- 	                			<i class="fa fa-key"></i> komea-dashboard -->
-<!-- 	                		</a> -->
-<!-- 	                	</div> -->
-<!-- 	                	<br style="clear: both;"/> -->
-<!-- 	                </div> -->
 					<div class="panel panel-primary treeview-box resizable">
 <!-- 						<div class="panel-heading"> -->
 <!-- 							<h4>Favorite products</h4> -->

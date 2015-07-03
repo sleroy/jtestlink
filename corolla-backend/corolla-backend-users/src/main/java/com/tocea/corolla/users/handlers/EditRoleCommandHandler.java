@@ -51,7 +51,13 @@ ICommandHandler<EditRoleCommand, Role> {
 			throw new InvalidRoleInformationException("ID is missing");
 		}
 		
-		if (role.isRoleProtected()) {
+		final Role existingRole = roleDAO.findOne(role.getId());
+		
+		if (existingRole == null) {
+			throw new InvalidRoleException();
+		}
+		
+		if (existingRole.isRoleProtected()) {
 			throw new RoleOperationForbiddenException("cannot edit a protected role");
 		}
 

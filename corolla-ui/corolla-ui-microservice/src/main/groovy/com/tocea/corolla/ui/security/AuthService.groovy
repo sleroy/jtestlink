@@ -3,6 +3,7 @@ package com.tocea.corolla.ui.security
 import groovy.util.logging.Slf4j
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -12,6 +13,7 @@ import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.domain.User
+import com.tocea.corolla.users.dto.UserDto;
 import com.tocea.corolla.utils.serviceapi.IReadonlyService
 
 /**
@@ -20,7 +22,6 @@ import com.tocea.corolla.utils.serviceapi.IReadonlyService
 @Service("authService")
 @Slf4j
 class AuthService implements UserDetailsService, IReadonlyService {
-
 
 	@Autowired
 	def IUserDAO			userService
@@ -31,6 +32,7 @@ class AuthService implements UserDetailsService, IReadonlyService {
 	@Override
 	public UserDetails loadUserByUsername(final String username)
 	throws UsernameNotFoundException {
+		
 		log.debug("Requesting information about {}", username)
 		final AuthUser authUser
 
@@ -55,6 +57,21 @@ class AuthService implements UserDetailsService, IReadonlyService {
 		log.info("User {} role {}", username, role)
 		authUser = new AuthUser(user, role)
 		log.debug("Informations returned {}", authUser)
+		
 		return authUser
+	}
+	
+	public UserDto getCurrentUser() {
+		
+		AuthUser userDetails;
+		
+		try {
+			userDetails = (AuthUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		} catch (Exception e) {
+			log.debug("Cannot retrieve AuthUser.")
+		}
+
+		return userDetails != null ? new UserDto(userDetails.getUser()) : null
+		
 	}
 }

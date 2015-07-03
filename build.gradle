@@ -195,6 +195,8 @@ allprojects {
         testCompile("org.spockframework:spock-spring:$TEST_SPOCK") { exclude group: 'junit' }
         testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 
+		testCompile 'org.springframework.security:spring-security-test:4.0.0.RELEASE'
+		
     }
 
     configurations.all {
