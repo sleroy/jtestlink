@@ -152,6 +152,12 @@ hr {
 	text-shadow: 0 0 1px;
 	border-radius: 2px;
 }*/
+
+.logo img {
+	margin-right: 5px;
+	border: none;
+}
+
 #sidebar-footer {
 	background-color: #444;
 	position: absolute;
