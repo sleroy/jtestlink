@@ -1,0 +1,543 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout"
+>
+<body>
+	
+	<div layout:fragment="content">
+	
+		<!-- Content Header (Page header) -->
+	    <section class="content-header">
+		    <h1>
+		    	<i class="fa fa-wrench"></i> Portfolio Manager
+				<small>Control panel</small>
+		    </h1>
+		    <ol class="breadcrumb">
+		       <li><a href="/ui/portfolio/manager"><i class="glyphicon glyphicon-book"></i> Portfolio Manager</a></li>
+		       <li class="active">Komea Dashboard</li>
+		    </ol> 
+	    </section>
+
+
+		<!-- Main -->
+		<div class="content">
+			<div th:replace="modal :: helpbox('
+				From this panel, you can navigate through your projects, create new projects, edit a project\'s information.')"></div>							
+			<div class="row">
+				<div class="col-sm-6 col-md-4">
+					<div class="panel panel-primary treeview-box resizable">
+<!-- 						<div class="panel-heading"> -->
+<!-- 							<h4>Favorite products</h4> -->
+<!-- 						</div> -->
+						<div class="tab-header">
+		                	<img src="http://lorempixel.com/56/56/"/>	                	
+		                	<h3>Komea Dashboard</h3>
+		                	<div class="properties">
+		                		<a href="#" class="entity-key">
+		                			<i class="fa fa-key"></i> komea-dashboard
+		                		</a>
+		                	</div>
+		                	<br style="clear: both;"/>
+		                </div>
+						<div>
+							<div>
+								<ul class="wysihtml5-toolbar" style="margin: 5px;">
+									<li class="dropdown">
+										<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+											Add <b class="caret"></b>
+										</a>
+										<ul class="dropdown-menu">
+											<li>
+												<a href="#">
+													<i class="fa fa-briefcase"></i>
+													Project
+												</a>
+											</li>
+											<li>
+												<a href="#">
+													<i class="glyphicon glyphicon-folder-open"></i>
+													Folder
+												</a>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="#" class="btn btn-default">
+											<span class="glyphicon glyphicon-filter"></span>
+										</a>
+									</li>
+									<li>
+										<a href="#" class="btn btn-default" onclick="expandTreeview()">
+											<span class="fa fa-expand"></span>
+										</a>
+									</li>
+									<li>
+										<a href="#" class="btn btn-default" onclick="collapseTreeview()">
+											<span class="fa fa-compress"></span>
+										</a>
+									</li>
+									<li>
+										<a href="/ui/portfolio" class="btn btn-default">
+											<span class="glyphicon glyphicon-th"></span>
+										</a>
+									</li>
+									<li style="width: 45%;">
+										<div class="input-group">
+											<span class="input-group-addon">
+												<i class="glyphicon glyphicon-search"></i>
+											</span>
+											<input class="form-control" type="text" placeholder="Search" style="width: 100%;"></input>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="projects-tree-view"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-8">
+					<div class="nav-tabs-custom">
+	                <ul class="nav nav-tabs">
+	                  <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+	                  <li><a href="#projects" data-toggle="tab">Projects</a></li>
+	                  <li><a href="#branches" data-toggle="tab">Branches</a></li>
+	                  <li><a href="#revisions" data-toggle="tab">Revisions</a></li>
+	                  <li><a href="#activity" data-toggle="tab">Activity</a></li>
+	                  <li class="pull-right dropdown">
+	                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
+	                      <i class="fa fa-paw"></i> Actions
+	                    </a>
+	                    <ul class="dropdown-menu">
+	                      <li role="presentation">
+	                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/requirements/komea-dashboard}">
+	                      		<i class="glyphicon glyphicon-list-alt"></i>
+	                      		Manage requirements
+	                      	</a>
+	                      </li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation">
+	                      	<a role="menuitem" tabindex="-1" href="#">
+	                      		<i class="fa fa-flask"></i>
+	                      		Manage test cases
+	                      	</a>
+	                      </li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation">
+	                      	<a role="menuitem" tabindex="-1" href="#">
+	                      		<i class="glyphicon glyphicon-ok"></i>
+	                      		Manage test campaigns
+	                      	</a>
+	                      </li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation">
+	                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/releases/komea-dashboard}">
+	                      		<i class="glyphicon glyphicon-tags"></i>
+	                      		Manage releases
+	                      	</a>
+	                      </li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation">
+	                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/variables/komea-dashboard}">
+	                      		<i class="glyphicon glyphicon-text-color"></i>
+	                      		Manage variables
+	                      	</a>
+	                      </li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation">
+	                      	<a role="menuitem" tabindex="-1" href="#">
+	                      		<i class="glyphicon glyphicon-inbox"></i>
+	                      		Archive project
+	                      	</a>
+	                      </li>
+	                      <li role="presentation" class="divider"></li>
+	                      <li role="presentation">
+	                      	<a role="menuitem" tabindex="-1" href="#">
+	                      		<i class="glyphicon glyphicon-remove"></i>
+	                      		Delete project
+	                      	</a>
+	                      </li>
+	                    </ul>
+	                  </li>
+	                  <li class="pull-right dropdown">
+	                    <a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
+	                      <i class="fa fa-location-arrow"></i> Export
+	                    </a>
+	                    <ul class="dropdown-menu">
+	                      <li role="presentation">
+	                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/requirements/komea-dashboard}">
+	                      		<i class="fa fa-file-pdf-o"></i>
+	                      		PDF
+	                      	</a>
+	                      </li>
+	                    </ul>
+	                  </li>
+	                  <li class="pull-right">
+	                  	<a href="#edit" data-toggle="tab" class="btn btn-app">
+	                  		<i class="glyphicon glyphicon-edit"></i> Edit
+	                  	</a>
+	                  </li>
+	                </ul>
+	                <div class="tab-content">
+	                	
+	                  <div class="tab-pane" id="projects">
+	                    <div class="sunburst projects-sunburst"></div>
+	                  </div><!-- /.tab-pane -->
+	                  <div class="tab-pane active" id="details">
+	                  	<div class="details-view">
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Key</div>
+		                  		<div class="col-sm-9 col-md-10 entity-key">
+		                  			<img src="http://lorempixel.com/24/24/"/>
+		                  			komea-dashboard
+		                  		</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Name</div>
+		                  		<div class="col-sm-9 col-md-10">Komea Dashboard</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Status</div>
+		                  		<div class="col-sm-9 col-md-10"><span class="label label-success">Active</span></div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Category</div>
+		                  		<div class="col-sm-9 col-md-10">New development</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Date Start</div>
+		                  		<div class="col-sm-9 col-md-10">20/06/2015</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Date End</div>
+		                  		<div class="col-sm-9 col-md-10">20/08/2015</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Product Manager</div>
+		                  		<div class="col-sm-9 col-md-10">
+		                  			<img src="http://www.gravatar.com/avatar/?s=16"/>
+		                  			<a href="#">Hodor</a>
+		                  		</div>
+		                  	</div>
+		                  	<div class="row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Description</div>
+		                  		<div class="col-sm-9 col-md-10">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit! memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro.
+	
+	Equitis Romani autem esse filium criminis loco poni ab accusatoribus neque his iudicantibus oportuit neque defendentibus nobis. Nam quod de pietate dixistis, est quidem ista nostra existimatio, sed iudicium certe parentis; quid nos opinemur, audietis ex iuratis; quid parentes sentiant, lacrimae matris incredibilisque maeror, squalor patris et haec praesens maestitia, quam cernitis, luctusque declarat.
+	
+	Accedat huc suavitas quaedam oportet sermonum atque morum, haudquaquam mediocre condimentum amicitiae. Tristitia autem et in omni re severitas habet illa quidem gravitatem, sed amicitia remissior esse debet et liberior et dulcior et ad omnem comitatem facilitatemque proclivior.
+	
+	Procedente igitur mox tempore cum adventicium nihil inveniretur, relicta ora maritima in Lycaoniam adnexam Isauriae se contulerunt ibique densis intersaepientes itinera praetenturis provincialium et viatorum opibus pascebantur.
+	
+	Dum haec in oriente aguntur, Arelate hiemem agens Constantius post theatralis ludos atque circenses ambitioso editos apparatu diem sextum idus Octobres, qui imperii eius annum tricensimum terminabat, insolentiae pondera gravius librans, siquid dubium deferebatur aut falsum, pro liquido accipiens et conperto, inter alia excarnificatum Gerontium Magnentianae comitem partis exulari maerore multavit.
+	
+	In his tractibus navigerum nusquam visitur flumen sed in locis plurimis aquae suapte natura calentes emergunt ad usus aptae multiplicium medelarum. verum has quoque regiones pari sorte Pompeius Iudaeis domitis et Hierosolymis captis in provinciae speciem delata iuris dictione formavit.
+	
+	Non ergo erunt homines deliciis diffluentes audiendi, si quando de amicitia, quam nec usu nec ratione habent cognitam, disputabunt. Nam quis est, pro deorum fidem atque hominum! qui velit, ut neque diligat quemquam nec ipse ab ullo diligatur, circumfluere omnibus copiis atque in omnium rerum abundantia vivere? Haec enim est tyrannorum vita nimirum, in qua nulla fides, nulla caritas, nulla stabilis benevolentiae potest esse fiducia, omnia semper suspecta atque sollicita, nullus locus amicitiae.
+	
+	Eodem tempore Serenianus ex duce, cuius ignavia populatam in Phoenice Celsen ante rettulimus, pulsatae maiestatis imperii reus iure postulatus ac lege, incertum qua potuit suffragatione absolvi, aperte convictus familiarem suum cum pileo, quo caput operiebat, incantato vetitis artibus ad templum misisse fatidicum, quaeritatum expresse an ei firmum portenderetur imperium, ut cupiebat, et cunctum.
+	
+	At nunc si ad aliquem bene nummatum tumentemque ideo honestus advena salutatum introieris, primitus tamquam exoptatus suscipieris et interrogatus multa coactusque mentiri, miraberis numquam antea visus summatem virum tenuem te sic enixius observantem, ut paeniteat ob haec bona tamquam praecipua non vidisse ante decennium Romam.
+	
+	Montius nos tumore inusitato quodam et novo ut rebellis et maiestati recalcitrantes Augustae per haec quae strepit incusat iratus nimirum quod contumacem praefectum, quid rerum ordo postulat ignorare dissimulantem formidine tenus iusserim custodiri.</div>
+		                  	</div>
+		                  	<div class="row tags-row">
+		                  		<div class="col-sm-3 col-md-2 field-name">Tags</div>
+		                  		<div class="col-sm-9 col-md-10">
+		                  			<input type="text" name="tags" placeholder="Tags" class="tm-input tm-input-info"/>
+		                  		</div>
+		                  	</div>
+		                </div>
+		            </div>
+		            <div class="tab-pane" id="edit">
+	                  	<form class="project-form">
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2">
+			                    	<span class="">Key*</span>
+			                    </div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<input name="key" type="text" class="form-control" placeholder="Key"/>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2">
+			                    	<span class="">Name*</span>
+			                    </div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<input name="name" type="text" class="form-control" placeholder="Name"/>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Status</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<select name="status" class="select2">
+			                    		<option>Active</option>
+			                    		<option>Closed</option>
+			                    	</select>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Category</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<select name="status" class="select2">
+			                    		<option>New Development</option>
+			                    	</select>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Date Start</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<input name="dateStart" type="text" class="form-control datepicker"/>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Date End</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<input name="dateEnd" type="text" class="form-control datepicker"/>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Product Manager</span></div>
+			                    <div class="col-sm-9 col-md-10">
+			                    	<select name="status" class="select2">
+			                    		<option>Jon Snow</option>
+			                    		<option>Hodor</option>
+			                    	</select>
+			                    </div>
+			                </div>
+			                <div class="row form-row">
+			                    <div class="col-sm-3 col-md-2"><span class="">Icon</span></div>
+			                    <div class="col-sm-9 col-md-10"><input name="icon" type="file" class=""/></div>
+			                </div>
+			                <div class="text-editor">
+			                	<textarea class="textarea" placeholder="Description" style="height: 600px;"></textarea>
+			                </div>
+		                	<div class="box-footer">
+		                  		<button type="submit" class="btn btn-primary">Save</button>
+	                  		</div>
+	                  	</form>
+	                  </div><!-- /.tab-pane -->
+	                  
+	                  <div class="tab-pane" id="branches">
+	                  	<a href="#" class="btn btn-primary pull-right">
+	                  		<span class="fa fa-plus"></span> New Branch
+	                  	</a>
+	                  	<br style="clear: both;"/>
+	                 	 <div class="table-responsive">
+							<table class="table table-hover table-striped" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Branch</th>
+										<th>Edit</th>
+										<th>Switch</th>
+										<th>Merge</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tr data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
+									<td>Master</td>
+									<td>
+										<a href="#" class="btn btn-primary btn-xs">
+											<span class="glyphicon glyphicon-pencil"></span>
+										</a>
+									</td>
+									<td>
+										<a href="#" class="btn btn-info btn-xs">
+											<span class="fa fa-exchange"></span>
+										</a>
+									</td>
+									<td>
+										<a href="#" class="btn btn-info btn-xs">
+											<span class="fa fa-flash"></span>
+										</a>
+									</td>
+									<td>
+										<a href="#" class="btn btn-danger btn-xs">
+											<span class="glyphicon glyphicon-trash"></span>
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+	                  
+	                  </div>
+	                  
+	                  <div class="tab-pane" id="revisions">
+	                  
+	                  	<div class="table-responsive">
+							<table class="table table-hover table-striped" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Version</th>
+										<th>Created on</th>
+										<th>Change details</th>
+										<th>Author</th>
+										<th>Actions</th>
+									</tr>
+								</thead>
+								<tr class="pointer" data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
+									<td class="toggle"><span class="badge">3</span></td>
+									<td class="toggle">24/06/2015 12:35</td>
+									<td class="toggle">Third commit</td>
+									<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+									<td><a href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a>
+									</td>
+								</tr>
+								<tr class="pointer">
+									<td><span class="badge">2</span></td>
+									<td>23/06/2015 12:35</td>
+									<td>Second commit</td>
+									<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+									<td><a href="#" class="label label-warning">Restore</a> <a
+										href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a></td>
+								</tr>
+								<tr class="pointer">
+									<td><span class="badge">1</span></td>
+									<td>23/06/2015 11:25</td>
+									<td>Initial creation</td>
+									<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
+									<td><a href="#" class="label label-warning">Restore</a> <a
+										href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a></td>
+								</tr>
+							</table>
+						</div>
+	                  
+	                  </div>
+	                  
+	                  <div class="tab-pane" id="activity">
+		                  <ul class="timeline">
+							
+								<!-- timeline time label -->
+							    <li class="time-label">
+							        <span class="bg-gray">
+							            24/06/2015
+							        </span>
+							    </li>		    
+							    
+							    <li>
+							        <!-- timeline icon -->
+							        <i class="glyphicon glyphicon-ok bg-aqua"></i>
+							        <div class="timeline-item">
+							            <span class="time"><i class="fa fa-clock-o"></i> 09:45</span>
+							            <h3 class="timeline-header">
+							            	<a href="#">Hodor</a> 
+							            	started a new campaign
+							            </h3>
+							            <div class='timeline-footer'>
+							                <a class="btn btn-warning btn-xs">Open</a>
+							            </div>
+							        </div>
+							    </li>
+							    
+							    <li>
+							        <!-- timeline icon -->
+							        <i class="fa fa-tags bg-black"></i>
+							        <div class="timeline-item">
+							            <span class="time"><i class="fa fa-clock-o"></i> 09:25</span>
+							            <h3 class="timeline-header">
+							            	<a href="#">Hodor</a> 
+							            	created the release <a href="#">Version 1.0</a>
+							            </h3>
+							        </div>
+							    </li>
+							
+								<!-- timeline time label -->
+							    <li class="time-label">
+							        <span class="bg-gray">
+							            23/06/2015
+							        </span>
+							    </li>
+							    
+							    <li>
+							        <!-- timeline icon -->
+							        <i class="fa fa-flask bg-yellow"></i>
+							        <div class="timeline-item">
+							            <span class="time"><i class="fa fa-clock-o"></i> 10:25</span>
+							            <h3 class="timeline-header">
+							            	<a href="#">Jon Snow</a> 
+							            	added the test case <a href="#">"Add a KPI"</a> to this project
+							            </h3>
+							            <div class='timeline-footer'>
+							                <a class="btn btn-warning btn-xs">Open</a>
+							                <a class="btn btn-primary btn-xs">View all test cases</a>
+							            </div>
+							        </div>
+							    </li>
+							    
+							    <li>
+							        <!-- timeline icon -->
+							        <i class="glyphicon glyphicon-list-alt bg-green"></i>
+							        <div class="timeline-item">
+							            <span class="time"><i class="fa fa-clock-o"></i> 10:25</span>
+							            <h3 class="timeline-header">
+							            	<a href="#">Jon Snow</a> 
+							            	added the requirement <a href="#">"Add a KPI"</a> to this project
+							            </h3>
+							            <div class='timeline-footer'>
+							                <a class="btn btn-warning btn-xs">Open</a>
+							                <a class="btn btn-primary btn-xs">View all requirements</a>
+							            </div>
+							        </div>
+							    </li>
+							    
+							    <li>
+							        <!-- timeline icon -->
+							        <i class="fa fa-edit bg-blue"></i>
+							        <div class="timeline-item">
+							            <span class="time"><i class="fa fa-clock-o"></i> 10:05</span>
+							            <h3 class="timeline-header">
+							            	<a href="#">Jon Snow</a> 
+							            	edited this project
+							            </h3>
+							            <div class='timeline-footer'>
+							                <a class="btn btn-warning btn-xs">Show changelog</a>
+							                <a class="btn btn-primary btn-xs">Show all versions</a>
+							            </div>
+							        </div>
+							    </li>
+							
+							    <!-- timeline time label -->
+							    <li class="time-label">
+							        <span class="bg-gray">
+							            10/06/2015
+							        </span>
+							    </li>
+							    <!-- /.timeline-label -->
+							
+								<li>
+									<i class="fa fa-clock-o bg-gray"></i>
+									<div class="timeline-item">
+							            <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+							            <h3 class="timeline-header">
+							            	<a href="#">Jon Snow</a> 
+							            	created this project
+							            </h3>
+							        </div>
+								</li>
+							
+							</ul>
+						</div>
+	                  
+	                </div><!-- /.tab-content -->
+	              </div><!-- nav-tabs-custom -->
+				</div>
+			</div>
+		</div>
+		<!--/row-->
+		
+	</div>
+	
+	<div layout:fragment="footer">
+		<script type="text/javascript" th:src="@{/js/d3.min.js}" src="../static/js/d3.min.js" />
+		<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js" />
+  		<script type="text/javascript" src="../../static/js/modules/portfolio.js" th:src="@{/js/modules/portfolio.js}" />
+  		<script type="text/javascript">
+			$(document).ready(function() {
+				tabRooting();
+				initPortfolio();
+			});
+		</script>
+ 	</div>
+	
+</body>
+</html>

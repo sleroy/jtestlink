@@ -1,0 +1,3 @@
+dependencies {
+	compile project(":corolla-backend:corolla-backend-cqrs")
+}
