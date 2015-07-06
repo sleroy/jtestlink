@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
 import com.tocea.corolla.products.commands.CreateProjectCommand
+import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IApplicationDAO
 import com.tocea.corolla.products.dao.IComponentDAO
 import com.tocea.corolla.products.dao.IComponentTypeDAO
@@ -140,8 +141,11 @@ public class DemoDataBean {
 		def corolla = this.saveProject(new Project(
 				key: 'corolla', 
 				name: 'Corolla', 
-				description: 'Corolla is a tool to manage software requirements'
-		))
+				description: 'A Java Coffee Maker'
+		))		
+		corolla.description = 'Corolla is a tool to manage software requirements'
+		this.editProject(corolla)
+		
 		
 		/*final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
 				"<b>Corolla</b> is a tool to manage softare requirements....")
@@ -303,6 +307,13 @@ public class DemoDataBean {
 		
 		return project
 		
+	}
+	
+	public Project editProject(project) {
+		
+		this.gate.dispatch new EditProjectCommand(project)
+		
+		return project
 	}
 	
 	@PreDestroy

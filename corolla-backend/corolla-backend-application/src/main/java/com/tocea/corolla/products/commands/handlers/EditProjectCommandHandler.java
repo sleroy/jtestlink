@@ -44,7 +44,7 @@ public class EditProjectCommandHandler implements ICommandHandler<EditProjectCom
 			throw new ProjectAlreadyExistException();
 		}
 		
-		project = projectDAO.save(project);
+		projectDAO.save(project);
 		
 		revisionService.commit(project);
 		
