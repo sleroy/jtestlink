@@ -38,7 +38,6 @@ class CreateUserCommandHandlerTest extends Specification{
 	def IRoleDAO roleDao = Mockito.mock(IRoleDAO)
 	def emailValid = new EmailValidationService()
 	def defaultRole = new Role(id:1, name:'Guest', note:'Guest role', permissions:"ALL")
-	def Javers javers = Mockito.mock(Javers)
 	
 	def CreateUserCommandHandler	handler
 
@@ -51,9 +50,8 @@ class CreateUserCommandHandlerTest extends Specification{
 		handler = new CreateUserCommandHandler(
 				userDAO : userDao,
 				roleDAO : roleDao,				
-				emailValidationService : emailValid,
-				javers : javers
-				)
+				emailValidationService : emailValid
+		)
 		validUser = 		new User(
 				activationToken:"",
 				active:true,

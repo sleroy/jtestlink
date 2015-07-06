@@ -40,9 +40,6 @@ ICommandHandler<CreateUserCommand, User> {
 
 	@Autowired
 	private EmailValidationService	emailValidationService;
-	
-	@Autowired
-	private Javers javers;
 
 	/*
 	 * (non-Javadoc)

@@ -34,9 +34,6 @@ ICommandHandler<CreateRoleCommand, Role> {
 	@Autowired
 	private RolePermissionService rolePermissionService;
 
-	@Autowired
-	private Javers javers;
-
 	@Override
 	public Role handle(@Valid final CreateRoleCommand _command) {
 		final Role role = _command.getRole();
@@ -51,8 +48,6 @@ ICommandHandler<CreateRoleCommand, Role> {
 		}
 		this.rolePermissionService.checkPermissions(role.getPermissions());
 		this.roleDAO.save(role);
-		
-		this.javers.commit("unknown", role);
 		
 		return role;
 	}

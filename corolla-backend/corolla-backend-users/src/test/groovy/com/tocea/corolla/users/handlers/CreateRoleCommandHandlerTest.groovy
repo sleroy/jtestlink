@@ -30,7 +30,6 @@ class CreateRoleCommandHandlerTest extends Specification{
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IRoleDAO roleDao = Mock(IRoleDAO)
 	def RolePermissionService rolePermissionDao = Mock(RolePermissionService)
-	def Javers javers = Mock(Javers)
 
 	def CreateRoleCommandHandler	handler
 
@@ -40,9 +39,8 @@ class CreateRoleCommandHandlerTest extends Specification{
 	def setup() {
 		handler = new CreateRoleCommandHandler(
 				roleDAO : roleDao,
-				rolePermissionService : rolePermissionDao,
-				javers : javers
-				)
+				rolePermissionService : rolePermissionDao
+		)
 		validRole = new Role(name:"admin", note:"Admin role", permissions:"",defaultRole:true )
 		defaultRole = new Role(id:'1', name:'Guest', note:'Guest role', permissions:"ALL")
 	}

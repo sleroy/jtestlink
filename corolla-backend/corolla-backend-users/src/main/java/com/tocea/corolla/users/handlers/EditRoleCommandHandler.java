@@ -35,9 +35,6 @@ ICommandHandler<EditRoleCommand, Role> {
 	@Autowired
 	private RolePermissionService rolePermissionService;
 
-	@Autowired
-	private Javers javers;
-
 	@Override
 	public Role handle(@Valid final EditRoleCommand _command) {
 		
@@ -63,8 +60,6 @@ ICommandHandler<EditRoleCommand, Role> {
 
 		this.rolePermissionService.checkPermissions(role.getPermissions());
 		this.roleDAO.save(role);
-		
-		this.javers.commit("unknown", role);
 		
 		return role;
 	}
