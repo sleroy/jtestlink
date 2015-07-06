@@ -14,6 +14,7 @@ import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.exceptions.InvalidProjectInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
 import com.tocea.corolla.products.exceptions.ProjectAlreadyExistException;
+import com.tocea.corolla.revisions.services.IRevisionService;
 
 @CommandHandler
 @Transactional
@@ -21,6 +22,9 @@ public class CreateProjectCommandHandler implements ICommandHandler<CreateProjec
 
 	@Autowired
 	private IProjectDAO projectDAO;
+	
+	@Autowired
+	private IRevisionService revisionService;
 	
 	@Override
 	public Project handle(@Valid CreateProjectCommand command) {
@@ -42,6 +46,8 @@ public class CreateProjectCommandHandler implements ICommandHandler<CreateProjec
 		}
 		
 		projectDAO.save(project);
+		
+		revisionService.commit(project);
 		
 		return project;
 		

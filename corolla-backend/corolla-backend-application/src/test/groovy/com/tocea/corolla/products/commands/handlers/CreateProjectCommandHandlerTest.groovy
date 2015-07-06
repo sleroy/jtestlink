@@ -11,6 +11,7 @@ import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.exceptions.InvalidProjectInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
 import com.tocea.corolla.products.exceptions.ProjectAlreadyExistException;
+import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
@@ -21,10 +22,12 @@ class CreateProjectCommandHandlerTest extends Specification {
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IProjectDAO projectDAO = Mock(IProjectDAO)	
 	def CreateProjectCommandHandler handler
+	def IRevisionService revisionService = Mock(IRevisionService)
 	
 	def setup() {
 		handler = new CreateProjectCommandHandler(
 				projectDAO : projectDAO,
+				revisionService : revisionService
 		)
 	}
 	
@@ -44,7 +47,7 @@ class CreateProjectCommandHandlerTest extends Specification {
 			notThrown(Exception.class)
 	}
 	
-	def "it should create two projects with the same key"() {
+	def "it should not create two projects with the same key"() {
 		
 		given:
 			def project = new Project()
