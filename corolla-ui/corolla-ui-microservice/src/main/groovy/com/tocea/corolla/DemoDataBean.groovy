@@ -17,20 +17,12 @@ import com.google.common.base.Function
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
-import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
 import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
-import com.tocea.corolla.products.dao.IApplicationDAO
-import com.tocea.corolla.products.dao.IComponentDAO
-import com.tocea.corolla.products.dao.IComponentTypeDAO
 import com.tocea.corolla.products.dao.IProjectBranchDAO
 import com.tocea.corolla.products.dao.IProjectDAO
 import com.tocea.corolla.products.dao.IProjectStatusDAO
-import com.tocea.corolla.products.domain.Application
-import com.tocea.corolla.products.domain.ApplicationStatus
-import com.tocea.corolla.products.domain.Component
-import com.tocea.corolla.products.domain.ComponentType
 import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.users.commands.CreateRoleCommand
@@ -73,18 +65,9 @@ public class DemoDataBean {
 	
 	@Autowired
 	def IProjectBranchDAO			projectBranchDAO
-	
-	@Autowired
-	def IApplicationDAO					applicationDAO
 
 	@Autowired
 	def PasswordEncoder			passwordEncoder
-
-	@Autowired
-	def IComponentDAO		productArchitectureDAO
-
-	@Autowired
-	def IComponentTypeDAO	productArchitectureTypeDAO
 
 	@Autowired
 	def Gate						gate
@@ -162,82 +145,6 @@ public class DemoDataBean {
 		corolla.description = 'Corolla is a tool to manage software requirements'
 		this.editProject(corolla)
 		
-		
-		/*final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
-				"<b>Corolla</b> is a tool to manage softare requirements....")
-
-		backendComponentType = newTypeOfComponent("Backend")
-		restComponentType = newTypeOfComponent("Rest")
-		screenComponentType = newTypeOfComponent("Screen")
-		funcDomainComponentType = newTypeOfComponent("FunctionalDomain")
-
-		def userLayer = newClassicComponent(funcDomainComponentType, corollaProduct, null, "Gestion des utilisateurs")
-		def roleLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des roles")
-		def applicationLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des applications")
-		def componentLayer = newComponent(funcDomainComponentType, corollaProduct, applicationLayer, "Gestion des composants")
-		def componentTypeLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des types de composants")
-		def exigencesLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des exigences")
-		def scenariosTestsLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des scénarios de tests")
-		def casTestsLayer = newComponent(funcDomainComponentType, corollaProduct, scenariosTestsLayer, "Gestion des cas de tests")
-		def generationRapportsLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Génération de rapports")
-		def gestiondesCampagnesLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des campagnes de tests")*/
-	}
-
-	def Component newClassicComponent(
-			final ComponentType funcArchiType,
-			final Application komeaProduct,
-			final Component _parentComponent,
-			final String _funcName) {
-		def funcLayer = newComponent(funcDomainComponentType, komeaProduct, _parentComponent, _funcName)
-		def restComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
-		def serviceComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
-		def screenComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
-		return funcLayer
-	}
-
-	def ComponentType backendComponentType
-	def ComponentType restComponentType
-	def ComponentType screenComponentType
-	def ComponentType funcDomainComponentType
-
-
-	def ComponentType newTypeOfComponent(
-			final String _architectureName) {
-		final ComponentType productComponentType = new ComponentType()
-		productComponentType.setName(_architectureName)
-		productComponentType.setDescription(_architectureName)
-		this.productArchitectureTypeDAO.save(productComponentType)
-		return productComponentType
-	}
-
-	def Component newComponent(
-			final ComponentType funcArchiType,
-			final Application komeaProduct,
-			final Component _parentComponent,
-			final String _funcName) {
-		final AddNewComponentToApplicationCommand command = new AddNewComponentToApplicationCommand()
-		command.setComponentTypeID(funcArchiType.getId())
-		command.setProductID(komeaProduct.getId())
-		if (_parentComponent != null) {
-			command.setParentComponentID(_parentComponent.getId())
-		}
-		command.setName(_funcName)
-		command.setDescription(_funcName)
-		this.gate.dispatch command
-	}
-
-
-	Application newApplication(String _key, final String _name, final String _description) {
-		final Application product = new Application()
-		product.with {
-			key = _key
-			name = _name
-			description = _description
-			status = ApplicationStatus.ACTIVE
-			image = "http://dummyimage.com/50x50&text=" + _key
-		}
-		this.applicationDAO.save product
-		return product
 	}
 
 	/**
