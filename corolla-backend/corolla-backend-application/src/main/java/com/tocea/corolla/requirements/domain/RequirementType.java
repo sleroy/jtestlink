@@ -1,4 +1,4 @@
-package com.tocea.corolla.products.domain;
+package com.tocea.corolla.requirements.domain;
 
 import java.io.Serializable;
 

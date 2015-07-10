@@ -1,9 +1,9 @@
-package com.tocea.corolla.products.commands;
+package com.tocea.corolla.requirements.commands;
 
 import javax.validation.constraints.NotNull;
 
 import com.tocea.corolla.cqrs.annotations.Command;
-import com.tocea.corolla.products.domain.RequirementType;
+import com.tocea.corolla.requirements.domain.RequirementType;
 
 @Command
 public class CreateRequirementTypeCommand {

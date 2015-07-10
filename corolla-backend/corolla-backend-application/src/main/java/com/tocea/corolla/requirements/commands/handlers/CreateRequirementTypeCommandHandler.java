@@ -1,4 +1,4 @@
-package com.tocea.corolla.products.commands.handlers;
+package com.tocea.corolla.requirements.commands.handlers;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
-import com.tocea.corolla.products.commands.CreateRequirementTypeCommand;
-import com.tocea.corolla.products.dao.IRequirementTypeDAO;
-import com.tocea.corolla.products.domain.RequirementType;
-import com.tocea.corolla.products.exceptions.InvalidRequirementTypeInformationException;
-import com.tocea.corolla.products.exceptions.MissingRequirementTypeInformationException;
-import com.tocea.corolla.products.exceptions.RequirementTypeAlreadyExistException;
+import com.tocea.corolla.requirements.commands.CreateRequirementTypeCommand;
+import com.tocea.corolla.requirements.dao.IRequirementTypeDAO;
+import com.tocea.corolla.requirements.domain.RequirementType;
+import com.tocea.corolla.requirements.exceptions.InvalidRequirementTypeInformationException;
+import com.tocea.corolla.requirements.exceptions.MissingRequirementTypeInformationException;
+import com.tocea.corolla.requirements.exceptions.RequirementTypeAlreadyExistException;
 
 @CommandHandler
 @Transactional

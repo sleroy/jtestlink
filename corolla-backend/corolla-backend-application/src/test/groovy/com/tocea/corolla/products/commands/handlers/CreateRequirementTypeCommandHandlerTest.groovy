@@ -5,10 +5,14 @@ import org.mockito.Mockito;
 
 import spock.lang.Specification;
 
-import com.tocea.corolla.products.commands.CreateRequirementTypeCommand
-import com.tocea.corolla.products.dao.IRequirementTypeDAO;
-import com.tocea.corolla.products.domain.RequirementType
 import com.tocea.corolla.products.exceptions.*;
+import com.tocea.corolla.requirements.commands.CreateRequirementTypeCommand;
+import com.tocea.corolla.requirements.commands.handlers.CreateRequirementTypeCommandHandler;
+import com.tocea.corolla.requirements.dao.IRequirementTypeDAO;
+import com.tocea.corolla.requirements.domain.RequirementType;
+import com.tocea.corolla.requirements.exceptions.InvalidRequirementTypeInformationException;
+import com.tocea.corolla.requirements.exceptions.MissingRequirementTypeInformationException;
+import com.tocea.corolla.requirements.exceptions.RequirementTypeAlreadyExistException;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
