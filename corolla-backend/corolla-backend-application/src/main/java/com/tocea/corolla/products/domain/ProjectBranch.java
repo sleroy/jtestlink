@@ -2,6 +2,7 @@ package com.tocea.corolla.products.domain;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,10 +14,11 @@ public class ProjectBranch implements Serializable {
 	@Field("_id")
 	private String id;
 	
+	@NotEmpty
 	private String name;
 	
+	@NotEmpty
 	private String projectId;
-	
 	
 	public String getId() {
 		return id;
