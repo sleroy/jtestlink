@@ -1,5 +1,7 @@
 package com.tocea.corolla.products.commands.handlers;
 
+import java.util.ArrayList;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -14,6 +16,9 @@ import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
+import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.domain.RequirementsTree;
+import com.tocea.corolla.requirements.domain.TreeNode;
 
 @CommandHandler
 @Transactional
@@ -21,6 +26,9 @@ public class CreateProjectBranchCommandHandler implements ICommandHandler<Create
 
 	@Autowired
 	private IProjectBranchDAO branchDAO;
+	
+	@Autowired 
+	private IRequirementsTreeDAO requirementsTreeDAO;
 	
 	@Override
 	public ProjectBranch handle(@Valid CreateProjectBranchCommand command) {
@@ -42,6 +50,13 @@ public class CreateProjectBranchCommandHandler implements ICommandHandler<Create
 		}
 		
 		branchDAO.save(branch);
+		
+		// Create requirements tree
+		RequirementsTree requirementsTree = new RequirementsTree();
+		requirementsTree.setBranchId(branch.getId());
+		requirementsTree.setNodes(new ArrayList<TreeNode>());
+		
+		requirementsTreeDAO.save(requirementsTree);
 		
 		return branch;
 		

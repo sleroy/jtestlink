@@ -11,6 +11,8 @@ import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
+import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.domain.RequirementsTree;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
@@ -21,12 +23,14 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IProjectBranchDAO branchDAO = Mock(IProjectBranchDAO)	
+	def IRequirementsTreeDAO requirementsTreeDAO = Mock(IRequirementsTreeDAO)
 	def CreateProjectBranchCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
 	
 	def setup() {
 		handler = new CreateProjectBranchCommandHandler(
-				branchDAO : branchDAO
+				branchDAO : branchDAO,
+				requirementsTreeDAO : requirementsTreeDAO
 		)
 	}
 	
@@ -43,7 +47,24 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 		then:
 			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> null
 			notThrown(Exception.class)
-			1 * branchDAO.save(_)		
+			1 * branchDAO.save(branch)		
+	}
+	
+	def "it should create a tree of requirements when creating a new branch"() {
+		
+		given:
+			def branch = new ProjectBranch()
+			branch.name = "Master"
+			branch.projectId = "35"
+		
+		when:
+			handler.handle new CreateProjectBranchCommand(branch)
+	
+		then:
+			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> null
+			notThrown(Exception.class)
+			1 * requirementsTreeDAO.save({ it != null && it instanceof RequirementsTree })
+		
 	}
 	
 	def "it should not create two branches with the same name on the same project"() {
