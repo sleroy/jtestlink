@@ -20,6 +20,10 @@ public class ProjectBranch implements Serializable {
 	@NotEmpty
 	private String projectId;
 	
+	public ProjectBranch() {
+		
+	}
+	
 	public String getId() {
 		return id;
 	}

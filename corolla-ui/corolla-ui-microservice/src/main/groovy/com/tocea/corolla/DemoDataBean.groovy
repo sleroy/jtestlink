@@ -24,6 +24,7 @@ import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IApplicationDAO
 import com.tocea.corolla.products.dao.IComponentDAO
 import com.tocea.corolla.products.dao.IComponentTypeDAO
+import com.tocea.corolla.products.dao.IProjectBranchDAO
 import com.tocea.corolla.products.dao.IProjectDAO
 import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Application
@@ -69,6 +70,9 @@ public class DemoDataBean {
 	
 	@Autowired
 	def IProjectStatusDAO			projectStatusDAO
+	
+	@Autowired
+	def IProjectBranchDAO			projectBranchDAO
 	
 	@Autowired
 	def IApplicationDAO					applicationDAO
@@ -339,6 +343,7 @@ public class DemoDataBean {
 	@PreDestroy
 	public void destroy() {
 		
+		projectBranchDAO.deleteAll()
 		projectDAO.deleteAll()	
 		userDAO.deleteAll()
 		roleDAO.deleteAll()

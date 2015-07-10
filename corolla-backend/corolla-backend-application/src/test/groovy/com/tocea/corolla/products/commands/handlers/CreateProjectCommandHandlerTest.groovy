@@ -5,6 +5,8 @@ import org.mockito.Mockito;
 
 import spock.lang.Specification;
 
+import com.tocea.corolla.cqrs.gate.Gate
+import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project
@@ -23,11 +25,13 @@ class CreateProjectCommandHandlerTest extends Specification {
 	def IProjectDAO projectDAO = Mock(IProjectDAO)	
 	def CreateProjectCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
+	def Gate gate = Mock(Gate)
 	
 	def setup() {
 		handler = new CreateProjectCommandHandler(
 				projectDAO : projectDAO,
-				revisionService : revisionService
+				revisionService : revisionService,
+				gate : gate
 		)
 	}
 	
@@ -45,6 +49,42 @@ class CreateProjectCommandHandlerTest extends Specification {
 			projectDAO.findByKey(project.key) >> null
 			1 * projectDAO.save(_)
 			notThrown(Exception.class)
+	}
+	
+	def "it should call the revision service after creating a new project"() {
+		
+		given:
+			def project = new Project()
+			project.key = "my_project"
+			project.name = "My Awesome Project"
+			
+		when:
+			handler.handle new CreateProjectCommand(project)
+		
+		then:
+			projectDAO.findByKey(project.key) >> null
+			1 * revisionService.commit(project)
+			notThrown(Exception.class)
+			
+	}
+	
+	def "it should create a default branch after creating a new project"() {
+		
+		given:
+			def project = new Project()
+			project.key = "my_project"
+			project.name = "My Awesome Project"
+			
+		when:
+			handler.handle new CreateProjectCommand(project)
+		
+		then:
+			projectDAO.findByKey(project.key) >> null
+			1 * gate.dispatch({ 
+				it instanceof CreateProjectBranchCommand && it.branch.name //&& it.branch.projectId
+			})
+			notThrown(Exception.class)
+		
 	}
 	
 	def "it should not create two projects with the same key"() {

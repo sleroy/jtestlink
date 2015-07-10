@@ -7,7 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
+import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
+import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
@@ -25,6 +27,9 @@ public class CreateProjectCommandHandler implements ICommandHandler<CreateProjec
 	
 	@Autowired
 	private IRevisionService revisionService;
+	
+	@Autowired
+	private Gate gate;
 	
 	@Override
 	public Project handle(@Valid CreateProjectCommand command) {
@@ -45,9 +50,14 @@ public class CreateProjectCommandHandler implements ICommandHandler<CreateProjec
 			throw new ProjectAlreadyExistException();
 		}
 		
+		// Store the project in the DB
 		projectDAO.save(project);
 		
+		// Add revision control on the new instance
 		revisionService.commit(project);
+		
+		// Create a new branch		
+		this.gate.dispatch(new CreateProjectBranchCommand("Master", project));
 		
 		return project;
 		
