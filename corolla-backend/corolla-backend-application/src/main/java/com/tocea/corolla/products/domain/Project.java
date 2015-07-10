@@ -27,6 +27,8 @@ public class Project implements Serializable {
 	
 	private String statusId;
 	
+	private String categoryId;
+	
 	private Date dateStart;
 	
 	private Date dateEnd;
@@ -97,6 +99,14 @@ public class Project implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
 	}
 	
 }

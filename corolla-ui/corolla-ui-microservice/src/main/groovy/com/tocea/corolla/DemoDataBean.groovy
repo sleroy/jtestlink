@@ -19,16 +19,19 @@ import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
 import com.tocea.corolla.products.commands.CreateProjectCommand
+import com.tocea.corolla.products.commands.CreateProjectStatusCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IApplicationDAO
 import com.tocea.corolla.products.dao.IComponentDAO
 import com.tocea.corolla.products.dao.IComponentTypeDAO
 import com.tocea.corolla.products.dao.IProjectDAO
+import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Application
 import com.tocea.corolla.products.domain.ApplicationStatus
 import com.tocea.corolla.products.domain.Component
 import com.tocea.corolla.products.domain.ComponentType
 import com.tocea.corolla.products.domain.Project
+import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.CreateUserGroupCommand
@@ -63,6 +66,9 @@ public class DemoDataBean {
 
 	@Autowired
 	def IProjectDAO					projectDAO
+	
+	@Autowired
+	def IProjectStatusDAO			projectStatusDAO
 	
 	@Autowired
 	def IApplicationDAO					applicationDAO
@@ -134,14 +140,20 @@ public class DemoDataBean {
 		 */
 		def developers = this.newGroup("developers", [jsnow, scarreau])
 				
-				
+		
+		/**
+		 * Project Statuses
+		 */
+		def statusActive = this.newProjectStatus("Active")
+		
 		/*
 		 * Projects
 		 */
 		def corolla = this.saveProject(new Project(
 				key: 'corolla', 
 				name: 'Corolla', 
-				description: 'A Java Coffee Maker'
+				description: 'A Java Coffee Maker',
+				statusId: statusActive.id
 		))		
 		corolla.description = 'Corolla is a tool to manage software requirements'
 		this.editProject(corolla)
@@ -316,6 +328,14 @@ public class DemoDataBean {
 		return project
 	}
 	
+	public ProjectStatus newProjectStatus(name) {
+		
+		def status = new ProjectStatus(name: name)
+		this.gate.dispatch new CreateProjectStatusCommand(status)
+		
+		return status
+	}
+	
 	@PreDestroy
 	public void destroy() {
 		
@@ -323,6 +343,7 @@ public class DemoDataBean {
 		userDAO.deleteAll()
 		roleDAO.deleteAll()
 		groupDAO.deleteAll()
+		projectStatusDAO.deleteAll()
 		
 	}
 	
