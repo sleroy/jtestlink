@@ -25,6 +25,9 @@ import com.tocea.corolla.products.dao.IProjectDAO
 import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.domain.ProjectStatus;
+import com.tocea.corolla.requirements.commands.CreateRequirementCommand
+import com.tocea.corolla.requirements.dao.IRequirementDAO
+import com.tocea.corolla.requirements.domain.Requirement
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.CreateUserGroupCommand
@@ -65,9 +68,12 @@ public class DemoDataBean {
 	
 	@Autowired
 	def IProjectBranchDAO			projectBranchDAO
+	
+	@Autowired
+	def IRequirementDAO				requirementDAO
 
 	@Autowired
-	def PasswordEncoder			passwordEncoder
+	def PasswordEncoder				passwordEncoder
 
 	@Autowired
 	def Gate						gate
@@ -144,6 +150,18 @@ public class DemoDataBean {
 		))		
 		corolla.description = 'Corolla is a tool to manage software requirements'
 		this.editProject(corolla)
+		
+		def masterBranch = projectBranchDAO.findByNameAndProjectId("Master", corolla.id)
+		
+		/*
+		 * Requirements
+		 */
+		def req = this.newRequirement(new Requirement(
+				key: 'ADD_USER',
+				projectBranchId: masterBranch.id,
+				name: 'Add a user',
+				description: 'Create a new user to Corolla from the administration panel'
+		))
 		
 	}
 
@@ -247,9 +265,18 @@ public class DemoDataBean {
 		return status
 	}
 	
+	public Requirement newRequirement(requirement) {
+		
+		this.gate.dispatch new CreateRequirementCommand(requirement)
+		
+		return requirement
+		
+	}
+	
 	@PreDestroy
 	public void destroy() {
 		
+		requirementDAO.deleteAll()
 		projectBranchDAO.deleteAll()
 		projectDAO.deleteAll()	
 		userDAO.deleteAll()

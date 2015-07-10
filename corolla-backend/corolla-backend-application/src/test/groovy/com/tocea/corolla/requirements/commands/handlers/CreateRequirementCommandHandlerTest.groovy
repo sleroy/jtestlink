@@ -24,7 +24,8 @@ class CreateRequirementCommandHandlerTest extends Specification {
 	
 	def setup() {
 		handler = new CreateRequirementCommandHandler(
-				requirementDAO : requirementDAO
+				requirementDAO : requirementDAO,
+				revisionService : revisionService
 		)
 	}
 	
@@ -43,6 +44,24 @@ class CreateRequirementCommandHandlerTest extends Specification {
 			requirementDAO.findByKeyAndProjectBranchId(req.key, req.projectBranchId) >> null
 			notThrown(Exception.class)
 			1 * requirementDAO.save(req)		
+	}
+	
+	def "it should call the revision service when creating a new requirement"() {
+		
+		given:
+			def req = new Requirement()
+			req.key = "ADD_REQUIREMENT"
+			req.name = "Add a requirement"
+			req.projectBranchId = "12"
+		
+		when:
+			handler.handle new CreateRequirementCommand(req)
+	
+		then:
+			requirementDAO.findByKeyAndProjectBranchId(req.key, req.projectBranchId) >> null
+			notThrown(Exception.class)
+			1 * revisionService.commit(req)	
+		
 	}
 	
 	def "it should not create two requirements with the same key on the same branch"() {

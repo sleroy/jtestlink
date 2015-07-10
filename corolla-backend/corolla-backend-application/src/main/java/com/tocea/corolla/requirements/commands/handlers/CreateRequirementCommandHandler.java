@@ -13,6 +13,7 @@ import com.tocea.corolla.requirements.domain.Requirement;
 import com.tocea.corolla.requirements.exceptions.InvalidRequirementInformationException;
 import com.tocea.corolla.requirements.exceptions.MissingRequirementInformationException;
 import com.tocea.corolla.requirements.exceptions.RequirementAlreadyExistException;
+import com.tocea.corolla.revisions.services.IRevisionService;
 
 @CommandHandler
 @Transactional
@@ -20,6 +21,9 @@ public class CreateRequirementCommandHandler implements ICommandHandler<CreateRe
 
 	@Autowired
 	private IRequirementDAO requirementDAO;
+	
+	@Autowired
+	private IRevisionService revisionService;
 	
 	@Override
 	public Requirement handle(CreateRequirementCommand command) {
@@ -41,6 +45,8 @@ public class CreateRequirementCommandHandler implements ICommandHandler<CreateRe
 		}
 		
 		requirementDAO.save(requirement);
+		
+		revisionService.commit(requirement);
 		
 		return requirement;
 		
