@@ -2,7 +2,6 @@ package com.tocea.corolla.requirements.commands.handlers;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
-import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
 import com.tocea.corolla.requirements.commands.CreateRequirementTreeNodeCommand;
@@ -22,14 +20,12 @@ import com.tocea.corolla.requirements.domain.RequirementNode;
 import com.tocea.corolla.requirements.domain.RequirementsTree;
 import com.tocea.corolla.requirements.domain.TreeNode;
 import com.tocea.corolla.requirements.exceptions.InvalidRequirementsTreeInformationException;
+import com.tocea.corolla.requirements.exceptions.RequirementTreeNodeAlreadyExistException;
 import com.tocea.corolla.requirements.exceptions.RequirementsTreeNotFoundException;
 
 @CommandHandler
 @Transactional
 public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<CreateRequirementTreeNodeCommand, RequirementsTree> {
-
-	@Autowired
-	private IProjectBranchDAO branchDAO;
 	
 	@Autowired
 	private IRequirementsTreeDAO requirementsTreeDAO;
@@ -59,8 +55,14 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		
 		Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
 		
+		TreeNode sameNode = getNodeByRequirementId(requirementId, nodes);
+		
+		if (sameNode != null) {
+			throw new RequirementTreeNodeAlreadyExistException();
+		}
+		
 		RequirementNode newNode = new RequirementNode();
-		newNode.setId(getMaxNodeId(nodes));
+		newNode.setId(getMaxNodeId(nodes)+1);
 		newNode.setRequirementId(requirementId);
 		newNode.setNodes((Collection<TreeNode>) new ArrayList<TreeNode>());
 		
@@ -82,17 +84,19 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		
 		tree.setNodes(nodes);
 		
+		requirementsTreeDAO.save(tree);
+		
 		return tree;
 		
 	}
 	
 	private Integer getMaxNodeId(Collection<TreeNode> nodes) {
 		
-		int max = 1;
+		int max = 0;
 		
 		for(TreeNode node : nodes) {
 			
-			if (node.getId() > max) {
+			if (node.getId() > max) {				
 				max = node.getId();
 			}
 			
@@ -124,6 +128,25 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		}
 		
 		return null;
+	}
+	
+	private TreeNode getNodeByRequirementId(String id, Collection<TreeNode> nodes) {
+		
+		for(TreeNode node : nodes) {			
+			
+			if (node.getClass().equals(RequirementNode.class) && ((RequirementNode)node).getRequirementId().equals(id)) {
+				return node;
+			}
+			
+			TreeNode child = getNodeByRequirementId(id, node.getNodes());
+			
+			if (child != null) {
+				return child;
+			}
+		}
+		
+		return null;
+		
 	}
 	
 }

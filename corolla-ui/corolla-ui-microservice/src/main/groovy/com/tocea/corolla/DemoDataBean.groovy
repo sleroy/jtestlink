@@ -27,6 +27,7 @@ import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand
 import com.tocea.corolla.requirements.dao.IRequirementDAO
+import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO
 import com.tocea.corolla.requirements.domain.Requirement
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
@@ -71,6 +72,9 @@ public class DemoDataBean {
 	
 	@Autowired
 	def IRequirementDAO				requirementDAO
+	
+	@Autowired
+	def IRequirementsTreeDAO		requirementsTreeDAO
 
 	@Autowired
 	def PasswordEncoder				passwordEncoder
@@ -276,6 +280,7 @@ public class DemoDataBean {
 	@PreDestroy
 	public void destroy() {
 		
+		requirementsTreeDAO.deleteAll()
 		requirementDAO.deleteAll()
 		projectBranchDAO.deleteAll()
 		projectDAO.deleteAll()	
