@@ -18,10 +18,11 @@ import com.tocea.corolla.requirements.commands.CreateRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementNode;
 import com.tocea.corolla.requirements.domain.RequirementsTree;
-import com.tocea.corolla.requirements.domain.TreeNode;
 import com.tocea.corolla.requirements.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.exceptions.RequirementTreeNodeAlreadyExistException;
 import com.tocea.corolla.requirements.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
 @CommandHandler
 @Transactional
@@ -62,7 +63,7 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		}
 		
 		RequirementNode newNode = new RequirementNode();
-		newNode.setId(getMaxNodeId(nodes)+1);
+		newNode.setId(TreeNodeUtils.getMaxNodeId(nodes)+1);
 		newNode.setRequirementId(requirementId);
 		newNode.setNodes((Collection<TreeNode>) new ArrayList<TreeNode>());
 		
@@ -72,7 +73,7 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 			
 		}else{
 			
-			TreeNode parentNode = getNodeById(parentId, nodes);
+			TreeNode parentNode = TreeNodeUtils.getNodeById(parentId, nodes);
 			
 			if (parentNode != null) {
 				Collection<TreeNode> parentNodes = Lists.newArrayList(parentNode.getNodes());
@@ -88,46 +89,6 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		
 		return tree;
 		
-	}
-	
-	private Integer getMaxNodeId(Collection<TreeNode> nodes) {
-		
-		int max = 0;
-		
-		for(TreeNode node : nodes) {
-			
-			if (node.getId() > max) {				
-				max = node.getId();
-			}
-			
-			int childrenId = getMaxNodeId(node.getNodes());
-			
-			if (childrenId > max) {
-				max = childrenId;
-			}
-			
-		}	
-		
-		return max;
-		
-	}
-
-	private TreeNode getNodeById(Integer id, Collection<TreeNode> nodes) {
-				
-		for(TreeNode node : nodes) {
-			
-			if (node.getId().equals(id)) {
-				return node;
-			}
-			
-			TreeNode childNode = getNodeById(id, node.getNodes());
-			
-			if (childNode != null) {
-				return childNode;
-			}
-		}
-		
-		return null;
 	}
 	
 	private TreeNode getNodeByRequirementId(String id, Collection<TreeNode> nodes) {

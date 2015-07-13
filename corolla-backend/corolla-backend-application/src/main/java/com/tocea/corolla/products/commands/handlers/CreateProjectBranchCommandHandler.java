@@ -18,7 +18,7 @@ import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationExce
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementsTree;
-import com.tocea.corolla.requirements.domain.TreeNode;
+import com.tocea.corolla.trees.domain.TreeNode;
 
 @CommandHandler
 @Transactional
