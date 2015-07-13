@@ -6,8 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
+import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
+import com.tocea.corolla.products.dao.IProjectBranchDAO;
+import com.tocea.corolla.products.domain.ProjectBranch;
+import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand;
+import com.tocea.corolla.requirements.commands.CreateRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
 import com.tocea.corolla.requirements.domain.Requirement;
 import com.tocea.corolla.requirements.exceptions.InvalidRequirementInformationException;
@@ -24,6 +29,12 @@ public class CreateRequirementCommandHandler implements ICommandHandler<CreateRe
 	
 	@Autowired
 	private IRevisionService revisionService;
+	
+	@Autowired
+	private IProjectBranchDAO branchDAO;
+	
+	@Autowired
+	private Gate gate;
 	
 	@Override
 	public Requirement handle(CreateRequirementCommand command) {
@@ -44,9 +55,17 @@ public class CreateRequirementCommandHandler implements ICommandHandler<CreateRe
 			throw new RequirementAlreadyExistException(requirement.getKey());
 		}
 		
+		ProjectBranch branch = branchDAO.findOne(requirement.getProjectBranchId());
+		
+		if (branch == null) {
+			throw new ProjectBranchNotFoundException();
+		}
+		
 		requirementDAO.save(requirement);
 		
 		revisionService.commit(requirement);
+		
+		gate.dispatch(new CreateRequirementTreeNodeCommand(branch, requirement.getId(), null));
 		
 		return requirement;
 		

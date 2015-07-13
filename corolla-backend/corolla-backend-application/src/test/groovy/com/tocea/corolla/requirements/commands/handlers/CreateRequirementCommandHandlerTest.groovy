@@ -5,7 +5,12 @@ import org.mockito.Mockito;
 
 import spock.lang.Specification;
 
+import com.tocea.corolla.cqrs.gate.Gate
+import com.tocea.corolla.products.dao.IProjectBranchDAO
+import com.tocea.corolla.products.domain.ProjectBranch
+import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand;
+import com.tocea.corolla.requirements.commands.CreateRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
 import com.tocea.corolla.requirements.domain.Requirement;
 import com.tocea.corolla.requirements.exceptions.*;
@@ -19,12 +24,16 @@ class CreateRequirementCommandHandlerTest extends Specification {
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IRequirementDAO requirementDAO = Mock(IRequirementDAO)	
+	def IProjectBranchDAO branchDAO = Mock(IProjectBranchDAO)
+	def Gate gate = Mock(Gate)
 	def CreateRequirementCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
 	
 	def setup() {
 		handler = new CreateRequirementCommandHandler(
 				requirementDAO : requirementDAO,
+				branchDAO : branchDAO,
+				gate: gate,
 				revisionService : revisionService
 		)
 	}
@@ -42,6 +51,7 @@ class CreateRequirementCommandHandlerTest extends Specification {
 	
 		then:
 			requirementDAO.findByKeyAndProjectBranchId(req.key, req.projectBranchId) >> null
+			branchDAO.findOne(req.projectBranchId) >> new ProjectBranch(id: req.projectBranchId)
 			notThrown(Exception.class)
 			1 * requirementDAO.save(req)		
 	}
@@ -59,6 +69,7 @@ class CreateRequirementCommandHandlerTest extends Specification {
 	
 		then:
 			requirementDAO.findByKeyAndProjectBranchId(req.key, req.projectBranchId) >> null
+			branchDAO.findOne(req.projectBranchId) >> new ProjectBranch(id: req.projectBranchId)
 			notThrown(Exception.class)
 			1 * revisionService.commit(req)	
 		
@@ -113,6 +124,45 @@ class CreateRequirementCommandHandlerTest extends Specification {
 			0 * requirementDAO.save(_)
 			thrown(InvalidRequirementInformationException.class)
 			
+	}
+	
+	def "it should throw an exception if the branch cannot be found"() {
+		
+		given:
+			def req = new Requirement()
+			req.key = "ADD_REQUIREMENT"
+			req.name = "Add a requirement"
+			req.projectBranchId = "12"
+		
+		when:
+			handler.handle new CreateRequirementCommand(req)
+	
+		then:
+			requirementDAO.findByKeyAndProjectBranchId(req.key, req.projectBranchId) >> null
+			branchDAO.findOne(req.projectBranchId) >> null
+			thrown(ProjectBranchNotFoundException.class)
+			0 * requirementDAO.save(req)
+			
+	}
+	
+	def "it should dispatch a command to create a node in the requirement tree"() {
+		
+		given:
+			def req = new Requirement()
+			req.key = "ADD_REQUIREMENT"
+			req.name = "Add a requirement"
+			req.projectBranchId = "12"
+			def branch = new ProjectBranch(id: req.projectBranchId)
+		
+		when:
+			handler.handle new CreateRequirementCommand(req)
+	
+		then:
+			requirementDAO.findByKeyAndProjectBranchId(req.key, req.projectBranchId) >> null
+			branchDAO.findOne(req.projectBranchId) >> branch
+			notThrown(Exception.class)
+			1 * gate.dispatch({ it instanceof CreateRequirementTreeNodeCommand  && it.branch == branch && it.requirementId == req.id })
+		
 	}
 	
 }
