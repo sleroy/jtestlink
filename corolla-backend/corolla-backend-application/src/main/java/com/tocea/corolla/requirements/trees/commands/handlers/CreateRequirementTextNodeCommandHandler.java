@@ -1,4 +1,4 @@
-package com.tocea.corolla.requirements.commands.handlers;
+package com.tocea.corolla.requirements.trees.commands.handlers;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -11,11 +11,11 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
-import com.tocea.corolla.requirements.commands.CreateRequirementTextNodeCommand;
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementsTree;
-import com.tocea.corolla.requirements.exceptions.InvalidRequirementsTreeInformationException;
-import com.tocea.corolla.requirements.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.requirements.trees.commands.CreateRequirementTextNodeCommand;
+import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
+import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TextNode;
 import com.tocea.corolla.trees.domain.TreeNode;

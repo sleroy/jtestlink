@@ -1,15 +1,16 @@
-package com.tocea.corolla.requirements.commands.handlers;
+package com.tocea.corolla.requirements.trees.commands.handlers;
 
 import org.junit.Rule;
 
 import spock.lang.Specification;
 
 import com.tocea.corolla.products.domain.ProjectBranch
-import com.tocea.corolla.requirements.commands.MoveRequirementTreeNodeCommand
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementNode
 import com.tocea.corolla.requirements.domain.RequirementsTree
-import com.tocea.corolla.requirements.exceptions.InvalidRequirementsTreeInformationException;
+import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeCommand;
+import com.tocea.corolla.requirements.trees.commands.handlers.MoveRequirementTreeNodeCommandHandler;
+import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.test.utils.FunctionalDocRule;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;

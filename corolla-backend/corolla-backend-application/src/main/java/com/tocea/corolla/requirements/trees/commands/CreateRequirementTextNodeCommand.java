@@ -1,4 +1,4 @@
-package com.tocea.corolla.requirements.commands;
+package com.tocea.corolla.requirements.trees.commands;
 
 import javax.validation.constraints.NotNull;
 

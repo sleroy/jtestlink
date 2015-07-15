@@ -12,12 +12,12 @@ import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand;
-import com.tocea.corolla.requirements.commands.CreateRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
 import com.tocea.corolla.requirements.domain.Requirement;
 import com.tocea.corolla.requirements.exceptions.InvalidRequirementInformationException;
 import com.tocea.corolla.requirements.exceptions.MissingRequirementInformationException;
 import com.tocea.corolla.requirements.exceptions.RequirementAlreadyExistException;
+import com.tocea.corolla.requirements.trees.commands.CreateRequirementTreeNodeCommand;
 import com.tocea.corolla.revisions.services.IRevisionService;
 
 @CommandHandler

@@ -1,4 +1,4 @@
-package com.tocea.corolla.requirements.commands;
+package com.tocea.corolla.requirements.trees.commands;
 
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.products.domain.ProjectBranch;

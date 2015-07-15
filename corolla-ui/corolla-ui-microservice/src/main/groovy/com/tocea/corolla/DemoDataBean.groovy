@@ -26,12 +26,12 @@ import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand
-import com.tocea.corolla.requirements.commands.CreateRequirementTextNodeCommand
-import com.tocea.corolla.requirements.commands.MoveRequirementTreeNodeCommand
 import com.tocea.corolla.requirements.dao.IRequirementDAO
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO
 import com.tocea.corolla.requirements.domain.Requirement
 import com.tocea.corolla.requirements.domain.RequirementNode;
+import com.tocea.corolla.requirements.trees.commands.CreateRequirementTextNodeCommand;
+import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand

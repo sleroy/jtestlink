@@ -1,4 +1,4 @@
-package com.tocea.corolla.requirements.commands.handlers;
+package com.tocea.corolla.requirements.trees.commands.handlers;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -13,13 +13,13 @@ import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
 import com.tocea.corolla.requirements.commands.DeleteRequirementCommand;
-import com.tocea.corolla.requirements.commands.RemoveRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementsTree;
 import com.tocea.corolla.requirements.exceptions.MissingRequirementInformationException;
-import com.tocea.corolla.requirements.exceptions.RequirementTreeNodeNotFoundException;
-import com.tocea.corolla.requirements.exceptions.RequirementsTreeNotFoundException;
-import com.tocea.corolla.requirements.utils.RequirementsTreeUtils;
+import com.tocea.corolla.requirements.trees.commands.RemoveRequirementTreeNodeCommand;
+import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeNotFoundException;
+import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.requirements.trees.utils.RequirementsTreeUtils;
 import com.tocea.corolla.trees.commands.RemoveTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
 

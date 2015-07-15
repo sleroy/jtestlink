@@ -1,4 +1,4 @@
-package com.tocea.corolla.requirements.exceptions;
+package com.tocea.corolla.requirements.trees.exceptions;
 
 import com.tocea.corolla.utils.domain.CorollaDomainException;
 

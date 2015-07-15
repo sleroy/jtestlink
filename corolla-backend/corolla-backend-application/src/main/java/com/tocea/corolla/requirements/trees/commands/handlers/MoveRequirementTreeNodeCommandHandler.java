@@ -1,4 +1,4 @@
-package com.tocea.corolla.requirements.commands.handlers;
+package com.tocea.corolla.requirements.trees.commands.handlers;
 
 import java.util.Collection;
 
@@ -12,11 +12,11 @@ import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
-import com.tocea.corolla.requirements.commands.MoveRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementsTree;
-import com.tocea.corolla.requirements.exceptions.InvalidRequirementsTreeInformationException;
-import com.tocea.corolla.requirements.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeCommand;
+import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
+import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
