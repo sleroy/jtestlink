@@ -26,9 +26,13 @@ import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand
+import com.tocea.corolla.requirements.commands.CreateRequirementTextNodeCommand
+import com.tocea.corolla.requirements.commands.MoveRequirementTreeNodeCommand
 import com.tocea.corolla.requirements.dao.IRequirementDAO
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO
 import com.tocea.corolla.requirements.domain.Requirement
+import com.tocea.corolla.requirements.domain.RequirementNode;
+import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.CreateUserGroupCommand
@@ -170,7 +174,8 @@ public class DemoDataBean {
 		/*
 		 * Requirements Tree
 		 */
-
+		this.newRequirementTextNode(masterBranch, null, "USERS")
+		this.moveRequirementNode(masterBranch, 1, 2)
 		
 	}
 
@@ -279,6 +284,29 @@ public class DemoDataBean {
 		this.gate.dispatch new CreateRequirementCommand(requirement)
 		
 		return requirement
+		
+	}
+	
+	public void newRequirementTextNode(branch, parentID, text) {
+		
+		this.gate.dispatch new CreateRequirementTextNodeCommand(branch, parentID, text)
+		
+	}
+	
+	public void moveRequirementNode(branch, nodeID, newParentID) {
+		
+		this.gate.dispatch new MoveRequirementTreeNodeCommand(branch, nodeID, newParentID)
+		
+	}
+	
+	public TreeNode findRequirementTreeNode(tree, requirementID) {
+		
+		for(TreeNode node : tree.nodes) {
+			if (node instanceof RequirementNode && node.requirementId == requirementID) {
+				return node
+			}
+		}
+		return null
 		
 	}
 	
