@@ -1,6 +1,5 @@
 package com.tocea.corolla.requirements.commands.handlers;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
+import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
@@ -21,8 +21,8 @@ import com.tocea.corolla.requirements.domain.RequirementsTree;
 import com.tocea.corolla.requirements.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.exceptions.RequirementTreeNodeAlreadyExistException;
 import com.tocea.corolla.requirements.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
-import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
 @CommandHandler
 @Transactional
@@ -30,6 +30,9 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 	
 	@Autowired
 	private IRequirementsTreeDAO requirementsTreeDAO;
+	
+	@Autowired
+	private Gate gate;
 	
 	@Override
 	public RequirementsTree handle(@Valid CreateRequirementTreeNodeCommand command) {
@@ -63,27 +66,9 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		}
 		
 		RequirementNode newNode = new RequirementNode();
-		newNode.setId(TreeNodeUtils.getMaxNodeId(nodes)+1);
-		newNode.setRequirementId(requirementId);
-		newNode.setNodes((Collection<TreeNode>) new ArrayList<TreeNode>());
+		newNode.setRequirementId(requirementId);		
 		
-		if (parentId == null) {
-			
-			nodes.add(newNode);
-			
-		}else{
-			
-			TreeNode parentNode = TreeNodeUtils.getNodeById(parentId, nodes);
-			
-			if (parentNode != null) {
-				Collection<TreeNode> parentNodes = Lists.newArrayList(parentNode.getNodes());
-				parentNodes.add(newNode);
-				parentNode.setNodes(parentNodes);
-			}
-			
-		}
-		
-		tree.setNodes(nodes);
+		tree = gate.dispatch(new CreateTreeNodeCommand(tree, newNode, parentId));
 		
 		requirementsTreeDAO.save(tree);
 		
@@ -106,8 +91,7 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 			}
 		}
 		
-		return null;
-		
+		return null;		
 	}
 	
 }

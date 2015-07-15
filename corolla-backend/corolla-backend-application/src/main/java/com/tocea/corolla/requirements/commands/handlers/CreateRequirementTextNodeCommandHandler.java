@@ -22,7 +22,7 @@ import com.tocea.corolla.trees.domain.TreeNode;
 
 @CommandHandler
 @Transactional
-public class CreateRequirementTextNodeHandler implements ICommandHandler<CreateRequirementTextNodeCommand, RequirementsTree> {
+public class CreateRequirementTextNodeCommandHandler implements ICommandHandler<CreateRequirementTextNodeCommand, RequirementsTree> {
 
 	@Autowired
 	private IRequirementsTreeDAO requirementsTreeDAO;

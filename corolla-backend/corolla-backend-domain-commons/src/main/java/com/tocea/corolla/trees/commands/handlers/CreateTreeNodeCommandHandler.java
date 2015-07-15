@@ -1,5 +1,6 @@
 package com.tocea.corolla.trees.commands.handlers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.ITree;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
@@ -35,8 +37,12 @@ public class CreateTreeNodeCommandHandler implements ICommandHandler<CreateTreeN
 		Integer parentId = command.getParentID();
 		
 		Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
-		
+
 		newNode.setId(TreeNodeUtils.getMaxNodeId(nodes)+1);
+		
+		if (newNode.getNodes() == null) {
+			newNode.setNodes((Collection<TreeNode>) new ArrayList<TreeNode>());
+		}
 		
 		if (parentId == null) {
 			
@@ -46,11 +52,13 @@ public class CreateTreeNodeCommandHandler implements ICommandHandler<CreateTreeN
 			
 			TreeNode parentNode = TreeNodeUtils.getNodeById(parentId, nodes);
 			
-			if (parentNode != null) {
-				Collection<TreeNode> parentNodes = Lists.newArrayList(parentNode.getNodes());
-				parentNodes.add(newNode);
-				parentNode.setNodes(parentNodes);
+			if (parentNode == null) {
+				throw new InvalidTreeNodeInformationException("The given parent ID does not match any of the nodes of this tree.");
 			}
+			
+			Collection<TreeNode> parentNodes = Lists.newArrayList(parentNode.getNodes());
+			parentNodes.add(newNode);
+			parentNode.setNodes(parentNodes);
 			
 		}
 		

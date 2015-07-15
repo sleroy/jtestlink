@@ -1,5 +1,6 @@
-package com.tocea.corolla.requirements.commands.handlers
+package com.tocea.corolla.requirements.commands.handlers;
 
+import org.hibernate.cfg.ExtendsQueueEntry;
 import org.junit.Rule;
 import org.mockito.Mockito;
 
@@ -8,7 +9,7 @@ import spock.lang.Specification;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
-import com.tocea.corolla.requirements.commands.CreateRequirementTreeNodeCommand
+import com.tocea.corolla.requirements.commands.CreateRequirementTextNodeCommand
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementNode
 import com.tocea.corolla.requirements.domain.RequirementsTree
@@ -19,18 +20,18 @@ import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
-@FunctionalTestDoc(requirementName = "ADD_REQUIREMENT_TREE_NODE")
-class CreateRequirementTreeNodeCommandHandlerTest extends Specification {
+@FunctionalTestDoc(requirementName = "ADD_REQUIREMENT_TEXT_NODE")
+public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IRequirementsTreeDAO requirementsTreeDAO = Mock(IRequirementsTreeDAO)	
-	def CreateRequirementTreeNodeCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
 	def Gate gate = Mock(Gate)
+	def CreateRequirementTextNodeCommandHandler handler
 	
 	def setup() {
-		handler = new CreateRequirementTreeNodeCommandHandler(
+		handler = new CreateRequirementTextNodeCommandHandler(
 				requirementsTreeDAO : requirementsTreeDAO,
 				gate : gate
 		)
@@ -40,17 +41,17 @@ class CreateRequirementTreeNodeCommandHandlerTest extends Specification {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
-			def req_id = "2"
 			def parentID = null
+			def text = "requirements"
 			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementTreeNodeCommand(branch, req_id, parentID)
+			handler.handle new CreateRequirementTextNodeCommand(branch, parentID, text)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
 			notThrown(Exception.class)
-			1 * gate.dispatch { it instanceof CreateTreeNodeCommand && it.tree == tree && it.node.requirementId == req_id && it.parentID == parentID }
+			1 * gate.dispatch { it instanceof CreateTreeNodeCommand && it.tree == tree && it.node.text == text && it.parentID == parentID }
 				
 		then:
 			1 * requirementsTreeDAO.save(_)
@@ -61,10 +62,12 @@ class CreateRequirementTreeNodeCommandHandlerTest extends Specification {
 		
 		given:
 			def branch = null
-			def req_id = "2"
+			def parentID = null
+			def text = "requirements"
+			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementTreeNodeCommand(null, req_id, null)
+			handler.handle new CreateRequirementTextNodeCommand(branch, parentID, text)
 	
 		then:
 			0 * requirementsTreeDAO.save(_)
@@ -72,66 +75,38 @@ class CreateRequirementTreeNodeCommandHandlerTest extends Specification {
 			
 	}
 	
-	def "it should throw an exception if the requirement ID is null or empty"(req_id) {
+	def "it should throw an exception if the text is null or empty"(text) {
 					
 		given:
 			def branch = new ProjectBranch(id: "1")
+			def parentID = null
+			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementTreeNodeCommand(branch, req_id, null)
+			handler.handle new CreateRequirementTextNodeCommand(branch, parentID, text)
 	
 		then:
 			0 * requirementsTreeDAO.save(_)
 			thrown(InvalidRequirementsTreeInformationException.class)
 			
 		where:
-			req_id << [null, ""]
+			text << [null, ""]
 			
-	}
-	
-	def "it should not insert twice the same requirement ID in the tree"(req_id) {
-		
-		given:
-			def branch = new ProjectBranch(id: "1")
-			def tree = new RequirementsTree(
-					nodes: [
-					        new RequirementNode(id: 1, requirementId: "2", nodes: []),
-					        new TreeNode(
-					        		id: 2, 
-					        		nodes: [
-					        		      new RequirementNode(id: 3, requirementId: "3", nodes: []),
-					        		      new TreeNode(
-					        		    		  id: 4, 
-					        		    		  nodes: [new RequirementNode(id: 5, requirementId: "4", nodes: [])]
-					        		      )
-					        ])
-					]
-			)
-	
-		when:
-			handler.handle new CreateRequirementTreeNodeCommand(branch, req_id, null)
-	
-		then:
-			requirementsTreeDAO.findByBranchId(branch.id) >> tree
-			0 * requirementsTreeDAO.save(_)
-			thrown(RequirementTreeNodeAlreadyExistException.class)
-			
-		where:
-			req_id << ["2", "3", "4"]
-		
 	}
 	
 	def "it should throw an exception if the requirement tree cannot be retrieved"() {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
-			def req_id = "2"
+			def parentID = null
+			def text = "requirements"
+			def tree = null
 		
 		when:
-			handler.handle new CreateRequirementTreeNodeCommand(branch, req_id, null)
+			handler.handle new CreateRequirementTextNodeCommand(branch, parentID, text)
 	
 		then:
-			requirementsTreeDAO.findByBranchId(branch.id) >> null
+			requirementsTreeDAO.findByBranchId(branch.id) >> tree
 			0 * requirementsTreeDAO.save(_)
 			thrown(RequirementsTreeNotFoundException.class)
 		
