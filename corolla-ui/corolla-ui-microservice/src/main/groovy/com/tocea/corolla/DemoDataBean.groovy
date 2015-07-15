@@ -164,18 +164,36 @@ public class DemoDataBean {
 		/*
 		 * Requirements
 		 */
-		def req = this.newRequirement(new Requirement(
+		def req_addUser = this.newRequirement(new Requirement(
 				key: 'ADD_USER',
 				projectBranchId: masterBranch.id,
 				name: 'Add a user',
 				description: 'Create a new user to Corolla from the administration panel'
 		))
+		def req_editUser = this.newRequirement(new Requirement(
+			key: 'EDIT_USER',
+			projectBranchId: masterBranch.id,
+			name: 'Edit a user profile',
+			description: 'Edit a user\'s profile from the administration panel'
+		))
+		def req_deleteUser = this.newRequirement(new Requirement(
+			key: 'DELETE_USER',
+			projectBranchId: masterBranch.id,
+			name: 'Delete a user',
+			description: "Delete a user from the administration panel"
+		))
 		
 		/*
 		 * Requirements Tree
 		 */
-		this.newRequirementTextNode(masterBranch, null, "USERS")
-		this.moveRequirementNode(masterBranch, 1, 2)
+		def tree = requirementsTreeDAO.findByBranchId(masterBranch.id)
+		
+		this.newRequirementTextNode(masterBranch, null, "USER MANAGEMENT")
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addUser.id).id, 4)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editUser.id).id, 4)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteUser.id).id, 4)
+		
+		
 		
 	}
 
