@@ -6,11 +6,13 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
+import com.tocea.corolla.requirements.commands.DeleteRequirementCommand;
 import com.tocea.corolla.requirements.commands.RemoveRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementsTree;
@@ -58,7 +60,7 @@ public class RemoveRequirementTreeNodeCommandHandler implements ICommandHandler<
 			throw new RequirementTreeNodeNotFoundException();
 		}
 		
-		//TODO send command to remove requirement if needed
+		gate.dispatch(new DeleteRequirementCommand(requirementID));
 		
 		tree = gate.dispatch(new RemoveTreeNodeCommand(tree, node.getId()));
 		

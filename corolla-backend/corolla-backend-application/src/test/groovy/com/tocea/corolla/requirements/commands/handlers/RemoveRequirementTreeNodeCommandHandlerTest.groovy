@@ -8,6 +8,7 @@ import spock.lang.Specification;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
+import com.tocea.corolla.requirements.commands.DeleteRequirementCommand
 import com.tocea.corolla.requirements.commands.RemoveRequirementTreeNodeCommand
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.RequirementNode
@@ -55,6 +56,23 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 		then:
 			1 * requirementsTreeDAO.save(_)
 		
+	}
+	
+	def "it should invoke the command to delete the requirement"() {
+		
+		given:
+			def branch = new ProjectBranch(id: "1")
+			def req_id = "1"
+			def tree = new RequirementsTree(nodes: [new RequirementNode(id: 1, requirementId: "1", nodes: [])])
+		
+		when:
+			handler.handle new RemoveRequirementTreeNodeCommand(branch, req_id)
+	
+		then:
+			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			notThrown(Exception.class)
+			1 * gate.dispatch { it instanceof DeleteRequirementCommand && it.requirementID == req_id }
+				
 	}
 	
 	def "it should throw an exception if the given requirement ID is not found in the tree"() {
