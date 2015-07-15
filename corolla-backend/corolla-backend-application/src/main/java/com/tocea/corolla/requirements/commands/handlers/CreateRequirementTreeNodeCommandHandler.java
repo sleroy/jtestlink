@@ -21,6 +21,7 @@ import com.tocea.corolla.requirements.domain.RequirementsTree;
 import com.tocea.corolla.requirements.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.exceptions.RequirementTreeNodeAlreadyExistException;
 import com.tocea.corolla.requirements.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.requirements.utils.RequirementsTreeUtils;
 import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
 
@@ -59,7 +60,7 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		
 		Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
 		
-		TreeNode sameNode = getNodeByRequirementId(requirementId, nodes);
+		TreeNode sameNode = RequirementsTreeUtils.getNodeByRequirementId(requirementId, nodes);
 		
 		if (sameNode != null) {
 			throw new RequirementTreeNodeAlreadyExistException();
@@ -74,24 +75,6 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		
 		return tree;
 		
-	}
-	
-	private TreeNode getNodeByRequirementId(String id, Collection<TreeNode> nodes) {
-		
-		for(TreeNode node : nodes) {			
-			
-			if (node.getClass().equals(RequirementNode.class) && ((RequirementNode)node).getRequirementId().equals(id)) {
-				return node;
-			}
-			
-			TreeNode child = getNodeByRequirementId(id, node.getNodes());
-			
-			if (child != null) {
-				return child;
-			}
-		}
-		
-		return null;		
 	}
 	
 }
