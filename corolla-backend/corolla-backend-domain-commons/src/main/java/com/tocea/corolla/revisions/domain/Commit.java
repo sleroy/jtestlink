@@ -16,6 +16,10 @@ public class Commit implements ICommit {
 	
 	private Class<?> objectClass;
 
+	public Commit() {
+		
+	}
+	
 	public Commit(String objectID, Class<?> objectClass, CdoSnapshot snapshot) {
 		
 		this.id = snapshot.getCommitId().value();
