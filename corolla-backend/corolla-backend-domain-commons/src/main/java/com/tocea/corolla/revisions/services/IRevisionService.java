@@ -31,4 +31,11 @@ public interface IRevisionService {
 	 */
 	public List<IChange> compare(Object oldVersion, Object currentVersion);
 	
+	/**
+	 * Retrieve the state of an object at a given commit
+	 * @param commit
+	 * @return
+	 */
+	public Object getSnapshot(ICommit commit) throws Exception;
+	
 }

@@ -11,12 +11,18 @@ public class Commit implements ICommit {
 	private Date date;
 	
 	private String author;
+	
+	private String objectID;
+	
+	private Class<?> objectClass;
 
-	public Commit(CdoSnapshot snapshot) {
+	public Commit(String objectID, Class<?> objectClass, CdoSnapshot snapshot) {
 		
 		this.id = snapshot.getCommitId().value();
 		this.author = snapshot.getCommitMetadata().getAuthor();
 		this.date = snapshot.getCommitMetadata().getCommitDate().toDate();
+		this.objectID = objectID;
+		this.objectClass = objectClass;
 		
 	}
 	
@@ -42,6 +48,22 @@ public class Commit implements ICommit {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	public String getObjectID() {
+		return objectID;
+	}
+
+	public void setObjectID(String objectID) {
+		this.objectID = objectID;
+	}
+
+	public Class<?> getObjectClass() {
+		return objectClass;
+	}
+
+	public void setObjectClass(Class<?> objectClass) {
+		this.objectClass = objectClass;
 	}
 	
 }

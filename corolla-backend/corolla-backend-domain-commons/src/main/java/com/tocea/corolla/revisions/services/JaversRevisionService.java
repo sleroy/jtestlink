@@ -1,12 +1,16 @@
 package com.tocea.corolla.revisions.services;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
 import org.javers.core.diff.changetype.ValueChange;
 import org.javers.core.metamodel.object.CdoSnapshot;
+import org.javers.core.metamodel.property.Property;
 import org.javers.repository.jql.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +69,7 @@ public class JaversRevisionService implements IRevisionService {
 	}
 	
 	@Override
-	public Collection<ICommit> getHistory(String id, Class<?> clazz) {
+	public Collection<ICommit> getHistory(final String id, final Class<?> clazz) {
 		
 		List<CdoSnapshot> snapshots = javers.findSnapshots(
 				QueryBuilder.byInstanceId(id, clazz).build()
@@ -78,7 +82,7 @@ public class JaversRevisionService implements IRevisionService {
 		return Lists.transform(snapshots, new Function<CdoSnapshot, ICommit>() {
 			@Override
 			public ICommit apply(CdoSnapshot snapshot) {				
-				return new Commit(snapshot);
+				return new Commit(id, clazz, snapshot);
 			}			
 		});
 
@@ -105,5 +109,50 @@ public class JaversRevisionService implements IRevisionService {
 		});	
 		
 	}
+
+	@Override
+	public Object getSnapshot(ICommit commit) throws Exception {
+				
+		CdoSnapshot cdoSnapshot = findCdoSnapshotByCommit((Commit)commit);
+		
+		Class<?> clazz = ((Commit) commit).getObjectClass();
+		
+		Object object = clazz.newInstance();
+		
+		if (cdoSnapshot != null) {
+			
+			for(Property prop : cdoSnapshot.getProperties()) {
+				
+				PropertyUtils.setProperty(object, prop.getName(), cdoSnapshot.getPropertyValue(prop.getName()));
+				
+			}
+			
+		}
+		
+		return object;
+		
+	}
+	
+	private CdoSnapshot findCdoSnapshotByCommit(Commit commit) {
+		
+		String id = commit.getObjectID();
+		Class<?> clazz = commit.getObjectClass();
+		
+		List<CdoSnapshot> snapshots = javers.findSnapshots(
+				QueryBuilder.byInstanceId(id, clazz).build()
+		);
+		
+		if (snapshots != null) {		
+			for(CdoSnapshot snapshot : snapshots) {
+				if (snapshot.getCommitId().value().equals(commit.getId())) {
+					return snapshot;
+				}
+			}		
+		}
+		
+		return null;
+		
+	}
+	
 
 }
