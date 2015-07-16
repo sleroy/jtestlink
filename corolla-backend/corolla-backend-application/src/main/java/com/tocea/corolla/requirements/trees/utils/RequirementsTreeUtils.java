@@ -2,6 +2,7 @@ package com.tocea.corolla.requirements.trees.utils;
 
 import java.util.Collection;
 
+import com.google.common.collect.Lists;
 import com.tocea.corolla.requirements.domain.RequirementNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 
@@ -29,6 +30,29 @@ public class RequirementsTreeUtils {
 		}
 		
 		return null;		
+	}
+	
+	/**
+	 * Returns a flat list of all the requirements nodes
+	 * @param nodes
+	 * @return
+	 */
+	public static Collection<RequirementNode> getRequirementsNodes(Collection<TreeNode> nodes) {
+		
+		Collection<RequirementNode> requirementNodes = Lists.newArrayList();
+		
+		for(TreeNode node : nodes) {
+			
+			if (node.getClass().equals(RequirementNode.class)) {			
+				requirementNodes.add((RequirementNode)node);			
+			}
+			
+			requirementNodes.addAll(getRequirementsNodes(node.getNodes()));
+			
+		}
+		
+		return requirementNodes;
+		
 	}
 	
 }

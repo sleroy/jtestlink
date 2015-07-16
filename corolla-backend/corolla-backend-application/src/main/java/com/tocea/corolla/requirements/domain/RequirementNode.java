@@ -6,12 +6,28 @@ public class RequirementNode extends TreeNode {
 
 	private String requirementId;
 
+	public RequirementNode() {
+		super();
+	}
+	
+	public RequirementNode(String requirementId) {
+		super();
+		setRequirementId(requirementId);
+	}
+	
 	public String getRequirementId() {
 		return requirementId;
 	}
 
 	public void setRequirementId(String requirementId) {
 		this.requirementId = requirementId;
+	}
+	
+	@Override
+	public TreeNode clone() {
+		
+		return this.clone(new RequirementNode(this.requirementId));
+		
 	}
 	
 }

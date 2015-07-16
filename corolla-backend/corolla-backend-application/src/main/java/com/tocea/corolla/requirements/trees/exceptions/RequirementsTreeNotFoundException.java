@@ -1,5 +1,6 @@
 package com.tocea.corolla.requirements.trees.exceptions;
 
+import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.utils.domain.CorollaDomainException;
 
 public class RequirementsTreeNotFoundException extends CorollaDomainException {
@@ -14,4 +15,7 @@ public class RequirementsTreeNotFoundException extends CorollaDomainException {
 		super(MESSAGE+": "+msg);
 	}
 	
+	public RequirementsTreeNotFoundException(ProjectBranch branch) {
+		super(MESSAGE+" for branch "+branch.getName());
+	}
 }

@@ -1,7 +1,9 @@
 package com.tocea.corolla.requirements.domain;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

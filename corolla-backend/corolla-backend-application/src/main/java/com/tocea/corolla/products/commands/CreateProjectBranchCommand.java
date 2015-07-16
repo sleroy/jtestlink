@@ -8,6 +8,7 @@ import com.tocea.corolla.products.domain.ProjectBranch;
 public class CreateProjectBranchCommand {
 
 	private ProjectBranch branch;
+	private ProjectBranch originBranch;
 	
 	public CreateProjectBranchCommand() {
 		super();
@@ -25,6 +26,15 @@ public class CreateProjectBranchCommand {
 		branch.setProjectId(project.getId());
 		setBranch(branch);
 	}
+	
+	public CreateProjectBranchCommand(String name, ProjectBranch originBranch) {
+		super();
+		ProjectBranch branch = new ProjectBranch();
+		branch.setName(name);
+		branch.setProjectId(originBranch.getProjectId());
+		setBranch(branch);
+		setOriginBranch(originBranch);
+	}
 
 	public ProjectBranch getBranch() {
 		return branch;
@@ -32,6 +42,14 @@ public class CreateProjectBranchCommand {
 
 	public void setBranch(ProjectBranch branch) {
 		this.branch = branch;
+	}
+
+	public ProjectBranch getOriginBranch() {
+		return originBranch;
+	}
+
+	public void setOriginBranch(ProjectBranch originBranch) {
+		this.originBranch = originBranch;
 	}
 	
 }

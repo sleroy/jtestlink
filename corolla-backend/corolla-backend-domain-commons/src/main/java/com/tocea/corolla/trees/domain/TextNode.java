@@ -21,4 +21,11 @@ public class TextNode extends TreeNode {
 		this.text = text;
 	}
 	
+	@Override
+	public TreeNode clone() {
+		
+		return super.clone(new TextNode(this.text));
+
+	}
+	
 }

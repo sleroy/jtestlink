@@ -17,6 +17,7 @@ import com.google.common.base.Function
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
+import com.tocea.corolla.products.commands.CreateProjectBranchCommand
 import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
@@ -193,7 +194,10 @@ public class DemoDataBean {
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editUser.id).id, 4)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteUser.id).id, 4)
 		
-		
+		/**
+		 * Create a new Branch derivated from Master
+		 */
+		def toceaBranch = gate.dispatch new CreateProjectBranchCommand("Tocea", masterBranch);		
 		
 	}
 
