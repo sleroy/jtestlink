@@ -36,6 +36,15 @@ public interface IRevisionService {
 	 * @param commit
 	 * @return
 	 */
-	public Object getSnapshot(ICommit commit) throws Exception;
+	public Object getSnapshot(ICommit commit);
+	
+	/**
+	 * Retrieve the state of an object at a given commit
+	 * @param objectID
+	 * @param objectClass
+	 * @param commitID
+	 * @return
+	 */
+	public Object getSnapshot(String objectID, Class<?> objectClass, String commitID);
 	
 }

@@ -27,12 +27,15 @@ import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand
+import com.tocea.corolla.requirements.commands.EditRequirementCommand
+import com.tocea.corolla.requirements.commands.RestoreRequirementStateCommand
 import com.tocea.corolla.requirements.dao.IRequirementDAO
 import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO
 import com.tocea.corolla.requirements.domain.Requirement
 import com.tocea.corolla.requirements.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.commands.CreateRequirementTextNodeCommand;
 import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeCommand;
+import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
@@ -83,6 +86,9 @@ public class DemoDataBean {
 
 	@Autowired
 	def PasswordEncoder				passwordEncoder
+	
+	@Autowired
+	def IRevisionService			revisionService
 
 	@Autowired
 	def Gate						gate
@@ -161,7 +167,7 @@ public class DemoDataBean {
 		this.editProject(corolla)
 		
 		def masterBranch = projectBranchDAO.findByNameAndProjectId("Master", corolla.id)
-		
+
 		/*
 		 * Requirements
 		 */
@@ -199,6 +205,15 @@ public class DemoDataBean {
 		 */
 		def toceaBranch = gate.dispatch new CreateProjectBranchCommand("Tocea", masterBranch);		
 		
+		/**
+		 * Edit a requirement then restore it to its previous state
+		 */
+		req_addUser = requirementDAO.findByKeyAndProjectBranchId("ADD_USER", masterBranch.id)
+		req_addUser.name = "Add an elephant"
+		this.gate.dispatch new EditRequirementCommand(req_addUser);		
+		def commits = revisionService.getHistory(req_addUser.id, Requirement.class);
+		this.gate.dispatch new RestoreRequirementStateCommand(req_addUser.id, commits[1].id);
+				
 	}
 
 	/**

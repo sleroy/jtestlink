@@ -1,8 +1,6 @@
 package com.tocea.corolla.revisions.services;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -26,6 +24,8 @@ import com.tocea.corolla.revisions.domain.Change;
 import com.tocea.corolla.revisions.domain.Commit;
 import com.tocea.corolla.revisions.domain.IChange;
 import com.tocea.corolla.revisions.domain.ICommit;
+import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
+import com.tocea.corolla.revisions.exceptions.SnapshotBuildFailureException;
 
 @Service
 public class JaversRevisionService implements IRevisionService {
@@ -111,25 +111,52 @@ public class JaversRevisionService implements IRevisionService {
 	}
 
 	@Override
-	public Object getSnapshot(ICommit commit) throws Exception {
+	public Object getSnapshot(ICommit commit) {
 				
 		CdoSnapshot cdoSnapshot = findCdoSnapshotByCommit((Commit)commit);
 		
+		if (cdoSnapshot == null) {
+			throw new InvalidCommitInformationException("No data found for this commit [id="+commit.getId()+"]");
+		}
+		
 		Class<?> clazz = ((Commit) commit).getObjectClass();
 		
-		Object object = clazz.newInstance();
+		Object object= null;
 		
-		if (cdoSnapshot != null) {
+		try {
 			
-			for(Property prop : cdoSnapshot.getProperties()) {
+			object = clazz.newInstance();
+			
+			if (cdoSnapshot != null) {
 				
-				PropertyUtils.setProperty(object, prop.getName(), cdoSnapshot.getPropertyValue(prop.getName()));
+				for(Property prop : cdoSnapshot.getProperties()) {
+									
+					PropertyUtils.setProperty(object, prop.getName(), cdoSnapshot.getPropertyValue(prop.getName()));
+					
+					
+				}
 				
 			}
+		
+		} catch (Exception e) {
 			
+			throw new SnapshotBuildFailureException();
 		}
 		
 		return object;
+		
+	}
+	
+	
+	@Override
+	public Object getSnapshot(String objectID, Class<?> objectClass, String commitID) {
+		
+		Commit commit = new Commit();
+		commit.setId(commitID);
+		commit.setObjectID(objectID);
+		commit.setObjectClass(objectClass);
+		
+		return getSnapshot(commit);
 		
 	}
 	
@@ -153,6 +180,5 @@ public class JaversRevisionService implements IRevisionService {
 		return null;
 		
 	}
-	
 
 }
