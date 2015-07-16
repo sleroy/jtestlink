@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.requirements.commands.EditRequirementCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
@@ -16,7 +16,7 @@ import com.tocea.corolla.requirements.exceptions.MissingRequirementInformationEx
 import com.tocea.corolla.requirements.exceptions.RequirementAlreadyExistException;
 import com.tocea.corolla.revisions.services.IRevisionService;
 
-@Command
+@CommandHandler
 @Transactional
 public class EditRequirementCommandHandler implements ICommandHandler<EditRequirementCommand, Requirement> {
 
@@ -45,7 +45,7 @@ public class EditRequirementCommandHandler implements ICommandHandler<EditRequir
 		
 		Requirement withSameKey = requirementDAO.findByKeyAndProjectBranchId(requirement.getKey(), requirement.getProjectBranchId());
 		
-		if (withSameKey != null && withSameKey.getId() != requirement.getId()) {
+		if (withSameKey != null && !withSameKey.getId().equals(requirement.getId())) {
 			throw new RequirementAlreadyExistException(requirement.getKey());
 		}
 		
