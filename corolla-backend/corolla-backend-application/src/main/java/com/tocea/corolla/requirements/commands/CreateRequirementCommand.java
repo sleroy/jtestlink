@@ -11,6 +11,8 @@ public class CreateRequirementCommand {
 	@NotNull
 	private Requirement requirement;
 	
+	private Integer parentNodeID;
+	
 	public CreateRequirementCommand() {
 		super();
 	}
@@ -20,12 +22,26 @@ public class CreateRequirementCommand {
 		setRequirement(req);
 	}
 	
+	public CreateRequirementCommand(Requirement req, Integer parentNodeID) {
+		super();
+		setRequirement(req);
+		setParentNodeID(parentNodeID);
+	}
+	
 	public Requirement getRequirement() {
 		return requirement;
 	}
 
 	public void setRequirement(Requirement requirement) {
 		this.requirement = requirement;
+	}
+
+	public Integer getParentNodeID() {
+		return parentNodeID;
+	}
+
+	public void setParentNodeID(Integer parentNodeID) {
+		this.parentNodeID = parentNodeID;
 	}
 	
 }

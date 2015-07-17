@@ -153,15 +153,18 @@ class CreateRequirementCommandHandlerTest extends Specification {
 			req.name = "Add a requirement"
 			req.projectBranchId = "12"
 			def branch = new ProjectBranch(id: req.projectBranchId)
+			def parentNodeID = 1
 		
 		when:
-			handler.handle new CreateRequirementCommand(req)
+			handler.handle new CreateRequirementCommand(req, parentNodeID)
 	
 		then:
 			requirementDAO.findByKeyAndProjectBranchId(req.key, req.projectBranchId) >> null
 			branchDAO.findOne(req.projectBranchId) >> branch
 			notThrown(Exception.class)
-			1 * gate.dispatch({ it instanceof CreateRequirementTreeNodeCommand  && it.branch == branch && it.requirementId == req.id })
+			1 * gate.dispatch { 
+				it instanceof CreateRequirementTreeNodeCommand  && it.branch == branch && it.requirementId == req.id && it.parentId == parentNodeID
+			}
 		
 	}
 	

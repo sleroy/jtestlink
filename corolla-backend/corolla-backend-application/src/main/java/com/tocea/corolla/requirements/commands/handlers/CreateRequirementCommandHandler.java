@@ -65,7 +65,9 @@ public class CreateRequirementCommandHandler implements ICommandHandler<CreateRe
 		
 		revisionService.commit(requirement);
 		
-		gate.dispatch(new CreateRequirementTreeNodeCommand(branch, requirement.getId(), null));
+		// Insert a node attached to this requirement in the requirements tree
+		Integer parentNodeID = command.getParentNodeID();	
+		gate.dispatch(new CreateRequirementTreeNodeCommand(branch, requirement.getId(), parentNodeID));
 		
 		return requirement;
 		
