@@ -24,10 +24,8 @@ public class RequirementNode extends TreeNode {
 	}
 	
 	@Override
-	public TreeNode clone() {
-		
-		return this.clone(new RequirementNode(this.requirementId));
-		
+	public TreeNode clone() {		
+		return this.clone(new RequirementNode(this.requirementId));		
 	}
 	
 }

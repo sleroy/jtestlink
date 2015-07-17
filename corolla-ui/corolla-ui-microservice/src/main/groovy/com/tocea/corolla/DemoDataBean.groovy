@@ -17,6 +17,9 @@ import com.google.common.base.Function
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
+import com.tocea.corolla.portfolio.dao.IPortfolioDAO
+import com.tocea.corolla.portfolio.domain.Portfolio
+import com.tocea.corolla.portfolio.domain.ProjectNode
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand
 import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand
@@ -89,6 +92,9 @@ public class DemoDataBean {
 	
 	@Autowired
 	def IRevisionService			revisionService
+	
+	@Autowired
+	def IPortfolioDAO				portfolioDAO
 
 	@Autowired
 	def Gate						gate
@@ -214,6 +220,13 @@ public class DemoDataBean {
 		def commits = revisionService.getHistory(req_addUser.id, Requirement.class);
 		this.gate.dispatch new RestoreRequirementStateCommand(req_addUser.id, commits[1].id);
 				
+		def portfolio = new Portfolio()
+		portfolio.setNodes([new ProjectNode("PR1")])
+		portfolioDAO.save(portfolio)
+		
+		def p = portfolioDAO.find()
+		println p.nodes.size()+" nodes in portfolio"
+		
 	}
 
 	/**
@@ -357,7 +370,8 @@ public class DemoDataBean {
 		userDAO.deleteAll()
 		roleDAO.deleteAll()
 		groupDAO.deleteAll()
-		projectStatusDAO.deleteAll()
+		projectStatusDAO.deleteAll()	
+		portfolioDAO.deleteAll()
 		
 	}
 	
