@@ -17,6 +17,7 @@ import com.google.common.base.Function
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
+import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO
 import com.tocea.corolla.portfolio.domain.Portfolio
 import com.tocea.corolla.portfolio.domain.ProjectNode
@@ -219,13 +220,8 @@ public class DemoDataBean {
 		this.gate.dispatch new EditRequirementCommand(req_addUser);		
 		def commits = revisionService.getHistory(req_addUser.id, Requirement.class);
 		this.gate.dispatch new RestoreRequirementStateCommand(req_addUser.id, commits[1].id);
-				
-		def portfolio = new Portfolio()
-		portfolio.setNodes([new ProjectNode("PR1")])
-		portfolioDAO.save(portfolio)
 		
-		def p = portfolioDAO.find()
-		println p.nodes.size()+" nodes in portfolio"
+		this.gate.dispatch new CreateProjectNodeCommand("Project1", null)
 		
 	}
 
