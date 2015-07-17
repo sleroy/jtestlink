@@ -13,4 +13,11 @@ public interface IRequirementsTreeDAO extends MongoRepository<RequirementsTree, 
 	 */
 	public RequirementsTree findByBranchId(String branchId);
 	
+	/**
+	 * Deletes a requirements tree by its branch id
+	 * @param branchId
+	 * @return
+	 */
+	public RequirementsTree deleteByBranchId(String branchId);
+	
 }
