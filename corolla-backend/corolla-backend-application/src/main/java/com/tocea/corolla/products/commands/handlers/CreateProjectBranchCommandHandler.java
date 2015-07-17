@@ -7,7 +7,6 @@ import java.util.HashMap;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,6 +28,7 @@ import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.requirements.trees.utils.RequirementsTreeUtils;
+import com.tocea.corolla.requirements.utils.RequirementUtils;
 import com.tocea.corolla.trees.domain.TreeNode;
 
 @CommandHandler
@@ -96,21 +96,12 @@ public class CreateProjectBranchCommandHandler implements ICommandHandler<Create
 		if (originRequirements != null) {
 		
 			for(Requirement requirement : originRequirements) {
+
+				Requirement clone = RequirementUtils.clone(requirement, newBranch.getId());
 				
-				try {
-					
-					Requirement clone = (Requirement) BeanUtils.cloneBean(requirement);
-					clone.setId(null);
-					clone.setProjectBranchId(newBranch.getId());
-					
-					gate.dispatch(new CreateRequirementCommand(clone));
-					
-					mapIDs.put(requirement.getId(), clone.getId());
-									
-				} catch (Exception e) {
-					
-					e.printStackTrace();
-				}
+				gate.dispatch(new CreateRequirementCommand(clone));
+				
+				mapIDs.put(requirement.getId(), clone.getId());
 				
 			}
 		
