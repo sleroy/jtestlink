@@ -12,6 +12,7 @@ import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
+import com.tocea.corolla.products.exceptions.ProjectBranchOperationForbiddenException;
 import com.tocea.corolla.requirements.commands.DeleteRequirementCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO
 import com.tocea.corolla.requirements.domain.Requirement
@@ -124,6 +125,26 @@ class DeleteProjectBranchCommandHandlerTest extends Specification {
 		then:
 			thrown(InvalidProjectBranchInformationException.class)
 
+	}
+	
+	def "it should not delete the branch if it is marked as default"() {
+		
+		given:
+			def branch = new ProjectBranch(
+					id: "1", 
+					name: "Master", 
+					projectId: "35",
+					defaultBranch: true
+			)
+			def requirements = []
+		
+		when:
+			handler.handle new DeleteProjectBranchCommand(branch)
+	
+		then:
+			thrown(ProjectBranchOperationForbiddenException.class)
+			0 * branchDAO.delete(_)
+		
 	}
 	
 }

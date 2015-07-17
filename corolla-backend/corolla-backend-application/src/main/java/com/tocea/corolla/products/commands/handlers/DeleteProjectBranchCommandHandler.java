@@ -16,6 +16,7 @@ import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
+import com.tocea.corolla.products.exceptions.ProjectBranchOperationForbiddenException;
 import com.tocea.corolla.requirements.commands.DeleteRequirementCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
 import com.tocea.corolla.requirements.domain.Requirement;
@@ -48,6 +49,10 @@ public class DeleteProjectBranchCommandHandler implements ICommandHandler<Delete
 		
 		if (StringUtils.isEmpty(branch.getId())) {
 			throw new InvalidProjectBranchInformationException("No ID found on the given branch");
+		}
+		
+		if (branch.getDefaultBranch()) {
+			throw new ProjectBranchOperationForbiddenException("Cannot delete the default branch");
 		}
 		
 		// Delete the branch

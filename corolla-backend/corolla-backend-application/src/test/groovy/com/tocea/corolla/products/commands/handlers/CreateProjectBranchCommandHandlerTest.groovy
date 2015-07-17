@@ -47,42 +47,47 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 	def "it should create a new project branch"() {
 		
 		given:
-			def branch = new ProjectBranch()
-			branch.name = "Master"
-			branch.projectId = "35"
+			def branch = new ProjectBranch(name: "Master", projectId: "35")
 		
 		when:
 			handler.handle new CreateProjectBranchCommand(branch)
 	
 		then:
-			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> null
 			notThrown(Exception.class)
+			
+		then:
+			branchDAO.findByProjectId(branch.projectId) >> []
+			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> null
+			
+		then:
 			1 * branchDAO.save(branch)		
+			
 	}
 	
 	def "it should create a tree of requirements when creating a new branch"() {
 		
 		given:
-			def branch = new ProjectBranch()
-			branch.name = "Master"
-			branch.projectId = "35"
+			def branch = new ProjectBranch(name: "Master", projectId: "35")
 		
 		when:
 			handler.handle new CreateProjectBranchCommand(branch)
 	
 		then:
-			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> null
 			notThrown(Exception.class)
-			1 * requirementsTreeDAO.save({ it != null && it instanceof RequirementsTree })
+			
+		then:
+			branchDAO.findByProjectId(branch.projectId) >> []
+			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> null
+			
+		then:
+			1 * requirementsTreeDAO.save({ it instanceof RequirementsTree })
 		
 	}
 	
 	def "it should not create two branches with the same name on the same project"() {
 		
 		given:
-			def branch = new ProjectBranch()
-			branch.name = "Master"
-			branch.projectId = "35"
+			def branch = new ProjectBranch(name: "Master", projectId: "35")
 			def sameBranch = new ProjectBranch(name: branch.name, projectId: branch.projectId)
 		
 		when:
@@ -90,6 +95,8 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 	
 		then:
 			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> sameBranch
+			
+		then:
 			0 * branchDAO.save(_)
 			thrown(ProjectBranchAlreadyExistException.class)
 		
@@ -112,10 +119,7 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 	def "it should throw an exception if the ID is already defined"() {
 		
 		given:
-			def branch = new ProjectBranch()
-			branch.id = "1"
-			branch.name = "Master"
-			branch.projectId = "35"
+			def branch = new ProjectBranch(id: "1", name: "Master", projectId: "35")
 		
 		when:
 			handler.handle new CreateProjectBranchCommand(branch)
@@ -129,28 +133,25 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 	def "it should create a new branch from another empty branch"() {
 		
 		given:
-			def origin = new ProjectBranch()
-			origin.id = "1"
-			origin.name = "Master"
-			origin.projectId = "35"
+			def origin = new ProjectBranch(id: "1", name: "Master", projectId: "35")
 			def originTree = new RequirementsTree(nodes: [])
 			
 		when:
 			handler.handle new CreateProjectBranchCommand("newBranch", origin)
 	
 		then:
-			requirementsTreeDAO.findByBranchId(origin.id) >> originTree
 			notThrown(Exception.class)
+		
+		then:
+			branchDAO.findByProjectId(origin.projectId) >> [origin]
+			requirementsTreeDAO.findByBranchId(origin.id) >> originTree		
 		
 	}
 	
 	def "it should create a new branch from another non-empty branch"() {
 		
 		given:
-			def origin = new ProjectBranch()
-			origin.id = "1"
-			origin.name = "Master"
-			origin.projectId = "35"
+			def origin = new ProjectBranch(id: "1", name: "Master", projectId: "35")
 			def originRequirements = [new Requirement(id: "REQ1", name: "req1"), new Requirement(id: "REQ2", name: "req2")]
 			def originTree = new RequirementsTree(
 					nodes: [
@@ -163,6 +164,10 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 			handler.handle new CreateProjectBranchCommand("newBranch", origin)
 	
 		then:
+			notThrown(Exception.class)
+			
+		then:
+			branchDAO.findByProjectId(origin.projectId) >> [origin]
 			1 * requirementsTreeDAO.save(_)
 			requirementDAO.findByProjectBranchId(origin.id) >> originRequirements
 			requirementsTreeDAO.findByBranchId(origin.id) >> originTree		
@@ -173,17 +178,14 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 				it instanceof CreateRequirementCommand && it.requirement.name == originRequirements[1].name && it.requirement.id != originRequirements[1].id 
 			}
 			1 * requirementsTreeDAO.save { it.nodes.size() == 2 }
-			notThrown(Exception.class)
+			
 			
 	}
 	
 	def "it should throw an exception if the requirements tree of the origin branch cannot be found"() {
 		
 		given:
-			def origin = new ProjectBranch()
-			origin.id = "1"
-			origin.name = "Master"
-			origin.projectId = "35"
+			def origin = new ProjectBranch(id: "1", name: "Master", projectId: "35")
 			def originRequirements = [new Requirement(id: "REQ1", name: "req1"), new Requirement(id: "REQ2", name: "req2")]
 			def originTree = null
 			
@@ -191,9 +193,52 @@ class CreateProjectBranchCommandHandlerTest extends Specification {
 			handler.handle new CreateProjectBranchCommand("newBranch", origin)
 	
 		then:
+			branchDAO.findByProjectId(origin.projectId) >> [origin]
 			requirementDAO.findByProjectBranchId(origin.id) >> originRequirements
 			requirementsTreeDAO.findByBranchId(origin.id) >> originTree
+		
+		then:
 			thrown(RequirementsTreeNotFoundException.class)
+		
+	}
+	
+	def "it should set the branch as default if there is no other branch in the project"() {
+		
+		given:
+			def branch = new ProjectBranch(name: "Master", projectId: "35")
+		
+		when:
+			handler.handle new CreateProjectBranchCommand(branch)
+	
+		then:
+			notThrown(Exception.class)
+			
+		then:
+			branchDAO.findByProjectId(branch.projectId) >> []
+			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> null
+			
+		then:
+			branch.defaultBranch == true
+		
+	}
+	
+	def "it should not set the branch as default if there is other branches in the project"() {
+		
+		given:
+			def branch = new ProjectBranch(name: "Master", projectId: "35")
+		
+		when:
+			handler.handle new CreateProjectBranchCommand(branch)
+	
+		then:
+			notThrown(Exception.class)
+			
+		then:
+			branchDAO.findByProjectId(branch.projectId) >> [new ProjectBranch()]
+			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> null
+			
+		then:
+			branch.defaultBranch == false
 		
 	}
 	

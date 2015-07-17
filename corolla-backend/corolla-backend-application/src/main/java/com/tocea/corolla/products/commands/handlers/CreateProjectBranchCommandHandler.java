@@ -66,6 +66,12 @@ public class CreateProjectBranchCommandHandler implements ICommandHandler<Create
 			throw new ProjectBranchAlreadyExistException();
 		}
 		
+		Collection<ProjectBranch> otherBranches = branchDAO.findByProjectId(branch.getProjectId());
+		
+		if (otherBranches.isEmpty()) {
+			branch.setDefaultBranch(true);
+		}
+		
 		branchDAO.save(branch);
 		
 		// Create requirements tree
@@ -77,10 +83,8 @@ public class CreateProjectBranchCommandHandler implements ICommandHandler<Create
 		
 		ProjectBranch originBranch = command.getOriginBranch();
 		
-		if (originBranch != null) {
-			
-			cloneProjectBranch(originBranch, branch, requirementsTree);
-			
+		if (originBranch != null) {			
+			cloneProjectBranch(originBranch, branch, requirementsTree);			
 		}
 		
 		return branch;

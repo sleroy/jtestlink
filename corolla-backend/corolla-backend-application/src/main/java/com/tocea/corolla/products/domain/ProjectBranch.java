@@ -20,6 +20,8 @@ public class ProjectBranch implements Serializable {
 	@NotEmpty
 	private String projectId;
 	
+	private Boolean defaultBranch = false;
+	
 	public ProjectBranch() {
 		
 	}
@@ -46,6 +48,14 @@ public class ProjectBranch implements Serializable {
 
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
+	}
+
+	public Boolean getDefaultBranch() {
+		return defaultBranch;
+	}
+
+	public void setDefaultBranch(Boolean defaultBranch) {
+		this.defaultBranch = defaultBranch;
 	}
 
 }
