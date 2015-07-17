@@ -14,10 +14,10 @@ import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationExce
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand
 import com.tocea.corolla.requirements.dao.IRequirementDAO
-import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.Requirement
-import com.tocea.corolla.requirements.domain.RequirementNode
-import com.tocea.corolla.requirements.domain.RequirementsTree;
+import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.trees.domain.RequirementNode;
+import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule

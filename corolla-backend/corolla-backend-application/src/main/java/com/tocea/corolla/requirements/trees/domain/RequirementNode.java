@@ -1,4 +1,4 @@
-package com.tocea.corolla.requirements.domain;
+package com.tocea.corolla.requirements.trees.domain;
 
 import com.tocea.corolla.trees.domain.TreeNode;
 

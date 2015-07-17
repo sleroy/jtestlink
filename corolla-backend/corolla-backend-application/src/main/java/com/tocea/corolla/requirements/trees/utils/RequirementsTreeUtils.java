@@ -3,7 +3,7 @@ package com.tocea.corolla.requirements.trees.utils;
 import java.util.Collection;
 
 import com.google.common.collect.Lists;
-import com.tocea.corolla.requirements.domain.RequirementNode;
+import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 
 public class RequirementsTreeUtils {

@@ -1,4 +1,4 @@
-package com.tocea.corolla.requirements.domain;
+package com.tocea.corolla.requirements.trees.domain;
 
 import java.util.Collection;
 

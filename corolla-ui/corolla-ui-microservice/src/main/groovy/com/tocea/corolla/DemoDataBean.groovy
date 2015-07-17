@@ -30,11 +30,11 @@ import com.tocea.corolla.requirements.commands.CreateRequirementCommand
 import com.tocea.corolla.requirements.commands.EditRequirementCommand
 import com.tocea.corolla.requirements.commands.RestoreRequirementStateCommand
 import com.tocea.corolla.requirements.dao.IRequirementDAO
-import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO
 import com.tocea.corolla.requirements.domain.Requirement
-import com.tocea.corolla.requirements.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.commands.CreateRequirementTextNodeCommand;
 import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeCommand;
+import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.users.commands.CreateRoleCommand

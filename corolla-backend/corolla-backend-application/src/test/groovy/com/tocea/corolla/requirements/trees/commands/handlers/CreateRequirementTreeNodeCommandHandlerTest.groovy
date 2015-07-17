@@ -8,12 +8,12 @@ import spock.lang.Specification;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
-import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
-import com.tocea.corolla.requirements.domain.RequirementNode
-import com.tocea.corolla.requirements.domain.RequirementsTree
 import com.tocea.corolla.requirements.exceptions.*;
 import com.tocea.corolla.requirements.trees.commands.CreateRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.trees.commands.handlers.CreateRequirementTreeNodeCommandHandler;
+import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.trees.domain.RequirementNode;
+import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeAlreadyExistException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;

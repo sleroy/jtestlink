@@ -9,12 +9,12 @@ import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
 import com.tocea.corolla.requirements.commands.DeleteRequirementCommand
-import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
-import com.tocea.corolla.requirements.domain.RequirementNode
-import com.tocea.corolla.requirements.domain.RequirementsTree
 import com.tocea.corolla.requirements.exceptions.*;
 import com.tocea.corolla.requirements.trees.commands.RemoveRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.trees.commands.handlers.RemoveRequirementTreeNodeCommandHandler;
+import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.trees.domain.RequirementNode;
+import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeNotFoundException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.revisions.services.IRevisionService

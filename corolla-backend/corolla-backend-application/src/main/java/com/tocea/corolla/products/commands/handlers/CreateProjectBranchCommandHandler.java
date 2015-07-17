@@ -23,10 +23,10 @@ import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationExce
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
-import com.tocea.corolla.requirements.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.domain.Requirement;
-import com.tocea.corolla.requirements.domain.RequirementNode;
-import com.tocea.corolla.requirements.domain.RequirementsTree;
+import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.trees.domain.RequirementNode;
+import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.requirements.trees.utils.RequirementsTreeUtils;
 import com.tocea.corolla.trees.domain.TreeNode;
@@ -87,7 +87,7 @@ public class CreateProjectBranchCommandHandler implements ICommandHandler<Create
 		
 	}
 	
-	public void cloneProjectBranch(ProjectBranch originBranch, ProjectBranch newBranch, RequirementsTree newRequirementsTree) {
+	private void cloneProjectBranch(ProjectBranch originBranch, ProjectBranch newBranch, RequirementsTree newRequirementsTree) {
 		
 		HashMap<String, String> mapIDs = Maps.newHashMap();
 		
@@ -124,7 +124,7 @@ public class CreateProjectBranchCommandHandler implements ICommandHandler<Create
 		
 		for(TreeNode node : originTree.getNodes()) {
 			
-			newRequirementsTree.getNodes().add(node);
+			newRequirementsTree.getNodes().add(node.clone());
 			
 		}
 		
