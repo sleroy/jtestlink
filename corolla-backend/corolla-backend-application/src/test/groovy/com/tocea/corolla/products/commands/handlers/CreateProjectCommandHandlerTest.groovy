@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import spock.lang.Specification;
 
 import com.tocea.corolla.cqrs.gate.Gate
+import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.dao.IProjectDAO;
@@ -46,9 +47,12 @@ class CreateProjectCommandHandlerTest extends Specification {
 			handler.handle new CreateProjectCommand(project)
 	
 		then:
+			notThrown(Exception.class)
+			
+		then:
 			projectDAO.findByKey(project.key) >> null
 			1 * projectDAO.save(_)
-			notThrown(Exception.class)
+			
 	}
 	
 	def "it should call the revision service after creating a new project"() {
@@ -62,10 +66,12 @@ class CreateProjectCommandHandlerTest extends Specification {
 			handler.handle new CreateProjectCommand(project)
 		
 		then:
-			projectDAO.findByKey(project.key) >> null
-			1 * revisionService.commit(project)
 			notThrown(Exception.class)
 			
+		then:
+			projectDAO.findByKey(project.key) >> null
+			1 * revisionService.commit(project)
+				
 	}
 	
 	def "it should create a default branch after creating a new project"() {
@@ -79,11 +85,16 @@ class CreateProjectCommandHandlerTest extends Specification {
 			handler.handle new CreateProjectCommand(project)
 		
 		then:
+			notThrown(Exception.class)
+			
+		then:
 			projectDAO.findByKey(project.key) >> null
+			
+		then:
 			1 * gate.dispatch({ 
 				it instanceof CreateProjectBranchCommand && it.branch.name //&& it.branch.projectId
 			})
-			notThrown(Exception.class)
+			
 		
 	}
 	
@@ -99,6 +110,8 @@ class CreateProjectCommandHandlerTest extends Specification {
 	
 		then:
 			projectDAO.findByKey(project.key) >> new Project(key: project.key)
+			
+		then:
 			0 * projectDAO.save(_)
 			thrown(ProjectAlreadyExistException.class)
 		
@@ -133,6 +146,25 @@ class CreateProjectCommandHandlerTest extends Specification {
 			0 * projectDAO.save(_)
 			thrown(InvalidProjectInformationException.class)
 			
+	}
+	
+	def "it should dispatch a command to insert a new node in the portfolio"() {
+		
+		given:
+			def project = new Project(key: "my_project", name:"My Project")
+			def parentNodeID = 1
+	
+		when:
+			handler.handle new CreateProjectCommand(project, parentNodeID)
+
+		then:
+			notThrown(Exception.class)
+			
+		then:
+			1 * gate.dispatch { 
+				it instanceof CreateProjectNodeCommand && it.projectID == project.id && it.parentID == parentNodeID 
+			}
+		
 	}
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
+import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.dao.IProjectDAO;
@@ -58,6 +59,10 @@ public class CreateProjectCommandHandler implements ICommandHandler<CreateProjec
 		
 		// Create a new branch		
 		this.gate.dispatch(new CreateProjectBranchCommand("Master", project));
+		
+		// Insert the project in the portfolio tree
+		Integer parentNodeID = command.getParentNodeID();
+		this.gate.dispatch(new CreateProjectNodeCommand(project.getId(), parentNodeID));
 		
 		return project;
 		

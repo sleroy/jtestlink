@@ -12,6 +12,8 @@ public class CreateProjectCommand {
 	@NotNull
 	private Project project;
 	
+	private Integer parentNodeID;
+	
 	public CreateProjectCommand() {
 		super();
 	}
@@ -20,6 +22,12 @@ public class CreateProjectCommand {
 		super();
 		setProject(_project);
 	}
+	
+	public CreateProjectCommand(Project _project, Integer parentNodeID) {
+		super();
+		setProject(_project);
+		setParentNodeID(parentNodeID);
+	}
 
 	public Project getProject() {
 		return project;
@@ -27,6 +35,14 @@ public class CreateProjectCommand {
 
 	public void setProject(@Valid Project project) {
 		this.project = project;
+	}
+
+	public Integer getParentNodeID() {
+		return parentNodeID;
+	}
+
+	public void setParentNodeID(Integer parentNodeID) {
+		this.parentNodeID = parentNodeID;
 	}
 	
 }

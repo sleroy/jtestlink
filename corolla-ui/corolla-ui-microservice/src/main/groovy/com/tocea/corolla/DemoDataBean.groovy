@@ -221,8 +221,6 @@ public class DemoDataBean {
 		def commits = revisionService.getHistory(req_addUser.id, Requirement.class);
 		this.gate.dispatch new RestoreRequirementStateCommand(req_addUser.id, commits[1].id);
 		
-		this.gate.dispatch new CreateProjectNodeCommand("Project1", null)
-		
 	}
 
 	/**
