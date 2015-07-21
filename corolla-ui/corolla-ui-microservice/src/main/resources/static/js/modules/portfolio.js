@@ -34,7 +34,8 @@ function initPortfolio() {
 	/*
 	 * Initialize JsTree widget
 	 */
-	initJsTree();
+//	initJsTree();
+	$.get("/rest/portfolio/jstree", initJsTree);
 
 	function format_jstree_data(data) {
 
@@ -110,8 +111,8 @@ function initPortfolio() {
 /*
  * Initialize JsTree widget
  */
-function initJsTree() {
-
+function initJsTree(data) {
+	
 	$(PROJECTS_TREEVIEW).jstree(
 			{
 				"core" : {
@@ -120,7 +121,7 @@ function initJsTree() {
 					"themes" : {
 						"stripes" : true
 					},
-					'data' : [ {
+					'data' : data/*[ {
 						'text' : 'Recently Viewed Projects',
 						'icon' : 'fa fa-history',
 						'children' : [ {
@@ -151,7 +152,7 @@ function initJsTree() {
 								'data-key' : 'komea-dashboard'
 							}
 						} ]
-					} ]
+					} ]*/
 				},
 				"plugins" : [ "dnd", "contextmenu", "types", "search" ],
 				"contextmenu" : {
