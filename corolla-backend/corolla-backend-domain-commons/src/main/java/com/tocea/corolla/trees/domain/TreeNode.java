@@ -31,11 +31,13 @@ public class TreeNode implements Cloneable {
 		this.id = id;
 	}
 	
+	public void accept(ITreeNodeVisitor visitor) {
+		visitor.visit(this);
+	}
+	
 	@Override
-	public TreeNode clone() {
-		
-		return clone(new TreeNode());
-			
+	public TreeNode clone() {		
+		return clone(new TreeNode());		
 	}
 	
 	protected TreeNode clone(TreeNode clone) {

@@ -24,6 +24,14 @@ public class RequirementsTree implements ITree {
 	
 	@Embedded
 	private Collection<TreeNode> nodes;
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getBranchId() {
 		return branchId;

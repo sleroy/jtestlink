@@ -40,6 +40,9 @@ import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeComm
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.revisions.services.IRevisionService
+import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
+import com.tocea.corolla.trees.commands.MoveTreeNodeCommand
+import com.tocea.corolla.trees.domain.TextNode
 import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
@@ -174,7 +177,15 @@ public class DemoDataBean {
 		this.editProject(corolla)
 		
 		def masterBranch = projectBranchDAO.findByNameAndProjectId("Master", corolla.id)
-
+		
+		/**
+		 * Portfolio
+		 */
+		def portfolio = portfolioDAO.find()
+		portfolio = this.gate.dispatch new CreateTreeNodeCommand(portfolio, new TextNode("Corolla-Project"), null)
+		portfolio = this.gate.dispatch new MoveTreeNodeCommand(portfolio, 1, 2)
+		portfolioDAO.save portfolio
+		
 		/*
 		 * Requirements
 		 */

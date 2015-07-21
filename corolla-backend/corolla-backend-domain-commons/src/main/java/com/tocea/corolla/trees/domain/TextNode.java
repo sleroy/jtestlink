@@ -1,5 +1,7 @@
 package com.tocea.corolla.trees.domain;
 
+import java.util.ArrayList;
+
 public class TextNode extends TreeNode {
 
 	private String text;
@@ -11,6 +13,7 @@ public class TextNode extends TreeNode {
 	public TextNode(String text) {
 		super();
 		setText(text);
+		setNodes(new ArrayList<TreeNode>());
 	}
 
 	public String getText() {
