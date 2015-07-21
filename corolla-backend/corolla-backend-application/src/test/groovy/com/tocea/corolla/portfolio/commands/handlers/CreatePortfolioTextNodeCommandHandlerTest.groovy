@@ -6,6 +6,7 @@ import spock.lang.Specification;
 
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.portfolio.commands.CreatePortfolioCommand
+import com.tocea.corolla.portfolio.commands.CreatePortfolioTextNodeCommand
 import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO
 import com.tocea.corolla.portfolio.domain.Portfolio
@@ -15,19 +16,20 @@ import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "ADD_PROJECT_NODE")
-class CreateProjectNodeCommandHandlerTest extends Specification {
+class CreatePortfolioTextNodeCommandHandlerTest extends Specification {
 
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IPortfolioDAO portfolioDAO = Mock(IPortfolioDAO)	
-	def CreateProjectNodeCommandHandler handler
+	def CreatePortfolioTextNodeCommandHandler handler
 	def Gate gate = Mock(Gate)
 	
 	def setup() {
-		handler = new CreateProjectNodeCommandHandler(
+		handler = new CreatePortfolioTextNodeCommandHandler(
 				portfolioDAO : portfolioDAO,
 				gate : gate
 		)
@@ -36,12 +38,12 @@ class CreateProjectNodeCommandHandlerTest extends Specification {
 	def "it should invoke the command to create a new tree node in the portfolio"() {
 		
 		given:
-			def projectID = "1"
+			def text = "TEXT"
 			def parentID = 2
 			def portfolio = new Portfolio(nodes: [])
 		
 		when:
-			handler.handle new CreateProjectNodeCommand(projectID, parentID)
+			handler.handle new CreatePortfolioTextNodeCommand(text, parentID)
 	
 		then:
 			notThrown(Exception.class)
@@ -51,7 +53,7 @@ class CreateProjectNodeCommandHandlerTest extends Specification {
 			
 		then:
 			1 * gate.dispatch { 
-				it instanceof CreateTreeNodeCommand && it.tree == portfolio && it.node.projectId == projectID && it.parentID == parentID
+				it instanceof CreateTreeNodeCommand && it.tree == portfolio && it.node.text == text && it.parentID == parentID
 			}
 				
 		then:
@@ -62,12 +64,12 @@ class CreateProjectNodeCommandHandlerTest extends Specification {
 	def "it should create a portfolio if it is not defined yet"() {
 		
 		given:
-			def projectID = "1"
-			def parentID = null
+			def text = "TEXT"
+			def parentID = 2
 			def portfolio = null
 		
 		when:
-			handler.handle new CreateProjectNodeCommand(projectID, parentID)
+			handler.handle new CreatePortfolioTextNodeCommand(text, parentID)
 	
 		then:
 			notThrown(Exception.class)
@@ -80,36 +82,18 @@ class CreateProjectNodeCommandHandlerTest extends Specification {
 		
 	}
 	
-	def "it should throw an exception if the project ID is not defined"() {
+	def "it should throw an exception if the text is empty"() {
 		
 		given:
-			def projectID = ""
+			def text = ""
 			def parentID = 2
 		
 		when:
-			handler.handle new CreateProjectNodeCommand(projectID, parentID)
+			handler.handle new CreatePortfolioTextNodeCommand(text, parentID)
 	
 		then:
-			thrown(MissingProjectInformationException.class)
+			thrown(InvalidTreeNodeInformationException.class)
 			
-	}
-	
-	def "it should throw an exception if a node attached to this project already exists in the portfolio"() {
-		
-		given:
-			def projectID = "1"
-			def parentID = 2
-			def portfolio = new Portfolio(nodes: [new ProjectNode(id: 1, projectId: "1", nodes: [])])
-		
-		when:
-			handler.handle new CreateProjectNodeCommand(projectID, parentID)
-	
-		then:
-			portfolioDAO.find() >> portfolio
-	
-		then:
-			thrown(ProjectNodeAlreadyExistException.class)
-		
 	}
 	
 }

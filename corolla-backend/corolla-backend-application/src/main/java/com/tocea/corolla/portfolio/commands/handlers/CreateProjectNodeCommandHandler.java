@@ -1,6 +1,5 @@
 package com.tocea.corolla.portfolio.commands.handlers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -13,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
+import com.tocea.corolla.portfolio.commands.CreatePortfolioCommand;
 import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
@@ -46,13 +46,8 @@ public class CreateProjectNodeCommandHandler implements ICommandHandler<CreatePr
 		
 		Portfolio portfolio = portfolioDAO.find();
 		
-		if (portfolio == null) {
-			
-			// Create the portfolio if it does not exist yet
-			portfolio = new Portfolio();
-			portfolio.setNodes(new ArrayList<TreeNode>());
-			portfolioDAO.save(portfolio);
-			
+		if (portfolio == null) {		
+			portfolio = gate.dispatch(new CreatePortfolioCommand());		
 		}
 		
 		List<TreeNode> nodes = Lists.newArrayList(portfolio.getNodes());
