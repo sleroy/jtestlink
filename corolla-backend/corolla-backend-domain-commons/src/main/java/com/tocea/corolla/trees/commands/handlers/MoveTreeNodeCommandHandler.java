@@ -4,10 +4,15 @@ import java.util.Collection;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
+import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
+import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.commands.MoveTreeNodeCommand;
+import com.tocea.corolla.trees.commands.RemoveTreeNodeCommand;
 import com.tocea.corolla.trees.domain.ITree;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
@@ -18,6 +23,9 @@ import com.tocea.corolla.trees.utils.TreeNodeUtils;
 @CommandHandler
 public class MoveTreeNodeCommandHandler implements ICommandHandler<MoveTreeNodeCommand, ITree> {
 
+	@Autowired
+	private Gate gate;
+	
 	@Override
 	public ITree handle(@Valid MoveTreeNodeCommand command) {
 		
@@ -45,8 +53,8 @@ public class MoveTreeNodeCommandHandler implements ICommandHandler<MoveTreeNodeC
 		
 		if (newParentId == null) {
 			
-			removeFromTree(node, nodes);	
-			nodes.add(node);
+			tree = gate.dispatch(new RemoveTreeNodeCommand(tree, nodeID));
+			tree = gate.dispatch(new CreateTreeNodeCommand(tree, node, newParentId));
 			
 		}else{
 			
@@ -60,26 +68,12 @@ public class MoveTreeNodeCommandHandler implements ICommandHandler<MoveTreeNodeC
 				throw new InvalidTreeNodeInformationException("Cannot move a tree node inside one of its own children");
 			}
 			
-			removeFromTree(node, nodes);
-			newParentNode.getNodes().add(node);
+			tree = gate.dispatch(new RemoveTreeNodeCommand(tree, nodeID));
+			tree = gate.dispatch(new CreateTreeNodeCommand(tree, node, newParentId));
 			
 		}
 		
-		tree.setNodes(nodes);
-		
 		return tree;
-	}	
-	
-	private void removeFromTree(TreeNode node, Collection<TreeNode> nodes) {
-		
-		TreeNode currentParentNode = TreeNodeUtils.getParentNodeOf(node.getId(), nodes);
-		
-		if (currentParentNode == null) {
-			nodes.remove(node);
-		}else{
-			currentParentNode.getNodes().remove(node);
-		}
-		
 	}
 	
 }

@@ -44,7 +44,7 @@ public class RemoveTreeNodeCommandHandlerTest extends Specification {
 			)
 		
 		when:
-			handler.handle new RemoveTreeNodeCommand(tree, nodeID)
+			tree = handler.handle new RemoveTreeNodeCommand(tree, nodeID)
 	
 		then:
 			notThrown(Exception.class)
@@ -70,7 +70,7 @@ public class RemoveTreeNodeCommandHandlerTest extends Specification {
 			)
 		
 		when:
-			handler.handle new RemoveTreeNodeCommand(tree, nodeID)
+			tree = handler.handle new RemoveTreeNodeCommand(tree, nodeID)
 	
 		then:
 			notThrown(Exception.class)

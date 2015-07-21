@@ -38,7 +38,9 @@ public class CreateTreeNodeCommandHandler implements ICommandHandler<CreateTreeN
 		
 		Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
 
-		newNode.setId(TreeNodeUtils.getMaxNodeId(nodes)+1);
+		if (newNode.getId() == null) {
+			newNode.setId(TreeNodeUtils.getMaxNodeId(nodes)+1);
+		}
 		
 		if (newNode.getNodes() == null) {
 			newNode.setNodes((Collection<TreeNode>) new ArrayList<TreeNode>());

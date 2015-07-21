@@ -4,10 +4,13 @@ import org.junit.Rule;
 
 import spock.lang.Specification;
 
+import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.requirements.exceptions.*;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
+import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
 import com.tocea.corolla.trees.commands.MoveTreeNodeCommand
+import com.tocea.corolla.trees.commands.RemoveTreeNodeCommand
 import com.tocea.corolla.trees.domain.ITree
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
@@ -21,13 +24,14 @@ class MoveTreeNodeCommandHandlerTest extends Specification {
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def MoveTreeNodeCommandHandler handler
+	def Gate gate = Mock(Gate)
 	
 	class BasicTree implements ITree {
 		def Collection<TreeNode> nodes;
 	}
 	
 	def setup() {
-		handler = new MoveTreeNodeCommandHandler()
+		handler = new MoveTreeNodeCommandHandler(gate : gate)
 	}
 	
 	def "it should move a tree node to the root of the tree"() {
@@ -49,9 +53,19 @@ class MoveTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			notThrown(Exception.class)
-			tree.nodes.size() == 2
-			tree.nodes[1].id == nodeID
-			tree.nodes[0].nodes.isEmpty()
+			
+		then:
+			gate.dispatch { 
+				it instanceof RemoveTreeNodeCommand && it.tree == tree && it.nodeID == nodeID 
+			} >> tree
+			gate.dispatch { 
+				it instanceof CreateTreeNodeCommand && it.tree == tree && it.node == tree.nodes[0].nodes[0] && it.parentID == newParentID
+			} >> tree
+			
+//		then:
+//			tree.nodes.size() == 2
+//			tree.nodes[1].id == nodeID
+//			tree.nodes[0].nodes.isEmpty()
 			
 	}
 	
@@ -75,10 +89,20 @@ class MoveTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			notThrown(Exception.class)
-			tree.nodes.size() == 1
-			tree.nodes[0].nodes.size() == 1
-			tree.nodes[0].nodes[0].nodes.size() == 1
-			tree.nodes[0].nodes[0].nodes[0].id == nodeID		
+		
+		then:
+			gate.dispatch { 
+				it instanceof RemoveTreeNodeCommand && it.tree == tree && it.nodeID == nodeID
+			} >> tree
+			gate.dispatch { 
+				it instanceof CreateTreeNodeCommand && it.tree == tree && it.node == tree.nodes[1] && it.parentID == newParentID
+			} >> tree
+
+//		then:
+//			tree.nodes.size() == 1
+//			tree.nodes[0].nodes.size() == 1
+//			tree.nodes[0].nodes[0].nodes.size() == 1
+//			tree.nodes[0].nodes[0].nodes[0].id == nodeID		
 			
 	}
 	
@@ -102,12 +126,22 @@ class MoveTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			notThrown(Exception.class)
-			tree.nodes.size() == 1
-			tree.nodes[0].nodes.size() == 1		
-			tree.nodes[0].nodes[0].nodes.size() == 1		
-			tree.nodes[0].id == 3
-			tree.nodes[0].nodes[0].id == 1
-			tree.nodes[0].nodes[0].nodes[0].id == 2
+		
+		then:
+			gate.dispatch { 
+				it instanceof RemoveTreeNodeCommand && it.tree == tree && it.nodeID == nodeID
+			} >> tree
+			gate.dispatch { 
+				it instanceof CreateTreeNodeCommand && it.tree == tree && it.node == tree.nodes[0] && it.parentID == newParentID
+			} >> tree
+	
+//		then:
+//			tree.nodes.size() == 1
+//			tree.nodes[0].nodes.size() == 1		
+//			tree.nodes[0].nodes[0].nodes.size() == 1		
+//			tree.nodes[0].id == 3
+//			tree.nodes[0].nodes[0].id == 1
+//			tree.nodes[0].nodes[0].nodes[0].id == 2
 					
 	}
 	

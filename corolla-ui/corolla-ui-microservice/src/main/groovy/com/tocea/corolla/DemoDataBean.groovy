@@ -17,10 +17,13 @@ import com.google.common.base.Function
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
+import com.tocea.corolla.portfolio.commands.CreatePortfolioTextNodeCommand;
 import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand
+import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO
 import com.tocea.corolla.portfolio.domain.Portfolio
 import com.tocea.corolla.portfolio.domain.ProjectNode
+import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand
 import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand
@@ -44,6 +47,7 @@ import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
 import com.tocea.corolla.trees.commands.MoveTreeNodeCommand
 import com.tocea.corolla.trees.domain.TextNode
 import com.tocea.corolla.trees.domain.TreeNode
+import com.tocea.corolla.trees.utils.TreeNodeUtils;
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.CreateUserGroupCommand
@@ -165,7 +169,7 @@ public class DemoDataBean {
 		def statusActive = this.newProjectStatus("Active")
 		
 		/*
-		 * Projects
+		 * Portfolio
 		 */
 		def corolla = this.saveProject(new Project(
 				key: 'corolla', 
@@ -176,15 +180,39 @@ public class DemoDataBean {
 		corolla.description = 'Corolla is a tool to manage software requirements'
 		this.editProject(corolla)
 		
-		def masterBranch = projectBranchDAO.findByNameAndProjectId("Master", corolla.id)
+		def portfolio = this.gate.dispatch new CreatePortfolioTextNodeCommand("Corolla-Project", null)
+		portfolio = this.gate.dispatch new MovePortfolioNodeCommand(1, TreeNodeUtils.getMaxNodeId(portfolio.nodes))
 		
-		/**
-		 * Portfolio
+		portfolio = this.gate.dispatch new CreatePortfolioTextNodeCommand("Komea", null)
+		def komeaFolderID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+		
+		def komea = this.gate.dispatch new CreateProjectCommand(new Project(
+				key: 'komea', 
+				name: 'Komea Dashboard', 
+				description: 'Tool for measuring and managing key performance indicators in a software factory',
+				statusId: statusActive.id
+		), komeaFolderID)
+		println "foler: "+komeaFolderID
+		
+		def komeaRedmine = this.gate.dispatch new CreateProjectCommand(new Project(
+				key: 'komea-connector-redmine', 
+				name: 'Komea Redmine Connector', 
+				description: 'Redmine connector for Komea',
+				statusId: statusActive.id
+		), komeaFolderID)
+		println "foler: "+komeaFolderID
+		
+		def komeaSvn =this.gate.dispatch new CreateProjectCommand(new Project(
+				key: 'komea-connector-svn', 
+				name: 'Komea SVN Connector', 
+				description: 'SVN connector for Komea',
+				statusId: statusActive.id
+		), komeaFolderID)
+
+		/*
+		 * Branches
 		 */
-		def portfolio = portfolioDAO.find()
-		portfolio = this.gate.dispatch new CreateTreeNodeCommand(portfolio, new TextNode("Corolla-Project"), null)
-		portfolio = this.gate.dispatch new MoveTreeNodeCommand(portfolio, 1, 2)
-		portfolioDAO.save portfolio
+		def masterBranch = projectBranchDAO.findByNameAndProjectId("Master", corolla.id)
 		
 		/*
 		 * Requirements
