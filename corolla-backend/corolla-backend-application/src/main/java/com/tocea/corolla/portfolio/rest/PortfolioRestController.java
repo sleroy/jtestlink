@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
+import com.tocea.corolla.portfolio.commands.RemovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
@@ -58,10 +59,17 @@ public class PortfolioRestController {
 	}
 	
 	@RequestMapping(value = "/move/{fromID}/{toID}")
-	@Secured({ Permission.REST })
+	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
 	public Portfolio moveNode(@PathVariable Integer fromID, @PathVariable Integer toID) {
 		
 		return gate.dispatch(new MovePortfolioNodeCommand(fromID, toID));
+	}
+	
+	@RequestMapping(value = "/remove/{nodeID}")
+	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	public Portfolio removeNode(@PathVariable Integer nodeID) {
+		
+		return gate.dispatch(new RemovePortfolioNodeCommand(nodeID));
 	}
 	
 }

@@ -32,6 +32,8 @@ public class Permission {
 	public static final String PROJECT_WRITE 		= "ROLE_PROJECT_WRITE";
 	public static final String PROJECT_READ 		= "ROLE_PROJECT_READ";
 	
+	public static final String PORTFOLIO_MANAGEMENT = "ROLE_PORTFOLIO_MANAGEMENT";
+	
 	/**
 	 * Retrieve the list of all existing permissions
 	 * @return

@@ -143,10 +143,14 @@ function initJsTree(data) {
 				},
 				"delete" : {
 					label : "Delete",
-					action : function(node) {
-						console.log(node);
-						console.log('deleting node: '
-								+ node.reference[0].text);
+					action : function(data) {
+
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+
+					    restAPI.portfolio.remove(node.a_attr['data-nodeID'], function(data) {
+					    	$(PROJECTS_TREEVIEW).jstree(true).delete_node(node);
+					    });
 					}
 				}
 			}
@@ -157,6 +161,9 @@ function initJsTree(data) {
 			}
 		}
 	}).on("select_node.jstree", function(e, data) {
+		if (data.event.handleObj.type == 'contextmenu') {
+			return;
+		}
 		var key = data.instance.get_node(data.node, true).children('a')
 				.data('key');
 		if (key) {

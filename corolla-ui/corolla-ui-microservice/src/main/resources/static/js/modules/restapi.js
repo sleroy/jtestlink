@@ -53,6 +53,10 @@ function RestAPI() {
 			
 			"move": function(fromID, toID, callback) {
 				call("portfolio/move/"+fromID+"/"+toID, callback);
+			},
+			
+			"remove": function(nodeID, callback) {
+				call("portfolio/remove/"+nodeID, callback);
 			}
 		
 		},
