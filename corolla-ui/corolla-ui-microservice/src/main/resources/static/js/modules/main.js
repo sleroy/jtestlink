@@ -102,43 +102,26 @@ function ChangeProjectModal() {
 	var modalSelector = "#modal-change-project";
 	var treeviewSelector = '.change-project-treeview';
 	
-	$(treeviewSelector).jstree({
-		"core": {
-			"animation" : 0,
-		    "check_callback" : true,
-		    "themes" : { "stripes" : true },
-		    'data' : [
-               {
-            	   'text': 'Corolla',
-            	   'icon': 'http://lorempixel.com/16/16/'
-               }, {
-            	   'text': 'Komea',
-            	   'children': [{ 
-            	    	'text': 'Komea Rest API',
-            	    	'icon': 'http://lorempixel.com/16/16/',
-            	    	'a_attr': {
-            	    		'data-key': 'komea-rest-api'
-            	    	}
-            	    }, {
-            	    	'text': 'Komea Dashboard',
-            	    	'icon': 'http://lorempixel.com/16/16/',
-            	    	'a_attr': {
-            	    		'data-key': 'komea-dashboard'
-            	    	}
-            	    }]
-               } 
-		    ]
-		},
-		"plugins": ["types", "search"],
-		'types': {
-			'default': { icon: 'glyphicon glyphicon-folder-open' }
-		}
-	});
+	function init(data) {
+		$(treeviewSelector).jstree({
+			"core": {
+				"animation" : 0,
+			    "check_callback" : true,
+			    "themes" : { "stripes" : true },
+			    'data' : data
+			},
+			"plugins": ["types", "search"],
+			'types': {
+				'default': { icon: 'glyphicon glyphicon-folder-open' }
+			}
+		});
+	}	
 	
 	return {
 		
 		'show': function() {
 			$(modalSelector).modal('show');
+			restAPI.portfolio.jstree(init);		
 		},
 
 		'hide': function() {

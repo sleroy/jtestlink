@@ -45,6 +45,14 @@ function RestAPI() {
 			}
 		},
 		
+		"portfolio": {
+			
+			"jstree": function(callback) {
+				call("portfolio/jstree", callback);
+			}
+		
+		},
+		
 		"requirements": {
 			
 			"jstree": function(projectKey, branchName, callback) {

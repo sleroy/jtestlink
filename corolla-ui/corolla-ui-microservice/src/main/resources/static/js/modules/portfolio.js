@@ -34,8 +34,7 @@ function initPortfolio() {
 	/*
 	 * Initialize JsTree widget
 	 */
-//	initJsTree();
-	$.get("/rest/portfolio/jstree", initJsTree);
+	restAPI.portfolio.jstree(initJsTree);
 
 	function format_jstree_data(data) {
 
