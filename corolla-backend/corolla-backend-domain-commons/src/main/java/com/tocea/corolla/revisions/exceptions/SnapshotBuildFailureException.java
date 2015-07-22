@@ -14,4 +14,8 @@ public class SnapshotBuildFailureException extends CorollaDomainException {
 		super(MESSAGE);
 	}
 	
+	public SnapshotBuildFailureException(Throwable cause) {
+		super(MESSAGE, cause);
+	}
+	
 }

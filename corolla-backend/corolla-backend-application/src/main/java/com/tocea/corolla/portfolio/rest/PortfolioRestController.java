@@ -16,7 +16,6 @@ import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.dto.JsTreeNodeDTO;
-import com.tocea.corolla.trees.dto.JsTreeNodeVisitor;
 import com.tocea.corolla.users.domain.Permission;
 
 @RestController

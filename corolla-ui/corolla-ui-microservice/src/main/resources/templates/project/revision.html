@@ -38,33 +38,33 @@
 	                  <table class="table table-hover table-bordered revisions-comparison">
 	                    <tr>
 	                    	<td></td>
-	                      	<td>
-	                      		<h3>Version 1</h3>	      
-	                      		<b class="commit-msg">Initial revision</b> <br/>              		
-	                      		<span class="label label-success time"><i class="fa fa-clock-o"></i>23/06/2015 09:25</span>
-	                      		<span class="label label-primary author"><i class="fa fa-user"></i>Jon Snow</span>
+	                      	<td th:if="${previousCommit != null}">
+	                      		<h3>Version <span th:text="${previousCommit.getId()}"></span></h3>	      
+	                      		<b class="commit-msg"></b> <br/>              		
+	                      		<span class="label label-success time">
+	                      			<i class="fa fa-clock-o"></i>
+	                      			<span th:text="${#dates.format(previousCommit.getDate(), 'dd/MM/yyyy HH:mm')}"></span>
+	                      		</span>
+	                      		<span class="label label-primary author">
+	                      			<i class="fa fa-user"></i><span th:text="${previousCommit.getAuthor()}"></span>
+	                      		</span>
 	                      	</td>
 	                      	<td>
-	                      		<h3>Version 2</h3>	      
-	                      		<b class="commit-msg">Update description</b> <br/>              		
-	                      		<span class="label label-success time"><i class="fa fa-clock-o"></i>23/06/2015 10:25</span>
-	                      		<span class="label label-primary author"><i class="fa fa-user"></i>Hodor</span>
+	                      		<h3>Version <span th:text="${commit.getId()}"></span></h3>	      
+	                      		<b class="commit-msg"></b> <br/>              		
+	                      		<span class="label label-success time">
+	                      			<i class="fa fa-clock-o"></i>
+	                      			<span th:text="${#dates.format(commit.getDate(), 'dd/MM/yyyy HH:mm')}"></span>
+	                      		</span>
+	                      		<span class="label label-primary author">
+	                      			<i class="fa fa-user"></i><span th:text="${commit.getAuthor()}"></span>
+	                      		</span>
 	                      	</td>
 	                    </tr>
-	                    <tr>
-	                    	<td><b>Key</b></td>
-	                      	<td>ADD_KPI</td>
-	                      	<td>ADD_KPI</td>
-	                    </tr>
-	                    <tr>
-	                    	<td><b>Name</b></td>
-	                    	<td>Add a KPI</td>
-	                    	<td>Add a KPI</td>
-	                    </tr>
-	                    <tr>
-	                    	<td><b>Description</b></td>
-	                    	<td class="updated">Haec dum oriens diu perferret, caeli reserato tepore Constantius consulatu suo septies et Caesaris ter egressus Arelate Valentiam petit, in Gundomadum et Vadomarium fratres Alamannorum reges arma moturus, quorum crebris excursibus vastabantur confines limitibus terrae Gallorum.</td>
-	                    	<td class="updated">Quod opera consulta cogitabatur astute, ut hoc insidiarum genere Galli periret avunculus, ne eum ut praepotens acueret in fiduciam exitiosa coeptantem. verum navata est opera diligens hocque dilato Eusebius praepositus cubiculi missus est Cabillona aurum secum perferens, quo per turbulentos seditionum concitores occultius distributo et tumor consenuit militum et salus est in tuto locata praefecti. deinde cibo abunde perlato castra die praedicto sunt mota.</td>
+	                    <tr th:each="change : ${changes}">
+	                    	<td><b th:text="${change.getPropertyName()}"></b></td>
+	                    	<td class="updated" th:if="${previousCommit != null}" th:text="${change.getLeftValue()}"></td>
+	                    	<td class="updated" th:text="${change.getRightValue()}"></td>
 	                    </tr>
 	                  </table>
 	                </div><!-- /.box-body -->

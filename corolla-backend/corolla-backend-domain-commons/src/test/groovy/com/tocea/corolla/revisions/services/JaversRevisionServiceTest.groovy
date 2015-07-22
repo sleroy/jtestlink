@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User
 import spock.lang.Specification;
 
 import com.tocea.corolla.requirements.exceptions.*;
+import com.tocea.corolla.revisions.domain.Commit
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.utils.functests.FunctionalTestDoc

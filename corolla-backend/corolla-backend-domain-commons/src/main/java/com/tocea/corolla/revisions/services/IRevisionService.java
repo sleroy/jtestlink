@@ -47,4 +47,20 @@ public interface IRevisionService {
 	 */
 	public Object getSnapshot(String objectID, Class<?> objectClass, String commitID);
 	
+	/**
+	 * Retrieves the commit that was made before a specific commit
+	 * @param commit
+	 * @return
+	 */
+	public ICommit getPreviousCommit(String objectID, Class<?> objectClass, String commitID);
+	
+	/**
+	 * Retrieves a commit from its ID
+	 * @param objectID
+	 * @param objectClass
+	 * @param commitID
+	 * @return
+	 */
+	public ICommit findCommitByID(String objectID, Class<?> objectClass, String commitID);
+	
 }

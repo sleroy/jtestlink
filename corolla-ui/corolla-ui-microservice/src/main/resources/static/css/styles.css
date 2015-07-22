@@ -247,6 +247,8 @@ h1, h2, h3 {
 .revisions-comparison .time, .revisions-comparison .author {
 	padding: 6px;
 	font-size: 13px;
+	margin-left: 3px;
+	margin-right: 3px;
 }
 
 .revisions-comparison b {

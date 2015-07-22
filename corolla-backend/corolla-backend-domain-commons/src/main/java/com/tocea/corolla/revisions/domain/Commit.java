@@ -22,7 +22,7 @@ public class Commit implements ICommit {
 	
 	public Commit(String objectID, Class<?> objectClass, CdoSnapshot snapshot) {
 		
-		this.id = snapshot.getCommitId().value();
+		this.id = snapshot.getCommitId().valueAsNumber().toBigInteger().toString(); //snapshot.getCommitId().value();
 		this.author = snapshot.getCommitMetadata().getAuthor();
 		this.date = snapshot.getCommitMetadata().getCommitDate().toDate();
 		this.objectID = objectID;

@@ -1,6 +1,7 @@
 package com.tocea.corolla.revisions.services;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -89,6 +90,36 @@ public class JaversRevisionService implements IRevisionService {
 	}
 	
 	@Override
+	public ICommit findCommitByID(String objectID, Class<?> objectClass, String commitID) {
+		
+		Collection<ICommit> history = getHistory(objectID, objectClass);
+		
+		for(ICommit commit : history) {
+			if (commit.getId().equals(commitID)) {
+				return commit;
+			}
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public ICommit getPreviousCommit(String objectID, Class<?> objectClass, String commitID) {
+		
+		Collection<ICommit> history = getHistory(objectID, objectClass);
+		
+		Iterator<ICommit> it = history.iterator();
+		
+		while(it.hasNext()) {
+			if (it.next().getId().equals(commitID)) {
+				return it.hasNext() ? it.next() : null;
+			}
+		}
+		
+		return null;
+	}
+	
+	@Override
 	public List<IChange> compare(Object oldVersion, Object currentVersion) {
 		
 		Diff diff = javers.compare(oldVersion, currentVersion);
@@ -133,14 +164,13 @@ public class JaversRevisionService implements IRevisionService {
 									
 					PropertyUtils.setProperty(object, prop.getName(), cdoSnapshot.getPropertyValue(prop.getName()));
 					
-					
 				}
 				
 			}
 		
 		} catch (Exception e) {
 			
-			throw new SnapshotBuildFailureException();
+			throw new SnapshotBuildFailureException(e);
 		}
 		
 		return object;
@@ -171,7 +201,8 @@ public class JaversRevisionService implements IRevisionService {
 		
 		if (snapshots != null) {		
 			for(CdoSnapshot snapshot : snapshots) {
-				if (snapshot.getCommitId().value().equals(commit.getId())) {
+				String commitID = snapshot.getCommitId().valueAsNumber().toBigInteger().toString();
+				if (commitID.equals(commit.getId())) {
 					return snapshot;
 				}
 			}		
