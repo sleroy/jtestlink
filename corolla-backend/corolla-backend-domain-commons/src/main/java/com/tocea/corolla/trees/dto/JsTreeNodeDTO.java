@@ -1,16 +1,7 @@
 package com.tocea.corolla.trees.dto;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.tocea.corolla.portfolio.domain.ProjectNode;
-import com.tocea.corolla.requirements.trees.domain.RequirementNode;
-import com.tocea.corolla.trees.domain.TextNode;
-import com.tocea.corolla.trees.domain.TreeNode;
 
 public class JsTreeNodeDTO {
 

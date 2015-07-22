@@ -12,6 +12,16 @@ import com.tocea.corolla.trees.domain.TreeNode;
 public class RequirementsTreeUtils {
 
 	/**
+	 * Tests if a node is a Requirement Node
+	 * @param node
+	 * @return
+	 */
+	public static boolean isRequirementNode(TreeNode node) {
+		
+		return node.getClass().equals(RequirementNode.class);
+	}
+	
+	/**
 	 * Retrieves a tree node by its Requirement ID
 	 * @param id
 	 * @param nodes
@@ -21,7 +31,7 @@ public class RequirementsTreeUtils {
 		
 		for(TreeNode node : nodes) {			
 			
-			if (node.getClass().equals(RequirementNode.class) && ((RequirementNode)node).getRequirementId().equals(id)) {
+			if (isRequirementNode(node) && ((RequirementNode) node).getRequirementId().equals(id)) {
 				return node;
 			}
 			
@@ -46,7 +56,7 @@ public class RequirementsTreeUtils {
 		
 		for(TreeNode node : nodes) {
 			
-			if (node.getClass().equals(RequirementNode.class)) {			
+			if (isRequirementNode(node)) {			
 				requirementNodes.add((RequirementNode)node);			
 			}
 			
@@ -59,6 +69,28 @@ public class RequirementsTreeUtils {
 	}
 	
 	/**
+	 * Retrieves the list of all requirement IDs
+	 * from a collection of nodes
+	 * @param nodes
+	 * @return
+	 */
+	public static Collection<String> getRequirementsIDs(Collection<TreeNode> nodes) {
+		
+		Collection<String> ids = Lists.newArrayList();
+		
+		for(TreeNode node : nodes) {
+			
+			if (isRequirementNode(node)) {
+				ids.add(((RequirementNode) node).getRequirementId());
+			}
+			
+			ids.addAll(getRequirementsIDs(node.getNodes()));
+		}
+		
+		return ids;
+	}
+	
+	/**
 	 * Removes nodes attached to the given requirements IDs
 	 * @param nodes
 	 * @param ids
@@ -67,7 +99,7 @@ public class RequirementsTreeUtils {
 	public static Collection<TreeNode> removeRequirementsByID(Collection<TreeNode> nodes, Collection<String> ids) {
 			
 		for(TreeNode node : Lists.newArrayList(nodes)) {			
-			if (node.getClass().equals(RequirementNode.class) && ids.contains(((RequirementNode)node).getRequirementId())) {
+			if (isRequirementNode(node) && ids.contains(((RequirementNode) node).getRequirementId())) {
 				nodes.remove(node);					
 			}else{	
 				node.setNodes(removeRequirementsByID(node.getNodes(), ids));				
@@ -104,7 +136,7 @@ public class RequirementsTreeUtils {
 	public static Collection<TreeNode> removeRequirementsNotInIDs(Collection<TreeNode> nodes, Collection<String> ids) {
 			
 		for(TreeNode node : Lists.newArrayList(nodes)) {	
-			if (node.getClass().equals(RequirementNode.class) && !ids.contains(((RequirementNode)node).getRequirementId())) {							
+			if (isRequirementNode(node) && !ids.contains(((RequirementNode)node).getRequirementId())) {							
 				nodes.remove(node);					
 			}else{
 				node.setNodes(removeRequirementsNotInIDs(node.getNodes(), ids));				

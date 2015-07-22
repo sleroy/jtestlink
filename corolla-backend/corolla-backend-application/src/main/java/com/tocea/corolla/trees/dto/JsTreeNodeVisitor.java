@@ -9,9 +9,9 @@ import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.utils.ProjectUtils;
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
-import com.tocea.corolla.trees.domain.ITreeNodeVisitor;
 import com.tocea.corolla.trees.domain.TextNode;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.visitors.ITreeNodeVisitor;
 
 public class JsTreeNodeVisitor implements ITreeNodeVisitor {
 

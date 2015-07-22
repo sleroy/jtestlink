@@ -1,4 +1,4 @@
-package com.tocea.corolla.products.rest;
+package com.tocea.corolla.portfolio.rest;
 
 import java.util.Collection;
 
@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
+import com.tocea.corolla.portfolio.visitors.PortfolioJsTree;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.trees.domain.TreeNode;
@@ -42,7 +43,7 @@ public class PortfolioRestController {
 		
 		for(TreeNode node : portfolio.getNodes()) {
 			
-			JsTreeNodeVisitor visitor = new JsTreeNodeVisitor(projects);
+			PortfolioJsTree visitor = new PortfolioJsTree(projects);
 			node.accept(visitor);
 			nodes.add(visitor.getResult());
 			

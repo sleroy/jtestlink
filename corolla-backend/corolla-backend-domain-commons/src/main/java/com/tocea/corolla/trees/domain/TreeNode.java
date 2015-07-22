@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.tocea.corolla.trees.visitors.ITreeNodeVisitor;
 
 public class TreeNode implements Cloneable {
 

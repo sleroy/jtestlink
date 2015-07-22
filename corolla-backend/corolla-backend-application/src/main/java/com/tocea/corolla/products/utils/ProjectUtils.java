@@ -12,7 +12,6 @@ public class ProjectUtils {
 	public static Project findByID(final String ID, Collection<Project> projects) {
 		
 		Collection<Project> match = Collections2.filter(projects, new Predicate<Project>() {
-
 			@Override
 			public boolean apply(Project project) {
 				return project.getId().equals(ID);

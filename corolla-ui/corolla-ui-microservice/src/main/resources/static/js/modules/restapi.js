@@ -43,6 +43,13 @@ function RestAPI() {
 			"delete": function(id, callback) {
 				call("groups/delete/"+id, callback);
 			}
+		},
+		
+		"requirements": {
+			
+			"jstree": function(projectKey, branchName, callback) {
+				call("requirements/tree/jstree/"+projectKey+"/"+branchName, callback);
+			}
 		}
 
 	}

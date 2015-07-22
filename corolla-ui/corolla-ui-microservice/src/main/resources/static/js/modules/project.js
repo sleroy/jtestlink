@@ -36,70 +36,10 @@ function initRequirementView() {
 		}
 	});
 	
-	$(ITEMS_TREEVIEW).jstree({
-		"core": {
-			"animation" : 0,
-		    "check_callback" : true,
-		    "themes" : { "stripes" : true },
-		    'data' : [{
-		    	'text': 'Komea Dashboard',
-		    	'children': [{
-			    		'text': 'CRUD KPI Operations',
-		            	'children': [{ 
-		            	    	'text': 'Add a KPI'
-		            	    }, {
-		            	    	'text': 'Edit a KPI'
-		            	    }, {
-		            	    	'text': 'Delete a KPI'
-		            	    }]
-			    	}, {
-			    		'text': 'CRUD Users Operations',
-			    		'children': [{
-			    			'text': 'Add an user'
-			    		},{
-			    			'text': 'Edit an user'
-			    		},{
-			    			'text': 'Delete an user'
-			    		}]
-			    	}]
-			    }]
-		},
-		"plugins": ["dnd", "contextmenu", "types"],
-		"contextmenu": {
-			"items": {
-				"add": {
-					label: "Add",
-					icon: 'glyphicon glyphicon-plus',
-					'submenu': {
-						'requirement': {
-							label: 'Requirement'
-						},
-						'user_story': {
-							label: 'User Story'
-						},
-						'set' : {
-							label: 'Set'
-						},
-						'test_case' : {
-							label: 'Test Case'
-						}
-					}
-				},
-				"delete": {
-					label: "Delete",
-					icon: 'glyphicon glyphicon-remove',
-					action: function(node) {
-						console.log(node);
-						console.log('deleting node: '+node.reference[0].text);
-					}
-				}
-			}
-		},
-		"types": {
-			'default': { icon: 'glyphicon glyphicon-list-alt' },
-			'testcase': { icon: 'glyphicon glyphicon-flash' }
-		}
-	});
+	/*
+	 * Retrieves JsTree data
+	 */
+	restAPI.requirements.jstree("corolla", "Master", initJsTree);
 	
 	function format_jstree_data(data) {
 		
@@ -177,6 +117,79 @@ function initRequirementView() {
 	/* Refresh the sunburst when the window is being resized */
 	$(window).resize(function() {
 //		drawSunburst();
+	});
+	
+}
+
+/**
+ * Initializes JsTree widget
+ * @param data
+ */
+function initJsTree(data) {
+	
+	$(ITEMS_TREEVIEW).jstree({
+		"core": {
+			"animation" : 0,
+		    "check_callback" : true,
+		    "themes" : { "stripes" : true },
+		    'data' : data /*[{
+		    	'text': 'Komea Dashboard',
+		    	'children': [{
+			    		'text': 'CRUD KPI Operations',
+		            	'children': [{ 
+		            	    	'text': 'Add a KPI'
+		            	    }, {
+		            	    	'text': 'Edit a KPI'
+		            	    }, {
+		            	    	'text': 'Delete a KPI'
+		            	    }]
+			    	}, {
+			    		'text': 'CRUD Users Operations',
+			    		'children': [{
+			    			'text': 'Add an user'
+			    		},{
+			    			'text': 'Edit an user'
+			    		},{
+			    			'text': 'Delete an user'
+			    		}]
+			    	}]
+			    }]*/
+		},
+		"plugins": ["dnd", "contextmenu", "types"],
+		"contextmenu": {
+			"items": {
+				"add": {
+					label: "Add",
+					icon: 'glyphicon glyphicon-plus',
+					'submenu': {
+						'requirement': {
+							label: 'Requirement'
+						},
+						'user_story': {
+							label: 'User Story'
+						},
+						'set' : {
+							label: 'Set'
+						},
+						'test_case' : {
+							label: 'Test Case'
+						}
+					}
+				},
+				"delete": {
+					label: "Delete",
+					icon: 'glyphicon glyphicon-remove',
+					action: function(node) {
+						console.log(node);
+						console.log('deleting node: '+node.reference[0].text);
+					}
+				}
+			}
+		},
+		"types": {
+			'default': { icon: 'glyphicon glyphicon-list-alt' },
+			'testcase': { icon: 'glyphicon glyphicon-flash' }
+		}
 	});
 	
 }
