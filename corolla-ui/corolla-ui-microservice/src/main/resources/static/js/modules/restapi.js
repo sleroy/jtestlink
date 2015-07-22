@@ -49,6 +49,10 @@ function RestAPI() {
 			
 			"jstree": function(callback) {
 				call("portfolio/jstree", callback);
+			},
+			
+			"move": function(fromID, toID, callback) {
+				call("portfolio/move/"+fromID+"/"+toID, callback);
 			}
 		
 		},

@@ -4,10 +4,13 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
+import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
@@ -27,6 +30,9 @@ public class PortfolioRestController {
 	
 	@Autowired
 	private IProjectDAO projectDAO;
+	
+	@Autowired
+	private Gate gate;
 	
 	@RequestMapping(value = "/jstree")
 	@Secured({ Permission.REST })
@@ -49,6 +55,13 @@ public class PortfolioRestController {
 		}
 
 		return nodes;		
+	}
+	
+	@RequestMapping(value = "/move/{fromID}/{toID}")
+	@Secured({ Permission.REST })
+	public Portfolio moveNode(@PathVariable Integer fromID, @PathVariable Integer toID) {
+		
+		return gate.dispatch(new MovePortfolioNodeCommand(fromID, toID));
 	}
 	
 }

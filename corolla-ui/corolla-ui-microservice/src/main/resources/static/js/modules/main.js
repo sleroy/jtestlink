@@ -182,11 +182,6 @@ var selectUserModal = new SelectUserModal();
 
 $(document).ready(function() {
 	
-	$(document).on('dnd_stop.vakata', function(e, data) {
-		console.log('the tree has been updated!')
-	});
-	
-	
 	$('.project-releases-tree-view').jstree({
 		"core": {
 			"animation" : 0,
