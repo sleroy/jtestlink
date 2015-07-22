@@ -13,6 +13,8 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.commands.DeleteProjectBranchCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
+import com.tocea.corolla.products.dao.IProjectDAO;
+import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
@@ -21,6 +23,7 @@ import com.tocea.corolla.requirements.commands.DeleteRequirementCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
 import com.tocea.corolla.requirements.domain.Requirement;
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 
 @CommandHandler
 @Transactional
@@ -34,6 +37,9 @@ public class DeleteProjectBranchCommandHandler implements ICommandHandler<Delete
 	
 	@Autowired
 	private IRequirementDAO requirementDAO;
+	
+	@Autowired
+	private IProjectDAO projectDAO;
 	
 	@Autowired
 	private Gate gate;
@@ -52,14 +58,24 @@ public class DeleteProjectBranchCommandHandler implements ICommandHandler<Delete
 		}
 		
 		if (branch.getDefaultBranch()) {
-			throw new ProjectBranchOperationForbiddenException("Cannot delete the default branch");
+			
+			// The only way to delete the default branch of a project is to delete the project first
+			Project project = projectDAO.findOne(branch.getProjectId());
+			
+			if (project != null) {
+				throw new ProjectBranchOperationForbiddenException("Cannot delete the default branch");
+			}
+			
 		}
 		
 		// Delete the branch
 		branchDAO.delete(branch);
 		
 		// Delete the requirements tree of the branch
-		requirementsTreeDAO.deleteByBranchId(branch.getId());
+		RequirementsTree requirementsTree = requirementsTreeDAO.findByBranchId(branch.getId());
+		if (requirementsTree != null) {
+			requirementsTreeDAO.delete(requirementsTree);
+		}
 				
 		Collection<Requirement> requirements = requirementDAO.findByProjectBranchId(branch.getId());
 		

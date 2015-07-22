@@ -8,6 +8,8 @@ import spock.lang.Specification;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.commands.DeleteProjectBranchCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
+import com.tocea.corolla.products.dao.IProjectDAO;
+import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
@@ -34,12 +36,14 @@ class DeleteProjectBranchCommandHandlerTest extends Specification {
 	def Gate gate = Mock(Gate)
 	def DeleteProjectBranchCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
+	def IProjectDAO projectDAO = Mock(IProjectDAO)
 	
 	def setup() {
 		handler = new DeleteProjectBranchCommandHandler(
 				branchDAO : branchDAO,
 				requirementsTreeDAO : requirementsTreeDAO,
 				requirementDAO : requirementDAO,
+				projectDAO : projectDAO,
 				gate : gate
 		)
 	}
@@ -76,7 +80,10 @@ class DeleteProjectBranchCommandHandlerTest extends Specification {
 			notThrown(Exception.class)
 			
 		then:
-			1 * requirementsTreeDAO.deleteByBranchId(branch.id)
+			1 * requirementsTreeDAO.findByBranchId(branch.id) >> requirementsTree
+			
+		then:
+			1 * requirementsTreeDAO.delete(requirementsTree)
 			1 * requirementDAO.findByProjectBranchId(branch.id) >> requirements
 			
 	}
@@ -136,14 +143,18 @@ class DeleteProjectBranchCommandHandlerTest extends Specification {
 					projectId: "35",
 					defaultBranch: true
 			)
+			def project = new Project(id: branch.projectId)
 			def requirements = []
 		
 		when:
 			handler.handle new DeleteProjectBranchCommand(branch)
 	
 		then:
-			thrown(ProjectBranchOperationForbiddenException.class)
+			projectDAO.findOne(branch.projectId) >> project
+			
+		then:
 			0 * branchDAO.delete(_)
+			thrown(ProjectBranchOperationForbiddenException.class)	
 		
 	}
 	
