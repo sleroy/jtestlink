@@ -1,5 +1,6 @@
 package com.tocea.corolla.portfolio.rest;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,15 @@ public class PortfolioRestController {
 	
 	@Autowired
 	private Gate gate;
+	
+	@RequestMapping(value = "/")
+	@Secured({ Permission.REST })
+	public Collection<TreeNode> getTree() {
+		
+		Portfolio portfolio = portfolioDAO.find();
+		
+		return portfolio != null ? portfolio.getNodes() : new ArrayList<TreeNode>();
+	}
 	
 	@RequestMapping(value = "/jstree")
 	@Secured({ Permission.REST })

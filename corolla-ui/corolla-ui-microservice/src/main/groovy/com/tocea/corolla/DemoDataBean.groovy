@@ -208,6 +208,25 @@ public class DemoDataBean {
 				description: 'SVN connector for Komea',
 				statusId: statusActive.id
 		), komeaFolderID)
+		
+		
+//		portfolio = portfolioDAO.find();
+//		for(int i=1; i<=6000; i++) {			
+//			def node = new TextNode(i.toString())
+//			portfolio = this.gate.dispatch(new CreateTreeNodeCommand(portfolio, node, null))
+//		}
+//		portfolioDAO.save(portfolio)
+		
+		portfolio = portfolioDAO.find();
+		def parentID = null
+		for(int i=1; i<=6000; i++) {			
+			def node = new TextNode(i.toString())
+			if (i%60 == 0) {
+				parentID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+			}
+			portfolio = this.gate.dispatch(new CreateTreeNodeCommand(portfolio, node, parentID))
+		}
+		portfolioDAO.save(portfolio)
 
 		/*
 		 * Branches
