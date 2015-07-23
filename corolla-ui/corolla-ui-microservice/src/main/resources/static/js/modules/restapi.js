@@ -62,8 +62,18 @@ function RestAPI() {
 		
 		"portfolio": {
 			
+			"URL" : REST_PREFIX+"portfolio/jstree",
+			
 			"jstree": function(callback) {
 				call("portfolio/jstree", callback);
+			},
+			
+			"add": function(text, parentID, callback) {
+				var url = "portfolio/add/text";
+				if (parentID) {
+					url += "/"+parentID;
+				}
+				postText(url, text, callback);
 			},
 			
 			"edit": function(nodeID, text, callback) {
@@ -71,6 +81,7 @@ function RestAPI() {
 			},
 			
 			"move": function(fromID, toID, callback) {
+				if (!toID) toID = 0;
 				call("portfolio/move/"+fromID+"/"+toID, callback);
 			},
 			

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.commands.CreatePortfolioTextNodeCommand;
 import com.tocea.corolla.portfolio.commands.EditPortfolioTextNodeCommand;
 import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.commands.RemovePortfolioNodeCommand;
@@ -21,8 +22,10 @@ import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.portfolio.visitors.PortfolioJsTree;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
+import com.tocea.corolla.trees.domain.TextNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.dto.JsTreeNodeDTO;
+import com.tocea.corolla.trees.utils.TreeNodeUtils;
 import com.tocea.corolla.users.domain.Permission;
 
 @RestController
@@ -65,7 +68,7 @@ public class PortfolioRestController {
 	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
 	public Portfolio moveNode(@PathVariable Integer fromID, @PathVariable Integer toID) {
 		
-		return gate.dispatch(new MovePortfolioNodeCommand(fromID, toID));
+		return gate.dispatch(new MovePortfolioNodeCommand(fromID, toID != 0 ? toID : null));
 	}
 	
 	@RequestMapping(value = "/remove/{nodeID}")
@@ -80,6 +83,29 @@ public class PortfolioRestController {
 	public Portfolio editTextNode(@PathVariable Integer nodeID, @RequestBody String text) {
 		
 		return gate.dispatch(new EditPortfolioTextNodeCommand(nodeID, text));
+	}
+	
+	@RequestMapping(value = "/add/text/{parentID}", method = RequestMethod.POST, consumes = "text/plain")
+	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	public TextNode addTextNode(@PathVariable Integer parentID, @RequestBody String text) {
+		
+		Portfolio portfolio = gate.dispatch(new CreatePortfolioTextNodeCommand(text, parentID));
+		
+		Integer maxID = TreeNodeUtils.getMaxNodeId(portfolio.getNodes());		
+		TreeNode node = TreeNodeUtils.getNodeById(maxID, portfolio.getNodes());
+		
+		if (node != null && TreeNodeUtils.isTextNode(node) && ((TextNode)node).getText().equals(text)) {
+			return (TextNode) node;		
+		}
+		
+		return null;
+	}
+	
+	@RequestMapping(value = "/add/text", method = RequestMethod.POST, consumes = "text/plain")
+	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	public TextNode addTextNode(@RequestBody String text) {
+		
+		return addTextNode(null, text);
 	}
 	
 }
