@@ -217,16 +217,30 @@ public class DemoDataBean {
 //		}
 //		portfolioDAO.save(portfolio)
 		
-		portfolio = portfolioDAO.find();
+//		portfolio = portfolioDAO.find();
+//		def parentID = null
+//		for(int i=1; i<=6000; i++) {			
+//			def node = new TextNode(i.toString())
+//			if (i%60 == 0) {
+//				parentID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+//			}
+//			portfolio = this.gate.dispatch(new CreateTreeNodeCommand(portfolio, node, parentID))
+//		}
+//		portfolioDAO.save(portfolio)
+		
 		def parentID = null
-		for(int i=1; i<=6000; i++) {			
-			def node = new TextNode(i.toString())
-			if (i%60 == 0) {
+		for(int i=1; i<=6000; i++) {
+			if (i% 60 == 0) {
+				portfolio = portfolioDAO.find();
 				parentID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
 			}
-			portfolio = this.gate.dispatch(new CreateTreeNodeCommand(portfolio, node, parentID))
+			this.gate.dispatch new CreateProjectCommand(new Project(
+					key: 'corolla'+i, 
+					name: 'Corolla '+i, 
+					description: 'Whatever',
+					statusId: statusActive.id
+			), parentID)
 		}
-		portfolioDAO.save(portfolio)
 
 		/*
 		 * Branches
