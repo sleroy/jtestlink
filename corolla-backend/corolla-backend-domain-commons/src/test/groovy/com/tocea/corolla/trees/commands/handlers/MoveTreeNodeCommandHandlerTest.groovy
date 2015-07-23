@@ -5,8 +5,6 @@ import org.junit.Rule;
 import spock.lang.Specification;
 
 import com.tocea.corolla.cqrs.gate.Gate;
-import com.tocea.corolla.requirements.exceptions.*;
-import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
 import com.tocea.corolla.trees.commands.MoveTreeNodeCommand

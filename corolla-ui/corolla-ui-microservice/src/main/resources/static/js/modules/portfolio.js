@@ -135,10 +135,13 @@ function initJsTree(data) {
 			"items" : {
 				"add" : {
 					label : "Add",
-					action : function(node) {
-						var name = node.reference[0].text;
-						console.log('adding new element in node: '
-								+ name);
+					action : function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var ID = node.a_attr['data-nodeID'];
+						console.log('adding new element in node: ' + ID);
+						var newNode = $(PROJECTS_TREEVIEW).jstree(true).create_node(node);
+						$(PROJECTS_TREEVIEW).jstree(true).edit(newNode);
 					}
 				},
 				"delete" : {
