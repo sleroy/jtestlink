@@ -13,6 +13,21 @@ function RestAPI() {
 		$.get(REST_PREFIX + url, callback);
 	}
 	
+	var post = function(url, data, callback) {
+		$.post(REST_PREFIX + url, data, callback);
+	}
+	
+	var postText = function(url, data, callback) {
+		$.ajax({
+			url			: REST_PREFIX + url,
+			method		: 'post',
+			contentType	: "text/plain",
+			data		: data,
+			success 	: callback,
+			error		: callback
+		});
+	}
+	
 	return {
 		
 		"users": {
@@ -49,6 +64,10 @@ function RestAPI() {
 			
 			"jstree": function(callback) {
 				call("portfolio/jstree", callback);
+			},
+			
+			"edit": function(nodeID, text, callback) {
+				postText("portfolio/edit/text/"+nodeID, text, callback);
 			},
 			
 			"move": function(fromID, toID, callback) {

@@ -127,6 +127,19 @@ function initJsTree(data) {
 						console.log("moved node #"+nodeID+" into node #"+parentID);
 					});
 				}
+				/*if (op == "rename_node") {
+					var nodeID = node.a_attr['data-nodeID'];				
+					if (!nodeID) {
+						var parentID = parent.a_attr['data-nodeID'];
+						console.log("created node #"+nodeID+" into node #"+parentID);
+					}else{
+						var text = node.text;
+						console.log(node);
+						
+						console.log(node.original.text);
+						//restAPI.portfolio.edit(nodeID, )
+					}
+				}*/
 				return true;
 			}	
 		},
@@ -135,22 +148,54 @@ function initJsTree(data) {
 			"items" : {
 				"add" : {
 					label : "Add",
+					icon : "fa fa-plus",
+					submenu: {
+						'add_folder':  {
+							label: "Folder",
+							icon: "glyphicon glyphicon-folder-open",
+							action : function(data) {
+								var inst = $.jstree.reference(data.reference);
+							    var node = inst.get_node(data.reference);
+							    var ID = node.a_attr['data-nodeID'];
+								console.log('adding new element in node: ' + ID);
+								var newNode = $(PROJECTS_TREEVIEW).jstree(true).create_node(node);
+								$(PROJECTS_TREEVIEW).jstree(true).edit(newNode);
+							}
+						},
+						'add_project': {
+							label: "Project",
+							icon: "fa fa-briefcase",
+							action : function(data) {
+								var inst = $.jstree.reference(data.reference);
+							    var node = inst.get_node(data.reference);
+							    var ID = node.a_attr['data-nodeID'];
+								//...
+							}
+						}
+					}			
+				},
+				"edit" : {
+					label : "Edit",
+					icon : "fa fa-pencil",
+					shortcut : 113,
+					shortcut_label : 'F2',
 					action : function(data) {
 						var inst = $.jstree.reference(data.reference);
 					    var node = inst.get_node(data.reference);
 					    var ID = node.a_attr['data-nodeID'];
-						console.log('adding new element in node: ' + ID);
-						var newNode = $(PROJECTS_TREEVIEW).jstree(true).create_node(node);
-						$(PROJECTS_TREEVIEW).jstree(true).edit(newNode);
+					    var projectID = node.a_attr['data-projectID'];
+					    if (!projectID) {
+					    	console.log('editing node: ' + ID);
+					    	$(PROJECTS_TREEVIEW).jstree(true).edit(node);
+					    }
 					}
 				},
 				"delete" : {
 					label : "Delete",
+					icon : "fa fa-trash",
 					action : function(data) {
-
 						var inst = $.jstree.reference(data.reference);
 					    var node = inst.get_node(data.reference);
-
 					    restAPI.portfolio.remove(node.a_attr['data-nodeID'], function(data) {
 					    	$(PROJECTS_TREEVIEW).jstree(true).delete_node(node);
 					    });
@@ -175,6 +220,17 @@ function initJsTree(data) {
 			data.instance.toggle_node(data.node);
 		}
 	});
+	
+	/**
+	 * Renames a text node
+	 */
+    $(PROJECTS_TREEVIEW).bind("rename_node.jstree", function (e, data) {
+    	var nodeID = data.node.a_attr['data-nodeID'];
+    	var text = data.text;
+    	restAPI.portfolio.edit(nodeID, text, function(data) {
+    		console.log("edited node #"+nodeID+" with text: "+text);
+    	});
+    });
 
 }
 

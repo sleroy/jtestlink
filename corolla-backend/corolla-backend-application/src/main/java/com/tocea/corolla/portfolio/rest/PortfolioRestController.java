@@ -5,11 +5,14 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.commands.EditPortfolioTextNodeCommand;
 import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.commands.RemovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
@@ -70,6 +73,13 @@ public class PortfolioRestController {
 	public Portfolio removeNode(@PathVariable Integer nodeID) {
 		
 		return gate.dispatch(new RemovePortfolioNodeCommand(nodeID));
+	}
+	
+	@RequestMapping(value = "/edit/text/{nodeID}", method = RequestMethod.POST, consumes = "text/plain")
+	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	public Portfolio editTextNode(@PathVariable Integer nodeID, @RequestBody String text) {
+		
+		return gate.dispatch(new EditPortfolioTextNodeCommand(nodeID, text));
 	}
 	
 }
