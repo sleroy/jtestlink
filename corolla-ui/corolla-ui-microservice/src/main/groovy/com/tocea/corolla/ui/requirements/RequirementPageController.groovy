@@ -46,20 +46,32 @@ class RequirementPageController {
 		return "requirements"
 	}
 	
-	@RequestMapping("/ui/requirements/{project_key}")
-	public ModelAndView getRequirementsPage(@PathVariable project_key) {
-		
-		def model = new ModelAndView(PROJECT_VIEW)
-		model.addObject "project", project_key
-		
-		return model
+	@RequestMapping("/ui/requirements/{projectKey}")
+	public ModelAndView getRequirementsPage(@PathVariable projectKey) {
+			
+		return getRequirementPage(projectKey, null, null)
 	}
 	
-	@RequestMapping("/ui/requirements/{project_key}/{req_id}")
-	public ModelAndView getRequirementPage(@PathVariable project_key, @PathVariable req_id) {
+	@RequestMapping("/ui/requirements/{projectKey}/{branchName}")
+	public ModelAndView getRequirementPageForBranch(@PathVariable projectKey, @PathVariable branchName) {
+		
+		return getRequirementPage(projectKey, branchName, null)
+	}
+	
+	@RequestMapping("/ui/requirements/{projectKey}/{branchName}/{requirementKey}")
+	public ModelAndView getRequirementPage(@PathVariable projectKey, @PathVariable branchName, @PathVariable requirementKey) {
+		
+		def project = findProjectOrFail(projectKey)				
+		def branch = branchName ? findBranchOrFail(branchName, project) : branchDAO.findDefaultBranch(project.id)	
+		def requirement = requirementDAO.findByKeyAndProjectBranchId(requirementKey, branch.id)
+		
+		def commits = requirement ? revisionService.getHistory(requirement.id, Requirement.class) : null
 		
 		def model = new ModelAndView(PROJECT_VIEW)
-		model.addObject "project", project_key
+		model.addObject "project", project
+		model.addObject "branch", branch
+		model.addObject "requirement", requirement
+		model.addObject "commits", commits
 		
 		return model
 	}
@@ -115,6 +127,28 @@ class RequirementPageController {
 		model.addObject "changes", changes
 		
 		return model	
+	}
+	
+	private Project findProjectOrFail(String projectKey) {
+		
+		Project project = projectDAO.findByKey(projectKey)
+				
+		if (project == null) {
+			throw new ProjectNotFoundException()
+		}
+		
+		return project
+	}
+	
+	private ProjectBranch findBranchOrFail(String branchName, Project project) {
+		
+		ProjectBranch branch = branchDAO.findByNameAndProjectId(branchName, project.id)
+				
+		if (branch == null) {
+			throw new ProjectBranchNotFoundException()
+		}
+		
+		return branch
 	}
 	
 }

@@ -17,7 +17,9 @@ class PortfolioPageController {
 	
 	private static final String MANAGER_PAGE = "portfolio/manager";
 	private static final String PORTFOLIO_PAGE = "portfolio/portfolio";
-
+	private static final String MENU_PORTFOLIO = "portfolio";
+	private static final String MENU_PORTFOLIO_MANAGER = "portfolioManager";
+	
 	@Autowired
 	private IProjectDAO projectDAO;
 	
@@ -25,7 +27,7 @@ class PortfolioPageController {
 	public ModelAndView getPortfolio() {
 		
 		def model = new ModelAndView(PORTFOLIO_PAGE)
-		model.addObject "menu", "portfolio"
+		model.addObject "menu", MENU_PORTFOLIO
 		
 		model.addObject "projects", projectDAO.findAll();
 		
@@ -36,17 +38,23 @@ class PortfolioPageController {
 	public ModelAndView getPortfolioManagerIndex() {
 		
 		def model = new ModelAndView(MANAGER_PAGE);
-		model.addObject "menu", "portfolioManager"
+		model.addObject "menu", MENU_PORTFOLIO_MANAGER
 		
 		return model
 	}
 	
-	@RequestMapping("/ui/portfolio/manager/{project_key}")
-	public ModelAndView getPortfolioManager(@PathVariable project_key) {
+	@RequestMapping("/ui/portfolio/manager/{projectKey}")
+	public ModelAndView getPortfolioManager(@PathVariable projectKey) {
+		
+		def project = projectDAO.findByKey(projectKey)
+				
+		if (project == null) {
+			return new ModelAndView("redirect:/ui/portfolio/manager")
+		}
 		
 		def model = new ModelAndView(MANAGER_PAGE);
-		model.addObject "project", project_key
-		model.addObject "menu", "portfolioManager"
+		model.addObject "project", project
+		model.addObject "menu", MENU_PORTFOLIO_MANAGER
 		
 		return model
 	}

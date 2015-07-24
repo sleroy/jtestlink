@@ -132,28 +132,7 @@ function initJsTree(data) {
 			"animation" : 0,
 		    "check_callback" : true,
 		    "themes" : { "stripes" : true },
-		    'data' : data /*[{
-		    	'text': 'Komea Dashboard',
-		    	'children': [{
-			    		'text': 'CRUD KPI Operations',
-		            	'children': [{ 
-		            	    	'text': 'Add a KPI'
-		            	    }, {
-		            	    	'text': 'Edit a KPI'
-		            	    }, {
-		            	    	'text': 'Delete a KPI'
-		            	    }]
-			    	}, {
-			    		'text': 'CRUD Users Operations',
-			    		'children': [{
-			    			'text': 'Add an user'
-			    		},{
-			    			'text': 'Edit an user'
-			    		},{
-			    			'text': 'Delete an user'
-			    		}]
-			    	}]
-			    }]*/
+		    'data' : data
 		},
 		"plugins": ["dnd", "contextmenu", "types"],
 		"contextmenu": {
@@ -189,6 +168,22 @@ function initJsTree(data) {
 		"types": {
 			'default': { icon: 'glyphicon glyphicon-list-alt' },
 			'testcase': { icon: 'glyphicon glyphicon-flash' }
+		}
+	});
+	
+	/**
+	 * Action triggered when clicking on a node
+	 */
+	$(ITEMS_TREEVIEW).on("select_node.jstree", function(e, data) {
+		if (!data || !data.event || data.event.handleObj.type == 'contextmenu') {
+			return;
+		}
+		var key = data.instance.get_node(data.node, true).children('a')
+				.data('key');
+		if (key) {
+			document.location = '/ui/requirements/'+pageData.projectKey+'/'+pageData.branchName+'/'+ key
+		} else {
+			data.instance.toggle_node(data.node);
 		}
 	});
 	

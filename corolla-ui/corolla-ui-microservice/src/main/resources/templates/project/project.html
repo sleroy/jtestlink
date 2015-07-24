@@ -12,8 +12,15 @@
 			<span>Requirements</span>
 		</h1>
 		<ol class="breadcrumb">
-			<li><a th:href="@{/ui/portfolio/}"><i class="glyphicon glyphicon-book" /> Komea</a></li>
-			<li><a th:href="@{/ui/portfolio/}+${project}">Komea Dashboard</a></li>
+			<li>
+				<a th:href="@{/ui/portfolio/manager/}+${project.key}">
+					<i class="glyphicon glyphicon-book" />
+					<span th:text="${project.name}">Project</span>
+				</a>
+			</li>
+			<li>
+				<a href="#" th:text="${branch.name}">Branch</a>
+			</li>
 			<li class="active">Requirements</li>
 		</ol>
 		</section>
@@ -337,6 +344,26 @@
 																<th>Actions</th>
 															</tr>
 														</thead>
+														<tr th:each="commit : ${commits}">
+															<td class="toggle">
+																<span class="badge" th:text="${commit.id}">id</span>
+															</td>
+															<td class="toggle" th:text="${#dates.format(commit.getDate(), 'dd/MM/yyyy HH:mm')}">date</td>
+															<td class="toggle" th:text="${commit.type}"></td>
+															<td class="toggle">
+																<img src="http://www.gravatar.com/avatar/?s=16" alt="" />
+																<span th:text="${commit.author}"></span>
+															</td>
+															<td>
+																<a th:if="${commits[0].id} != ${commit.id}" href="#" class="label label-warning" style="margin-right: 5px;">
+																	Restore
+																</a>
+																<a th:href="@{/ui/requirements/}+${project.key}+@{/}+${branch.name}+@{/}+${requirement.key}+@{/revisions/}+${commit.id}" class="label label-primary">
+																	Changelog
+																</a>
+															</td>
+														</tr>
+												
 														<tr class="pointer" data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
 															<td class="toggle"><span class="badge">3</span></td>
 															<td class="toggle">24/06/2015 12:35</td>
@@ -577,7 +604,11 @@
 		<!-- 		<script type="text/javascript" th:src="@{/js/d3.min.js}" src="../static/js/d3.min.js" /> -->
 		<!-- 		<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js" /> -->
 		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/project.js}" />
-		<script type="text/javascript">
+		<script type="text/javascript" th:inline="text">
+			var pageData = {
+					'projectKey': '[[${project.key}]]',
+					'branchName': '[[${branch.name}]]'
+			}
 			$(document).ready(function() {
 				initRequirementView();
 				tabRooting();
