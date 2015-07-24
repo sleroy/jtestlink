@@ -26,8 +26,8 @@ import com.tocea.corolla.revisions.services.IRevisionService;
 @Slf4j
 class RequirementPageController {
 
-	private static String PROJECT_VIEW = "project/project"
-	private static String REVISION_VIEW = "project/revision"
+	private static String PROJECT_VIEW 		= "requirements/requirements"
+	private static String REVISION_VIEW 	= "requirements/revision"
 	
 	@Autowired
 	private IRevisionService revisionService;
@@ -76,33 +76,11 @@ class RequirementPageController {
 		return model
 	}
 	
-	@RequestMapping("/ui/requirements/{project_key}/{req_id}/revisions/{rev_id}")
-	public ModelAndView getRevisionPage(@PathVariable project_key, @PathVariable req_id, @PathVariable rev_id) {
-		
-		def model = new ModelAndView(REVISION_VIEW)
-		model.addObject "project", project_key
-		
-		return model
-		
-	}
-	
 	@RequestMapping("/ui/requirements/{projectKey}/{branchName}/{requirementKey}/revisions/{commitID}")
 	public ModelAndView getRevisionPage(@PathVariable projectKey, @PathVariable branchName, @PathVariable requirementKey, @PathVariable commitID) {
-		
-		def model = new ModelAndView(REVISION_VIEW)
-		model.addObject "project", projectKey
-		
-		Project project = projectDAO.findByKey(projectKey)
-		
-		if (project == null) {
-			throw new ProjectNotFoundException()
-		}
-		
-		ProjectBranch branch = branchDAO.findByNameAndProjectId(branchName, project.id)
-				
-		if (branch == null) {
-			throw new ProjectBranchNotFoundException()
-		}
+			
+		Project project = findProjectOrFail(projectKey)
+		def branch = branchName ? findBranchOrFail(branchName, project) : branchDAO.findDefaultBranch(project.id)
 				
 		Requirement requirement = requirementDAO.findByKeyAndProjectBranchId(requirementKey, branch.id)
 				
@@ -122,6 +100,10 @@ class RequirementPageController {
 		
 		def changes = revisionService.compare oldVersion, version
 		
+		def model = new ModelAndView(REVISION_VIEW)
+		model.addObject "project", project
+		model.addObject "branch", branch
+		model.addObject "requirement", requirement
 		model.addObject "commit", commit
 		model.addObject "previousCommit", previousCommit
 		model.addObject "changes", changes

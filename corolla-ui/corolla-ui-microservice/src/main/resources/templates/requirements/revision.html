@@ -10,15 +10,19 @@
 		<!-- Content Header (Page header) -->
 	    <section class="content-header">
 	      	<h1>
-	      		<img src="http://lorempixel.com/24/24/" alt="Komea" />
-	        	<span th:text="${project}">Project</span>
-	        	<small>Requirements</small>
+	      		<i class="fa fa-history"></i>
+	        	<span>Changelog</span>
 	      	</h1>
-	      	<ol class="breadcrumb">
-	        	<li><a href="#"><i class="glyphicon glyphicon-book"></i> Komea</a></li>
-	        	<li><a href="#">Komea Dashboard</a></li>
+	      	<ol class="breadcrumb">	      		
+	        	<li>
+		        	<a th:href="@{/ui/portfolio/manager/}+${project.key}">
+						<i class="glyphicon glyphicon-book" />
+						<span th:text="${project.name}">Project</span>
+					</a>
+	        	</li>
+	        	<li><a href="#" th:text="${branch.name}">Branch</a></li>
 	        	<li><a href="#">Requirements</a></li>
-	        	<li><a href="#">Add a KPI</a></li>
+	        	<li><a href="#" th:text="${requirement.name}">Requirement</a></li>
 	        	<li class="active">Revisions</li>
 	      	</ol>
 	    </section>
