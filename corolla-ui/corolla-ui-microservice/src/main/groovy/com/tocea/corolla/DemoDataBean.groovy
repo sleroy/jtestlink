@@ -228,19 +228,19 @@ public class DemoDataBean {
 //		}
 //		portfolioDAO.save(portfolio)
 		
-		def parentID = null
-		for(int i=1; i<=6000; i++) {
-			if (i% 60 == 0) {
-				portfolio = portfolioDAO.find();
-				parentID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
-			}
-			this.gate.dispatch new CreateProjectCommand(new Project(
-					key: 'corolla'+i, 
-					name: 'Corolla '+i, 
-					description: 'Whatever',
-					statusId: statusActive.id
-			), parentID)
-		}
+//		def parentID = null
+//		for(int i=1; i<=6000; i++) {
+//			if (i% 60 == 0) {
+//				portfolio = portfolioDAO.find();
+//				parentID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+//			}
+//			this.gate.dispatch new CreateProjectCommand(new Project(
+//					key: 'corolla'+i, 
+//					name: 'Corolla '+i, 
+//					description: 'Whatever',
+//					statusId: statusActive.id
+//			), parentID)
+//		}
 
 		/*
 		 * Branches
