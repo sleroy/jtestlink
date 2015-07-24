@@ -15,6 +15,8 @@ public class Commit implements ICommit {
 	private String objectID;
 	
 	private Class<?> objectClass;
+	
+	private String type;
 
 	public Commit() {
 		
@@ -27,6 +29,7 @@ public class Commit implements ICommit {
 		this.date = snapshot.getCommitMetadata().getCommitDate().toDate();
 		this.objectID = objectID;
 		this.objectClass = objectClass;
+		this.type = snapshot.getType().name();
 		
 	}
 	
@@ -68,6 +71,14 @@ public class Commit implements ICommit {
 
 	public void setObjectClass(Class<?> objectClass) {
 		this.objectClass = objectClass;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

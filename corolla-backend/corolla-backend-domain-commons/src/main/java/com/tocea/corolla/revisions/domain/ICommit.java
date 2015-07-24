@@ -10,4 +10,6 @@ public interface ICommit {
 	
 	public Date getDate();
 	
+	public String getType();
+	
 }
