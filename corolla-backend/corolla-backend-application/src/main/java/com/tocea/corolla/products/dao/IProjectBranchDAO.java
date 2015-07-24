@@ -3,6 +3,7 @@ package com.tocea.corolla.products.dao;
 import java.util.Collection;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.tocea.corolla.products.domain.ProjectBranch;
 
@@ -21,5 +22,13 @@ public interface IProjectBranchDAO extends MongoRepository<ProjectBranch, String
 	 * @return
 	 */
 	public Collection<ProjectBranch> findByProjectId(String projectId);
+	
+	/**
+	 * Retrieves the default branch of a given project
+	 * @param projectId
+	 * @return
+	 */
+	@Query(value="{ 'projectId': ?0, 'defaultBranch': true }")
+	public ProjectBranch findDefaultBranch(String projectId);
 	
 }
