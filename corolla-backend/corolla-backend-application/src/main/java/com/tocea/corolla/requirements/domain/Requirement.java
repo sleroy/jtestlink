@@ -27,7 +27,9 @@ public class Requirement implements Serializable {
 	
 	private String description;
 	
-	private String type;
+	private String typeID;
+	
+	private String statusID;
 
 	public String getId() {
 		return id;
@@ -61,12 +63,12 @@ public class Requirement implements Serializable {
 		this.description = description;
 	}
 
-	public String getType() {
-		return type;
+	public String getTypeID() {
+		return typeID;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setTypeID(String type) {
+		this.typeID = type;
 	}
 
 	public String getProjectBranchId() {
@@ -75,6 +77,14 @@ public class Requirement implements Serializable {
 
 	public void setProjectBranchId(String projectBranchId) {
 		this.projectBranchId = projectBranchId;
+	}
+
+	public String getStatusID() {
+		return statusID;
+	}
+
+	public void setStatusID(String statusID) {
+		this.statusID = statusID;
 	}
 	
 }
