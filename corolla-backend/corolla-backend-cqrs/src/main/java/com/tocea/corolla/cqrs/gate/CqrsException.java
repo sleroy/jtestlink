@@ -38,7 +38,9 @@ public class CqrsException extends RuntimeException {
 		super(DOMAIN_EXCEPTION + _message, _cause);
 	}
 
-
+	public CqrsException(Throwable cause) {
+		this(cause.getMessage(), cause);
+	}
 
 
 }

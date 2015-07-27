@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,13 +17,13 @@ public class Requirement implements Serializable {
 	@Field("_id")
 	private String id;
 	
-	@NotEmpty
+	@NotBlank
 	private String key;
 	
-	@NotEmpty
+	@NotBlank
 	private String projectBranchId;
 	
-	@NotEmpty
+	@NotBlank
 	private String name;
 	
 	private String description;
