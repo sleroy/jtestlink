@@ -32,6 +32,8 @@ public class Project implements Serializable {
 	private String ownerId;
 	
 	private String description;
+	
+	private String image;
 
 	public String getId() {
 		return id;
@@ -87,6 +89,14 @@ public class Project implements Serializable {
 
 	public void setCategoryId(String categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 	
 }
