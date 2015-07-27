@@ -26,25 +26,25 @@
 		</li>
 		
 		<li th:if="${project != null}">
-			<a href="/ui/portfolio/manager/komea-dashboard" class="border-red">
+			<a th:href="@{/ui/portfolio/manager/}+${project.key}" class="border-red">
 				<i class="fa fa-info"></i> 
 				<span>Project details</span>
 			</a>
 		</li>
 		<li th:if="${project != null}">
-			<a href="/ui/portfolio/manager/komea-dashboard#branches">
+			<a th:href="@{/ui/portfolio/manager/}+${project.key}+@{#branches}">
 				<i class="fa fa-share-alt"></i> 
 				<span>Branches</span>
 			</a>
 		</li>
 		<li th:if="${project != null}">
-			<a href="/ui/portfolio/manager/komea-dashboard#activity">
+			<a th:href="@{/ui/portfolio/manager/}+${project.key}+@{#activity}">
 				<i class="fa fa-history"></i> 
 				<span>Activity</span>
 			</a>
 		</li>	
 		<li th:if="${project != null}" th:classappend="${menu} == 'requirements' ? 'active'">
-			<a href="/ui/requirements/komea-dashboard">
+			<a th:href="@{/ui/requirements/}+${project.key}">
 				<i class="glyphicon glyphicon-duplicate"></i> 
 				<span>Requirements</span>
 			</a>
@@ -62,13 +62,13 @@
 			</a>
 		</li>
 		<li th:if="${project != null}" th:classappend="${menu} == 'releases' ? 'active'">
-			<a href="/ui/releases/komea-dashboard">
+			<a th:href="@{/ui/releases/}+${project.key}">
 				<i class="glyphicon glyphicon-tags"></i> 
 				<span>Releases</span>
 			</a>
 		</li>
 		<li th:if="${project != null}" th:classappend="${menu} == 'variables' ? 'active'">
-			<a th:href="@{/ui/variables/komea-rest-api}">
+			<a th:href="@{/ui/variables/}+${project.key}">
 				<i class="glyphicon glyphicon-text-color"></i> 
 				<span>Variables</span>
 			</a>

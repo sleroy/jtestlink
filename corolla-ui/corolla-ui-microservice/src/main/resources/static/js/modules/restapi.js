@@ -13,6 +13,21 @@ function RestAPI() {
 		$.get(REST_PREFIX + url, callback);
 	}
 	
+	var post = function(url, data, callback) {
+		$.post(REST_PREFIX + url, data, callback);
+	}
+	
+	var postText = function(url, data, callback) {
+		$.ajax({
+			url			: REST_PREFIX + url,
+			method		: 'post',
+			contentType	: "text/plain",
+			data		: data,
+			success 	: callback,
+			error		: callback
+		});
+	}
+	
 	return {
 		
 		"users": {
@@ -42,6 +57,44 @@ function RestAPI() {
 			
 			"delete": function(id, callback) {
 				call("groups/delete/"+id, callback);
+			}
+		},
+		
+		"portfolio": {
+			
+			"URL" : REST_PREFIX+"portfolio/jstree",
+			
+			"jstree": function(callback) {
+				call("portfolio/jstree", callback);
+			},
+			
+			"add": function(text, parentID, callback) {
+				var url = "portfolio/add/text";
+				if (parentID) {
+					url += "/"+parentID;
+				}
+				postText(url, text, callback);
+			},
+			
+			"edit": function(nodeID, text, callback) {
+				postText("portfolio/edit/text/"+nodeID, text, callback);
+			},
+			
+			"move": function(fromID, toID, callback) {
+				if (!toID) toID = 0;
+				call("portfolio/move/"+fromID+"/"+toID, callback);
+			},
+			
+			"remove": function(nodeID, callback) {
+				call("portfolio/remove/"+nodeID, callback);
+			}
+		
+		},
+		
+		"requirements": {
+			
+			"jstree": function(projectKey, branchName, callback) {
+				call("requirements/tree/jstree/"+projectKey+"/"+branchName, callback);
 			}
 		}
 

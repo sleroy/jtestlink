@@ -9,6 +9,7 @@ import groovy.util.logging.Slf4j;
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy;
 
+import org.javers.core.Javers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 
@@ -16,14 +17,37 @@ import com.google.common.base.Function
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
-import com.tocea.corolla.products.commands.AddNewComponentToApplicationCommand
-import com.tocea.corolla.products.dao.IApplicationDAO
-import com.tocea.corolla.products.dao.IComponentDAO
-import com.tocea.corolla.products.dao.IComponentTypeDAO
-import com.tocea.corolla.products.domain.Application
-import com.tocea.corolla.products.domain.ApplicationStatus
-import com.tocea.corolla.products.domain.Component
-import com.tocea.corolla.products.domain.ComponentType
+import com.tocea.corolla.portfolio.commands.CreatePortfolioTextNodeCommand;
+import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand
+import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
+import com.tocea.corolla.portfolio.dao.IPortfolioDAO
+import com.tocea.corolla.portfolio.domain.Portfolio
+import com.tocea.corolla.portfolio.domain.ProjectNode
+import com.tocea.corolla.portfolio.utils.PortfolioUtils;
+import com.tocea.corolla.products.commands.CreateProjectBranchCommand
+import com.tocea.corolla.products.commands.CreateProjectCommand
+import com.tocea.corolla.products.commands.CreateProjectStatusCommand
+import com.tocea.corolla.products.commands.EditProjectCommand
+import com.tocea.corolla.products.dao.IProjectBranchDAO
+import com.tocea.corolla.products.dao.IProjectDAO
+import com.tocea.corolla.products.dao.IProjectStatusDAO
+import com.tocea.corolla.products.domain.Project
+import com.tocea.corolla.products.domain.ProjectStatus;
+import com.tocea.corolla.requirements.commands.CreateRequirementCommand
+import com.tocea.corolla.requirements.commands.EditRequirementCommand
+import com.tocea.corolla.requirements.commands.RestoreRequirementStateCommand
+import com.tocea.corolla.requirements.dao.IRequirementDAO
+import com.tocea.corolla.requirements.domain.Requirement
+import com.tocea.corolla.requirements.trees.commands.CreateRequirementTextNodeCommand;
+import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeCommand;
+import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.trees.domain.RequirementNode;
+import com.tocea.corolla.revisions.services.IRevisionService
+import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
+import com.tocea.corolla.trees.commands.MoveTreeNodeCommand
+import com.tocea.corolla.trees.domain.TextNode
+import com.tocea.corolla.trees.domain.TreeNode
+import com.tocea.corolla.trees.utils.TreeNodeUtils;
 import com.tocea.corolla.users.commands.CreateRoleCommand
 import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.CreateUserGroupCommand
@@ -57,16 +81,28 @@ public class DemoDataBean {
 	def IUserGroupDAO				groupDAO
 
 	@Autowired
-	def IApplicationDAO					applicationDAO
+	def IProjectDAO					projectDAO
+	
+	@Autowired
+	def IProjectStatusDAO			projectStatusDAO
+	
+	@Autowired
+	def IProjectBranchDAO			projectBranchDAO
+	
+	@Autowired
+	def IRequirementDAO				requirementDAO
+	
+	@Autowired
+	def IRequirementsTreeDAO		requirementsTreeDAO
 
 	@Autowired
-	def PasswordEncoder			passwordEncoder
-
+	def PasswordEncoder				passwordEncoder
+	
 	@Autowired
-	def IComponentDAO		productArchitectureDAO
-
+	def IRevisionService			revisionService
+	
 	@Autowired
-	def IComponentTypeDAO	productArchitectureTypeDAO
+	def IPortfolioDAO				portfolioDAO
 
 	@Autowired
 	def Gate						gate
@@ -126,82 +162,137 @@ public class DemoDataBean {
 		 */
 		def developers = this.newGroup("developers", [jsnow, scarreau])
 				
-				
-		/*final Application corollaProduct = this.newApplication("COROLLA",	"Corolla",
-				"<b>Corolla</b> is a tool to manage softare requirements....")
+		
+		/**
+		 * Project Statuses
+		 */
+		def statusActive = this.newProjectStatus("Active")
+		
+		/*
+		 * Portfolio
+		 */
+		def corolla = this.saveProject(new Project(
+				key: 'corolla', 
+				name: 'Corolla', 
+				description: 'A Java Coffee Maker',
+				statusId: statusActive.id
+		))		
+		corolla.description = 'Corolla is a tool to manage software requirements'
+		this.editProject(corolla)
+		
+		def portfolio = this.gate.dispatch new CreatePortfolioTextNodeCommand("Corolla-Project", null)
+		portfolio = this.gate.dispatch new MovePortfolioNodeCommand(1, TreeNodeUtils.getMaxNodeId(portfolio.nodes))
+		
+		portfolio = this.gate.dispatch new CreatePortfolioTextNodeCommand("Komea", null)
+		def komeaFolderID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+		
+		def komea = this.gate.dispatch new CreateProjectCommand(new Project(
+				key: 'komea', 
+				name: 'Komea Dashboard', 
+				description: 'Tool for measuring and managing key performance indicators in a software factory',
+				statusId: statusActive.id
+		), komeaFolderID)
+		println "foler: "+komeaFolderID
+		
+		def komeaRedmine = this.gate.dispatch new CreateProjectCommand(new Project(
+				key: 'komea-connector-redmine', 
+				name: 'Komea Redmine Connector', 
+				description: 'Redmine connector for Komea',
+				statusId: statusActive.id
+		), komeaFolderID)
+		println "foler: "+komeaFolderID
+		
+		def komeaSvn =this.gate.dispatch new CreateProjectCommand(new Project(
+				key: 'komea-connector-svn', 
+				name: 'Komea SVN Connector', 
+				description: 'SVN connector for Komea',
+				statusId: statusActive.id
+		), komeaFolderID)
+		
+		
+//		portfolio = portfolioDAO.find();
+//		for(int i=1; i<=6000; i++) {			
+//			def node = new TextNode(i.toString())
+//			portfolio = this.gate.dispatch(new CreateTreeNodeCommand(portfolio, node, null))
+//		}
+//		portfolioDAO.save(portfolio)
+		
+//		portfolio = portfolioDAO.find();
+//		def parentID = null
+//		for(int i=1; i<=6000; i++) {			
+//			def node = new TextNode(i.toString())
+//			if (i%60 == 0) {
+//				parentID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+//			}
+//			portfolio = this.gate.dispatch(new CreateTreeNodeCommand(portfolio, node, parentID))
+//		}
+//		portfolioDAO.save(portfolio)
+		
+//		def parentID = null
+//		for(int i=1; i<=6000; i++) {
+//			if (i% 60 == 0) {
+//				portfolio = portfolioDAO.find();
+//				parentID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+//			}
+//			this.gate.dispatch new CreateProjectCommand(new Project(
+//					key: 'corolla'+i, 
+//					name: 'Corolla '+i, 
+//					description: 'Whatever',
+//					statusId: statusActive.id
+//			), parentID)
+//		}
 
-		backendComponentType = newTypeOfComponent("Backend")
-		restComponentType = newTypeOfComponent("Rest")
-		screenComponentType = newTypeOfComponent("Screen")
-		funcDomainComponentType = newTypeOfComponent("FunctionalDomain")
-
-		def userLayer = newClassicComponent(funcDomainComponentType, corollaProduct, null, "Gestion des utilisateurs")
-		def roleLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des roles")
-		def applicationLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des applications")
-		def componentLayer = newComponent(funcDomainComponentType, corollaProduct, applicationLayer, "Gestion des composants")
-		def componentTypeLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des types de composants")
-		def exigencesLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des exigences")
-		def scenariosTestsLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des scénarios de tests")
-		def casTestsLayer = newComponent(funcDomainComponentType, corollaProduct, scenariosTestsLayer, "Gestion des cas de tests")
-		def generationRapportsLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Génération de rapports")
-		def gestiondesCampagnesLayer = newComponent(funcDomainComponentType, corollaProduct, null, "Gestion des campagnes de tests")*/
-	}
-
-	def Component newClassicComponent(
-			final ComponentType funcArchiType,
-			final Application komeaProduct,
-			final Component _parentComponent,
-			final String _funcName) {
-		def funcLayer = newComponent(funcDomainComponentType, komeaProduct, _parentComponent, _funcName)
-		def restComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
-		def serviceComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
-		def screenComponent = newComponent(funcDomainComponentType, komeaProduct, funcLayer, _funcName)
-		return funcLayer
-	}
-
-	def ComponentType backendComponentType
-	def ComponentType restComponentType
-	def ComponentType screenComponentType
-	def ComponentType funcDomainComponentType
-
-
-	def ComponentType newTypeOfComponent(
-			final String _architectureName) {
-		final ComponentType productComponentType = new ComponentType()
-		productComponentType.setName(_architectureName)
-		productComponentType.setDescription(_architectureName)
-		this.productArchitectureTypeDAO.save(productComponentType)
-		return productComponentType
-	}
-
-	def Component newComponent(
-			final ComponentType funcArchiType,
-			final Application komeaProduct,
-			final Component _parentComponent,
-			final String _funcName) {
-		final AddNewComponentToApplicationCommand command = new AddNewComponentToApplicationCommand()
-		command.setComponentTypeID(funcArchiType.getId())
-		command.setProductID(komeaProduct.getId())
-		if (_parentComponent != null) {
-			command.setParentComponentID(_parentComponent.getId())
-		}
-		command.setName(_funcName)
-		command.setDescription(_funcName)
-		this.gate.dispatch command
-	}
-
-
-	Application newApplication(String _key, final String _name, final String _description) {
-		final Application product = new Application()
-		product.with {
-			key = _key
-			name = _name
-			description = _description
-			status = ApplicationStatus.ACTIVE
-			image = "http://dummyimage.com/50x50&text=" + _key
-		}
-		this.applicationDAO.save product
-		return product
+		/*
+		 * Branches
+		 */
+		def masterBranch = projectBranchDAO.findByNameAndProjectId("Master", corolla.id)
+		
+		/*
+		 * Requirements
+		 */
+		def req_addUser = this.newRequirement(new Requirement(
+				key: 'ADD_USER',
+				projectBranchId: masterBranch.id,
+				name: 'Add a user',
+				description: 'Create a new user to Corolla from the administration panel'
+		))
+		def req_editUser = this.newRequirement(new Requirement(
+			key: 'EDIT_USER',
+			projectBranchId: masterBranch.id,
+			name: 'Edit a user profile',
+			description: 'Edit a user\'s profile from the administration panel'
+		))
+		def req_deleteUser = this.newRequirement(new Requirement(
+			key: 'DELETE_USER',
+			projectBranchId: masterBranch.id,
+			name: 'Delete a user',
+			description: "Delete a user from the administration panel"
+		))
+		
+		/*
+		 * Requirements Tree
+		 */
+		def tree = requirementsTreeDAO.findByBranchId(masterBranch.id)
+		
+		this.newRequirementTextNode(masterBranch, null, "USER MANAGEMENT")
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addUser.id).id, 4)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editUser.id).id, 4)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteUser.id).id, 4)
+		
+		/**
+		 * Create a new Branch derivated from Master
+		 */
+		def toceaBranch = gate.dispatch new CreateProjectBranchCommand("Tocea", masterBranch);		
+		
+		/**
+		 * Edit a requirement then restore it to its previous state
+		 */
+		req_addUser = requirementDAO.findByKeyAndProjectBranchId("ADD_USER", masterBranch.id)
+		req_addUser.name = "Add an elephant"
+		this.gate.dispatch new EditRequirementCommand(req_addUser);		
+		def commits = revisionService.getHistory(req_addUser.id, Requirement.class);
+		this.gate.dispatch new RestoreRequirementStateCommand(req_addUser.id, commits[1].id);
+		
 	}
 
 	/**
@@ -281,12 +372,72 @@ public class DemoDataBean {
 		
 	}
 	
+	public Project saveProject(project) {
+		
+		this.gate.dispatch new CreateProjectCommand(project)
+		
+		return project
+		
+	}
+	
+	public Project editProject(project) {
+		
+		this.gate.dispatch new EditProjectCommand(project)
+		
+		return project
+	}
+	
+	public ProjectStatus newProjectStatus(name) {
+		
+		def status = new ProjectStatus(name: name)
+		this.gate.dispatch new CreateProjectStatusCommand(status)
+		
+		return status
+	}
+	
+	public Requirement newRequirement(requirement) {
+		
+		this.gate.dispatch new CreateRequirementCommand(requirement)
+		
+		return requirement
+		
+	}
+	
+	public void newRequirementTextNode(branch, parentID, text) {
+		
+		this.gate.dispatch new CreateRequirementTextNodeCommand(branch, parentID, text)
+		
+	}
+	
+	public void moveRequirementNode(branch, nodeID, newParentID) {
+		
+		this.gate.dispatch new MoveRequirementTreeNodeCommand(branch, nodeID, newParentID)
+		
+	}
+	
+	public TreeNode findRequirementTreeNode(tree, requirementID) {
+		
+		for(TreeNode node : tree.nodes) {
+			if (node instanceof RequirementNode && node.requirementId == requirementID) {
+				return node
+			}
+		}
+		return null
+		
+	}
+	
 	@PreDestroy
 	public void destroy() {
 		
+		requirementsTreeDAO.deleteAll()
+		requirementDAO.deleteAll()
+		projectBranchDAO.deleteAll()
+		projectDAO.deleteAll()	
 		userDAO.deleteAll()
 		roleDAO.deleteAll()
 		groupDAO.deleteAll()
+		projectStatusDAO.deleteAll()	
+		portfolioDAO.deleteAll()
 		
 	}
 	

@@ -6,6 +6,7 @@ package com.tocea.corolla.users.handlers;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.javers.core.Javers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
@@ -64,6 +65,7 @@ ICommandHandler<CreateUserCommand, User> {
 		}
 
 		this.userDAO.save(user);
+		
 		return user;
 	}
 

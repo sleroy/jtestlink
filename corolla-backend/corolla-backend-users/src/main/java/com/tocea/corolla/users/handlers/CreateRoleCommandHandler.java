@@ -6,6 +6,7 @@ package com.tocea.corolla.users.handlers;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.javers.core.Javers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
@@ -33,7 +34,6 @@ ICommandHandler<CreateRoleCommand, Role> {
 	@Autowired
 	private RolePermissionService rolePermissionService;
 
-
 	@Override
 	public Role handle(@Valid final CreateRoleCommand _command) {
 		final Role role = _command.getRole();
@@ -48,6 +48,7 @@ ICommandHandler<CreateRoleCommand, Role> {
 		}
 		this.rolePermissionService.checkPermissions(role.getPermissions());
 		this.roleDAO.save(role);
+		
 		return role;
 	}
 

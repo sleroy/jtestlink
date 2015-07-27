@@ -175,6 +175,10 @@ allprojects {
         compile "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
 		
 		compile	"org.springframework.data:spring-data-mongodb:$SPRING_MONGO"
+		
+		compile 'org.javers:javers-spring:1.2.10'
+		compile 'org.javers:javers-persistence-mongo:1.2.10'
+		
 
 		testCompile 'org.mongodb:mongo-java-driver:3.0.2'
 		testCompile 'com.github.fakemongo:fongo:2.0.1'

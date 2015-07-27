@@ -78,7 +78,7 @@
 				<li>
 					<a href="#" class="pull-left selected-project toggle-change-project" th:if="${project != null}">
 						<img src="http://lorempixel.com/24/24/" alt="Komea" />
-						<span th:text="${project}"></span>
+						<span th:text="${project.name}"></span>
 					</a>
 				</li>
 			</ul>
@@ -409,8 +409,8 @@
 	<!-- jsTree -->
 	<script th:src="@{/resources/jstree/dist/jstree.min.js}" src="../static/resources/jstree/dist/jstree.min.js" type="text/javascript" />
 	<!-- Corolla Modules -->
-	<script type="text/javascript" src="../static/js/modules/main.js" th:src="@{/js/modules/main.js}" />
 	<script type="text/javascript" src="../static/js/modules/restapi.js" th:src="@{/js/modules/restapi.js}" />
+	<script type="text/javascript" src="../static/js/modules/main.js" th:src="@{/js/modules/main.js}" />
 	<!-- Init Corolla Main Module -->
 	<script type="text/javascript">
 		$(document).ready(function() {

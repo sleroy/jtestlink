@@ -5,6 +5,7 @@ package com.tocea.corolla.users.handlers
 
 import static org.mockito.Mockito.*
 
+import org.javers.core.Javers;
 import org.junit.Rule
 
 import spock.lang.Specification
@@ -31,7 +32,6 @@ class EditRoleCommandHandlerTest extends Specification{
 	def IRoleDAO roleDao = Mock(IRoleDAO)
 	def RolePermissionService rolePermissionDao = Mock(RolePermissionService)
 
-
 	def EditRoleCommandHandler	handler
 
 	def Role validRole
@@ -40,7 +40,7 @@ class EditRoleCommandHandlerTest extends Specification{
 		handler = new EditRoleCommandHandler(
 				roleDAO : roleDao,
 				rolePermissionService : rolePermissionDao
-				)
+		)
 		validRole = new Role(id:1,name:"admin", note:"Admin role", permissions:"",defaultRole:true )
 	}
 
