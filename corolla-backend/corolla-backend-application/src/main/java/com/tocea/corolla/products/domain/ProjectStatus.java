@@ -15,6 +15,8 @@ public class ProjectStatus implements Serializable {
 	
 	private String name;
 	
+	private Boolean closed = false;
+	
 	public String getId() {
 		return id;
 	}
@@ -29,6 +31,14 @@ public class ProjectStatus implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Boolean getClosed() {
+		return closed;
+	}
+
+	public void setClosed(Boolean closed) {
+		this.closed = closed;
 	}
 	
 }
