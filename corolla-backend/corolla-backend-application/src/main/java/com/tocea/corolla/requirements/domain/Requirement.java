@@ -30,6 +30,8 @@ public class Requirement implements Serializable {
 	private String typeID;
 	
 	private String statusID;
+	
+	private String revisionNumber;
 
 	public String getId() {
 		return id;
@@ -85,6 +87,14 @@ public class Requirement implements Serializable {
 
 	public void setStatusID(String statusID) {
 		this.statusID = statusID;
+	}
+
+	public String getRevisionNumber() {
+		return revisionNumber;
+	}
+
+	public void setRevisionNumber(String revisionNumber) {
+		this.revisionNumber = revisionNumber;
 	}
 	
 }
