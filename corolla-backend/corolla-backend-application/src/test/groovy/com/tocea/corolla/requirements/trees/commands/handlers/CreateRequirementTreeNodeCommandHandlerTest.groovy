@@ -19,8 +19,9 @@ import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeAlread
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService;
+import com.tocea.corolla.trees.services.TreeManagementService;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "ADD_REQUIREMENT_TREE_NODE")
@@ -31,16 +32,16 @@ class CreateRequirementTreeNodeCommandHandlerTest extends Specification {
 	def IRequirementsTreeDAO requirementsTreeDAO = Mock(IRequirementsTreeDAO)	
 	def CreateRequirementTreeNodeCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
-	def Gate gate = Mock(Gate)
+	def ITreeManagementService treeManagementService = Mock(TreeManagementService)
 	
 	def setup() {
 		handler = new CreateRequirementTreeNodeCommandHandler(
 				requirementsTreeDAO : requirementsTreeDAO,
-				gate : gate
+				treeManagementService : treeManagementService
 		)
 	}
 	
-	def "it should invoke the command to create a new tree node in the requirements tree"() {
+	def "it should invoke the service to create a new tree node in the requirements tree"() {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
@@ -53,8 +54,12 @@ class CreateRequirementTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			
+		then:
 			notThrown(Exception.class)
-			1 * gate.dispatch { it instanceof CreateTreeNodeCommand && it.tree == tree && it.node.requirementId == req_id && it.parentID == parentID }
+			
+		then:
+			1 * treeManagementService.insertNode(tree, parentID, { it.requirementId == req_id })
 				
 		then:
 			1 * requirementsTreeDAO.save(_)

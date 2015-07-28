@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
-import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
@@ -22,8 +21,8 @@ import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeIn
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeAlreadyExistException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.requirements.trees.utils.RequirementsTreeUtils;
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
@@ -33,7 +32,7 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 	private IRequirementsTreeDAO requirementsTreeDAO;
 	
 	@Autowired
-	private Gate gate;
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public RequirementsTree handle(@Valid CreateRequirementTreeNodeCommand command) {
@@ -69,12 +68,11 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		RequirementNode newNode = new RequirementNode();
 		newNode.setRequirementId(requirementId);		
 		
-		tree = gate.dispatch(new CreateTreeNodeCommand(tree, newNode, parentId));
+		treeManagementService.insertNode(tree, parentId, newNode);
 		
 		requirementsTreeDAO.save(tree);
 		
-		return tree;
-		
+		return tree;	
 	}
 	
 }

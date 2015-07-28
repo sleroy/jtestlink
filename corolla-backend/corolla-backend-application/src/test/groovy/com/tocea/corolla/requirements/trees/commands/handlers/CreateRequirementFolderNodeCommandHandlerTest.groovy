@@ -19,43 +19,50 @@ import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeIn
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService
+import com.tocea.corolla.trees.services.TreeManagementService
+
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "ADD_REQUIREMENT_TEXT_NODE")
-public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
+public class CreateRequirementFolderNodeCommandHandlerTest extends Specification {
 
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IRequirementsTreeDAO requirementsTreeDAO = Mock(IRequirementsTreeDAO)	
 	def IRevisionService revisionService = Mock(IRevisionService)
-	def Gate gate = Mock(Gate)
 	def CreateRequirementFolderNodeCommandHandler handler
+	def ITreeManagementService treeManagementService = Mock(TreeManagementService)
 	
 	def setup() {
 		handler = new CreateRequirementFolderNodeCommandHandler(
 				requirementsTreeDAO : requirementsTreeDAO,
-				gate : gate
+				treeManagementService : treeManagementService
 		)
 	}
 	
-	def "it should invoke the command to create a new tree node in the requirements tree"() {
+	def "it should invoke the service to create a new tree node in the requirements tree"() {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
 			def parentID = null
 			def text = "requirements"
+			def typeID = "1"
 			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text)
+			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text, typeID)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			
+		then:
 			notThrown(Exception.class)
-			1 * gate.dispatch { it instanceof CreateTreeNodeCommand && it.tree == tree && it.node.text == text && it.parentID == parentID }
-				
+			
+		then:
+			1 * treeManagementService.insertNode(tree, parentID, { it.text == text && it.typeID == typeID })
+	
 		then:
 			1 * requirementsTreeDAO.save(_)
 		
@@ -67,10 +74,11 @@ public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 			def branch = null
 			def parentID = null
 			def text = "requirements"
+			def typeID = "1"
 			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text)
+			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text, typeID)
 	
 		then:
 			0 * requirementsTreeDAO.save(_)
@@ -83,10 +91,11 @@ public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 		given:
 			def branch = new ProjectBranch(id: "1")
 			def parentID = null
+			def typeID = "1"
 			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text)
+			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text, typeID)
 	
 		then:
 			0 * requirementsTreeDAO.save(_)
@@ -103,13 +112,16 @@ public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 			def branch = new ProjectBranch(id: "1")
 			def parentID = null
 			def text = "requirements"
+			def typeID = "1"
 			def tree = null
 		
 		when:
-			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text)
+			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text, typeID)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			
+		then:
 			0 * requirementsTreeDAO.save(_)
 			thrown(RequirementsTreeNotFoundException.class)
 		

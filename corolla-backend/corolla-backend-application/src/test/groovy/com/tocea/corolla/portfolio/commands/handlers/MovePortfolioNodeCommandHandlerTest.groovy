@@ -13,8 +13,9 @@ import com.tocea.corolla.test.utils.FunctionalDocRule;
 import com.tocea.corolla.portfolio.exceptions.PortfolioNotFoundException;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.MoveTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode
+import com.tocea.corolla.trees.services.ITreeManagementService;
+import com.tocea.corolla.trees.services.TreeManagementService;
 
 @FunctionalTestDoc(requirementName = "MOVE_PORTFOLIO_TREE_NODE")
 public class MovePortfolioNodeCommandHandlerTest extends Specification {
@@ -24,11 +25,12 @@ public class MovePortfolioNodeCommandHandlerTest extends Specification {
 	def IPortfolioDAO portfolioDAO = Mock(IPortfolioDAO)	
 	def MovePortfolioNodeCommandHandler handler
 	def Gate gate = Mock(Gate)
+	def ITreeManagementService treeManagementService = Mock(TreeManagementService)
 	
 	def setup() {
 		handler = new MovePortfolioNodeCommandHandler(
 				portfolioDAO : portfolioDAO,
-				gate : gate
+				treeManagementService : treeManagementService
 		)
 	}
 	
@@ -62,7 +64,7 @@ public class MovePortfolioNodeCommandHandlerTest extends Specification {
 			notThrown(Exception.class)
 		
 		then:
-			1 * gate.dispatch { it instanceof MoveTreeNodeCommand && it.tree == portfolio && it.nodeID == nodeId && it.newParentID == newParentId }	
+			1 * treeManagementService.moveNode(portfolio, nodeId, newParentId)
 			
 		then:
 			1 * portfolioDAO.save(_)

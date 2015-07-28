@@ -16,23 +16,27 @@ import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundE
 import com.tocea.corolla.test.utils.FunctionalDocRule;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.EditTextNodeCommand
 import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.trees.domain.TreeNode
+import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
+import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
+import com.tocea.corolla.trees.services.ITreeManagementService;
+import com.tocea.corolla.trees.services.TreeManagementService;
+
 
 @FunctionalTestDoc(requirementName = "EDIT_REQUIREMENT_TEXT_NODE")
-public class EditRequirementTextNodeCommandHandlerTest extends Specification {
+public class EditRequirementFolderNodeCommandHandlerTest extends Specification {
 	
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IRequirementsTreeDAO requirementsTreeDAO = Mock(IRequirementsTreeDAO)	
 	def EditRequirementFolderNodeCommandHandler handler
-	def Gate gate = Mock(Gate)
+	def ITreeManagementService treeManagementService = Mock(TreeManagementService)
 	
 	def setup() {
 		handler = new EditRequirementFolderNodeCommandHandler(
 				requirementsTreeDAO : requirementsTreeDAO,
-				gate : gate
+				treeManagementService : treeManagementService
 		)
 	}
 	
@@ -58,10 +62,15 @@ public class EditRequirementTextNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			
+		then:
 			notThrown(Exception.class)
 		
 		then:
-			1 * gate.dispatch { it instanceof EditTextNodeCommand && it.tree == tree && it.nodeID == nodeId && it.text == text }	
+			treeManagementService.findNodeByID(tree, nodeId) >> tree.nodes[0]
+			
+		then:
+			tree.nodes[0].text == text
 			
 		then:
 			1 * requirementsTreeDAO.save(_)
@@ -108,6 +117,77 @@ public class EditRequirementTextNodeCommandHandlerTest extends Specification {
 			
 		then:
 			thrown(RequirementsTreeNotFoundException.class)
+		
+	}
+	
+	def "it should throw an exception if the node ID is missing"() {
+		
+		given:
+			def branch = new ProjectBranch(id: "1")
+			def nodeId = null
+			def text = "my not so awesome text"
+			def tree = new RequirementsTree(
+					nodes: []
+			)
+		
+		when:
+			handler.handle new EditRequirementFolderNodeCommand(branch, nodeId, text)
+	
+		then:
+			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+	
+		then:
+			thrown(MissingTreeNodeInformationException.class)
+		
+	}
+	
+	def "it should throw an exception if the node ID does not match any node of the tree"() {
+		
+		given:
+			def branch = new ProjectBranch(id: "1")
+			def nodeId = 1
+			def text = "my not so awesome text"
+			def tree = new RequirementsTree(
+					nodes: []
+			)
+		
+		when:
+			handler.handle new EditRequirementFolderNodeCommand(branch, nodeId, text)
+	
+		then:
+			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			treeManagementService.findByNodeID(nodeId) >> null
+	
+		then:
+			thrown(InvalidTreeNodeInformationException.class)
+		
+	}
+	
+	def "it should throw an exception if the node is not a folder"() {
+		
+		given:
+			def branch = new ProjectBranch(id: "1")
+			def nodeId = 1
+			def text = "my not so awesome text"
+			def tree = new RequirementsTree(
+					nodes: [
+					        new FolderNode(
+					        		id: 1,
+					        		text: "my awesome text",
+					        		nodes: [new TreeNode(id: 2, nodes: [])]
+					        )
+					]
+			)
+		
+		when:
+			handler.handle new EditRequirementFolderNodeCommand(branch, nodeId, text)
+	
+		then:
+			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			treeManagementService.findByNodeID(nodeId) >> tree.nodes[0].nodes[0]
+	
+		then:
+			thrown(InvalidTreeNodeInformationException.class)
 		
 	}
 	

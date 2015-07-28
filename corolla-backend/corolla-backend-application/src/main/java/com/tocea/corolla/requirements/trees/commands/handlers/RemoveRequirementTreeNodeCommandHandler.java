@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
@@ -20,8 +19,8 @@ import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeNotFoundException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.requirements.trees.utils.RequirementsTreeUtils;
-import com.tocea.corolla.trees.commands.RemoveTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
@@ -32,6 +31,9 @@ public class RemoveRequirementTreeNodeCommandHandler implements ICommandHandler<
 	
 	@Autowired
 	private Gate gate;
+	
+	@Autowired
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public RequirementsTree handle(@Valid RemoveRequirementTreeNodeCommand command) {
@@ -62,7 +64,7 @@ public class RemoveRequirementTreeNodeCommandHandler implements ICommandHandler<
 		
 		gate.dispatch(new DeleteRequirementCommand(requirementID));
 		
-		tree = gate.dispatch(new RemoveTreeNodeCommand(tree, node.getId()));
+		treeManagementService.removeNode(tree, node.getId());
 		
 		requirementsTreeDAO.save(tree);
 		

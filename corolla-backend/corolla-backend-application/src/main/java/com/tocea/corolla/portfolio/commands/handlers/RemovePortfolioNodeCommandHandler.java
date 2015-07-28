@@ -15,8 +15,8 @@ import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.portfolio.exceptions.PortfolioNotFoundException;
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.commands.DeleteProjectCommand;
-import com.tocea.corolla.trees.commands.RemoveTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
 @CommandHandler
@@ -28,6 +28,9 @@ public class RemovePortfolioNodeCommandHandler implements ICommandHandler<Remove
 	
 	@Autowired
 	private Gate gate;
+	
+	@Autowired
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public Portfolio handle(@Valid RemovePortfolioNodeCommand command) {
@@ -46,7 +49,7 @@ public class RemovePortfolioNodeCommandHandler implements ICommandHandler<Remove
 			removeNode(node);
 		}
 		
-		portfolio = gate.dispatch(new RemoveTreeNodeCommand(portfolio, nodeID));
+		treeManagementService.removeNode(portfolio, nodeID);
 		
 		portfolioDAO.save(portfolio);
 		

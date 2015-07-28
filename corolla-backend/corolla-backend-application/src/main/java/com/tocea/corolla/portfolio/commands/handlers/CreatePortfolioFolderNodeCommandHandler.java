@@ -13,10 +13,10 @@ import com.tocea.corolla.portfolio.commands.CreatePortfolioCommand;
 import com.tocea.corolla.portfolio.commands.CreatePortfolioFolderNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
@@ -27,6 +27,9 @@ public class CreatePortfolioFolderNodeCommandHandler implements ICommandHandler<
 	
 	@Autowired
 	private Gate gate;
+	
+	@Autowired
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public Portfolio handle(@Valid CreatePortfolioFolderNodeCommand command) {
@@ -49,7 +52,7 @@ public class CreatePortfolioFolderNodeCommandHandler implements ICommandHandler<
 		
 		TreeNode node = new FolderNode(text, typeID);
 		
-		portfolio = (Portfolio) gate.dispatch(new CreateTreeNodeCommand(portfolio, node, parentID));
+		treeManagementService.insertNode(portfolio, parentID, node);
 		
 		portfolioDAO.save(portfolio);
 		

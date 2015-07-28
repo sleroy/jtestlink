@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
-import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
@@ -14,7 +13,7 @@ import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeComm
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
-import com.tocea.corolla.trees.commands.MoveTreeNodeCommand;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
@@ -24,7 +23,7 @@ public class MoveRequirementTreeNodeCommandHandler implements ICommandHandler<Mo
 	private IRequirementsTreeDAO requirementsTreeDAO;
 	
 	@Autowired
-	private Gate gate;
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public RequirementsTree handle(@Valid MoveRequirementTreeNodeCommand command) {
@@ -45,12 +44,11 @@ public class MoveRequirementTreeNodeCommandHandler implements ICommandHandler<Mo
 		
 		Integer newParentId = command.getParentId();
 		
-		tree = gate.dispatch(new MoveTreeNodeCommand(tree, nodeId, newParentId));
+		treeManagementService.moveNode(tree, nodeId, newParentId);
 		
 		requirementsTreeDAO.save(tree);
 		
-		return tree;
-		
+		return tree;		
 	}
 
 }

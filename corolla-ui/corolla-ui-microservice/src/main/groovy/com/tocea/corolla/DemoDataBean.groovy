@@ -44,8 +44,6 @@ import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.trees.commands.CreateFolderNodeTypeCommand
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
-import com.tocea.corolla.trees.commands.MoveTreeNodeCommand
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO
 import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.trees.domain.FolderNodeType
@@ -284,7 +282,7 @@ public class DemoDataBean {
 		 */
 		def tree = requirementsTreeDAO.findByBranchId(masterBranch.id)
 		
-		this.newRequirementTextNode(masterBranch, null, "USER MANAGEMENT")
+		this.newRequirementTextNode(masterBranch, null, "USER MANAGEMENT", basicFolder)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addUser.id).id, 4)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editUser.id).id, 4)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteUser.id).id, 4)
@@ -413,9 +411,9 @@ public class DemoDataBean {
 		
 	}
 	
-	public void newRequirementTextNode(branch, parentID, text) {
+	public void newRequirementTextNode(branch, parentID, text, type) {
 		
-		this.gate.dispatch new CreateRequirementFolderNodeCommand(branch, parentID, text)
+		this.gate.dispatch new CreateRequirementFolderNodeCommand(branch, parentID, text, type)
 		
 	}
 	

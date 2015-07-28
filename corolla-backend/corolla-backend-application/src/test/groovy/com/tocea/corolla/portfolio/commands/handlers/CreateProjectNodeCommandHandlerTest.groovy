@@ -13,8 +13,9 @@ import com.tocea.corolla.portfolio.domain.ProjectNode
 import com.tocea.corolla.portfolio.exceptions.ProjectNodeAlreadyExistException;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService
+import com.tocea.corolla.trees.services.TreeManagementService
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "ADD_PROJECT_NODE")
@@ -25,10 +26,12 @@ class CreateProjectNodeCommandHandlerTest extends Specification {
 	def IPortfolioDAO portfolioDAO = Mock(IPortfolioDAO)	
 	def CreateProjectNodeCommandHandler handler
 	def Gate gate = Mock(Gate)
+	def ITreeManagementService treeManagementService = Mock(TreeManagementService)
 	
 	def setup() {
 		handler = new CreateProjectNodeCommandHandler(
 				portfolioDAO : portfolioDAO,
+				treeManagementService : treeManagementService,
 				gate : gate
 		)
 	}
@@ -50,9 +53,7 @@ class CreateProjectNodeCommandHandlerTest extends Specification {
 			portfolioDAO.find() >> portfolio
 			
 		then:
-			1 * gate.dispatch { 
-				it instanceof CreateTreeNodeCommand && it.tree == portfolio && it.node.projectId == projectID && it.parentID == parentID
-			}
+			1 * treeManagementService.insertNode(portfolio, parentID, { it.projectId == projectID })
 				
 		then:
 			1 * portfolioDAO.save(_)

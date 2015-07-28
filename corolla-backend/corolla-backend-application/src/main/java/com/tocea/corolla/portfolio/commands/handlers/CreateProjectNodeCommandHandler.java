@@ -20,8 +20,8 @@ import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.portfolio.exceptions.ProjectNodeAlreadyExistException;
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
@@ -32,6 +32,9 @@ public class CreateProjectNodeCommandHandler implements ICommandHandler<CreatePr
 	
 	@Autowired
 	private Gate gate;
+	
+	@Autowired
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public Portfolio handle(@Valid CreateProjectNodeCommand command) {
@@ -60,7 +63,7 @@ public class CreateProjectNodeCommandHandler implements ICommandHandler<CreatePr
 		
 		ProjectNode projectNode = new ProjectNode(projectID);
 		
-		portfolio = gate.dispatch(new CreateTreeNodeCommand(portfolio, projectNode, parentID));
+		treeManagementService.insertNode(portfolio, parentID, projectNode);
 		
 		portfolioDAO.save(portfolio);
 		

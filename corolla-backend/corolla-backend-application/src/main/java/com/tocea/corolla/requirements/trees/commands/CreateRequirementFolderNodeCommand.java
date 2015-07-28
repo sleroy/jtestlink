@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.products.domain.ProjectBranch;
+import com.tocea.corolla.trees.domain.FolderNodeType;
 
 @Command
 public class CreateRequirementFolderNodeCommand {
@@ -26,11 +27,16 @@ public class CreateRequirementFolderNodeCommand {
 		super();
 	}
 	
-	public CreateRequirementFolderNodeCommand(ProjectBranch branch, Integer parentID, String text) {
+	public CreateRequirementFolderNodeCommand(ProjectBranch branch, Integer parentID, String text, String typeID) {
 		super();
 		setBranch(branch);
 		setParentID(parentID);
 		setText(text);
+		setTypeID(typeID);
+	}
+	
+	public CreateRequirementFolderNodeCommand(ProjectBranch branch, Integer parentID, String text, FolderNodeType type) {
+		this(branch, parentID, text, type.getId());
 	}
 
 	public ProjectBranch getBranch() {

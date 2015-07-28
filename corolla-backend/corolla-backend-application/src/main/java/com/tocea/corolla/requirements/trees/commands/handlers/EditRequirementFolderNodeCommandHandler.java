@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
-import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
@@ -14,7 +13,12 @@ import com.tocea.corolla.requirements.trees.commands.EditRequirementFolderNodeCo
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
-import com.tocea.corolla.trees.commands.EditTextNodeCommand;
+import com.tocea.corolla.trees.domain.FolderNode;
+import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
+import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
+import com.tocea.corolla.trees.services.ITreeManagementService;
+import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
 @CommandHandler
 @Transactional
@@ -24,7 +28,7 @@ public class EditRequirementFolderNodeCommandHandler implements ICommandHandler<
 	private IRequirementsTreeDAO requirementsTreeDAO;
 	
 	@Autowired
-	private Gate gate;
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public RequirementsTree handle(@Valid EditRequirementFolderNodeCommand command) {
@@ -42,9 +46,24 @@ public class EditRequirementFolderNodeCommandHandler implements ICommandHandler<
 		}
 		
 		Integer nodeID = command.getNodeID();
+		
+		if (nodeID == null) {
+			throw new MissingTreeNodeInformationException("No node ID found");
+		}
+		
+		TreeNode node = treeManagementService.findNodeByID(tree, nodeID);
+		
+		if (node == null) {
+			throw new InvalidTreeNodeInformationException("No node found for this ID");
+		}
+		
 		String text = command.getText();
 		
-		tree = gate.dispatch(new EditTextNodeCommand(tree, nodeID, text));
+		if (!TreeNodeUtils.isFolderNode(node)) {
+			throw new InvalidTreeNodeInformationException("This is not a folder node");
+		}
+		
+		((FolderNode)node).setText(text);
 		
 		requirementsTreeDAO.save(tree);
 		

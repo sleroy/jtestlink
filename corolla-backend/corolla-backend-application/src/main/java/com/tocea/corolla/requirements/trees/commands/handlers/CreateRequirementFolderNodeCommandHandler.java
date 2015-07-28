@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
-import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
@@ -16,9 +15,9 @@ import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
@@ -28,7 +27,7 @@ public class CreateRequirementFolderNodeCommandHandler implements ICommandHandle
 	private IRequirementsTreeDAO requirementsTreeDAO;
 	
 	@Autowired
-	private Gate gate;
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public RequirementsTree handle(@Valid CreateRequirementFolderNodeCommand command) {
@@ -57,7 +56,7 @@ public class CreateRequirementFolderNodeCommandHandler implements ICommandHandle
 		
 		TreeNode node = new FolderNode(text, typeID);
 		
-		tree = (RequirementsTree) gate.dispatch(new CreateTreeNodeCommand(tree, node, parentID));
+		treeManagementService.insertNode(tree, parentID, node);
 		
 		requirementsTreeDAO.save(tree);
 		
