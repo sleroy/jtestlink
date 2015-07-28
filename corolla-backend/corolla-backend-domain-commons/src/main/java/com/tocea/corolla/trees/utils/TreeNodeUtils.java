@@ -3,7 +3,7 @@ package com.tocea.corolla.trees.utils;
 import java.util.Collection;
 
 import com.google.common.collect.Lists;
-import com.tocea.corolla.trees.domain.TextNode;
+import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 
 public class TreeNodeUtils {
@@ -115,9 +115,9 @@ public class TreeNodeUtils {
 	 * @param node
 	 * @return
 	 */
-	public static Boolean isTextNode(TreeNode node) {
+	public static Boolean isFolderNode(TreeNode node) {
 		
-		return node.getClass().equals(TextNode.class);
+		return node.getClass().equals(FolderNode.class);
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.tocea.corolla.trees.domain.TreeNode;
 
-public class ProjectNode extends TreeNode {
+public class ProjectNode extends TreeNode implements IPortfolioNode {
 
 	private String projectId;
 	

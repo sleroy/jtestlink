@@ -4,7 +4,7 @@ import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.trees.commands.EditTextNodeCommand;
 import com.tocea.corolla.trees.domain.ITree;
-import com.tocea.corolla.trees.domain.TextNode;
+import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeInformationException;
@@ -37,11 +37,11 @@ public class EditTextNodeCommandHandler implements ICommandHandler<EditTextNodeC
 		
 		String text = command.getText();
 		
-		if (!TreeNodeUtils.isTextNode(node)) {
+		if (!TreeNodeUtils.isFolderNode(node)) {
 			throw new InvalidTreeNodeInformationException("This is not a text node");
 		}
 		
-		((TextNode)node).setText(text);
+		((FolderNode)node).setText(text);
 		
 		return tree;		
 	}

@@ -11,18 +11,18 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
-import com.tocea.corolla.requirements.trees.commands.CreateRequirementTextNodeCommand;
+import com.tocea.corolla.requirements.trees.commands.CreateRequirementFolderNodeCommand;
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
-import com.tocea.corolla.trees.domain.TextNode;
+import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 
 @CommandHandler
 @Transactional
-public class CreateRequirementTextNodeCommandHandler implements ICommandHandler<CreateRequirementTextNodeCommand, RequirementsTree> {
+public class CreateRequirementFolderNodeCommandHandler implements ICommandHandler<CreateRequirementFolderNodeCommand, RequirementsTree> {
 
 	@Autowired
 	private IRequirementsTreeDAO requirementsTreeDAO;
@@ -31,7 +31,7 @@ public class CreateRequirementTextNodeCommandHandler implements ICommandHandler<
 	private Gate gate;
 	
 	@Override
-	public RequirementsTree handle(@Valid CreateRequirementTextNodeCommand command) {
+	public RequirementsTree handle(@Valid CreateRequirementFolderNodeCommand command) {
 		
 		ProjectBranch branch = command.getBranch();
 		
@@ -53,7 +53,9 @@ public class CreateRequirementTextNodeCommandHandler implements ICommandHandler<
 			throw new RequirementsTreeNotFoundException();
 		}
 		
-		TreeNode node = new TextNode(text);
+		String typeID = command.getTypeID();
+		
+		TreeNode node = new FolderNode(text, typeID);
 		
 		tree = (RequirementsTree) gate.dispatch(new CreateTreeNodeCommand(tree, node, parentID));
 		

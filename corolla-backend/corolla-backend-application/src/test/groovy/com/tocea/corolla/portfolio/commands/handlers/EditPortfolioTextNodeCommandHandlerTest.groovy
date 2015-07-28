@@ -5,7 +5,7 @@ import org.junit.Rule;
 import spock.lang.Specification;
 
 import com.tocea.corolla.cqrs.gate.Gate;
-import com.tocea.corolla.portfolio.commands.EditPortfolioTextNodeCommand
+import com.tocea.corolla.portfolio.commands.EditPortfolioFolderNodeCommand
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio
 import com.tocea.corolla.portfolio.domain.ProjectNode
@@ -14,7 +14,7 @@ import com.tocea.corolla.portfolio.exceptions.PortfolioNotFoundException;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.commands.EditTextNodeCommand
-import com.tocea.corolla.trees.domain.TextNode
+import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.trees.domain.TreeNode
 
 @FunctionalTestDoc(requirementName = "EDIT_PORTFOLIO_TEXT_NODE")
@@ -23,11 +23,11 @@ public class EditPortfolioTextNodeCommandHandlerTest extends Specification {
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IPortfolioDAO portfolioDAO = Mock(IPortfolioDAO)	
-	def EditPortfolioTextNodeCommandHandler handler
+	def EditPortfolioFolderNodeCommandHandler handler
 	def Gate gate = Mock(Gate)
 	
 	def setup() {
-		handler = new EditPortfolioTextNodeCommandHandler(
+		handler = new EditPortfolioFolderNodeCommandHandler(
 				portfolioDAO : portfolioDAO,
 				gate : gate
 		)
@@ -41,7 +41,7 @@ public class EditPortfolioTextNodeCommandHandlerTest extends Specification {
 			def text = "my not so awesome text"
 			def portfolio = new Portfolio(
 					nodes: [
-					        new TextNode(
+					        new FolderNode(
 					        		id: 1, 
 					        		text: "my awesome text", 
 					        		nodes: [new ProjectNode(
@@ -54,7 +54,7 @@ public class EditPortfolioTextNodeCommandHandlerTest extends Specification {
 			)
 		
 		when:
-			handler.handle new EditPortfolioTextNodeCommand(nodeId, text)
+			handler.handle new EditPortfolioFolderNodeCommand(nodeId, text)
 	
 		then:
 			portfolioDAO.find() >> portfolio
@@ -78,7 +78,7 @@ public class EditPortfolioTextNodeCommandHandlerTest extends Specification {
 			def portfolio = null
 		
 		when:
-			handler.handle new EditPortfolioTextNodeCommand(nodeId, text)
+			handler.handle new EditPortfolioFolderNodeCommand(nodeId, text)
 	
 		then:
 			portfolioDAO.find() >> portfolio

@@ -3,17 +3,17 @@ package com.tocea.corolla.portfolio.commands;
 import com.tocea.corolla.cqrs.annotations.Command;
 
 @Command
-public class EditPortfolioTextNodeCommand {
+public class EditPortfolioFolderNodeCommand {
 
 	private Integer nodeID;
 	
 	private String text;
 	
-	public EditPortfolioTextNodeCommand() {
+	public EditPortfolioFolderNodeCommand() {
 		super();
 	}
 	
-	public EditPortfolioTextNodeCommand(Integer nodeID, String text) {
+	public EditPortfolioFolderNodeCommand(Integer nodeID, String text) {
 		super();
 		setNodeID(nodeID);
 		setText(text);

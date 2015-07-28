@@ -10,8 +10,8 @@ import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
 import com.tocea.corolla.requirements.exceptions.*;
-import com.tocea.corolla.requirements.trees.commands.CreateRequirementTextNodeCommand;
-import com.tocea.corolla.requirements.trees.commands.handlers.CreateRequirementTextNodeCommandHandler;
+import com.tocea.corolla.requirements.trees.commands.CreateRequirementFolderNodeCommand;
+import com.tocea.corolla.requirements.trees.commands.handlers.CreateRequirementFolderNodeCommandHandler;
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
@@ -31,10 +31,10 @@ public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 	def IRequirementsTreeDAO requirementsTreeDAO = Mock(IRequirementsTreeDAO)	
 	def IRevisionService revisionService = Mock(IRevisionService)
 	def Gate gate = Mock(Gate)
-	def CreateRequirementTextNodeCommandHandler handler
+	def CreateRequirementFolderNodeCommandHandler handler
 	
 	def setup() {
-		handler = new CreateRequirementTextNodeCommandHandler(
+		handler = new CreateRequirementFolderNodeCommandHandler(
 				requirementsTreeDAO : requirementsTreeDAO,
 				gate : gate
 		)
@@ -49,7 +49,7 @@ public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementTextNodeCommand(branch, parentID, text)
+			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
@@ -70,7 +70,7 @@ public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementTextNodeCommand(branch, parentID, text)
+			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text)
 	
 		then:
 			0 * requirementsTreeDAO.save(_)
@@ -86,7 +86,7 @@ public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 			def tree = new RequirementsTree(nodes: [])
 		
 		when:
-			handler.handle new CreateRequirementTextNodeCommand(branch, parentID, text)
+			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text)
 	
 		then:
 			0 * requirementsTreeDAO.save(_)
@@ -106,7 +106,7 @@ public class CreateRequirementTextNodeCommandHandlerTest extends Specification {
 			def tree = null
 		
 		when:
-			handler.handle new CreateRequirementTextNodeCommand(branch, parentID, text)
+			handler.handle new CreateRequirementFolderNodeCommand(branch, parentID, text)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree

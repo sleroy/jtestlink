@@ -1,22 +1,28 @@
 package com.tocea.corolla.requirements.trees.commands;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.products.domain.ProjectBranch;
 
 @Command
-public class EditRequirementTextNodeCommand {
+public class EditRequirementFolderNodeCommand {
 
 	private ProjectBranch branch;
 	
 	private Integer nodeID;
 	
+	@NotBlank
+	@Size(min = 1, max = 100)
 	private String text;
 	
-	public EditRequirementTextNodeCommand() {
+	public EditRequirementFolderNodeCommand() {
 		super();
 	}
 
-	public EditRequirementTextNodeCommand(ProjectBranch branch, Integer nodeID, String text) {
+	public EditRequirementFolderNodeCommand(ProjectBranch branch, Integer nodeID, String text) {
 		super();
 		setBranch(branch);
 		setNodeID(nodeID);

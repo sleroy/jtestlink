@@ -6,7 +6,7 @@ import spock.lang.Specification;
 
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.portfolio.commands.CreatePortfolioCommand
-import com.tocea.corolla.portfolio.commands.CreatePortfolioTextNodeCommand
+import com.tocea.corolla.portfolio.commands.CreatePortfolioFolderNodeCommand
 import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO
 import com.tocea.corolla.portfolio.domain.Portfolio
@@ -20,16 +20,16 @@ import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "ADD_PROJECT_NODE")
-class CreatePortfolioTextNodeCommandHandlerTest extends Specification {
+class CreatePortfolioFolderNodeCommandHandlerTest extends Specification {
 
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IPortfolioDAO portfolioDAO = Mock(IPortfolioDAO)	
-	def CreatePortfolioTextNodeCommandHandler handler
+	def CreatePortfolioFolderNodeCommandHandler handler
 	def Gate gate = Mock(Gate)
 	
 	def setup() {
-		handler = new CreatePortfolioTextNodeCommandHandler(
+		handler = new CreatePortfolioFolderNodeCommandHandler(
 				portfolioDAO : portfolioDAO,
 				gate : gate
 		)
@@ -41,9 +41,10 @@ class CreatePortfolioTextNodeCommandHandlerTest extends Specification {
 			def text = "TEXT"
 			def parentID = 2
 			def portfolio = new Portfolio(nodes: [])
+			def typeID = "1"
 		
 		when:
-			handler.handle new CreatePortfolioTextNodeCommand(text, parentID)
+			handler.handle new CreatePortfolioFolderNodeCommand(text, typeID, parentID)
 	
 		then:
 			notThrown(Exception.class)
@@ -53,7 +54,7 @@ class CreatePortfolioTextNodeCommandHandlerTest extends Specification {
 			
 		then:
 			1 * gate.dispatch { 
-				it instanceof CreateTreeNodeCommand && it.tree == portfolio && it.node.text == text && it.parentID == parentID
+				it instanceof CreateTreeNodeCommand && it.tree == portfolio && it.node.text == text && it.node.typeID == typeID && it.parentID == parentID
 			}
 				
 		then:
@@ -67,9 +68,10 @@ class CreatePortfolioTextNodeCommandHandlerTest extends Specification {
 			def text = "TEXT"
 			def parentID = 2
 			def portfolio = null
+			def typeID = "1"
 		
 		when:
-			handler.handle new CreatePortfolioTextNodeCommand(text, parentID)
+			handler.handle new CreatePortfolioFolderNodeCommand(text, typeID, parentID)
 	
 		then:
 			notThrown(Exception.class)
@@ -87,9 +89,10 @@ class CreatePortfolioTextNodeCommandHandlerTest extends Specification {
 		given:
 			def text = ""
 			def parentID = 2
+			def typeID = "1"
 		
 		when:
-			handler.handle new CreatePortfolioTextNodeCommand(text, parentID)
+			handler.handle new CreatePortfolioFolderNodeCommand(text, typeID, parentID)
 	
 		then:
 			thrown(InvalidTreeNodeInformationException.class)

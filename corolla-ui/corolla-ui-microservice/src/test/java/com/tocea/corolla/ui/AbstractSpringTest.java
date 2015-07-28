@@ -1,6 +1,7 @@
 package com.tocea.corolla.ui;
 
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import com.tocea.corolla.CorollaGuiApplication;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { CorollaGuiApplication.class })
 @WebAppConfiguration
+@IntegrationTest({"server.port=0", "management.port=0"})
 public abstract class AbstractSpringTest {
 
 	@Profile("test")

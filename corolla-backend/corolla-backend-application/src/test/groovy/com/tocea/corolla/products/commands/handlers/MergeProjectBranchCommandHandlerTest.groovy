@@ -21,7 +21,7 @@ import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.domain.TextNode
+import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "MERGE_PROJECT_BRANCH")
@@ -117,7 +117,7 @@ class MergeProjectBranchCommandHandlerTest extends Specification {
 			def branchRequirements = []
 			def originRequirementsTree = new RequirementsTree(
 					nodes: [
-					        new TextNode(
+					        new FolderNode(
 					        		id: 1, 
 					        		text: "TEST", 
 					        		nodes:[
@@ -160,7 +160,7 @@ class MergeProjectBranchCommandHandlerTest extends Specification {
 			def branchRequirements = []
 			def originRequirementsTree = new RequirementsTree(
 					nodes: [
-					        new TextNode(
+					        new FolderNode(
 					        		id: 1, 
 					        		text: "TEST", 
 					        		nodes:[

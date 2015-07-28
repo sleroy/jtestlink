@@ -68,11 +68,12 @@ function RestAPI() {
 				call("portfolio/jstree", callback);
 			},
 			
-			"add": function(text, parentID, callback) {
+			"add": function(text, typeID, parentID, callback) {
 				var url = "portfolio/add/text";
 				if (parentID) {
 					url += "/"+parentID;
 				}
+				url += "/"+typeID;
 				postText(url, text, callback);
 			},
 			
@@ -95,6 +96,13 @@ function RestAPI() {
 			
 			"jstree": function(projectKey, branchName, callback) {
 				call("requirements/tree/jstree/"+projectKey+"/"+branchName, callback);
+			}
+		},
+		
+		"folderNodeTypes": {
+			
+			"findAll": function(callback) {
+				call("trees/folders/types/all", callback);
 			}
 		}
 

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate;
-import com.tocea.corolla.portfolio.commands.CreatePortfolioTextNodeCommand;
-import com.tocea.corolla.portfolio.commands.EditPortfolioTextNodeCommand;
+import com.tocea.corolla.portfolio.commands.CreatePortfolioFolderNodeCommand;
+import com.tocea.corolla.portfolio.commands.EditPortfolioFolderNodeCommand;
 import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.commands.RemovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
@@ -23,7 +23,9 @@ import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.portfolio.visitors.PortfolioJsTree;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
-import com.tocea.corolla.trees.domain.TextNode;
+import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
+import com.tocea.corolla.trees.domain.FolderNode;
+import com.tocea.corolla.trees.domain.FolderNodeType;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.dto.JsTreeNodeDTO;
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
@@ -38,6 +40,9 @@ public class PortfolioRestController {
 	
 	@Autowired
 	private IProjectDAO projectDAO;
+	
+	@Autowired
+	private IFolderNodeTypeDAO folderNodeTypeDAO;
 	
 	@Autowired
 	private Gate gate;
@@ -92,30 +97,32 @@ public class PortfolioRestController {
 	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
 	public Portfolio editTextNode(@PathVariable Integer nodeID, @RequestBody String text) {
 		
-		return gate.dispatch(new EditPortfolioTextNodeCommand(nodeID, text));
+		return gate.dispatch(new EditPortfolioFolderNodeCommand(nodeID, text));
 	}
 	
-	@RequestMapping(value = "/add/text/{parentID}", method = RequestMethod.POST, consumes = "text/plain")
+	@RequestMapping(value = "/add/text/{parentID}/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
 	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
-	public TextNode addTextNode(@PathVariable Integer parentID, @RequestBody String text) {
+	public FolderNode addTextNode(@PathVariable Integer parentID, @PathVariable String folderNodeTypeID, @RequestBody String text) {
 		
-		Portfolio portfolio = gate.dispatch(new CreatePortfolioTextNodeCommand(text, parentID));
+		FolderNodeType folderNodeType = folderNodeTypeDAO.findOne(folderNodeTypeID);
+		
+		Portfolio portfolio = gate.dispatch(new CreatePortfolioFolderNodeCommand(text, folderNodeType, parentID));
 		
 		Integer maxID = TreeNodeUtils.getMaxNodeId(portfolio.getNodes());		
 		TreeNode node = TreeNodeUtils.getNodeById(maxID, portfolio.getNodes());
 		
-		if (node != null && TreeNodeUtils.isTextNode(node) && ((TextNode)node).getText().equals(text)) {
-			return (TextNode) node;		
+		if (node != null && TreeNodeUtils.isFolderNode(node) && ((FolderNode)node).getText().equals(text)) {
+			return (FolderNode) node;		
 		}
 		
 		return null;
 	}
 	
-	@RequestMapping(value = "/add/text", method = RequestMethod.POST, consumes = "text/plain")
+	@RequestMapping(value = "/add/text/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
 	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
-	public TextNode addTextNode(@RequestBody String text) {
+	public FolderNode addTextNode(@PathVariable String folderNodeTypeID, @RequestBody String text) {
 		
-		return addTextNode(null, text);
+		return addTextNode(null, folderNodeTypeID, text);
 	}
 	
 }

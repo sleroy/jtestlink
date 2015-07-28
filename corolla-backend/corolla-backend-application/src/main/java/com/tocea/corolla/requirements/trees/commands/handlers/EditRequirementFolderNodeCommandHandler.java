@@ -10,7 +10,7 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
-import com.tocea.corolla.requirements.trees.commands.EditRequirementTextNodeCommand;
+import com.tocea.corolla.requirements.trees.commands.EditRequirementFolderNodeCommand;
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
@@ -18,7 +18,7 @@ import com.tocea.corolla.trees.commands.EditTextNodeCommand;
 
 @CommandHandler
 @Transactional
-public class EditRequirementTextNodeCommandHandler implements ICommandHandler<EditRequirementTextNodeCommand, RequirementsTree> {
+public class EditRequirementFolderNodeCommandHandler implements ICommandHandler<EditRequirementFolderNodeCommand, RequirementsTree> {
 
 	@Autowired
 	private IRequirementsTreeDAO requirementsTreeDAO;
@@ -27,7 +27,7 @@ public class EditRequirementTextNodeCommandHandler implements ICommandHandler<Ed
 	private Gate gate;
 	
 	@Override
-	public RequirementsTree handle(@Valid EditRequirementTextNodeCommand command) {
+	public RequirementsTree handle(@Valid EditRequirementFolderNodeCommand command) {
 		
 		ProjectBranch branch = command.getBranch();
 		

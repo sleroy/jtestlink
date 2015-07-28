@@ -10,17 +10,17 @@ import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.portfolio.commands.CreatePortfolioCommand;
-import com.tocea.corolla.portfolio.commands.CreatePortfolioTextNodeCommand;
+import com.tocea.corolla.portfolio.commands.CreatePortfolioFolderNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
-import com.tocea.corolla.trees.domain.TextNode;
+import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 
 @CommandHandler
 @Transactional
-public class CreatePortfolioTextNodeCommandHandler implements ICommandHandler<CreatePortfolioTextNodeCommand, Portfolio> {
+public class CreatePortfolioFolderNodeCommandHandler implements ICommandHandler<CreatePortfolioFolderNodeCommand, Portfolio> {
 
 	@Autowired
 	private IPortfolioDAO portfolioDAO;
@@ -29,7 +29,7 @@ public class CreatePortfolioTextNodeCommandHandler implements ICommandHandler<Cr
 	private Gate gate;
 	
 	@Override
-	public Portfolio handle(@Valid CreatePortfolioTextNodeCommand command) {
+	public Portfolio handle(@Valid CreatePortfolioFolderNodeCommand command) {
 		
 		Portfolio portfolio = portfolioDAO.find();
 			
@@ -45,7 +45,9 @@ public class CreatePortfolioTextNodeCommandHandler implements ICommandHandler<Cr
 		
 		Integer parentID = command.getParentID();
 		
-		TreeNode node = new TextNode(text);
+		String typeID = command.getTypeID();
+		
+		TreeNode node = new FolderNode(text, typeID);
 		
 		portfolio = (Portfolio) gate.dispatch(new CreateTreeNodeCommand(portfolio, node, parentID));
 		

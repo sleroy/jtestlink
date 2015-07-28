@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
-import com.tocea.corolla.portfolio.commands.EditPortfolioTextNodeCommand;
+import com.tocea.corolla.portfolio.commands.EditPortfolioFolderNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.portfolio.exceptions.PortfolioNotFoundException;
 import com.tocea.corolla.trees.commands.EditTextNodeCommand;
 
 @CommandHandler
-public class EditPortfolioTextNodeCommandHandler implements ICommandHandler<EditPortfolioTextNodeCommand, Portfolio> {
+public class EditPortfolioFolderNodeCommandHandler implements ICommandHandler<EditPortfolioFolderNodeCommand, Portfolio> {
 
 	@Autowired
 	private IPortfolioDAO portfolioDAO;
@@ -23,7 +23,7 @@ public class EditPortfolioTextNodeCommandHandler implements ICommandHandler<Edit
 	private Gate gate;
 	
 	@Override
-	public Portfolio handle(@Valid EditPortfolioTextNodeCommand command) {
+	public Portfolio handle(@Valid EditPortfolioFolderNodeCommand command) {
 		
 		Portfolio portfolio = portfolioDAO.find();
 		

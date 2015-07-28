@@ -7,7 +7,7 @@ import spock.lang.Specification;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
-import com.tocea.corolla.requirements.trees.commands.EditRequirementTextNodeCommand
+import com.tocea.corolla.requirements.trees.commands.EditRequirementFolderNodeCommand
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
@@ -17,7 +17,7 @@ import com.tocea.corolla.test.utils.FunctionalDocRule;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.commands.EditTextNodeCommand
-import com.tocea.corolla.trees.domain.TextNode
+import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.trees.domain.TreeNode
 
 @FunctionalTestDoc(requirementName = "EDIT_REQUIREMENT_TEXT_NODE")
@@ -26,11 +26,11 @@ public class EditRequirementTextNodeCommandHandlerTest extends Specification {
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IRequirementsTreeDAO requirementsTreeDAO = Mock(IRequirementsTreeDAO)	
-	def EditRequirementTextNodeCommandHandler handler
+	def EditRequirementFolderNodeCommandHandler handler
 	def Gate gate = Mock(Gate)
 	
 	def setup() {
-		handler = new EditRequirementTextNodeCommandHandler(
+		handler = new EditRequirementFolderNodeCommandHandler(
 				requirementsTreeDAO : requirementsTreeDAO,
 				gate : gate
 		)
@@ -45,7 +45,7 @@ public class EditRequirementTextNodeCommandHandlerTest extends Specification {
 			def text = "my not so awesome text"
 			def tree = new RequirementsTree(
 					nodes: [
-					        new TextNode(
+					        new FolderNode(
 					        		id: 1,
 					        		text: "my awesome text",
 					        		nodes: [new TreeNode(id: 2, nodes: [])]
@@ -54,7 +54,7 @@ public class EditRequirementTextNodeCommandHandlerTest extends Specification {
 			)
 		
 		when:
-			handler.handle new EditRequirementTextNodeCommand(branch, nodeId, text)
+			handler.handle new EditRequirementFolderNodeCommand(branch, nodeId, text)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
@@ -76,7 +76,7 @@ public class EditRequirementTextNodeCommandHandlerTest extends Specification {
 			def text = "my not so awesome text"
 			def tree = new RequirementsTree(
 					nodes: [
-					        new TextNode(
+					        new FolderNode(
 					        		id: 1,
 					        		text: "my awesome text",
 					        		nodes: [new TreeNode(id: 2, nodes: [])]
@@ -85,7 +85,7 @@ public class EditRequirementTextNodeCommandHandlerTest extends Specification {
 			)
 		
 		when:
-			handler.handle new EditRequirementTextNodeCommand(branch, nodeId, text)
+			handler.handle new EditRequirementFolderNodeCommand(branch, nodeId, text)
 	
 		then:
 			thrown(MissingProjectBranchInformationException.class)
@@ -101,7 +101,7 @@ public class EditRequirementTextNodeCommandHandlerTest extends Specification {
 			def tree = null
 		
 		when:
-			handler.handle new EditRequirementTextNodeCommand(branch, nodeId, text)
+			handler.handle new EditRequirementFolderNodeCommand(branch, nodeId, text)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree

@@ -7,7 +7,7 @@ import spock.lang.Specification;
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.commands.EditTextNodeCommand
 import com.tocea.corolla.trees.domain.ITree
-import com.tocea.corolla.trees.domain.TextNode
+import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeInformationException;
@@ -38,7 +38,7 @@ class EditTextNodeCommandHandlerTest extends Specification {
 					nodes: [
 					        new TreeNode(
 					        		id: 1, 
-					        		nodes: [new TextNode(id: 2, text: "not so awesome text", nodes: [])]
+					        		nodes: [new FolderNode(id: 2, text: "not so awesome text", nodes: [])]
 					        )
 					]
 			)
@@ -78,7 +78,7 @@ class EditTextNodeCommandHandlerTest extends Specification {
 					nodes: [
 					        new TreeNode(
 					        		id: 1, 
-					        		nodes: [new TextNode(id: 2, text: "not so awesome text", nodes: [])]
+					        		nodes: [new FolderNode(id: 2, text: "not so awesome text", nodes: [])]
 					        )
 					]
 			)
@@ -100,7 +100,7 @@ class EditTextNodeCommandHandlerTest extends Specification {
 					nodes: [
 					        new TreeNode(
 					        		id: 1, 
-					        		nodes: [new TextNode(id: 2, text: "not so awesome text", nodes: [])]
+					        		nodes: [new FolderNode(id: 2, text: "not so awesome text", nodes: [])]
 					        )
 					]
 			)
@@ -122,7 +122,7 @@ class EditTextNodeCommandHandlerTest extends Specification {
 					nodes: [
 					        new TreeNode(
 					        		id: 1, 
-					        		nodes: [new TextNode(id: 2, text: "not so awesome text", nodes: [])]
+					        		nodes: [new FolderNode(id: 2, text: "not so awesome text", nodes: [])]
 					        )
 					]
 			)

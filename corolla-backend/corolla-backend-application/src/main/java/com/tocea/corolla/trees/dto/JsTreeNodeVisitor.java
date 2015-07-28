@@ -9,7 +9,7 @@ import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.utils.ProjectUtils;
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
-import com.tocea.corolla.trees.domain.TextNode;
+import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.visitors.ITreeNodeVisitor;
 
@@ -32,8 +32,8 @@ public class JsTreeNodeVisitor implements ITreeNodeVisitor {
 		
 		result = new JsTreeNodeDTO();
 		
-		if (node.getClass().equals(TextNode.class)) {
-			result.setText(((TextNode)node).getText());
+		if (node.getClass().equals(FolderNode.class)) {
+			result.setText(((FolderNode)node).getText());
 		}	
 		
 		result.setA_attr(new HashMap<String, String>());

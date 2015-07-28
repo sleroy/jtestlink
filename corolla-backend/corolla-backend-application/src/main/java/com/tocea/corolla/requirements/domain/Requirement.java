@@ -32,7 +32,7 @@ public class Requirement implements Serializable {
 	
 	private String statusID;
 	
-	private String revisionNumber;
+	private String versionNumber = "1.0";
 
 	public String getId() {
 		return id;
@@ -90,12 +90,12 @@ public class Requirement implements Serializable {
 		this.statusID = statusID;
 	}
 
-	public String getRevisionNumber() {
-		return revisionNumber;
+	public String getVersionNumber() {
+		return versionNumber;
 	}
 
-	public void setRevisionNumber(String revisionNumber) {
-		this.revisionNumber = revisionNumber;
+	public void setVersionNumber(String revisionNumber) {
+		this.versionNumber = revisionNumber;
 	}
 	
 }
