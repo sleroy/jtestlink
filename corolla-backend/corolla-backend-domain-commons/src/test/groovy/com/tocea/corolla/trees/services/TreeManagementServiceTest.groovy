@@ -289,6 +289,29 @@ class TreeManagementServiceTest extends Specification {
 		
 	}
 	
+	def "it should throw an exception if the new parent ID is invalid when moving a node in a tree"() {
+		
+		given:
+			def nodeID = 2
+			def newParentID = 5
+			def tree = new BasicTree(
+					nodes: [
+					        new TreeNode(
+					        		id: 1, 
+					        		nodes: [new TreeNode(id: 2, nodes: [])]
+					        ),
+					        new TreeNode(id: 3, nodes: [])
+					]
+			)
+		
+		when:
+			service.moveNode(tree, nodeID, newParentID)
+	
+		then:
+			thrown(InvalidTreeNodeInformationException.class)
+		
+	}
+	
 	def "it should throw an exception if the new parent node ID is invalid when moving a node in a tree"() {
 		
 		given:
