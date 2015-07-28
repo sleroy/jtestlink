@@ -184,7 +184,9 @@ public class EditRequirementFolderNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
-			treeManagementService.findByNodeID(nodeId) >> tree.nodes[0].nodes[0]
+			
+		then:
+			treeManagementService.findNodeByID(tree, nodeId) >> tree.nodes[0].nodes[0]
 	
 		then:
 			thrown(InvalidTreeNodeInformationException.class)
