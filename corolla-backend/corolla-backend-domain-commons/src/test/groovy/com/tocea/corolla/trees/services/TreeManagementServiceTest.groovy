@@ -428,7 +428,7 @@ class TreeManagementServiceTest extends Specification {
 		
 	}
 	
-	def "it should retrive a node in a tree by its ID"() {
+	def "it should retrieve a node in a tree by its ID"() {
 		
 		given:
 			def nodeID = 2

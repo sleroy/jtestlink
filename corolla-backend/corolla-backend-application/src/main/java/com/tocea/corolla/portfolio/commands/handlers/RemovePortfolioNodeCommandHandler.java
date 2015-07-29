@@ -17,7 +17,6 @@ import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.commands.DeleteProjectCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.services.ITreeManagementService;
-import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
 @CommandHandler
 @Transactional
@@ -43,7 +42,7 @@ public class RemovePortfolioNodeCommandHandler implements ICommandHandler<Remove
 		
 		Integer nodeID = command.getNodeID();	
 		
-		TreeNode node = TreeNodeUtils.getNodeById(nodeID, portfolio.getNodes());
+		TreeNode node = treeManagementService.findNodeByID(portfolio, nodeID);
 		
 		if (node != null) {
 			removeNode(node);

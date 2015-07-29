@@ -38,7 +38,7 @@ public class RemovePortfolioNodeCommandHandlerTest extends Specification {
 	}
 	
 	
-	def "it should invoke the command to remove a node in the tree"() {
+	def "it should invoke the service to remove a node in the tree"() {
 		
 		given:
 			def nodeId = 2
@@ -117,6 +117,9 @@ public class RemovePortfolioNodeCommandHandlerTest extends Specification {
 			
 		then:
 			notThrown(Exception.class)
+			
+		then:
+			treeManagementService.findNodeByID(portfolio, nodeId) >> portfolio.nodes[0]
 		
 		then:
 			1 * gate.dispatch { it instanceof DeleteProjectCommand && it.projectID == portfolio.nodes[0].projectId }	
