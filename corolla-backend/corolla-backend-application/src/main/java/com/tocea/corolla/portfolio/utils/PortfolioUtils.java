@@ -15,7 +15,8 @@ public class PortfolioUtils {
 	 * @return
 	 */
 	public static boolean isProjectNode(TreeNode node) {
-		return node.getClass().equals(ProjectNode.class);
+		
+		return node instanceof ProjectNode;
 	}
 	
 	/**

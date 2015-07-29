@@ -3,6 +3,8 @@ package com.tocea.corolla.trees.dto;
 import java.util.Collection;
 import java.util.Map;
 
+import com.tocea.corolla.trees.dto.JsTreeNodeDTO;
+
 public class JsTreeNodeDTO {
 
 	private String text = "";

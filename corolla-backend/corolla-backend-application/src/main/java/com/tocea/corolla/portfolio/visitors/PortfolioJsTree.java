@@ -7,7 +7,6 @@ import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.utils.ProjectUtils;
 import com.tocea.corolla.trees.domain.TreeNode;
-import com.tocea.corolla.trees.utils.TreeNodeUtils;
 import com.tocea.corolla.trees.visitors.JsTreeNodeVisitor;
 
 public class PortfolioJsTree extends JsTreeNodeVisitor {
