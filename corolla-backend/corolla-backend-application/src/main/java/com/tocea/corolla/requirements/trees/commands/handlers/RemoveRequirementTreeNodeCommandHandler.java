@@ -18,7 +18,7 @@ import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeNotFoundException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
-import com.tocea.corolla.requirements.trees.utils.RequirementsTreeUtils;
+import com.tocea.corolla.requirements.trees.predicates.FindNodeByRequirementIDPredicate;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 
@@ -56,7 +56,7 @@ public class RemoveRequirementTreeNodeCommandHandler implements ICommandHandler<
 			throw new RequirementsTreeNotFoundException();
 		}
 		
-		TreeNode node = RequirementsTreeUtils.getNodeByRequirementId(requirementID, tree.getNodes());
+		TreeNode node = treeManagementService.findNode(tree, new FindNodeByRequirementIDPredicate(requirementID));
 		
 		if (node == null) {
 			throw new RequirementTreeNodeNotFoundException();

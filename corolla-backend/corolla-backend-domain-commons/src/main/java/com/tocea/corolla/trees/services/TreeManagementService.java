@@ -2,6 +2,7 @@ package com.tocea.corolla.trees.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
@@ -11,34 +12,15 @@ import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
 @Service
 public class TreeManagementService implements ITreeManagementService {
 
-	@Override
-	public TreeNode findNodeByID(ITree tree, Integer nodeID) {
+	private TreeNode findNodeByID(Collection<TreeNode> nodes, Integer nodeID) {
 		
-		return findNodeByID(tree.getNodes(), nodeID);
-	}
-	
-	@Override
-	public TreeNode findNodeByID(Collection<TreeNode> nodes, Integer nodeID) {
-		
-		for(TreeNode node : nodes) {
-			
-			if (node.getId().equals(nodeID)) {
-				return node;
-			}
-			
-			TreeNode childNode = findNodeByID(node.getNodes(), nodeID);
-			
-			if (childNode != null) {
-				return childNode;
-			}
-		}
-		
-		return null;
+		return findNode(nodes, new FindNodeByIDPredicate(nodeID));
 	}
 	
 	@Override
@@ -162,7 +144,33 @@ public class TreeManagementService implements ITreeManagementService {
 		
 		tree.setNodes(nodes);
 		
-		return tree;
+		return tree; 
+	}
+	
+	@Override
+	public TreeNode findNode(ITree tree, Predicate<TreeNode> predicate) {
+		
+		return findNode(tree.getNodes(), predicate);
+	}
+	
+	@Override
+	public TreeNode findNode(Collection<TreeNode> nodes, Predicate<TreeNode> predicate) {
+		
+		for(TreeNode node : nodes) {			
+			
+			if (predicate.test(node)) {
+				return node;
+			}
+			
+			TreeNode child = findNode(node.getNodes(), predicate);
+			
+			if (child != null) {
+				return child;
+			}
+		}
+		
+		return null;
+		
 	}
 	
 }

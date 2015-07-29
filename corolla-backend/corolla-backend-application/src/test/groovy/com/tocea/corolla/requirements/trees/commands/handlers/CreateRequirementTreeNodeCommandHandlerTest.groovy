@@ -17,6 +17,7 @@ import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeAlreadyExistException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.requirements.trees.predicates.FindNodeByRequirementIDPredicate
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.domain.TreeNode;
@@ -122,6 +123,9 @@ class CreateRequirementTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			treeManagementService.findNode(tree, { it instanceof FindNodeByRequirementIDPredicate }) >> new RequirementNode(requirementId: req_id)
+			
+		then:
 			0 * requirementsTreeDAO.save(_)
 			thrown(RequirementTreeNodeAlreadyExistException.class)
 			

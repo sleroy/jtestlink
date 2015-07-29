@@ -1,28 +1,13 @@
 package com.tocea.corolla.trees.services;
 
 import java.util.Collection;
+import java.util.function.Predicate;
 
 import com.tocea.corolla.trees.domain.ITree;
 import com.tocea.corolla.trees.domain.TreeNode;
 
 public interface ITreeManagementService {
 	
-	/**
-	 * Retrieves a node by its id in a tree
-	 * @param tree
-	 * @param nodeID
-	 * @return
-	 */
-	public TreeNode findNodeByID(ITree tree, Integer nodeID);
-	
-	/**
-	 * Retrieves a node by its id in a collection of nodes
-	 * @param nodes
-	 * @param nodeID
-	 * @return
-	 */
-	public TreeNode findNodeByID(Collection<TreeNode> nodes, Integer nodeID);
-
 	/**
 	 * Insert a node in a tree
 	 * @param tree
@@ -48,5 +33,21 @@ public interface ITreeManagementService {
 	 * @return
 	 */
 	public ITree removeNode(ITree tree, Integer nodeID);
+
+	/**
+	 * Find a specific node in a tree
+	 * @param tree
+	 * @param predicate
+	 * @return
+	 */
+	public TreeNode findNode(ITree tree, Predicate<TreeNode> predicate);
+	
+	/**
+	 * Find a specific node in a collection of nodes
+	 * @param nodes
+	 * @param predicate
+	 * @return
+	 */
+	public TreeNode findNode(Collection<TreeNode> nodes, Predicate<TreeNode> predicate);
 	
 }

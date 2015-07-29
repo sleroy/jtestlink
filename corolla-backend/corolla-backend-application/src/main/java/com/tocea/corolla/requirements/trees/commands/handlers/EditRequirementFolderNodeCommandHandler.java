@@ -17,6 +17,7 @@ import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
@@ -51,7 +52,7 @@ public class EditRequirementFolderNodeCommandHandler implements ICommandHandler<
 			throw new MissingTreeNodeInformationException("No node ID found");
 		}
 		
-		TreeNode node = treeManagementService.findNodeByID(tree, nodeID);
+		TreeNode node = treeManagementService.findNode(tree, new FindNodeByIDPredicate(nodeID));
 		
 		if (node == null) {
 			throw new InvalidTreeNodeInformationException("No node found for this ID");

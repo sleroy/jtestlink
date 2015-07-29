@@ -28,6 +28,7 @@ import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.FolderNodeType;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.dto.JsTreeNodeDTO;
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
 import com.tocea.corolla.users.domain.Permission;
@@ -113,7 +114,7 @@ public class PortfolioRestController {
 		Portfolio portfolio = gate.dispatch(new CreatePortfolioFolderNodeCommand(text, folderNodeType, parentID));
 		
 		Integer maxID = TreeNodeUtils.getMaxNodeId(portfolio.getNodes());		
-		TreeNode node = treeManagementService.findNodeByID(portfolio, maxID);
+		TreeNode node = treeManagementService.findNode(portfolio, new FindNodeByIDPredicate(maxID));
 		
 		if (node != null && TreeNodeUtils.isFolderNode(node) && ((FolderNode)node).getText().equals(text)) {
 			return (FolderNode) node;		

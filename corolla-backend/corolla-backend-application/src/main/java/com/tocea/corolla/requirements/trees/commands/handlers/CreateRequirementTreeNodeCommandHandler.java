@@ -1,14 +1,11 @@
 package com.tocea.corolla.requirements.trees.commands.handlers;
 
-import java.util.Collection;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.domain.ProjectBranch;
@@ -20,7 +17,7 @@ import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeAlreadyExistException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
-import com.tocea.corolla.requirements.trees.utils.RequirementsTreeUtils;
+import com.tocea.corolla.requirements.trees.predicates.FindNodeByRequirementIDPredicate;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 
@@ -57,9 +54,7 @@ public class CreateRequirementTreeNodeCommandHandler implements ICommandHandler<
 		
 		Integer parentId = command.getParentId();
 		
-		Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
-		
-		TreeNode sameNode = RequirementsTreeUtils.getNodeByRequirementId(requirementId, nodes);
+		TreeNode sameNode = treeManagementService.findNode(tree, new FindNodeByRequirementIDPredicate(requirementId));
 		
 		if (sameNode != null) {
 			throw new RequirementTreeNodeAlreadyExistException();

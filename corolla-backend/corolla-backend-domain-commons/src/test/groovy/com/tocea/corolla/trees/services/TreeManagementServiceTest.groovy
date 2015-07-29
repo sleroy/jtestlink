@@ -1,5 +1,7 @@
 package com.tocea.corolla.trees.services
 
+import java.util.function.Predicate;
+
 import org.junit.Rule;
 
 import spock.lang.Specification;
@@ -428,10 +430,15 @@ class TreeManagementServiceTest extends Specification {
 		
 	}
 	
-	def "it should retrieve a node in a tree by its ID"() {
+	def "it should apply a predicate on a tree to find a specific node"() {
 		
 		given:
-			def nodeID = 2
+			def predicate = new Predicate<TreeNode>() {
+				@Override
+				public boolean test(TreeNode node) {
+					return node.id == 2
+				}
+			}
 			def tree = new BasicTree(
 					nodes: [
 					        new TreeNode(
@@ -443,13 +450,14 @@ class TreeManagementServiceTest extends Specification {
 			)
 	
 		when:
-			def node = service.findNodeByID(tree, nodeID)
+			def node = service.findNode(tree, predicate)
 			
 		then:
 			notThrown(Exception.class)
 			
 		then:
 			node != null
+			node.id == 2
 		
 	}
 	

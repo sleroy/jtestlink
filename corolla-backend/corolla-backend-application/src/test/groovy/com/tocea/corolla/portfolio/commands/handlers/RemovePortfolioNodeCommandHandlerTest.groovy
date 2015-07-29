@@ -15,6 +15,7 @@ import com.tocea.corolla.products.commands.DeleteProjectCommand;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.domain.TreeNode
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.trees.services.TreeManagementService;
 
@@ -119,7 +120,7 @@ public class RemovePortfolioNodeCommandHandlerTest extends Specification {
 			notThrown(Exception.class)
 			
 		then:
-			treeManagementService.findNodeByID(portfolio, nodeId) >> portfolio.nodes[0]
+			treeManagementService.findNode(portfolio, { it instanceof FindNodeByIDPredicate }) >> portfolio.nodes[0]
 		
 		then:
 			1 * gate.dispatch { it instanceof DeleteProjectCommand && it.projectID == portfolio.nodes[0].projectId }	

@@ -28,61 +28,6 @@ public class RequirementsTreeUtilsTest extends Specification {
 		
 	}
 	
-	def "it should retrieve a node in a tree from a requirement ID"(requirementID) {
-		
-		given:
-			def nodes = [
-			             new RequirementNode(
-			            		 id: 1, 
-			            		 requirementId: "R1", 
-			            		 nodes:[
-			            		        new RequirementNode(id: 2, requirementId: "R2", nodes:[]),
-			            		        new TreeNode(id: 3, nodes:[])
-			            		 ]
-			             )
-			]
-					
-		when:
-			def result = RequirementsTreeUtils.getNodeByRequirementId requirementID, nodes
-			
-		then:
-			notThrown(Exception.class)
-			
-		then:
-			result != null
-			result.requirementId == requirementID
-			
-		where:
-			requirementID << ["R1", "R2"]
-		
-	}
-	
-	def "it should not throw an exception when trying to retrieve a node from a non existing requirement ID"() {
-		
-		given:
-			def requirementID = "R3145"
-			def nodes = [
-			             new RequirementNode(
-			            		 id: 1, 
-			            		 requirementId: "R1", 
-			            		 nodes:[
-			            		        new RequirementNode(id: 2, requirementId: "R2", nodes:[]),
-			            		        new TreeNode(id: 3, nodes:[])
-			            		 ]
-			             )
-			]
-					
-		when:
-			def result = RequirementsTreeUtils.getNodeByRequirementId requirementID, nodes
-			
-		then:
-			notThrown(Exception.class)
-			
-		then:
-			result == null
-		
-	}
-	
 	def "it should extract all the requirement nodes in a given tree"() {
 		
 		given:

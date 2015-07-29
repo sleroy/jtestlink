@@ -22,30 +22,6 @@ public class RequirementsTreeUtils {
 	}
 	
 	/**
-	 * Retrieves a tree node by its Requirement ID
-	 * @param id
-	 * @param nodes
-	 * @return
-	 */
-	public static TreeNode getNodeByRequirementId(String id, Collection<TreeNode> nodes) {
-		
-		for(TreeNode node : nodes) {			
-			
-			if (isRequirementNode(node) && ((RequirementNode) node).getRequirementId().equals(id)) {
-				return node;
-			}
-			
-			TreeNode child = getNodeByRequirementId(id, node.getNodes());
-			
-			if (child != null) {
-				return child;
-			}
-		}
-		
-		return null;		
-	}
-	
-	/**
 	 * Returns a flat list of all the requirements nodes
 	 * @param nodes
 	 * @return

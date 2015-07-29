@@ -13,9 +13,11 @@ import com.tocea.corolla.portfolio.exceptions.PortfolioNotFoundException;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.domain.FolderNode
+import com.tocea.corolla.trees.domain.ITree;
 import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate
 import com.tocea.corolla.trees.services.ITreeManagementService
 import com.tocea.corolla.trees.services.TreeManagementService
 
@@ -65,7 +67,7 @@ public class EditPortfolioFolderNodeCommandHandlerTest extends Specification {
 			notThrown(Exception.class)
 		
 		then:
-			treeManagementService.findNodeByID(portfolio, nodeId) >> portfolio.nodes[0]
+			treeManagementService.findNode(portfolio, { it instanceof FindNodeByIDPredicate }) >> portfolio.nodes[0]
 					
 		then:
 			portfolio.nodes[0].text == text	
@@ -123,7 +125,7 @@ public class EditPortfolioFolderNodeCommandHandlerTest extends Specification {
 	
 		then:
 			portfolioDAO.find() >> portfolio
-			treeManagementService.findNodeByID(portfolio, nodeId) >> null
+			treeManagementService.findNode(portfolio, { it instanceof FindNodeByIDPredicate }) >> null
 			
 		then:
 			thrown(InvalidTreeNodeInformationException.class)
@@ -154,7 +156,7 @@ public class EditPortfolioFolderNodeCommandHandlerTest extends Specification {
 	
 		then:
 			portfolioDAO.find() >> portfolio
-			treeManagementService.findNodeByID(portfolio, nodeId) >> portfolio.nodes[0].nodes[0]
+			treeManagementService.findNode(portfolio, { it instanceof FindNodeByIDPredicate }) >> portfolio.nodes[0].nodes[0]
 			
 		then:
 			thrown(InvalidTreeNodeInformationException.class)

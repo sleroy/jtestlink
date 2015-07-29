@@ -17,6 +17,7 @@ import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeNotFoundException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.requirements.trees.predicates.FindNodeByRequirementIDPredicate;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.domain.TreeNode;
@@ -57,6 +58,9 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
 			
 		then:
+			treeManagementService.findNode(tree, { it instanceof FindNodeByRequirementIDPredicate }) >> tree.nodes[0]
+			
+		then:
 			notThrown(Exception.class)
 			
 		then:
@@ -79,6 +83,9 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			treeManagementService.findNode(tree, { it instanceof FindNodeByRequirementIDPredicate }) >> tree.nodes[0]
+			
+		then:
 			notThrown(Exception.class)
 			1 * gate.dispatch { it instanceof DeleteRequirementCommand && it.requirementID == req_id }
 				

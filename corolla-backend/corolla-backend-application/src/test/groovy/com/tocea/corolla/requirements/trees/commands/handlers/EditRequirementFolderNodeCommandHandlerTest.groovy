@@ -20,6 +20,7 @@ import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.trees.services.TreeManagementService;
 
@@ -67,7 +68,7 @@ public class EditRequirementFolderNodeCommandHandlerTest extends Specification {
 			notThrown(Exception.class)
 		
 		then:
-			treeManagementService.findNodeByID(tree, nodeId) >> tree.nodes[0]
+			treeManagementService.findNode(tree, { it instanceof FindNodeByIDPredicate }) >> tree.nodes[0]
 			
 		then:
 			tree.nodes[0].text == text
@@ -186,7 +187,7 @@ public class EditRequirementFolderNodeCommandHandlerTest extends Specification {
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
 			
 		then:
-			treeManagementService.findNodeByID(tree, nodeId) >> tree.nodes[0].nodes[0]
+			treeManagementService.findNode(tree, { it instanceof FindNodeByIDPredicate }) >> tree.nodes[0].nodes[0]
 	
 		then:
 			thrown(InvalidTreeNodeInformationException.class)

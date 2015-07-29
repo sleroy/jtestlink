@@ -11,8 +11,10 @@ import com.tocea.corolla.portfolio.dao.IPortfolioDAO
 import com.tocea.corolla.portfolio.domain.Portfolio
 import com.tocea.corolla.portfolio.domain.ProjectNode
 import com.tocea.corolla.portfolio.exceptions.ProjectNodeAlreadyExistException;
+import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
 import com.tocea.corolla.test.utils.FunctionalDocRule
+import com.tocea.corolla.trees.domain.ITree;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.services.ITreeManagementService
 import com.tocea.corolla.trees.services.TreeManagementService
@@ -107,6 +109,9 @@ class CreateProjectNodeCommandHandlerTest extends Specification {
 	
 		then:
 			portfolioDAO.find() >> portfolio
+			
+		then:
+			treeManagementService.findNode(portfolio, { it instanceof FindNodeByProjectIDPredicate }) >> portfolio.nodes[0]
 	
 		then:
 			thrown(ProjectNodeAlreadyExistException.class)
