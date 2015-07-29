@@ -1,10 +1,8 @@
 package com.tocea.corolla.trees.predicates;
 
-import java.util.function.Predicate;
-
 import com.tocea.corolla.trees.domain.TreeNode;
 
-public class FindNodeByIDPredicate implements Predicate<TreeNode> {
+public class FindNodeByIDPredicate implements ITreeNodePredicate {
 
 	private Integer nodeID;
 	

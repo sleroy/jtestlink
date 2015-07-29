@@ -1,12 +1,11 @@
 package com.tocea.corolla.requirements.trees.predicates;
 
-import java.util.function.Predicate;
-
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.utils.RequirementsTreeUtils;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.predicates.ITreeNodePredicate;
 
-public class FindNodeByRequirementIDPredicate implements Predicate<TreeNode> {
+public class FindNodeByRequirementIDPredicate implements ITreeNodePredicate {
 
 	private String requirementID;
 	

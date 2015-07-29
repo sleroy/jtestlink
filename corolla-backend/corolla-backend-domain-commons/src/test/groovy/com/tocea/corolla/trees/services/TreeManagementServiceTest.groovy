@@ -1,7 +1,5 @@
 package com.tocea.corolla.trees.services
 
-import java.util.function.Predicate;
-
 import org.junit.Rule;
 
 import spock.lang.Specification;
@@ -12,6 +10,7 @@ import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
+import com.tocea.corolla.trees.predicates.ITreeNodePredicate
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "TREE_MANAGEMENT_SERVICE")
@@ -433,7 +432,7 @@ class TreeManagementServiceTest extends Specification {
 	def "it should apply a predicate on a tree to find a specific node"() {
 		
 		given:
-			def predicate = new Predicate<TreeNode>() {
+			def predicate = new ITreeNodePredicate() {
 				@Override
 				public boolean test(TreeNode node) {
 					return node.id == 2

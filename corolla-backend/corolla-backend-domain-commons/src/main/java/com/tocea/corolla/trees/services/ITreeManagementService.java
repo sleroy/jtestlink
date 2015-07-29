@@ -1,10 +1,10 @@
 package com.tocea.corolla.trees.services;
 
 import java.util.Collection;
-import java.util.function.Predicate;
 
 import com.tocea.corolla.trees.domain.ITree;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.predicates.ITreeNodePredicate;
 
 public interface ITreeManagementService {
 	
@@ -40,7 +40,7 @@ public interface ITreeManagementService {
 	 * @param predicate
 	 * @return
 	 */
-	public TreeNode findNode(ITree tree, Predicate<TreeNode> predicate);
+	public TreeNode findNode(ITree tree, ITreeNodePredicate predicate);
 	
 	/**
 	 * Find a specific node in a collection of nodes
@@ -48,6 +48,6 @@ public interface ITreeManagementService {
 	 * @param predicate
 	 * @return
 	 */
-	public TreeNode findNode(Collection<TreeNode> nodes, Predicate<TreeNode> predicate);
+	public TreeNode findNode(Collection<TreeNode> nodes, ITreeNodePredicate predicate);
 	
 }

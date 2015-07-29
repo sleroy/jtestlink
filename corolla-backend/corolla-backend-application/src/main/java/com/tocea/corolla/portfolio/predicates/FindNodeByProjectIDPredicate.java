@@ -1,12 +1,11 @@
 package com.tocea.corolla.portfolio.predicates;
 
-import java.util.function.Predicate;
-
 import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.predicates.ITreeNodePredicate;
 
-public class FindNodeByProjectIDPredicate implements Predicate<TreeNode> {
+public class FindNodeByProjectIDPredicate implements ITreeNodePredicate {
 
 	private String projectID;
 	

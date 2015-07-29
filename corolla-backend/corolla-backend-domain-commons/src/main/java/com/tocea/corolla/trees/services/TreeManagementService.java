@@ -2,7 +2,6 @@ package com.tocea.corolla.trees.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Predicate;
 
 import org.springframework.stereotype.Service;
 
@@ -13,6 +12,7 @@ import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
 import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
+import com.tocea.corolla.trees.predicates.ITreeNodePredicate;
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
 
 @Service
@@ -148,13 +148,13 @@ public class TreeManagementService implements ITreeManagementService {
 	}
 	
 	@Override
-	public TreeNode findNode(ITree tree, Predicate<TreeNode> predicate) {
+	public TreeNode findNode(ITree tree, ITreeNodePredicate predicate) {
 		
 		return findNode(tree.getNodes(), predicate);
 	}
 	
 	@Override
-	public TreeNode findNode(Collection<TreeNode> nodes, Predicate<TreeNode> predicate) {
+	public TreeNode findNode(Collection<TreeNode> nodes, ITreeNodePredicate predicate) {
 		
 		for(TreeNode node : nodes) {			
 			
