@@ -34,6 +34,8 @@ public class CreateFolderNodeTypeCommandHandler implements ICommandHandler<Creat
 			throw new InvalidFolderNodeTypeInformationException("No ID expected");
 		}
 		
+		nodeType.setId(null);
+		
 		folderNodeTypeDAO.save(nodeType);
 		
 		return nodeType;

@@ -1,6 +1,7 @@
 package com.tocea.corolla.products.domain;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Date;
 
 import javax.validation.constraints.Size;
@@ -33,7 +34,7 @@ public class Project implements Serializable {
 	
 	private String description;
 	
-	private String image;
+	private URL image;
 
 	public String getId() {
 		return id;
@@ -91,11 +92,11 @@ public class Project implements Serializable {
 		this.categoryId = categoryId;
 	}
 
-	public String getImage() {
+	public URL getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(URL image) {
 		this.image = image;
 	}
 	

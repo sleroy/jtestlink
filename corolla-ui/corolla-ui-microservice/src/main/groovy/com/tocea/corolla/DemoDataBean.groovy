@@ -170,6 +170,7 @@ public class DemoDataBean {
 		 * Folder Node Types
 		 */
 		def basicFolder = this.gate.dispatch(new CreateFolderNodeTypeCommand(new FolderNodeType("Basic Folder", "http://icons.iconarchive.com/icons/uriy1966/steel-system/24/Folder-icon.png")))
+		def pluginFolder = this.gate.dispatch(new CreateFolderNodeTypeCommand(new FolderNodeType("Plugins", "http://icons.iconarchive.com/icons/elegantthemes/beautiful-flat-one-color/24/plugin-icon.png")))
 		
 		/**
 		 * Project Statuses
@@ -183,7 +184,8 @@ public class DemoDataBean {
 				key: 'corolla', 
 				name: 'Corolla', 
 				description: 'A Java Coffee Maker',
-				statusId: statusActive.id
+				statusId: statusActive.id,
+				image: new URL("http://lorempixel.com/24/24/")
 		))		
 		corolla.description = 'Corolla is a tool to manage software requirements'
 		this.editProject(corolla)
