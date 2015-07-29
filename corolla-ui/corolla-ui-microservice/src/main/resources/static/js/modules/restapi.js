@@ -103,6 +103,10 @@ function RestAPI() {
 			
 			"findAll": function(callback) {
 				call("trees/folders/types/all", callback);
+			},
+			
+			"delete": function(typeID, callback) {
+				call("/trees/folders/types/delete/"+typeID, callback);
 			}
 		}
 
