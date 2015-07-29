@@ -93,7 +93,7 @@ public class TreeNodeUtils {
 	 */
 	public static Boolean isFolderNode(TreeNode node) {
 		
-		return node.getClass().equals(FolderNode.class);
+		return node instanceof FolderNode;
 	}
 
 }
