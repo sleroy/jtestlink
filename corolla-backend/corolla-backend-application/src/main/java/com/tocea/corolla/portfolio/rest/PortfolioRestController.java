@@ -112,16 +112,7 @@ public class PortfolioRestController {
 		
 		FolderNodeType folderNodeType = folderNodeTypeDAO.findOne(folderNodeTypeID);
 		
-		Portfolio portfolio = gate.dispatch(new CreatePortfolioFolderNodeCommand(text, folderNodeType, parentID));
-		
-		Integer maxID = TreeNodeUtils.getMaxNodeId(portfolio.getNodes());		
-		TreeNode node = treeManagementService.findNode(portfolio, new FindNodeByIDPredicate(maxID));
-		
-		if (node != null && TreeNodeUtils.isFolderNode(node) && ((FolderNode)node).getText().equals(text)) {
-			return (FolderNode) node;		
-		}
-		
-		return null;
+		return gate.dispatch(new CreatePortfolioFolderNodeCommand(text, folderNodeType, parentID));
 	}
 	
 	@RequestMapping(value = "/folders/add/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")

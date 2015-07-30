@@ -190,34 +190,32 @@ public class DemoDataBean {
 		corolla.description = 'Corolla is a tool to manage software requirements'
 		this.editProject(corolla)
 		
-		def portfolio = this.gate.dispatch new CreatePortfolioFolderNodeCommand("Corolla-Project", basicFolder, null)
-		portfolio = this.gate.dispatch new MovePortfolioNodeCommand(1, TreeNodeUtils.getMaxNodeId(portfolio.nodes))
+		def portfolio = portfolioDAO.find()
+		def corollaFolderNode = this.gate.dispatch new CreatePortfolioFolderNodeCommand("Corolla-Project", basicFolder, null)
+		this.gate.dispatch new MovePortfolioNodeCommand(1, corollaFolderNode.id)
 		
-		portfolio = this.gate.dispatch new CreatePortfolioFolderNodeCommand("Komea", basicFolder, null)
-		def komeaFolderID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+		def komeaFolderNode = this.gate.dispatch new CreatePortfolioFolderNodeCommand("Komea", basicFolder, null)			
 		
 		def komea = this.gate.dispatch new CreateProjectCommand(new Project(
 				key: 'komea', 
 				name: 'Komea Dashboard', 
 				description: 'Tool for measuring and managing key performance indicators in a software factory',
 				statusId: statusActive.id
-		), komeaFolderID)
-		println "foler: "+komeaFolderID
+		), komeaFolderNode.id)
 		
 		def komeaRedmine = this.gate.dispatch new CreateProjectCommand(new Project(
 				key: 'komea-connector-redmine', 
 				name: 'Komea Redmine Connector', 
 				description: 'Redmine connector for Komea',
 				statusId: statusActive.id
-		), komeaFolderID)
-		println "foler: "+komeaFolderID
+		), komeaFolderNode.id)
 		
 		def komeaSvn =this.gate.dispatch new CreateProjectCommand(new Project(
 				key: 'komea-connector-svn', 
 				name: 'Komea SVN Connector', 
 				description: 'SVN connector for Komea',
 				statusId: statusActive.id
-		), komeaFolderID)
+		), komeaFolderNode.id)
 		
 		
 //		portfolio = portfolioDAO.find();

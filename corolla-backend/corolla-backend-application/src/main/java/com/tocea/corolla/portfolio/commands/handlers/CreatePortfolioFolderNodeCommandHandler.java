@@ -20,7 +20,7 @@ import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
-public class CreatePortfolioFolderNodeCommandHandler implements ICommandHandler<CreatePortfolioFolderNodeCommand, Portfolio> {
+public class CreatePortfolioFolderNodeCommandHandler implements ICommandHandler<CreatePortfolioFolderNodeCommand, FolderNode> {
 
 	@Autowired
 	private IPortfolioDAO portfolioDAO;
@@ -32,7 +32,7 @@ public class CreatePortfolioFolderNodeCommandHandler implements ICommandHandler<
 	private ITreeManagementService treeManagementService;
 	
 	@Override
-	public Portfolio handle(@Valid CreatePortfolioFolderNodeCommand command) {
+	public FolderNode handle(@Valid CreatePortfolioFolderNodeCommand command) {
 		
 		Portfolio portfolio = portfolioDAO.find();
 			
@@ -56,7 +56,7 @@ public class CreatePortfolioFolderNodeCommandHandler implements ICommandHandler<
 		
 		portfolioDAO.save(portfolio);
 		
-		return portfolio;
+		return (FolderNode) node;
 	}
 
 }

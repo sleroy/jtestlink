@@ -3,7 +3,6 @@ package com.tocea.corolla.portfolio.commands.handlers;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
@@ -18,7 +17,6 @@ import com.tocea.corolla.trees.domain.FolderNodeType;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.exceptions.FolderNodeTypeNotFoundException;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
-import com.tocea.corolla.trees.exceptions.MissingFolderNodeTypeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
 import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
