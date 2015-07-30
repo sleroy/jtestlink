@@ -2,7 +2,7 @@ package com.tocea.corolla.ui.views.portfolio;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import javax.servlet.Filter;
 
@@ -85,14 +85,9 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	@Test
 	public void anonymousUserShouldNotAccessPortfolioView() throws Exception {
 		
-		String redirectUrl = 
-				mvc.perform(get("/ui/portfolio"))
-					.andExpect(status().isFound())
-					.andReturn()
-					.getResponse()
-					.getForwardedUrl();
-		
-		assert redirectUrl.endsWith("/login");
+		mvc.perform(get("/ui/portfolio"))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrlPattern("**/login"));
 		
 	}
 	
@@ -108,14 +103,9 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	@Test
 	public void anonymousUserShouldNotAccessPortfolioManagerView() throws Exception {
 		
-		String redirectUrl = 
-				mvc.perform(get("/ui/portfolio/manager"))
-					.andExpect(status().isFound())
-					.andReturn()
-					.getResponse()
-					.getForwardedUrl();
-		
-		assert redirectUrl.endsWith("/login");
+		mvc.perform(get("/ui/portfolio/manager"))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrlPattern("**/login"));
 		
 	}
 	
@@ -132,18 +122,13 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	
 	@Test
 	public void shouldRedirectIfProjectDoesNotExist() throws Exception {
-		
-		String redirectUrl = 
-				mvc
-					.perform(
-							get("/ui/portfolio/manager/"+"blblbl")
-							.with(user(new AuthUser(basicUser, basicRole))))
-					.andExpect(status().isFound())
-					.andReturn()
-					.getResponse()
-					.getForwardedUrl();
-		
-		assert redirectUrl.endsWith("/ui/portfolio/manager");
+		 
+		mvc
+			.perform(
+					get("/ui/portfolio/manager/"+"blblbl")
+					.with(user(new AuthUser(basicUser, basicRole))))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrl("/ui/portfolio/manager"));
 		
 	}
 	

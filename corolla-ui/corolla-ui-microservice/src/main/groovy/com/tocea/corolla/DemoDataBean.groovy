@@ -12,6 +12,7 @@ import javax.annotation.PreDestroy;
 import org.javers.core.Javers
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Component
 
 import com.google.common.base.Function
 import com.google.common.collect.Collections2;
@@ -66,7 +67,7 @@ import com.tocea.corolla.users.domain.UserGroup
  * @author sleroy
  *
  */
-@org.springframework.stereotype.Component
+@Component
 @Slf4j
 public class DemoDataBean {
 
