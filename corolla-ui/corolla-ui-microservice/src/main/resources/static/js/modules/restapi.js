@@ -68,17 +68,21 @@ function RestAPI() {
 				call("portfolio/jstree", callback);
 			},
 			
-			"add": function(text, typeID, parentID, callback) {
-				var url = "portfolio/add/text";
-				if (parentID) {
-					url += "/"+parentID;
+			"folders": {
+				
+				"add": function(text, typeID, parentID, callback) {
+					var url = "portfolio/folders/add/";
+					if (parentID) {
+						url += parentID;
+					}
+					url += typeID;
+					postText(url, text, callback);
+				},
+				
+				"edit": function(nodeID, text, callback) {
+					postText("portfolio/folders/edit/"+nodeID, text, callback);
 				}
-				url += "/"+typeID;
-				postText(url, text, callback);
-			},
-			
-			"edit": function(nodeID, text, callback) {
-				postText("portfolio/edit/text/"+nodeID, text, callback);
+				
 			},
 			
 			"move": function(fromID, toID, callback) {

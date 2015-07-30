@@ -98,14 +98,14 @@ public class PortfolioRestController {
 		return gate.dispatch(new RemovePortfolioNodeCommand(nodeID));
 	}
 	
-	@RequestMapping(value = "/edit/text/{nodeID}", method = RequestMethod.POST, consumes = "text/plain")
+	@RequestMapping(value = "/folders/edit/{nodeID}", method = RequestMethod.POST, consumes = "text/plain")
 	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
 	public Portfolio editTextNode(@PathVariable Integer nodeID, @RequestBody String text) {
 		
 		return gate.dispatch(new EditPortfolioFolderNodeCommand(nodeID, text));
 	}
 	
-	@RequestMapping(value = "/add/text/{parentID}/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
+	@RequestMapping(value = "/folders/add/{parentID}/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
 	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
 	public FolderNode addTextNode(@PathVariable Integer parentID, @PathVariable String folderNodeTypeID, @RequestBody String text) {
 		
@@ -123,7 +123,7 @@ public class PortfolioRestController {
 		return null;
 	}
 	
-	@RequestMapping(value = "/add/text/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
+	@RequestMapping(value = "/folders/add/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
 	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
 	public FolderNode addTextNode(@PathVariable String folderNodeTypeID, @RequestBody String text) {
 		

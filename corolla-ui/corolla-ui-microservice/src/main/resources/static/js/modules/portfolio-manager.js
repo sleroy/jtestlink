@@ -254,14 +254,14 @@ function initJsTree(data) {
     	var nodeID = getNodeID(node);
     	var text = data.text;
     	if (nodeID) {
-	    	restAPI.portfolio.edit(nodeID, text, function(data) {
+	    	restAPI.portfolio.folders.edit(nodeID, text, function(data) {
 	    		console.log("edited node #"+nodeID+" with text: "+text);
 	    	});
     	}else{
     		var parentNode = $(PROJECTS_TREEVIEW).jstree(true).get_node(data.node.parent);
     		var parentID = parentNode ? getNodeID(parentNode) : null;
     		var typeID = node.type ? node.type : null;
-    		restAPI.portfolio.add(text, typeID, parentID, function(data) {
+    		restAPI.portfolio.folders.add(text, typeID, parentID, function(data) {
     			console.log("created node with text: "+text);
     			console.log(data);
     			if (data && data.id) {
