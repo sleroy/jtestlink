@@ -103,7 +103,7 @@ class FolderNodeTypePageController {
 		}
 		
 		type = _result.model.get('type')
-				
+
 		gate.dispatch(new EditFolderNodeTypeCommand(type))
 		
 		return new ModelAndView("redirect:/ui/admin/folder-node-types")	

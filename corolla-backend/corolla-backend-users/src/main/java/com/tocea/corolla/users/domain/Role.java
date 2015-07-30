@@ -103,7 +103,7 @@ public class Role implements GrantedAuthority {
 	/**
 	 * @return the spring security authorities.
 	 */
-	public List<GrantedAuthority> getGrantedAuthorities() {
+	public List<GrantedAuthority> getGrantedAuthorities() {		
 		final Iterable<String> permissionIterator = Splitter.on(',')
 				.trimResults()
 				.omitEmptyStrings()
