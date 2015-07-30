@@ -72,8 +72,6 @@ public class FolderNodeTypePageControllerTest extends AbstractSpringTest {
 		
 		existingType = gate.dispatch(new CreateFolderNodeTypeCommand(new FolderNodeType("blblbl", "http://awesome-icon.com/image.png")));
 		
-		System.out.println("existingType: "+existingType.getId()+ " - "+existingType.getName());
-		
 	}
 	
 	@Test
