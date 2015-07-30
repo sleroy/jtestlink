@@ -24,7 +24,7 @@ public class CreatePortfolioFolderNodeCommand {
 	}
 	
 	public CreatePortfolioFolderNodeCommand(String text, FolderNodeType type, Integer parentID) {
-		this(text, type.getId(), parentID);
+		this(text, type != null ? type.getId() : null, parentID);
 	}
 
 	public Integer getParentID() {

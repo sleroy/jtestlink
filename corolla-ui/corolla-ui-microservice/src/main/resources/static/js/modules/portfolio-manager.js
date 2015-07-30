@@ -128,6 +128,7 @@ function initJsTree(data) {
 	
 	var types = {};
 	var folderActions = {};
+	var folderEditActions = {}
 	if (data) {
 		$.each(data, function(i,v) {
 			types[v.id] = { 'icon': v.icon }
@@ -138,6 +139,21 @@ function initJsTree(data) {
 						var inst = $.jstree.reference(data.reference);
 					    var node = inst.get_node(data.reference);
 					    addFolder(v.id, node);
+					}
+			}
+			folderEditActions[v.id] = {
+					label: v.name,
+					icon: v.icon,
+					action : function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    changeFolderType(v.id, node);
+					},
+					_disabled: function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var currentType = v.id;
+						return $(PROJECTS_TREEVIEW).jstree(true).get_type(node) == currentType;
 					}
 			}
 		});
@@ -174,11 +190,6 @@ function initJsTree(data) {
 						'add_folder':  {
 							label: "Folder",
 							icon: "glyphicon glyphicon-folder-open",
-//							action : function(data) {
-//								var inst = $.jstree.reference(data.reference);
-//							    var node = inst.get_node(data.reference);
-//							    addFolder(node);
-//							}
 							submenu: folderActions
 						},
 						'add_project': {
@@ -209,6 +220,19 @@ function initJsTree(data) {
 					    }
 					}
 				},
+				
+				"type" : {
+					label: "Type",
+					icon: "fa fa-tag",
+					submenu: folderEditActions,
+					_disabled: function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var projectID = getProjectID(node);
+					    return projectID;
+					}
+				},
+				
 				"delete" : {
 					label : "Delete",
 					icon : "fa fa-trash",
@@ -285,6 +309,13 @@ function addFolder(typeID, parentNode) {
 	var newNode = $(PROJECTS_TREEVIEW).jstree(true).create_node(parentNode);
 	$(PROJECTS_TREEVIEW).jstree(true).set_type(newNode, typeID);
 	$(PROJECTS_TREEVIEW).jstree(true).edit(newNode);
+}
+
+function changeFolderType(typeID, node) {
+	var ID = getNodeID(node);
+	restAPI.portfolio.folders.changeType(ID, typeID, function(data) {
+		$(PROJECTS_TREEVIEW).jstree(true).set_type(node, typeID);
+	});
 }
 
 /**

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.commands.ChangePortfolioFolderNodeTypeCommand;
 import com.tocea.corolla.portfolio.commands.CreatePortfolioFolderNodeCommand;
 import com.tocea.corolla.portfolio.commands.EditPortfolioFolderNodeCommand;
 import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
@@ -128,6 +129,13 @@ public class PortfolioRestController {
 	public FolderNode addTextNode(@PathVariable String folderNodeTypeID, @RequestBody String text) {
 		
 		return addTextNode(null, folderNodeTypeID, text);
+	}
+	
+	@RequestMapping(value = "/folders/edit/type/{nodeID}/{typeID}")
+	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	public FolderNode changeFolderNodeType(@PathVariable Integer nodeID, @PathVariable String typeID) {
+		
+		return gate.dispatch(new ChangePortfolioFolderNodeTypeCommand(nodeID, typeID));
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.tocea.corolla.portfolio.commands;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.tocea.corolla.cqrs.annotations.Command;
@@ -7,7 +9,7 @@ import com.tocea.corolla.cqrs.annotations.Command;
 @Command
 public class ChangePortfolioFolderNodeTypeCommand {
 
-	@NotBlank
+	@NotNull
 	private Integer nodeID;
 	
 	@NotBlank

@@ -10,7 +10,14 @@ function RestAPI() {
 	var REST_PREFIX = "/rest/";
 	
 	var call = function(url, callback) {
-		$.get(REST_PREFIX + url, callback);
+		$.ajax({
+			url: REST_PREFIX + url,
+			success: callback,
+			error: function(data, status) {
+				console.log(data);
+				console.log(status);
+			}
+		});
 	}
 	
 	var post = function(url, data, callback) {
@@ -71,16 +78,20 @@ function RestAPI() {
 			"folders": {
 				
 				"add": function(text, typeID, parentID, callback) {
-					var url = "portfolio/folders/add/";
+					var url = "portfolio/folders/add";
 					if (parentID) {
-						url += parentID;
+						url += '/'+parentID;
 					}
-					url += typeID;
+					url += '/'+typeID;
 					postText(url, text, callback);
 				},
 				
 				"edit": function(nodeID, text, callback) {
 					postText("portfolio/folders/edit/"+nodeID, text, callback);
+				},
+				
+				"changeType": function(nodeID, typeID, callback) {
+					call("portfolio/folders/edit/type/"+nodeID+"/"+typeID, callback);
 				}
 				
 			},
