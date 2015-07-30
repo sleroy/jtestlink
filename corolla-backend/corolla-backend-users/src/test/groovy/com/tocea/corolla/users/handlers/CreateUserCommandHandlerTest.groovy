@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*
 import org.javers.core.Javers;
 import org.junit.Rule
 import org.mockito.Mockito
+import org.springframework.security.crypto.password.PasswordEncoder
 
 import spock.lang.Specification
 
@@ -38,7 +39,7 @@ class CreateUserCommandHandlerTest extends Specification{
 	def IRoleDAO roleDao = Mockito.mock(IRoleDAO)
 	def emailValid = new EmailValidationService()
 	def defaultRole = new Role(id:1, name:'Guest', note:'Guest role', permissions:"ALL")
-	
+	def PasswordEncoder passwordEncoder = Mock(PasswordEncoder)
 	def CreateUserCommandHandler	handler
 
 	def User validUser
@@ -50,7 +51,8 @@ class CreateUserCommandHandlerTest extends Specification{
 		handler = new CreateUserCommandHandler(
 				userDAO : userDao,
 				roleDAO : roleDao,				
-				emailValidationService : emailValid
+				emailValidationService : emailValid,
+				passwordEncoder : passwordEncoder
 		)
 		validUser = 		new User(
 				activationToken:"",

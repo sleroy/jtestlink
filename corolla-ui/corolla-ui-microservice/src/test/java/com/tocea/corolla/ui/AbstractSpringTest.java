@@ -1,12 +1,15 @@
 package com.tocea.corolla.ui;
 
+import org.junit.After;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,6 +26,18 @@ import com.tocea.corolla.CorollaGuiApplication;
 @IntegrationTest({"server.port=0", "management.port=0"})
 public abstract class AbstractSpringTest {
 
+	@Autowired
+	private MongoTemplate mongoTemplate;
+	
+	@After
+	public void cleanDB() {
+		for (String collectionName : mongoTemplate.getCollectionNames()) {
+            if (!collectionName.startsWith("system.")) {
+                mongoTemplate.getCollection(collectionName).findAndRemove(null);
+            }
+        }
+	}
+	
 	@Profile("test")
 	@Configuration
 	@EnableMongoRepositories(basePackages = { "com.tocea.corolla" })

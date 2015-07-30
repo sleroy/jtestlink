@@ -11,6 +11,7 @@ import javax.annotation.PreDestroy;
 
 import org.javers.core.Javers
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
@@ -67,6 +68,7 @@ import com.tocea.corolla.users.domain.UserGroup
  * @author sleroy
  *
  */
+@Profile("demo")
 @Component
 @Slf4j
 public class DemoDataBean {
@@ -358,7 +360,7 @@ public class DemoDataBean {
 			lastName = _lastName
 			email =_email
 			login =_login
-			password = this.passwordEncoder.encode _password
+			password = _password
 			roleId = _rolePO.id
 		}
 		this.gate.dispatch new CreateUserCommand(user)
