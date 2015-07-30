@@ -16,8 +16,10 @@ import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.trees.domain.FolderNodeType
 import com.tocea.corolla.trees.domain.ITree;
 import com.tocea.corolla.trees.domain.TreeNode
+import com.tocea.corolla.trees.exceptions.FolderNodeTypeNotFoundException;
 import com.tocea.corolla.trees.exceptions.InvalidFolderNodeTypeInformationException;
 import com.tocea.corolla.trees.exceptions.InvalidTreeNodeInformationException;
+import com.tocea.corolla.trees.exceptions.MissingFolderNodeTypeInformationException;
 import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
 import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate
 import com.tocea.corolla.trees.services.ITreeManagementService
@@ -166,7 +168,7 @@ public class ChangePortfolioFolderNodeTypeCommandHandlerTest extends Specificati
 			folderNodeTypeDAO.findOne(newTypeID) >> null
 			
 		then:
-			thrown(InvalidFolderNodeTypeInformationException.class)
+			thrown(FolderNodeTypeNotFoundException.class)
 		
 	}
 	
