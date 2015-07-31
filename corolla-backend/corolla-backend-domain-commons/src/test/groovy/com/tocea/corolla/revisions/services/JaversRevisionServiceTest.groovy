@@ -62,7 +62,7 @@ class JaversRevisionServiceTest extends Specification {
 		
 	}
 	
-	def "it should compare to version of the same object"() {
+	def "it should compare two versions of the same object"() {
 		
 		given:
 			def old = new DomainObject(id: "1")
@@ -76,6 +76,65 @@ class JaversRevisionServiceTest extends Specification {
 			notThrown(Exception.class)
 			javers.compare(old, current) >> diff
 		
+	}
+	
+	def "it should retrieve a commit in the history from its ID"() {
+		
+		given:
+			def objectID = "1"
+			def objectClass = DomainObject.class
+			def commitID = "2"
+			def history = [new Commit(id: "3"), new Commit(id: "2"), new Commit(id: "1")]
+					
+		and:
+			def JaversRevisionService service = Spy()
+					
+		when:
+			def commit = service.findCommitByID(objectID, objectClass, commitID)
+					
+		then:			
+			service.getHistory(objectID, objectClass) >> history
+			
+		then:
+			commit == history[1]
+			notThrown(Exception.class)
+		
+	}
+	
+	def "it should return the previous commit from a commit ID"() {
+		
+		given:
+			def objectID = "1"
+			def objectClass = DomainObject.class
+			def commitID = "2"
+			def history = [new Commit(id: "3"), new Commit(id: "2"), new Commit(id: "1")]
+					
+		and:
+			def JaversRevisionService service = Spy()
+					
+		when:
+			def commit = service.getPreviousCommit(objectID, objectClass, commitID)
+					
+		then:		
+			service.getHistory(objectID, objectClass) >> history
+			
+		then:
+			commit == history[2]
+			notThrown(Exception.class)
+					
+	}
+	
+	def "it should find a Javers CdoSnapshot instance by commit data"() {
+		
+		given:
+			def commit = new Commit(id: "1", objectID: "1", objectClass: DomainObject.class)
+			
+		when:
+			revisionService.findCdoSnapshotByCommit(commit)
+			
+		then:
+			1 * javers.findSnapshots(_)
+			notThrown(Exception.class)
 	}
 	
 }
