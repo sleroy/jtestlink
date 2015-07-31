@@ -2,6 +2,8 @@
 var ITEMS_TREEVIEW = '.project-items-tree-view';
 var SUNBURST = '.project-items-sunburst';
 
+var jsTreeManager = new JsTreeManager(ITEMS_TREEVIEW);
+
 function initRequirementView() {
 	
 	/*
@@ -37,95 +39,58 @@ function initRequirementView() {
 	});
 	
 	/*
-	 * Retrieves JsTree data
+	 * Initialize JsTree widget
 	 */
-	restAPI.requirements.jstree("corolla", "Master", initJsTree);
-	
-	function format_jstree_data(data) {
-		
-		var obj = { name: data.text, size: 1, children: [] }
-		$.each(data.children, function(i,v) {
-			obj.children.push(format_jstree_data(v));
+	restAPI.folderNodeTypes.findAll(function(types) {
+		restAPI.requirements.jstree(pageData.projectKey, pageData.branchName, function(data) {
+			initJsTree(types, data);
 		});
-		return obj;
-	}
-
-	function getNodes() {
-		return $(ITEMS_TREEVIEW).data().jstree.get_json();
-	}
-	
-	function toggleNode(nodes, name) {
-		$.each(nodes, function(i,node) {
-			if (node.text == name) {
-				console.log('toggle node '+name);
-				$(ITEMS_TREEVIEW).jstree(true).select_node(node);
-				$(ITEMS_TREEVIEW).jstree(true).toggle_node(node);
-			}else{
-				if (node.children) {
-					toggleNode(node.children, name);
-				}
-			}
-		});
-	}
-	
-	function drawSunburst() {
-		
-		/* Clear the div content */
-		$(SUNBURST).html('');
-		
-		/* Get the container's width */
-		var width = $(SUNBURST).parent().parent().width() * 0.7;
-		console.log( width );
-		
-		/* Retrieve the treeview data */
-		var treeview_data = getNodes();
-		
-		/* Format treeview data to sunburst expected data format */
-		var data = { name: 'Projects', children: [] };
-		$.each(treeview_data, function(i, v) {
-			data.children.push(format_jstree_data(v));
-		});
-		console.log(data);
-		
-		/* build the sunburst */
-		new SunburstBuilder()
-				.setRoot(SUNBURST)
-				.setHeight(width)
-				.setWidth(width * 0.9)
-				//.setURL('/resources/sunburst_sample.json')
-				.onClick(function(data) {
-					$(ITEMS_TREEVIEW).jstree(true).deselect_all();
-					$(ITEMS_TREEVIEW).jstree(true).close_all();
-					toggleNode(getNodes(), data.name);
-					console.log(data);
-				})
-				.build(data);
-		
-	}
-	
-	/* Draw the sunburst when the user clicks on the tab Requirements */
-	$('.toggle-sunburst').click(function() {
-//		drawSunburst();
 	});
-	
-	/* Draw the sunburst when the treeview is completely loaded */
-	$(ITEMS_TREEVIEW).bind("loaded.jstree", function(e, data) {
-		$(ITEMS_TREEVIEW).jstree(true).toggle_node(getNodes()[0]);
-//		drawSunburst();
-	});
-	
-	/* Refresh the sunburst when the window is being resized */
-	$(window).resize(function() {
-//		drawSunburst();
-	});
-	
+		
 }
 
 /**
  * Initializes JsTree widget
  * @param data
  */
-function initJsTree(data) {
+function initJsTree(typeData, data) {
+	
+	var types = {
+			"REQ": {
+				icon: 'glyphicon glyphicon-list-alt'
+			}
+	};
+	var folderActions = {};
+	var folderEditActions = {}
+	if (data) {
+		$.each(typeData, function(i,v) {
+			types[v.id] = { 'icon': v.icon }
+			folderActions[v.id] = {
+					label: v.name,
+					icon: v.icon,
+					action : function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    jsTreeManager.addFolder(v.id, node);
+					}
+			}
+			folderEditActions[v.id] = {
+					label: v.name,
+					icon: v.icon,
+					action : function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    changeFolderType(v.id, node);
+					},
+					_disabled: function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var currentType = v.id;
+						return jsTreeManager.getType(node) == currentType;
+					}
+			}
+		});
+	}
 	
 	$(ITEMS_TREEVIEW).jstree({
 		"core": {
@@ -141,6 +106,11 @@ function initJsTree(data) {
 					label: "Add",
 					icon: 'glyphicon glyphicon-plus',
 					'submenu': {
+						'add_folder':  {
+							label: "Folder",
+							icon: "glyphicon glyphicon-folder-open",
+							submenu: folderActions
+						},
 						'requirement': {
 							label: 'Requirement'
 						},
@@ -155,20 +125,48 @@ function initJsTree(data) {
 						}
 					}
 				},
+				"edit" : {
+					label : "Edit",
+					icon : "fa fa-pencil",
+					shortcut : 113,
+					shortcut_label : 'F2',
+					action : function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var ID = jsTreeManager.getNodeID(node);
+					    var requirementID = jsTreeManager.getRequirementID(node);
+					    if (!requirementID) {
+					    	console.log('editing node: ' + ID);
+					    	jsTreeManager.editNode(node);
+					    }
+					}
+				},
+				"type" : {
+					label: "Type",
+					icon: "fa fa-tag",
+					submenu: folderEditActions,
+					_disabled: function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var requirementID = jsTreeManager.getRequirementID(node);
+					    return requirementID;
+					}
+				},
 				"delete": {
 					label: "Delete",
 					icon: 'glyphicon glyphicon-remove',
-					action: function(node) {
-						console.log(node);
-						console.log('deleting node: '+node.reference[0].text);
+					action: function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var ID = jsTreeManager.getNodeID(node);
+					    restAPI.requirements.folders.remove(pageData.projectKey, pageData.branchName, ID, function(data) {
+					    	jsTreeManager.deleteNode(node);
+					    });
 					}
 				}
 			}
 		},
-		"types": {
-			'default': { icon: 'glyphicon glyphicon-list-alt' },
-			'testcase': { icon: 'glyphicon glyphicon-flash' }
-		}
+		"types": types
 	});
 	
 	/**
@@ -187,22 +185,42 @@ function initJsTree(data) {
 		}
 	});
 	
+	/**
+	 * Action triggered when the jstree is fully loaded
+	 */
+	$(ITEMS_TREEVIEW).bind("loaded.jstree", function(e, data) {
+		jsTreeManager.expand();
+	});
+	
+	/**
+	 * Action triggered when a new folder has been added in the JsTree
+	 */
+	jsTreeManager.setCreateAction(function(node, text, typeID, parentID) {
+		restAPI.requirements.folders.add(pageData.projectKey, pageData.branchName, text, typeID, parentID, function(data) {
+			console.log("created node with text: "+text);
+			console.log(data);
+			if (data && data.id) {
+				jsTreeManager.setNodeID(node, data.id);
+			}else{
+				jsTreeManager.deleteNode(node);
+			}
+		});
+	});
+	
+	/**
+	 * Action triggered when the text of a node has been edited in hte JsTree
+	 */
+	jsTreeManager.setEditAction(function(node, nodeID, text) {
+		restAPI.requirements.folders.edit(pageData.projectKey, pageData.branchName, nodeID, text, function(data) {
+			console.log("edited node #"+nodeID+" with text: "+text);
+		});
+	});
+		
 }
 
-/**
- * expand all branches in treeview
- */
-function expandTreeview() {
-	
-	$(ITEMS_TREEVIEW).jstree(true).open_all();
-	
-}
-
-/**
- * collapse treeview
- */
-function collapseTreeview() {
-	
-	$(ITEMS_TREEVIEW).jstree(true).close_all();
-	
+function changeFolderType(typeID, node) {
+	var ID = jsTreeManager.getNodeID(node);
+	restAPI.requirements.folders.changeType(pageData.projectKey, pageData.branchName, ID, typeID, function(data) {
+		jsTreeManager.setType(node, typeID);
+	});
 }

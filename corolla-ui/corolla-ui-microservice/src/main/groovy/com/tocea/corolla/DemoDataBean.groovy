@@ -130,7 +130,9 @@ public class DemoDataBean {
 			Permission.APPLICATION,
 			Permission.TESTSUITE,
 			Permission.TESTCAMP,
-			Permission.REST]
+			Permission.REST,
+			Permission.PROJECT_WRITE,
+			Permission.PROJECT_READ]
 		)
 		roleAdmin.roleProtected = true
 		this.gate.dispatch new EditRoleCommand(roleAdmin)

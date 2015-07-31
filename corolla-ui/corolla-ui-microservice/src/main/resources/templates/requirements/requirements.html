@@ -50,7 +50,12 @@
 										</a>
 										<ul class="dropdown-menu">
 											<li><a href="#">Requirement</a></li>
-											<li><a href="#">User Story</a></li>
+											<li th:each="folderNodeType : ${folderNodeTypes}">
+												<a  href="#" th:attr="onclick='jsTreeManager.addFolder(\''+${folderNodeType.id}+'\', null)'">
+													<img th:src="${folderNodeType.icon}" />
+													<span th:text="${folderNodeType.name}"></span>
+												</a>
+											</li>
 										</ul></li>
 									<li>
 										<a href="#" class="btn btn-default"> 
@@ -58,12 +63,12 @@
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="expandTreeview()">
+										<a href="#" class="btn btn-default" onclick="jsTreeManager.expand()">
 											<span class="fa fa-expand"></span>
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="collapseTreeview()">
+										<a href="#" class="btn btn-default" onclick="jsTreeManager.collapse()">
 											<span class="fa fa-compress"></span>
 										</a>
 									</li>
@@ -601,7 +606,8 @@
 	<div />
 	<!--/row-->
 	<div layout:fragment="footer">
-		<script type="text/javascript" src="../../static/js/modules/project.js" th:src="@{/js/modules/requirements.js}" />
+		<script type="text/javascript" src="../../static/js/modules/jstree-utils.js" th:src="@{/js/modules/jstree-utils.js}" />
+		<script type="text/javascript" src="../../static/js/modules/requirements.js" th:src="@{/js/modules/requirements.js}" />
 		<script type="text/javascript" th:inline="text">
 			var pageData = {
 					'projectKey': '[[${project.key}]]',

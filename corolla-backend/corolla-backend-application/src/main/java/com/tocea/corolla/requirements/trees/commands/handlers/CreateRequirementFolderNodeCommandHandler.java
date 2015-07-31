@@ -16,12 +16,11 @@ import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.InvalidRequirementsTreeInformationException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
 import com.tocea.corolla.trees.domain.FolderNode;
-import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
-public class CreateRequirementFolderNodeCommandHandler implements ICommandHandler<CreateRequirementFolderNodeCommand, RequirementsTree> {
+public class CreateRequirementFolderNodeCommandHandler implements ICommandHandler<CreateRequirementFolderNodeCommand, FolderNode> {
 
 	@Autowired
 	private IRequirementsTreeDAO requirementsTreeDAO;
@@ -30,7 +29,7 @@ public class CreateRequirementFolderNodeCommandHandler implements ICommandHandle
 	private ITreeManagementService treeManagementService;
 	
 	@Override
-	public RequirementsTree handle(@Valid CreateRequirementFolderNodeCommand command) {
+	public FolderNode handle(@Valid CreateRequirementFolderNodeCommand command) {
 		
 		ProjectBranch branch = command.getBranch();
 		
@@ -54,13 +53,13 @@ public class CreateRequirementFolderNodeCommandHandler implements ICommandHandle
 		
 		String typeID = command.getTypeID();
 		
-		TreeNode node = new FolderNode(text, typeID);
+		FolderNode node = new FolderNode(text, typeID);
 		
 		treeManagementService.insertNode(tree, parentID, node);
 		
 		requirementsTreeDAO.save(tree);
 		
-		return tree;
+		return node;
 		
 	}
 

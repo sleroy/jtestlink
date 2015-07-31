@@ -110,7 +110,32 @@ function RestAPI() {
 		"requirements": {
 			
 			"jstree": function(projectKey, branchName, callback) {
-				call("requirements/tree/jstree/"+projectKey+"/"+branchName, callback);
+				call("requirements/tree/"+projectKey+"/"+branchName+"/jstree", callback);
+			},
+			
+			"folders": {
+				
+				"add": function(projectKey, branchName, text, typeID, parentID, callback) {
+					var url = "requirements/tree/"+projectKey+"/"+branchName+"/folders/add";
+					if (parentID) {
+						url += '/'+parentID;
+					}
+					url += '/'+typeID;
+					postText(url, text, callback);
+				},
+				
+				"edit": function(projectKey, branchName, nodeID, text, callback) {
+					postText("requirements/tree/"+projectKey+'/'+branchName+"/folders/edit/"+nodeID, text, callback);
+				},
+				
+				"changeType": function(projectKey, branchName, nodeID, typeID, callback) {
+					call("requirements/tree/"+projectKey+'/'+branchName+"/folders/edit/type/"+nodeID+"/"+typeID, callback);
+				},
+				
+				"remove": function(projectKey, branchName, nodeID, callback) {
+					call("requirements/tree/"+projectKey+'/'+branchName+"/remove/"+nodeID, callback);
+				}
+			
 			}
 		},
 		

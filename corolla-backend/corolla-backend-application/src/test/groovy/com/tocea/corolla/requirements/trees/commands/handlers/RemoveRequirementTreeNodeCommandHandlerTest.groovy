@@ -13,6 +13,7 @@ import com.tocea.corolla.requirements.exceptions.*;
 import com.tocea.corolla.requirements.trees.commands.RemoveRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.trees.commands.handlers.RemoveRequirementTreeNodeCommandHandler;
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
+import com.tocea.corolla.requirements.trees.domain.RequirementFolderNode
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeNotFoundException;
@@ -21,6 +22,9 @@ import com.tocea.corolla.requirements.trees.predicates.FindNodeByRequirementIDPr
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.exceptions.MissingTreeInformationException;
+import com.tocea.corolla.trees.exceptions.MissingTreeNodeInformationException;
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.trees.services.TreeManagementService;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
@@ -48,17 +52,17 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
-			def req_id = "1"
+			def node_id = 1
 			def tree = new RequirementsTree(nodes: [new RequirementNode(id: 1, requirementId: "1", nodes: [])])
 		
 		when:
-			handler.handle new RemoveRequirementTreeNodeCommand(branch, req_id)
+			handler.handle new RemoveRequirementTreeNodeCommand(branch, node_id)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
 			
 		then:
-			treeManagementService.findNode(tree, { it instanceof FindNodeByRequirementIDPredicate }) >> tree.nodes[0]
+			treeManagementService.findNode(tree, { it instanceof FindNodeByIDPredicate }) >> tree.nodes[0]
 			
 		then:
 			notThrown(Exception.class)
@@ -71,43 +75,74 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 		
 	}
 	
-	def "it should invoke the command to delete the requirement"() {
+	def "it should invoke the command to delete the requirement if the node is a requirement node"() {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
-			def req_id = "1"
+			def node_id = 1
 			def tree = new RequirementsTree(nodes: [new RequirementNode(id: 1, requirementId: "1", nodes: [])])
 		
 		when:
-			handler.handle new RemoveRequirementTreeNodeCommand(branch, req_id)
+			handler.handle new RemoveRequirementTreeNodeCommand(branch, node_id)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
-			treeManagementService.findNode(tree, { it instanceof FindNodeByRequirementIDPredicate }) >> tree.nodes[0]
+			treeManagementService.findNode(tree, { it instanceof FindNodeByIDPredicate }) >> tree.nodes[0]
 			
 		then:
 			notThrown(Exception.class)
-			1 * gate.dispatch { it instanceof DeleteRequirementCommand && it.requirementID == req_id }
+			1 * gate.dispatch { it instanceof DeleteRequirementCommand && it.requirementID == tree.nodes[0].requirementId }
 				
 	}
 	
-	def "it should throw an exception if the given requirement ID is not found in the tree"() {
+	def "it should invoke the command to delete all the requirements in a folder"() {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
-			def req_id = "2"
-			def tree = new RequirementsTree(nodes: [new RequirementNode(id: 1, requirementId: "1", nodes: [])])
+			def nodeID = 2
+			def tree = new RequirementsTree(nodes: [
+			                    new RequirementNode(id: 1, requirementId: "1", nodes: []),
+			                    new RequirementFolderNode(id: 2, nodes: [
+			                             new RequirementNode(id: 3, requirementId: "2", nodes: []), 
+			                             new RequirementNode(id: 4, requirementId: "3", nodes: []),
+			                    ])
+			           ]
+			)
 		
 		when:
-			handler.handle new RemoveRequirementTreeNodeCommand(branch, req_id)
+			handler.handle new RemoveRequirementTreeNodeCommand(branch, nodeID)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
-			thrown(RequirementTreeNodeNotFoundException.class)
+			treeManagementService.findNode(tree, { it instanceof FindNodeByIDPredicate }) >> tree.nodes[1]
+			
+		then:
+			notThrown(Exception.class)
+			0 * gate.dispatch { it instanceof DeleteRequirementCommand && it.requirementID == "1" }
+			1 * gate.dispatch { it instanceof DeleteRequirementCommand && it.requirementID == "2" }
+			1 * gate.dispatch { it instanceof DeleteRequirementCommand && it.requirementID == "3" }
+				
+	}
+	
+	def "it should throw an exception if the given node ID is not found in the tree"() {
+		
+		given:
+			def branch = new ProjectBranch(id: "1")
+			def node_id = 12
+			def tree = new RequirementsTree(nodes: [new RequirementNode(id: 1, requirementId: "1", nodes: [])])
+		
+		when:
+			handler.handle new RemoveRequirementTreeNodeCommand(branch, node_id)
+	
+		then:
+			requirementsTreeDAO.findByBranchId(branch.id) >> tree		
 					
 		then:
 			0 * gate.dispatch(_)
 			0* requirementsTreeDAO.save(_)
+			
+		then:
+			thrown(RequirementTreeNodeNotFoundException.class)
 		
 	}
 	
@@ -115,31 +150,33 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 		
 		given:
 			def branch = null
-			def req_id = "1"
+			def node_id = 1
 		
 		when:
-			handler.handle new RemoveRequirementTreeNodeCommand(branch, req_id)
+			handler.handle new RemoveRequirementTreeNodeCommand(branch, node_id)
 	
 		then:
 			0 * requirementsTreeDAO.save(_)
+		
+		then:
 			thrown(MissingProjectBranchInformationException.class)
 			
 	}
 	
-	def "it should throw an exception if the requirement ID is null or empty"(req_id) {
+	def "it should throw an exception if the node ID is missing"() {
 					
 		given:
+			def nodeID = null
 			def branch = new ProjectBranch(id: "1")
 		
 		when:
-			handler.handle new RemoveRequirementTreeNodeCommand(branch, req_id)
+			handler.handle new RemoveRequirementTreeNodeCommand(branch, nodeID)
 	
 		then:
 			0 * requirementsTreeDAO.save(_)
-			thrown(MissingRequirementInformationException.class)
 			
-		where:
-			req_id << [null, ""]
+		then:
+			thrown(MissingTreeNodeInformationException.class)
 			
 	}
 	
@@ -148,16 +185,18 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
-			def req_id = "2"
+			def nodeID = 2
 		
 		when:
-			handler.handle new RemoveRequirementTreeNodeCommand(branch, req_id)
+			handler.handle new RemoveRequirementTreeNodeCommand(branch, nodeID)
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> null
 			
 		then:
 			0 * requirementsTreeDAO.save(_)
+			
+		then:
 			thrown(RequirementsTreeNotFoundException.class)
 		
 	}

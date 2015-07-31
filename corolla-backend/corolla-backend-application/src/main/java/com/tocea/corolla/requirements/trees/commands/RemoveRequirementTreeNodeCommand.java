@@ -6,7 +6,7 @@ import com.tocea.corolla.products.domain.ProjectBranch;
 @Command
 public class RemoveRequirementTreeNodeCommand {
 
-	private String requirementID;
+	private Integer nodeID;
 	
 	private ProjectBranch branch;
 	
@@ -14,10 +14,10 @@ public class RemoveRequirementTreeNodeCommand {
 		super();
 	}
 	
-	public RemoveRequirementTreeNodeCommand(ProjectBranch branch, String requirementID) {
+	public RemoveRequirementTreeNodeCommand(ProjectBranch branch, Integer nodeID) {
 		super();
 		setBranch(branch);
-		setRequirementID(requirementID);
+		setNodeID(nodeID);
 	}
 
 	public ProjectBranch getBranch() {
@@ -28,12 +28,12 @@ public class RemoveRequirementTreeNodeCommand {
 		this.branch = branch;
 	}
 
-	public String getRequirementID() {
-		return requirementID;
+	public Integer getNodeID() {
+		return nodeID;
 	}
 
-	public void setRequirementID(String requirementID) {
-		this.requirementID = requirementID;
+	public void setNodeID(Integer nodeID) {
+		this.nodeID = nodeID;
 	}
 	
 }

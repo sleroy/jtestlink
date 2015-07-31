@@ -28,7 +28,6 @@ public class Permission {
 	public static final String	ADMIN_ROLES			= "ROLE_ADMIN_ROLES";
 	public static final String	ADMIN_CONFIG		= "ROLE_ADMIN_CONFIG";
 	
-	public static final String PROJECT_CREATE 		= "ROLE_PROJECT_CREATE";
 	public static final String PROJECT_WRITE 		= "ROLE_PROJECT_WRITE";
 	public static final String PROJECT_READ 		= "ROLE_PROJECT_READ";
 	

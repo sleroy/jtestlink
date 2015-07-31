@@ -1,0 +1,123 @@
+
+function JsTreeManager(SELECTOR) {
+	
+	var editAction = null;
+	var createAction = null;
+	
+	function getNodeID(node) {
+		return node && node.a_attr ? node.a_attr['data-nodeID'] : null;
+	}
+	
+	$(SELECTOR).bind("rename_node.jstree", function (e, data) {
+    	var node = data.node;
+    	var nodeID = getNodeID(node);
+    	var text = data.text;
+    	if (nodeID) {
+    		
+	    	if (editAction) editAction(node, nodeID, text);
+	    	
+    	}else if (createAction) {
+    		
+    		var parentNode = $(SELECTOR).jstree(true).get_node(data.node.parent);
+    		var parentID = parentNode ? getNodeID(parentNode) : null;
+    		var typeID = node.type ? node.type : null;
+    		
+    		createAction(node, text, typeID, parentID);
+    	}
+    });
+	
+	return {
+		
+		/**
+		 * expands all nodes in treeview
+		 */
+		'expand': function() {
+			$(SELECTOR).jstree(true).open_all();
+		},
+		
+		/**
+		 * collapses treeview
+		 */
+		'collapse': function() {
+			$(SELECTOR).jstree(true).close_all();
+		},
+		
+		/**
+		 * Retrieves the node ID of a JsTree node
+		 */
+		'getNodeID': function(node) {
+			return getNodeID(node);
+		},
+		
+		/**
+		 * Sets the node ID of a JsTree node
+		 */
+		'setNodeID': function(node, id) {
+			node.a_attr['data-nodeID'] = id;
+			return node;
+		},
+		
+		/**
+		 * Retrieves the requirement ID of a JsTree node
+		 */
+		'getRequirementID': function(node) {
+			return node && node.a_attr ? node.a_attr['data-requirementID'] : null;
+		},
+
+		/**
+		 * Retrieves the type of a node
+		 */
+		'getType': function(node) {
+			return $(SELECTOR).jstree(true).get_type(node);
+		},
+		
+		/**
+		 * Changes the type of a node
+		 */
+		'setType': function(node, typeID) {
+			$(SELECTOR).jstree(true).set_type(node, typeID);
+		},
+		
+		/**
+		 * Remove the node from the JsTree view
+		 */
+		'deleteNode': function(node) {
+			$(SELECTOR).jstree(true).delete_node(node);
+		},
+		
+		/**
+		 * Edit the node in the JsTree view
+		 */
+		'editNode': function(node) {
+			$(SELECTOR).jstree(true).edit(node);
+		},
+		
+		/**
+		 * Insert a new folder in the JsTree
+		 */
+		'addFolder': function(typeID, parentNode) {
+			var ID = this.getNodeID(parentNode);
+			console.log('adding new element in node: ' + ID);
+			var newNode = $(SELECTOR).jstree(true).create_node(parentNode);
+			$(SELECTOR).jstree(true).set_type(newNode, typeID);
+			$(SELECTOR).jstree(true).edit(newNode);
+		},
+		
+		/**
+		 * Registers a callback that will be triggered
+		 * after editing a node in the JsTree
+		 */
+		'setEditAction': function(action) {
+			editAction = action;
+		},
+		
+		/**
+		 * Registers a callback that will be triggered
+		 * after creating a node in the JsTree
+		 */
+		'setCreateAction': function(action) {
+			createAction = action;
+		}
+	}
+	
+}

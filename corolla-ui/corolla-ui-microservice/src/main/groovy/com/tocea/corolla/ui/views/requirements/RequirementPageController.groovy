@@ -1,4 +1,4 @@
-package com.tocea.corolla.ui.requirements
+package com.tocea.corolla.ui.views.requirements
 
 import groovy.util.logging.Slf4j;
 
@@ -25,6 +25,7 @@ import com.tocea.corolla.revisions.domain.IChange
 import com.tocea.corolla.revisions.domain.ICommit
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException
 import com.tocea.corolla.revisions.services.IRevisionService;
+import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 
 @Controller
 @Slf4j
@@ -41,6 +42,9 @@ class RequirementPageController {
 	
 	@Autowired
 	private IProjectBranchDAO branchDAO;
+	
+	@Autowired
+	private IFolderNodeTypeDAO folderNodeTypeDAO;
 	
 	@Autowired
 	private IProjectDAO projectDAO;
@@ -76,6 +80,7 @@ class RequirementPageController {
 		model.addObject "branch", branch
 		model.addObject "requirement", requirement
 		model.addObject "commits", commits
+		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
 		
 		return model
 	}

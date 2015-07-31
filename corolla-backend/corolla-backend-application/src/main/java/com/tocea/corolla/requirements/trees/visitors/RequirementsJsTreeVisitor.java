@@ -30,12 +30,12 @@ public class RequirementsJsTreeVisitor extends JsTreeNodeVisitor {
 
 			if (this.requirements != null) {
 				
-				result.setText(requirements.size()+"");
 				Requirement requirement = RequirementUtils.findByID(requirements, ID);
 
 				if (requirement != null) {
 					result.setText(requirement.getName());
 					result.getA_attr().put("data-key", requirement.getKey());
+					result.setType("REQ");
 				}
 				
 			}
