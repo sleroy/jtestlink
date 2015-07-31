@@ -31,7 +31,10 @@ function initPortfolio() {
 	/*
 	 * Initialize JsTree widget
 	 */
-	initJsTree();
+	restAPI.folderNodeTypes.findAll(function(data) {
+		initJsTree(data);
+	});
+	
 
 	/*
 	function format_jstree_data(data) {
@@ -121,7 +124,40 @@ function getProjectID(node) {
 /*
  * Initialize JsTree widget
  */
-function initJsTree() {
+function initJsTree(data) {
+	
+	var types = {};
+	var folderActions = {};
+	var folderEditActions = {}
+	if (data) {
+		$.each(data, function(i,v) {
+			types[v.id] = { 'icon': v.icon }
+			folderActions[v.id] = {
+					label: v.name,
+					icon: v.icon,
+					action : function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    addFolder(v.id, node);
+					}
+			}
+			folderEditActions[v.id] = {
+					label: v.name,
+					icon: v.icon,
+					action : function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    changeFolderType(v.id, node);
+					},
+					_disabled: function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var currentType = v.id;
+						return $(PROJECTS_TREEVIEW).jstree(true).get_type(node) == currentType;
+					}
+			}
+		});
+	}
 	
 	$(PROJECTS_TREEVIEW).jstree({
 		"core" : {
@@ -154,11 +190,7 @@ function initJsTree() {
 						'add_folder':  {
 							label: "Folder",
 							icon: "glyphicon glyphicon-folder-open",
-							action : function(data) {
-								var inst = $.jstree.reference(data.reference);
-							    var node = inst.get_node(data.reference);
-							    addFolder(node);
-							}
+							submenu: folderActions
 						},
 						'add_project': {
 							label: "Project",
@@ -188,6 +220,19 @@ function initJsTree() {
 					    }
 					}
 				},
+				
+				"type" : {
+					label: "Type",
+					icon: "fa fa-tag",
+					submenu: folderEditActions,
+					_disabled: function(data) {
+						var inst = $.jstree.reference(data.reference);
+					    var node = inst.get_node(data.reference);
+					    var projectID = getProjectID(node);
+					    return projectID;
+					}
+				},
+				
 				"delete" : {
 					label : "Delete",
 					icon : "fa fa-trash",
@@ -202,11 +247,11 @@ function initJsTree() {
 				}
 			}
 		},
-		'types' : {
+		'types' : types /*{
 			'default' : {
 				icon : 'glyphicon glyphicon-folder-open'
 			}
-		}
+		}*/
 	});
 	
 	/**
@@ -233,13 +278,14 @@ function initJsTree() {
     	var nodeID = getNodeID(node);
     	var text = data.text;
     	if (nodeID) {
-	    	restAPI.portfolio.edit(nodeID, text, function(data) {
+	    	restAPI.portfolio.folders.edit(nodeID, text, function(data) {
 	    		console.log("edited node #"+nodeID+" with text: "+text);
 	    	});
     	}else{
     		var parentNode = $(PROJECTS_TREEVIEW).jstree(true).get_node(data.node.parent);
     		var parentID = parentNode ? getNodeID(parentNode) : null;
-    		restAPI.portfolio.add(text, parentID, function(data) {
+    		var typeID = node.type ? node.type : null;
+    		restAPI.portfolio.folders.add(text, typeID, parentID, function(data) {
     			console.log("created node with text: "+text);
     			console.log(data);
     			if (data && data.id) {
@@ -257,11 +303,19 @@ function initJsTree() {
  * Insert a new node in the JsTree widget
  * @param parentNode
  */
-function addFolder(parentNode) {
+function addFolder(typeID, parentNode) {
 	var ID = getNodeID(parentNode);
 	console.log('adding new element in node: ' + ID);
 	var newNode = $(PROJECTS_TREEVIEW).jstree(true).create_node(parentNode);
+	$(PROJECTS_TREEVIEW).jstree(true).set_type(newNode, typeID);
 	$(PROJECTS_TREEVIEW).jstree(true).edit(newNode);
+}
+
+function changeFolderType(typeID, node) {
+	var ID = getNodeID(node);
+	restAPI.portfolio.folders.changeType(ID, typeID, function(data) {
+		$(PROJECTS_TREEVIEW).jstree(true).set_type(node, typeID);
+	});
 }
 
 /**

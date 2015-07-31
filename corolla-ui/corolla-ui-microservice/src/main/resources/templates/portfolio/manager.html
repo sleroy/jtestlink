@@ -53,11 +53,11 @@
 													<i class="fa fa-briefcase"></i>
 													Project
 												</a>
-											</li>
-											<li>
-												<a href="#" onclick="addFolder(null);">
-													<i class="glyphicon glyphicon-folder-open"></i>
-													Folder
+											</li>											
+											<li th:each="folderNodeType : ${folderNodeTypes}">
+												<a  href="#" th:attr="onclick='addFolder(\''+${folderNodeType.id}+'\', null)'">
+													<img th:src="${folderNodeType.icon}" />
+													<span th:text="${folderNodeType.name}"></span>
 												</a>
 											</li>
 										</ul>

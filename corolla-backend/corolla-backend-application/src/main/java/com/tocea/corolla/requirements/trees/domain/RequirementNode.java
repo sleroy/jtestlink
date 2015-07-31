@@ -2,7 +2,7 @@ package com.tocea.corolla.requirements.trees.domain;
 
 import com.tocea.corolla.trees.domain.TreeNode;
 
-public class RequirementNode extends TreeNode {
+public class RequirementNode extends TreeNode implements IRequirementTreeNode {
 
 	private String requirementId;
 

@@ -3,11 +3,15 @@ package com.tocea.corolla.trees.dto;
 import java.util.Collection;
 import java.util.Map;
 
+import com.tocea.corolla.trees.dto.JsTreeNodeDTO;
+
 public class JsTreeNodeDTO {
 
 	private String text = "";
 	
 	private String icon = "";
+	
+	private String type;
 	
 	private Collection<JsTreeNodeDTO> children;
 	
@@ -47,6 +51,14 @@ public class JsTreeNodeDTO {
 
 	public void setA_attr(Map<String, String> a_attr) {
 		this.a_attr = a_attr;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

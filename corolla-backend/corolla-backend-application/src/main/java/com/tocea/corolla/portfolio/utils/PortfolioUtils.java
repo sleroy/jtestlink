@@ -15,28 +15,8 @@ public class PortfolioUtils {
 	 * @return
 	 */
 	public static boolean isProjectNode(TreeNode node) {
-		return node.getClass().equals(ProjectNode.class);
-	}
-	
-	/**
-	 * Retrieves a Project node by its project ID
-	 * @param projectID
-	 * @param nodes
-	 * @return
-	 */
-	public static ProjectNode findNodeByProjectId(final String projectID, Collection<TreeNode> nodes) {
 		
-		for(TreeNode node : nodes) {
-			if (node.getClass().equals(ProjectNode.class) && (((ProjectNode)node).getProjectId().equals(projectID))) {
-				return (ProjectNode) node;
-			}
-			ProjectNode child = findNodeByProjectId(projectID, node.getNodes());
-			if (child != null) {
-				return child;
-			}
-		}
-		
-		return null;
+		return node instanceof ProjectNode;
 	}
 	
 	/**

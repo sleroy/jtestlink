@@ -3,11 +3,14 @@ package com.tocea.corolla.ui.requirements
 import groovy.util.logging.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO
@@ -20,6 +23,7 @@ import com.tocea.corolla.requirements.domain.Requirement
 import com.tocea.corolla.requirements.exceptions.RequirementNotFoundException
 import com.tocea.corolla.revisions.domain.IChange
 import com.tocea.corolla.revisions.domain.ICommit
+import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException
 import com.tocea.corolla.revisions.services.IRevisionService;
 
 @Controller
@@ -93,6 +97,11 @@ class RequirementPageController {
 		commits.each { log.info it.id }
 
 		def commit = revisionService.findCommitByID(requirement.id, Requirement.class, commitID)
+		
+		if (commit == null) {
+			throw new InvalidCommitInformationException("No commit associated to this ID");
+		}
+		
 		def previousCommit = revisionService.getPreviousCommit(requirement.id, Requirement.class, commitID)	
 		
 		def version = revisionService.getSnapshot(commit)
@@ -131,6 +140,17 @@ class RequirementPageController {
 		}
 		
 		return branch
+	}
+	
+	@ResponseStatus(value=HttpStatus.NOT_FOUND)
+	@ExceptionHandler([
+	       InvalidCommitInformationException.class, 
+	       RequirementNotFoundException.class,
+	       ProjectBranchNotFoundException.class,
+	       ProjectNotFoundException.class
+	])
+	public void handlePageNotFoundException() {
+		
 	}
 	
 }

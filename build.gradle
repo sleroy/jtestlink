@@ -176,13 +176,12 @@ allprojects {
 		
 		compile	"org.springframework.data:spring-data-mongodb:$SPRING_MONGO"
 		
-		compile 'org.javers:javers-spring:1.2.10'
-		compile 'org.javers:javers-persistence-mongo:1.2.10'
+		compile "org.javers:javers-spring:$JAVERS"
+		compile "org.javers:javers-persistence-mongo:$JAVERS"
 		
-
-		testCompile 'org.mongodb:mongo-java-driver:3.0.2'
-		testCompile 'com.github.fakemongo:fongo:2.0.1'
-		testCompile 'com.lordofthejars:nosqlunit-mongodb:0.8.1'
+		compile "org.mongodb:mongo-java-driver:$MONGO_DRIVER"
+		compile "com.github.fakemongo:fongo:$FONGO"
+		testCompile "com.lordofthejars:nosqlunit-mongodb:$TEST_NOSQLUNIT"
 		
         testCompile LOGGING
 
@@ -195,7 +194,7 @@ allprojects {
         testCompile("org.spockframework:spock-spring:$TEST_SPOCK") { exclude group: 'junit' }
         testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
 
-		testCompile 'org.springframework.security:spring-security-test:4.0.0.RELEASE'
+		testCompile "org.springframework.security:spring-security-test:$SPRING_SECU"
 		
     }
 

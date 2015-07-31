@@ -14,8 +14,11 @@ import com.tocea.corolla.portfolio.exceptions.PortfolioNotFoundException;
 import com.tocea.corolla.products.commands.DeleteProjectCommand;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.RemoveTreeNodeCommand
 import com.tocea.corolla.trees.domain.TreeNode
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
+import com.tocea.corolla.trees.services.ITreeManagementService;
+import com.tocea.corolla.trees.services.TreeManagementService;
+
 
 @FunctionalTestDoc(requirementName = "REMOVE_PORTFOLIO_TREE_NODE")
 public class RemovePortfolioNodeCommandHandlerTest extends Specification {
@@ -25,16 +28,18 @@ public class RemovePortfolioNodeCommandHandlerTest extends Specification {
 	def IPortfolioDAO portfolioDAO = Mock(IPortfolioDAO)	
 	def RemovePortfolioNodeCommandHandler handler
 	def Gate gate = Mock(Gate)
+	def ITreeManagementService treeManagementService = Mock(TreeManagementService)
 	
 	def setup() {
 		handler = new RemovePortfolioNodeCommandHandler(
 				portfolioDAO : portfolioDAO,
-				gate : gate
+				gate : gate,
+				treeManagementService : treeManagementService
 		)
 	}
 	
 	
-	def "it should invoke the command to remove a node in the tree"() {
+	def "it should invoke the service to remove a node in the tree"() {
 		
 		given:
 			def nodeId = 2
@@ -62,7 +67,7 @@ public class RemovePortfolioNodeCommandHandlerTest extends Specification {
 			notThrown(Exception.class)
 		
 		then:
-			1 * gate.dispatch { it instanceof RemoveTreeNodeCommand && it.tree == portfolio && it.nodeID == nodeId }	
+			1 * treeManagementService.removeNode(portfolio, nodeId)	
 			
 		then:
 			1 * portfolioDAO.save(_)
@@ -113,6 +118,9 @@ public class RemovePortfolioNodeCommandHandlerTest extends Specification {
 			
 		then:
 			notThrown(Exception.class)
+			
+		then:
+			treeManagementService.findNode(portfolio, { it instanceof FindNodeByIDPredicate }) >> portfolio.nodes[0]
 		
 		then:
 			1 * gate.dispatch { it instanceof DeleteProjectCommand && it.projectID == portfolio.nodes[0].projectId }	

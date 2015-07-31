@@ -18,10 +18,11 @@ import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.portfolio.exceptions.ProjectNodeAlreadyExistException;
+import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
 @Transactional
@@ -32,6 +33,9 @@ public class CreateProjectNodeCommandHandler implements ICommandHandler<CreatePr
 	
 	@Autowired
 	private Gate gate;
+	
+	@Autowired
+	private ITreeManagementService treeManagementService;
 	
 	@Override
 	public Portfolio handle(@Valid CreateProjectNodeCommand command) {
@@ -52,7 +56,9 @@ public class CreateProjectNodeCommandHandler implements ICommandHandler<CreatePr
 		
 		List<TreeNode> nodes = Lists.newArrayList(portfolio.getNodes());
 		
-		ProjectNode sameNode = PortfolioUtils.findNodeByProjectId(projectID, nodes);
+		ProjectNode sameNode = (ProjectNode) treeManagementService.findNode(portfolio, new FindNodeByProjectIDPredicate(projectID));
+		
+		//ProjectNode sameNode = PortfolioUtils.findNodeByProjectId(projectID, nodes);
 		
 		if (sameNode != null) {
 			throw new ProjectNodeAlreadyExistException();
@@ -60,7 +66,7 @@ public class CreateProjectNodeCommandHandler implements ICommandHandler<CreatePr
 		
 		ProjectNode projectNode = new ProjectNode(projectID);
 		
-		portfolio = gate.dispatch(new CreateTreeNodeCommand(portfolio, projectNode, parentID));
+		treeManagementService.insertNode(portfolio, parentID, projectNode);
 		
 		portfolioDAO.save(portfolio);
 		

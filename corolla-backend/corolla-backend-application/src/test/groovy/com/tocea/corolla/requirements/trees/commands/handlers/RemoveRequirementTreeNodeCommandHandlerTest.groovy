@@ -17,11 +17,12 @@ import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementTreeNodeNotFoundException;
 import com.tocea.corolla.requirements.trees.exceptions.RequirementsTreeNotFoundException;
+import com.tocea.corolla.requirements.trees.predicates.FindNodeByRequirementIDPredicate;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand;
-import com.tocea.corolla.trees.commands.RemoveTreeNodeCommand
 import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.services.ITreeManagementService;
+import com.tocea.corolla.trees.services.TreeManagementService;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "REMOVE_REQUIREMENT_TREE_NODE")
@@ -33,15 +34,17 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 	def RemoveRequirementTreeNodeCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
 	def Gate gate = Mock(Gate)
+	def ITreeManagementService treeManagementService = Mock(TreeManagementService)
 	
 	def setup() {
 		handler = new RemoveRequirementTreeNodeCommandHandler(
 				requirementsTreeDAO : requirementsTreeDAO,
-				gate : gate
+				gate : gate,
+				treeManagementService : treeManagementService
 		)
 	}
 	
-	def "it should invoke the command to remove a tree node in the requirements tree"() {
+	def "it should invoke the service to remove a tree node in the requirements tree"() {
 		
 		given:
 			def branch = new ProjectBranch(id: "1")
@@ -53,8 +56,15 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			
+		then:
+			treeManagementService.findNode(tree, { it instanceof FindNodeByRequirementIDPredicate }) >> tree.nodes[0]
+			
+		then:
 			notThrown(Exception.class)
-			1 * gate.dispatch { it instanceof RemoveTreeNodeCommand && it.tree == tree && it.nodeID == 1 }
+			
+		then:
+			1 * treeManagementService.removeNode(tree, 1)
 				
 		then:
 			1 * requirementsTreeDAO.save(_)
@@ -73,6 +83,9 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			treeManagementService.findNode(tree, { it instanceof FindNodeByRequirementIDPredicate }) >> tree.nodes[0]
+			
+		then:
 			notThrown(Exception.class)
 			1 * gate.dispatch { it instanceof DeleteRequirementCommand && it.requirementID == req_id }
 				
@@ -142,6 +155,8 @@ class RemoveRequirementTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> null
+			
+		then:
 			0 * requirementsTreeDAO.save(_)
 			thrown(RequirementsTreeNotFoundException.class)
 		

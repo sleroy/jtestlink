@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tocea.corolla.products.dao.IProjectDAO;
+import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 
 @Controller
 @Slf4j
@@ -22,6 +23,9 @@ class PortfolioPageController {
 	
 	@Autowired
 	private IProjectDAO projectDAO;
+	
+	@Autowired
+	private IFolderNodeTypeDAO folderNodeTypeDAO;
 	
 	@RequestMapping("/ui/portfolio")
 	public ModelAndView getPortfolio() {
@@ -39,6 +43,7 @@ class PortfolioPageController {
 		
 		def model = new ModelAndView(MANAGER_PAGE);
 		model.addObject "menu", MENU_PORTFOLIO_MANAGER
+		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
 		
 		return model
 	}
@@ -55,6 +60,7 @@ class PortfolioPageController {
 		def model = new ModelAndView(MANAGER_PAGE);
 		model.addObject "project", project
 		model.addObject "menu", MENU_PORTFOLIO_MANAGER
+		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
 		
 		return model
 	}

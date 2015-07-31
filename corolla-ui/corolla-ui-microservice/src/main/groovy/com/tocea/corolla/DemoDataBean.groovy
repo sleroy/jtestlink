@@ -11,13 +11,15 @@ import javax.annotation.PreDestroy;
 
 import org.javers.core.Javers
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Component
 
 import com.google.common.base.Function
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
-import com.tocea.corolla.portfolio.commands.CreatePortfolioTextNodeCommand;
+import com.tocea.corolla.portfolio.commands.CreatePortfolioFolderNodeCommand;
 import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand
 import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO
@@ -38,14 +40,15 @@ import com.tocea.corolla.requirements.commands.EditRequirementCommand
 import com.tocea.corolla.requirements.commands.RestoreRequirementStateCommand
 import com.tocea.corolla.requirements.dao.IRequirementDAO
 import com.tocea.corolla.requirements.domain.Requirement
-import com.tocea.corolla.requirements.trees.commands.CreateRequirementTextNodeCommand;
+import com.tocea.corolla.requirements.trees.commands.CreateRequirementFolderNodeCommand;
 import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.revisions.services.IRevisionService
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
-import com.tocea.corolla.trees.commands.MoveTreeNodeCommand
-import com.tocea.corolla.trees.domain.TextNode
+import com.tocea.corolla.trees.commands.CreateFolderNodeTypeCommand
+import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO
+import com.tocea.corolla.trees.domain.FolderNode
+import com.tocea.corolla.trees.domain.FolderNodeType
 import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
 import com.tocea.corolla.users.commands.CreateRoleCommand
@@ -65,7 +68,8 @@ import com.tocea.corolla.users.domain.UserGroup
  * @author sleroy
  *
  */
-@org.springframework.stereotype.Component
+@Profile("demo")
+@Component
 @Slf4j
 public class DemoDataBean {
 
@@ -103,6 +107,9 @@ public class DemoDataBean {
 	
 	@Autowired
 	def IPortfolioDAO				portfolioDAO
+	
+	@Autowired
+	def IFolderNodeTypeDAO			folderNodeTypeDAO
 
 	@Autowired
 	def Gate						gate
@@ -161,7 +168,12 @@ public class DemoDataBean {
 		 * User Groups
 		 */
 		def developers = this.newGroup("developers", [jsnow, scarreau])
-				
+		
+		/**
+		 * Folder Node Types
+		 */
+		def basicFolder = this.gate.dispatch(new CreateFolderNodeTypeCommand(new FolderNodeType("Basic Folder", "http://icons.iconarchive.com/icons/uriy1966/steel-system/24/Folder-icon.png")))
+		def pluginFolder = this.gate.dispatch(new CreateFolderNodeTypeCommand(new FolderNodeType("Plugins", "http://icons.iconarchive.com/icons/elegantthemes/beautiful-flat-one-color/24/plugin-icon.png")))
 		
 		/**
 		 * Project Statuses
@@ -175,39 +187,38 @@ public class DemoDataBean {
 				key: 'corolla', 
 				name: 'Corolla', 
 				description: 'A Java Coffee Maker',
-				statusId: statusActive.id
+				statusId: statusActive.id,
+				image: new URL("http://lorempixel.com/24/24/")
 		))		
 		corolla.description = 'Corolla is a tool to manage software requirements'
 		this.editProject(corolla)
 		
-		def portfolio = this.gate.dispatch new CreatePortfolioTextNodeCommand("Corolla-Project", null)
-		portfolio = this.gate.dispatch new MovePortfolioNodeCommand(1, TreeNodeUtils.getMaxNodeId(portfolio.nodes))
+		def portfolio = portfolioDAO.find()
+		def corollaFolderNode = this.gate.dispatch new CreatePortfolioFolderNodeCommand("Corolla-Project", basicFolder, null)
+		this.gate.dispatch new MovePortfolioNodeCommand(1, corollaFolderNode.id)
 		
-		portfolio = this.gate.dispatch new CreatePortfolioTextNodeCommand("Komea", null)
-		def komeaFolderID = TreeNodeUtils.getMaxNodeId(portfolio.nodes)
+		def komeaFolderNode = this.gate.dispatch new CreatePortfolioFolderNodeCommand("Komea", basicFolder, null)			
 		
 		def komea = this.gate.dispatch new CreateProjectCommand(new Project(
 				key: 'komea', 
 				name: 'Komea Dashboard', 
 				description: 'Tool for measuring and managing key performance indicators in a software factory',
 				statusId: statusActive.id
-		), komeaFolderID)
-		println "foler: "+komeaFolderID
+		), komeaFolderNode.id)
 		
 		def komeaRedmine = this.gate.dispatch new CreateProjectCommand(new Project(
 				key: 'komea-connector-redmine', 
 				name: 'Komea Redmine Connector', 
 				description: 'Redmine connector for Komea',
 				statusId: statusActive.id
-		), komeaFolderID)
-		println "foler: "+komeaFolderID
+		), komeaFolderNode.id)
 		
 		def komeaSvn =this.gate.dispatch new CreateProjectCommand(new Project(
 				key: 'komea-connector-svn', 
 				name: 'Komea SVN Connector', 
 				description: 'SVN connector for Komea',
 				statusId: statusActive.id
-		), komeaFolderID)
+		), komeaFolderNode.id)
 		
 		
 //		portfolio = portfolioDAO.find();
@@ -274,7 +285,7 @@ public class DemoDataBean {
 		 */
 		def tree = requirementsTreeDAO.findByBranchId(masterBranch.id)
 		
-		this.newRequirementTextNode(masterBranch, null, "USER MANAGEMENT")
+		this.newRequirementTextNode(masterBranch, null, "USER MANAGEMENT", basicFolder)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addUser.id).id, 4)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editUser.id).id, 4)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteUser.id).id, 4)
@@ -349,7 +360,7 @@ public class DemoDataBean {
 			lastName = _lastName
 			email =_email
 			login =_login
-			password = this.passwordEncoder.encode _password
+			password = _password
 			roleId = _rolePO.id
 		}
 		this.gate.dispatch new CreateUserCommand(user)
@@ -403,9 +414,9 @@ public class DemoDataBean {
 		
 	}
 	
-	public void newRequirementTextNode(branch, parentID, text) {
+	public void newRequirementTextNode(branch, parentID, text, type) {
 		
-		this.gate.dispatch new CreateRequirementTextNodeCommand(branch, parentID, text)
+		this.gate.dispatch new CreateRequirementFolderNodeCommand(branch, parentID, text, type)
 		
 	}
 	
@@ -429,6 +440,7 @@ public class DemoDataBean {
 	@PreDestroy
 	public void destroy() {
 		
+		folderNodeTypeDAO.deleteAll()
 		requirementsTreeDAO.deleteAll()
 		requirementDAO.deleteAll()
 		projectBranchDAO.deleteAll()

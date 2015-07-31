@@ -18,31 +18,7 @@ public class RequirementsTreeUtils {
 	 */
 	public static boolean isRequirementNode(TreeNode node) {
 		
-		return node.getClass().equals(RequirementNode.class);
-	}
-	
-	/**
-	 * Retrieves a tree node by its Requirement ID
-	 * @param id
-	 * @param nodes
-	 * @return
-	 */
-	public static TreeNode getNodeByRequirementId(String id, Collection<TreeNode> nodes) {
-		
-		for(TreeNode node : nodes) {			
-			
-			if (isRequirementNode(node) && ((RequirementNode) node).getRequirementId().equals(id)) {
-				return node;
-			}
-			
-			TreeNode child = getNodeByRequirementId(id, node.getNodes());
-			
-			if (child != null) {
-				return child;
-			}
-		}
-		
-		return null;		
+		return node instanceof RequirementNode;
 	}
 	
 	/**
@@ -88,43 +64,6 @@ public class RequirementsTreeUtils {
 		}
 		
 		return ids;
-	}
-	
-	/**
-	 * Removes nodes attached to the given requirements IDs
-	 * @param nodes
-	 * @param ids
-	 * @return
-	 */
-	public static Collection<TreeNode> removeRequirementsByID(Collection<TreeNode> nodes, Collection<String> ids) {
-			
-		for(TreeNode node : Lists.newArrayList(nodes)) {			
-			if (isRequirementNode(node) && ids.contains(((RequirementNode) node).getRequirementId())) {
-				nodes.remove(node);					
-			}else{	
-				node.setNodes(removeRequirementsByID(node.getNodes(), ids));				
-			}			
-		}
-		
-		return nodes;	
-	}
-	
-	/**
-	 * Removes nodes attached to the given requirements
-	 * @param nodes
-	 * @param requirements
-	 * @return
-	 */
-	public static Collection<TreeNode> removeRequirements(Collection<TreeNode> nodes, Collection<Requirement> requirements) {
-		
-		Collection<String> ids = Collections2.transform(requirements, new Function<Requirement, String>() {
-			@Override
-			public String apply(Requirement requirement) {
-				return requirement.getId();
-			}		
-		});
-		
-		return (ids != null && !ids.isEmpty()) ? removeRequirementsByID(nodes, ids) : nodes;	
 	}
 	
 	/**

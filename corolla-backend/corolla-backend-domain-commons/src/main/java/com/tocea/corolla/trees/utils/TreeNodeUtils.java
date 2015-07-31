@@ -3,35 +3,11 @@ package com.tocea.corolla.trees.utils;
 import java.util.Collection;
 
 import com.google.common.collect.Lists;
-import com.tocea.corolla.trees.domain.TextNode;
+import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.TreeNode;
 
 public class TreeNodeUtils {
-	
-	/**
-	 * Retrieves a node by its id
-	 * @param id
-	 * @param nodes
-	 * @return
-	 */
-	public static TreeNode getNodeById(Integer id, Collection<TreeNode> nodes) {
 		
-		for(TreeNode node : nodes) {
-			
-			if (node.getId().equals(id)) {
-				return node;
-			}
-			
-			TreeNode childNode = getNodeById(id, node.getNodes());
-			
-			if (childNode != null) {
-				return childNode;
-			}
-		}
-		
-		return null;
-	}
-	
 	/**
 	 * Retrieves the max id of the nodes in a given tree
 	 * @param nodes
@@ -115,9 +91,9 @@ public class TreeNodeUtils {
 	 * @param node
 	 * @return
 	 */
-	public static Boolean isTextNode(TreeNode node) {
+	public static Boolean isFolderNode(TreeNode node) {
 		
-		return node.getClass().equals(TextNode.class);
+		return node instanceof FolderNode;
 	}
 
 }

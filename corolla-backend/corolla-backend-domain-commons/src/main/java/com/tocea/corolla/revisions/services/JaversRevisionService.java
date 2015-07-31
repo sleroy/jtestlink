@@ -190,7 +190,7 @@ public class JaversRevisionService implements IRevisionService {
 		
 	}
 	
-	private CdoSnapshot findCdoSnapshotByCommit(Commit commit) {
+	public CdoSnapshot findCdoSnapshotByCommit(Commit commit) {
 		
 		String id = commit.getObjectID();
 		Class<?> clazz = commit.getObjectClass();

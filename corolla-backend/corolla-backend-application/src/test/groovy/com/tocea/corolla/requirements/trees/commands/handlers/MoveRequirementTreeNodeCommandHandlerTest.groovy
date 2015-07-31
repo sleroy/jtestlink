@@ -18,8 +18,10 @@ import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.test.utils.FunctionalDocRule;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc;
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.MoveTreeNodeCommand;
 import com.tocea.corolla.trees.domain.TreeNode
+import com.tocea.corolla.trees.services.ITreeManagementService;
+import com.tocea.corolla.trees.services.TreeManagementService;
+
 
 @FunctionalTestDoc(requirementName = "MOVE_REQUIREMENT_TREE_NODE")
 public class MoveRequirementTreeNodeCommandHandlerTest extends Specification {
@@ -30,11 +32,12 @@ public class MoveRequirementTreeNodeCommandHandlerTest extends Specification {
 	def MoveRequirementTreeNodeCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
 	def Gate gate = Mock(Gate)
+	def ITreeManagementService treeManagementService = Mock(TreeManagementService)
 	
 	def setup() {
 		handler = new MoveRequirementTreeNodeCommandHandler(
 				requirementsTreeDAO : requirementsTreeDAO,
-				gate : gate
+				treeManagementService : treeManagementService
 		)
 	}
 	
@@ -59,10 +62,12 @@ public class MoveRequirementTreeNodeCommandHandlerTest extends Specification {
 	
 		then:
 			requirementsTreeDAO.findByBranchId(branch.id) >> tree
+			
+		then:
 			notThrown(Exception.class)
 		
 		then:
-			1 * gate.dispatch { it instanceof MoveTreeNodeCommand && it.tree == tree && it.nodeID == nodeId && it.newParentID == newParentId }	
+			1 * treeManagementService.moveNode(tree, nodeId, newParentId)
 			
 		then:
 			1 * requirementsTreeDAO.save(_)

@@ -13,7 +13,6 @@ import com.tocea.corolla.portfolio.domain.ProjectNode
 import com.tocea.corolla.portfolio.exceptions.ProjectNodeAlreadyExistException;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
 import com.tocea.corolla.test.utils.FunctionalDocRule
-import com.tocea.corolla.trees.commands.CreateTreeNodeCommand
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
