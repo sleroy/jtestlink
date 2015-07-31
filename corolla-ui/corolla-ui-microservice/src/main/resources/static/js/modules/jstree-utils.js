@@ -3,6 +3,7 @@ function JsTreeManager(SELECTOR) {
 	
 	var editAction = null;
 	var createAction = null;
+	var selectAction = null;
 	
 	function getNodeID(node) {
 		return node && node.a_attr ? node.a_attr['data-nodeID'] : null;
@@ -25,6 +26,14 @@ function JsTreeManager(SELECTOR) {
     		createAction(node, text, typeID, parentID);
     	}
     });
+	
+	$(SELECTOR).on("select_node.jstree", function(e, data) {
+		if (!data || !data.event || data.event.handleObj.type == 'contextmenu') {
+			return;
+		}
+		var key = data.instance.get_node(data.node, true).children('a').data('key');		
+		selectAction(data.node, key);
+	});
 	
 	return {
 		
@@ -117,6 +126,14 @@ function JsTreeManager(SELECTOR) {
 		 */
 		'setCreateAction': function(action) {
 			createAction = action;
+		},
+		
+		/**
+		 * Registers a callback that will be triggered
+		 * after selecting a node in the JsTree
+		 */
+		'setSelectAction': function(action) {
+			selectAction = action;
 		}
 	}
 	

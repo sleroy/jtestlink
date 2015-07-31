@@ -172,16 +172,9 @@ function initJsTree(typeData, data) {
 	/**
 	 * Action triggered when clicking on a node
 	 */
-	$(ITEMS_TREEVIEW).on("select_node.jstree", function(e, data) {
-		if (!data || !data.event || data.event.handleObj.type == 'contextmenu') {
-			return;
-		}
-		var key = data.instance.get_node(data.node, true).children('a')
-				.data('key');
+	jsTreeManager.setSelectAction(function(node, key) {
 		if (key) {
 			document.location = '/ui/requirements/'+pageData.projectKey+'/'+pageData.branchName+'/'+ key
-		} else {
-			data.instance.toggle_node(data.node);
 		}
 	});
 	
