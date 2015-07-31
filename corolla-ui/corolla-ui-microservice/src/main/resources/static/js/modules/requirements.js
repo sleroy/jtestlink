@@ -97,7 +97,8 @@ function initJsTree(typeData, data) {
 			"animation" : 0,
 		    "check_callback" : true,
 		    "themes" : { "stripes" : true },
-		    'data' : data
+		    'data' : data,
+		    'check_callback': jsTreeManager.callbackHandler
 		},
 		"plugins": ["dnd", "contextmenu", "types"],
 		"contextmenu": {
@@ -201,11 +202,20 @@ function initJsTree(typeData, data) {
 	});
 	
 	/**
-	 * Action triggered when the text of a node has been edited in hte JsTree
+	 * Action triggered when the text of a node has been edited in the JsTree
 	 */
 	jsTreeManager.setEditAction(function(node, nodeID, text) {
 		restAPI.requirements.folders.edit(pageData.projectKey, pageData.branchName, nodeID, text, function(data) {
 			console.log("edited node #"+nodeID+" with text: "+text);
+		});
+	});
+	
+	/**
+	 * Action triggered when a node has been moved in the JsTree
+	 */
+	jsTreeManager.setMoveAction(function(nodeID, parentID) {
+		restAPI.requirements.move(pageData.projectKey, pageData.branchName, nodeID, parentID, function(data) {
+			console.log("moved node #"+nodeID+" into node #"+parentID);
 		});
 	});
 		

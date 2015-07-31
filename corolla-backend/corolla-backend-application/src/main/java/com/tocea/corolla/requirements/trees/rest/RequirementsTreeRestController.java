@@ -24,6 +24,7 @@ import com.tocea.corolla.requirements.domain.Requirement;
 import com.tocea.corolla.requirements.trees.commands.ChangeRequirementFolderNodeTypeCommand;
 import com.tocea.corolla.requirements.trees.commands.CreateRequirementFolderNodeCommand;
 import com.tocea.corolla.requirements.trees.commands.EditRequirementFolderNodeCommand;
+import com.tocea.corolla.requirements.trees.commands.MoveRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.trees.commands.RemoveRequirementTreeNodeCommand;
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
@@ -82,6 +83,16 @@ public class RequirementsTreeRestController {
 		}
 
 		return nodes;		
+	}
+	
+	@RequestMapping(value = "/{projectKey}/{branchName}/move/{fromID}/{toID}")
+	@Secured({ Permission.PROJECT_WRITE })
+	public RequirementsTree moveNode(@PathVariable String projectKey, @PathVariable String branchName, @PathVariable Integer fromID, @PathVariable Integer toID) {
+		
+		Project project = findProjectOrFail(projectKey);		
+		ProjectBranch branch = findProjectBranchOrFail(branchName, project);
+		
+		return gate.dispatch(new MoveRequirementTreeNodeCommand(branch, fromID, toID != 0 ? toID : null));
 	}
 	
 	@RequestMapping(value = "/{projectKey}/{branchName}/folders/add/{parentID}/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")

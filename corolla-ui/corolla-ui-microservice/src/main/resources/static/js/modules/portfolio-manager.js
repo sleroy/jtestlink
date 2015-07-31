@@ -1,5 +1,7 @@
 var PROJECTS_TREEVIEW = '.projects-tree-view';
 
+//var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
+
 function initPortfolio() {
 
 	/*

@@ -4,6 +4,7 @@ function JsTreeManager(SELECTOR) {
 	var editAction = null;
 	var createAction = null;
 	var selectAction = null;
+	var moveAction = null;
 	
 	function getNodeID(node) {
 		return node && node.a_attr ? node.a_attr['data-nodeID'] : null;
@@ -37,6 +38,15 @@ function JsTreeManager(SELECTOR) {
 	
 	return {
 		
+		'callbackHandler': function(op, node, parent, pos, more) {
+			if (op === "move_node" && more && more.core) {
+				var nodeID = getNodeID(node);
+				var parentID = getNodeID(parent);
+				if (moveAction) moveAction(nodeID, parentID);
+			}
+			return true;
+		},
+	
 		/**
 		 * expands all nodes in treeview
 		 */
@@ -134,6 +144,14 @@ function JsTreeManager(SELECTOR) {
 		 */
 		'setSelectAction': function(action) {
 			selectAction = action;
+		},
+		
+		/**
+		 * Registers a callback that will be triggered
+		 * after moving a nove in the JsTree
+		 */
+		'setMoveAction': function(action) {
+			moveAction = action;
 		}
 	}
 	

@@ -136,7 +136,13 @@ function RestAPI() {
 					call("requirements/tree/"+projectKey+'/'+branchName+"/remove/"+nodeID, callback);
 				}
 			
+			},
+			
+			"move": function(projectKey, branchName, fromID, toID, callback) {
+				if (!toID) toID = 0;
+				call("requirements/tree/"+projectKey+'/'+branchName+"/move/"+fromID+"/"+toID, callback);
 			}
+			
 		},
 		
 		"folderNodeTypes": {
