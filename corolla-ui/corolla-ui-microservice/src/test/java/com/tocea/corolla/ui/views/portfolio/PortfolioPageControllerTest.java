@@ -2,11 +2,12 @@ package com.tocea.corolla.ui.views.portfolio;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import javax.servlet.Filter;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
-import com.tocea.corolla.products.commands.DeleteProjectCommand;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.ui.AbstractSpringTest;
 import com.tocea.corolla.ui.security.AuthUser;
@@ -65,12 +65,6 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		
 		gate.dispatch(new CreateProjectCommand(existingProject));
 		
-	}
-	
-	@After
-	public void tearDown() {
-		
-		gate.dispatch(new DeleteProjectCommand(existingProject.getId()));
 	}
 	
 	@Test
