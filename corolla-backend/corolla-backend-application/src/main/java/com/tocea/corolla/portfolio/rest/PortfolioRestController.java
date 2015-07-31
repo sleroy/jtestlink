@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +30,7 @@ import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.FolderNodeType;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.dto.JsTreeNodeDTO;
-import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
-import com.tocea.corolla.trees.utils.TreeNodeUtils;
 import com.tocea.corolla.users.domain.Permission;
 
 @RestController
@@ -54,7 +53,7 @@ public class PortfolioRestController {
 	private ITreeManagementService treeManagementService;
 	
 	@RequestMapping(value = "/")
-	@Secured({ Permission.REST })
+	@PreAuthorize("isAuthenticated()")
 	public Collection<TreeNode> getTree() {
 		
 		Portfolio portfolio = portfolioDAO.find();
@@ -63,7 +62,7 @@ public class PortfolioRestController {
 	}
 	
 	@RequestMapping(value = "/jstree")
-	@Secured({ Permission.REST })
+	@PreAuthorize("isAuthenticated()")
 	public Collection<JsTreeNodeDTO> getJsTree() {
 		
 		Portfolio portfolio = portfolioDAO.find();
@@ -86,28 +85,28 @@ public class PortfolioRestController {
 	}
 	
 	@RequestMapping(value = "/move/{fromID}/{toID}")
-	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	@Secured({ Permission.PORTFOLIO_MANAGEMENT })
 	public Portfolio moveNode(@PathVariable Integer fromID, @PathVariable Integer toID) {
 		
 		return gate.dispatch(new MovePortfolioNodeCommand(fromID, toID != 0 ? toID : null));
 	}
 	
 	@RequestMapping(value = "/remove/{nodeID}")
-	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	@Secured({ Permission.PORTFOLIO_MANAGEMENT })
 	public Portfolio removeNode(@PathVariable Integer nodeID) {
 		
 		return gate.dispatch(new RemovePortfolioNodeCommand(nodeID));
 	}
 	
 	@RequestMapping(value = "/folders/edit/{nodeID}", method = RequestMethod.POST, consumes = "text/plain")
-	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	@Secured({ Permission.PORTFOLIO_MANAGEMENT })
 	public Portfolio editTextNode(@PathVariable Integer nodeID, @RequestBody String text) {
 		
 		return gate.dispatch(new EditPortfolioFolderNodeCommand(nodeID, text));
 	}
 	
 	@RequestMapping(value = "/folders/add/{parentID}/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
-	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	@Secured({ Permission.PORTFOLIO_MANAGEMENT })
 	public FolderNode addTextNode(@PathVariable Integer parentID, @PathVariable String folderNodeTypeID, @RequestBody String text) {
 		
 		FolderNodeType folderNodeType = folderNodeTypeDAO.findOne(folderNodeTypeID);
@@ -116,14 +115,14 @@ public class PortfolioRestController {
 	}
 	
 	@RequestMapping(value = "/folders/add/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
-	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	@Secured({ Permission.PORTFOLIO_MANAGEMENT })
 	public FolderNode addTextNode(@PathVariable String folderNodeTypeID, @RequestBody String text) {
 		
 		return addTextNode(null, folderNodeTypeID, text);
 	}
 	
 	@RequestMapping(value = "/folders/edit/type/{nodeID}/{typeID}")
-	@Secured({ Permission.REST, Permission.PORTFOLIO_MANAGEMENT })
+	@Secured({ Permission.PORTFOLIO_MANAGEMENT })
 	public FolderNode changeFolderNodeType(@PathVariable Integer nodeID, @PathVariable String typeID) {
 		
 		return gate.dispatch(new ChangePortfolioFolderNodeTypeCommand(nodeID, typeID));
