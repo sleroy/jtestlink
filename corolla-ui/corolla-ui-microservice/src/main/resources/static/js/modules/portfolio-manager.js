@@ -117,7 +117,6 @@ function initJsTree(data) {
 						var node = jsTreeManager.extractNode(data);
 					    var projectID = jsTreeManager.getProjectID(node);
 					    if (!projectID) {
-					    	console.log('editing node: ' + ID);
 					    	jsTreeManager.editNode(node);
 					    }
 					}
