@@ -59,6 +59,18 @@ public class RequirementsTreeRestController {
 	@Autowired
 	private Gate gate;
 	
+	@RequestMapping(value = "{projectKey}/{branchName}/")
+	@PreAuthorize("isAuthenticated()")
+	public RequirementsTree getTree(@PathVariable String projectKey, @PathVariable String branchName) {
+		
+		Project project = findProjectOrFail(projectKey);		
+		ProjectBranch branch = findProjectBranchOrFail(branchName, project);
+
+		RequirementsTree tree = requirementsTreeDAO.findByBranchId(branch.getId());
+		
+		return tree;
+	}
+	
 	@RequestMapping(value = "{projectKey}/{branchName}/jstree")
 	@PreAuthorize("isAuthenticated()")
 	public Collection<JsTreeNodeDTO> getJsTree(@PathVariable String projectKey, @PathVariable String branchName) {
