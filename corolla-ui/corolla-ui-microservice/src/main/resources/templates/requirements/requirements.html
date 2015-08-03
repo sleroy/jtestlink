@@ -72,15 +72,15 @@
 											<span class="fa fa-compress"></span>
 										</a>
 									</li>
-									<li style="width: 25%;"><select class="form-control select2" style="width: 100%">
-											<option selected="selected">Branch 1</option>
-											<option>Branch 2</option>
-											<option>Branch 3</option>
-											<option>Branch 4</option>
-											<option>Branch 5</option>
-											<option>Branch 6</option>
-											<option>Branch 7</option>
-									</select></li>
+									<li style="width: 25%;">
+										<select id="selectBranch" class="form-control select2" style="width: 100%">
+											<option 
+												th:each="otherBranch : ${branches}" 
+												th:text="${otherBranch.name}" 
+												th:attr="selected=${otherBranch.id == branch.id ? 'selected' : null}">											
+											</option>						
+										</select>
+									</li>
 									<li style="width: 30%;">
 										<div class="input-group">
 											<span class="input-group-addon"> <i class="glyphicon glyphicon-search" />

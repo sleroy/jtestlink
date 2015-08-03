@@ -81,6 +81,7 @@ class RequirementPageController {
 		model.addObject "requirement", requirement
 		model.addObject "commits", commits
 		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
+		model.addObject "branches", branchDAO.findByProjectId(project.id)
 		
 		return model
 	}

@@ -38,6 +38,14 @@ function initRequirementView() {
 		}
 	});
 	
+	/**
+	 * Handle switch branch
+	 */
+	$('#selectBranch').change(function() {
+		var name = $('#selectBranch').find(":selected").text();
+		redirectTo(pageData.projectKey, name);
+	});
+	
 	/*
 	 * Initialize JsTree widget
 	 */
@@ -47,6 +55,23 @@ function initRequirementView() {
 		});
 	});
 		
+}
+
+/**
+ * Change page location
+ * @param projectKey
+ * @param branchName
+ * @param requirementKey
+ */
+function redirectTo(projectKey, branchName, requirementKey) {
+	var url = '/ui/requirements/'+projectKey;
+	if (branchName) {
+		url += '/'+branchName;
+	}
+	if (requirementKey) {
+		url += '/'+requirementKey
+	}
+	document.location = url;
 }
 
 /**
@@ -169,7 +194,7 @@ function initJsTree(typeData, data) {
 	 */
 	jsTreeManager.setSelectAction(function(node, key) {
 		if (key) {
-			document.location = '/ui/requirements/'+pageData.projectKey+'/'+pageData.branchName+'/'+ key
+			redirectTo(pageData.projectKey, pageData.branchName, key);
 		}
 	});
 	
