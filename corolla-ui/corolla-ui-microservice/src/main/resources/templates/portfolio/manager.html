@@ -55,7 +55,7 @@
 												</a>
 											</li>																					
 											<li th:each="folderNodeType : ${folderNodeTypes}">
-												<a  href="#" th:attr="onclick='addFolder(\''+${folderNodeType.id}+'\', null)'">
+												<a  href="#" th:attr="onclick='jsTreeManager.addFolder(\''+${folderNodeType.id}+'\', null)'">
 													<img th:src="${folderNodeType.icon}" />
 													<span th:text="${folderNodeType.name}"></span>
 												</a>
@@ -68,12 +68,12 @@
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="expandTreeview()">
+										<a href="#" class="btn btn-default" onclick="jsTreeManager.expand()">
 											<span class="fa fa-expand"></span>
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="collapseTreeview()">
+										<a href="#" class="btn btn-default" onclick="jsTreeManager.collapse()">
 											<span class="fa fa-compress"></span>
 										</a>
 									</li>
@@ -528,8 +528,7 @@
 	</div>
 	
 	<div layout:fragment="footer">
-		<script type="text/javascript" th:src="@{/js/d3.min.js}" src="../static/js/d3.min.js" />
-		<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js" />
+		<script type="text/javascript" th:src="@{/js/modules/jstree-utils.js}" src="../static/js/modules/jstree-utils.js" />
   		<script type="text/javascript" src="../../static/js/modules/portfolio.js" th:src="@{/js/modules/portfolio-manager.js}" />
   		<script type="text/javascript">
 			$(document).ready(function() {

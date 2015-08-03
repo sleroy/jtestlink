@@ -1,6 +1,6 @@
 var PROJECTS_TREEVIEW = '.projects-tree-view';
 
-//var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
+var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
 
 function initPortfolio() {
 
@@ -39,36 +39,6 @@ function initPortfolio() {
 	
 }
 
-function getNodes() {
-	return $(PROJECTS_TREEVIEW).data().jstree.get_json();
-}
-
-function toggleNode(nodes, name) {
-	$.each(nodes, function(i, node) {
-		if (node.text == name) {
-			console.log('toggle node ' + name);
-			$(PROJECTS_TREEVIEW).jstree(true).select_node(node);
-		} else {
-			if (node.children) {
-				toggleNode(node.children, name);
-			}
-		}
-	});
-}
-
-function getNodeID(node) {
-	return node && node.a_attr ? node.a_attr['data-nodeID'] : null;
-}
-
-function setNodeID(node, id) {
-	node.a_attr['data-nodeID'] = id;
-	return node;
-}
-
-function getProjectID(node) {
-	return node && node.a_attr ? node.a_attr['data-projectID'] : null;
-}
-
 /*
  * Initialize JsTree widget
  */
@@ -84,24 +54,21 @@ function initJsTree(data) {
 					label: v.name,
 					icon: v.icon,
 					action : function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
-					    addFolder(v.id, node);
+						var node = jsTreeManager.extractNode(data);
+					    jsTreeManager.addFolder(v.id, node);
 					}
 			}
 			folderEditActions[v.id] = {
 					label: v.name,
 					icon: v.icon,
 					action : function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
+						var node = jsTreeManager.extractNode(data);
 					    changeFolderType(v.id, node);
 					},
 					_disabled: function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
+						var node = jsTreeManager.extractNode(data);
 					    var currentType = v.id;
-						return $(PROJECTS_TREEVIEW).jstree(true).get_type(node) == currentType;
+						return jsTreeManager.getType(node) == currentType;
 					}
 			}
 		});
@@ -117,16 +84,7 @@ function initJsTree(data) {
 				url: restAPI.portfolio.URL,
 				dataType: "json"
 			},
-			'check_callback': function(op, node, parent, pos, more) {
-				if (op === "move_node" && more && more.core) {
-					var nodeID = getNodeID(node);
-					var parentID = getNodeID(parent);
-					restAPI.portfolio.move(nodeID, parentID, function() {
-						console.log("moved node #"+nodeID+" into node #"+parentID);
-					});
-				}
-				return true;
-			}	
+			'check_callback': jsTreeManager.callbackHandler
 		},
 		"plugins" : [ "dnd", "contextmenu", "types", "search" ],
 		"contextmenu" : {
@@ -144,9 +102,7 @@ function initJsTree(data) {
 							label: "Project",
 							icon: "fa fa-briefcase",
 							action : function(data) {
-								var inst = $.jstree.reference(data.reference);
-							    var node = inst.get_node(data.reference);
-							    var ID = getNodeID(node);
+								var node = jsTreeManager.extractNode(data);
 								//...
 							}
 						}
@@ -158,13 +114,11 @@ function initJsTree(data) {
 					shortcut : 113,
 					shortcut_label : 'F2',
 					action : function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
-					    var ID = getNodeID(node);
-					    var projectID = getProjectID(node);
+						var node = jsTreeManager.extractNode(data);
+					    var projectID = jsTreeManager.getProjectID(node);
 					    if (!projectID) {
 					    	console.log('editing node: ' + ID);
-					    	$(PROJECTS_TREEVIEW).jstree(true).edit(node);
+					    	jsTreeManager.editNode(node);
 					    }
 					}
 				},
@@ -174,9 +128,8 @@ function initJsTree(data) {
 					icon: "fa fa-tag",
 					submenu: folderEditActions,
 					_disabled: function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
-					    var projectID = getProjectID(node);
+						var node = jsTreeManager.extractNode(data);
+					    var projectID = jsTreeManager.getProjectID(node);
 					    return projectID;
 					}
 				},
@@ -185,101 +138,72 @@ function initJsTree(data) {
 					label : "Delete",
 					icon : "fa fa-trash",
 					action : function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
-					    var ID = getNodeID(node);
+						var node = jsTreeManager.extractNode(data);
+					    var ID = jsTreeManager.getNodeID(node);
 					    restAPI.portfolio.remove(ID, function(data) {
-					    	$(PROJECTS_TREEVIEW).jstree(true).delete_node(node);
+					    	jsTreeManager.deleteNode(node);
 					    });
 					}
 				}
 			}
 		},
-		'types' : types /*{
-			'default' : {
-				icon : 'glyphicon glyphicon-folder-open'
-			}
-		}*/
+		'types' : types
 	});
 	
 	/**
 	 * Action triggered when clicking on a node
 	 */
-	$(PROJECTS_TREEVIEW).on("select_node.jstree", function(e, data) {
-		if (!data || !data.event || data.event.handleObj.type == 'contextmenu') {
-			return;
-		}
-		var key = data.instance.get_node(data.node, true).children('a')
-				.data('key');
+	jsTreeManager.setSelectAction(function(node, key) {
 		if (key) {
 			document.location = '/ui/portfolio/manager/' + key
-		} else {
-			data.instance.toggle_node(data.node);
 		}
+	});
+	
+	/**
+	 * Action triggered when a new folder has been added in the JsTree
+	 */
+	jsTreeManager.setCreateAction(function(node, text, typeID, parentID) {
+		restAPI.portfolio.folders.add(text, typeID, parentID, function(data) {
+			console.log("created node with text: "+text);
+			console.log(data);
+			if (data && data.id) {
+				jsTreeManager.setNodeID(node, data.id);
+			}else{
+				jsTreeManager.deleteNode(node);
+			}
+		});
 	});
 	
 	/**
 	 * Action triggered when renaming a text node
 	 */
-    $(PROJECTS_TREEVIEW).bind("rename_node.jstree", function (e, data) {
-    	var node = data.node;
-    	var nodeID = getNodeID(node);
-    	var text = data.text;
-    	if (nodeID) {
+	jsTreeManager.setEditAction(function(node, nodeID, text) {
+		if (nodeID) {
 	    	restAPI.portfolio.folders.edit(nodeID, text, function(data) {
 	    		console.log("edited node #"+nodeID+" with text: "+text);
 	    	});
-    	}else{
-    		var parentNode = $(PROJECTS_TREEVIEW).jstree(true).get_node(data.node.parent);
-    		var parentID = parentNode ? getNodeID(parentNode) : null;
-    		var typeID = node.type ? node.type : null;
-    		restAPI.portfolio.folders.add(text, typeID, parentID, function(data) {
-    			console.log("created node with text: "+text);
-    			console.log(data);
-    			if (data && data.id) {
-    				setNodeID(node, data.id);
-    			}else{
-    				$(PROJECTS_TREEVIEW).jstree(true).delete_node(node);
-    			}
-    		});
     	}
-    });
-
-}
-
-/**
- * Insert a new node in the JsTree widget
- * @param parentNode
- */
-function addFolder(typeID, parentNode) {
-	var ID = getNodeID(parentNode);
-	console.log('adding new element in node: ' + ID);
-	var newNode = $(PROJECTS_TREEVIEW).jstree(true).create_node(parentNode);
-	$(PROJECTS_TREEVIEW).jstree(true).set_type(newNode, typeID);
-	$(PROJECTS_TREEVIEW).jstree(true).edit(newNode);
-}
-
-function changeFolderType(typeID, node) {
-	var ID = getNodeID(node);
-	restAPI.portfolio.folders.changeType(ID, typeID, function(data) {
-		$(PROJECTS_TREEVIEW).jstree(true).set_type(node, typeID);
 	});
+	
+	/**
+	 * Action triggered when a node has been moved in the JsTree
+	 */
+	jsTreeManager.setMoveAction(function(nodeID, parentID) {
+		restAPI.portfolio.move(nodeID, parentID, function() {
+			console.log("moved node #"+nodeID+" into node #"+parentID);
+		});
+	});
+
 }
 
 /**
- * expand all branches in treeview
+ * Change the type of a folder node
+ * @param typeID
+ * @param node
  */
-function expandTreeview() {
-	
-	$(PROJECTS_TREEVIEW).jstree(true).open_all();
-	
-}
-
-/**
- * collapse treeview
- */
-function collapseTreeview() {
-	
-	$(PROJECTS_TREEVIEW).jstree(true).close_all();
-	
+function changeFolderType(typeID, node) {
+	var ID = jsTreeManager.getNodeID(node);
+	restAPI.portfolio.folders.changeType(ID, typeID, function(data) {
+		jsTreeManager.setType(node, typeID);
+	});
 }

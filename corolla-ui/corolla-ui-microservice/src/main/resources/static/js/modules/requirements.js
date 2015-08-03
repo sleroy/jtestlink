@@ -69,8 +69,7 @@ function initJsTree(typeData, data) {
 					label: v.name,
 					icon: v.icon,
 					action : function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
+						var node = jsTreeManager.extractNode(data);
 					    jsTreeManager.addFolder(v.id, node);
 					}
 			}
@@ -78,13 +77,11 @@ function initJsTree(typeData, data) {
 					label: v.name,
 					icon: v.icon,
 					action : function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
+						var node = jsTreeManager.extractNode(data);
 					    changeFolderType(v.id, node);
 					},
 					_disabled: function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
+						var node = jsTreeManager.extractNode(data);
 					    var currentType = v.id;
 						return jsTreeManager.getType(node) == currentType;
 					}
@@ -132,8 +129,7 @@ function initJsTree(typeData, data) {
 					shortcut : 113,
 					shortcut_label : 'F2',
 					action : function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
+						var node = jsTreeManager.extractNode(data);
 					    var ID = jsTreeManager.getNodeID(node);
 					    var requirementID = jsTreeManager.getRequirementID(node);
 					    if (!requirementID) {
@@ -147,8 +143,7 @@ function initJsTree(typeData, data) {
 					icon: "fa fa-tag",
 					submenu: folderEditActions,
 					_disabled: function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
+						var node = jsTreeManager.extractNode(data);
 					    var requirementID = jsTreeManager.getRequirementID(node);
 					    return requirementID;
 					}
@@ -157,8 +152,7 @@ function initJsTree(typeData, data) {
 					label: "Delete",
 					icon: 'glyphicon glyphicon-remove',
 					action: function(data) {
-						var inst = $.jstree.reference(data.reference);
-					    var node = inst.get_node(data.reference);
+						var node = jsTreeManager.extractNode(data);
 					    var ID = jsTreeManager.getNodeID(node);
 					    restAPI.requirements.folders.remove(pageData.projectKey, pageData.branchName, ID, function(data) {
 					    	jsTreeManager.deleteNode(node);

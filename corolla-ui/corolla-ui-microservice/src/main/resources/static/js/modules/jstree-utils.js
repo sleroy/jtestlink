@@ -62,6 +62,13 @@ function JsTreeManager(SELECTOR) {
 		},
 		
 		/**
+		 * Retrieves the nodes of the JsTree
+		 */
+		'getNodes': function() {
+			return $(SELECTOR).data().jstree.get_json();
+		},
+		
+		/**
 		 * Retrieves the node ID of a JsTree node
 		 */
 		'getNodeID': function(node) {
@@ -74,6 +81,13 @@ function JsTreeManager(SELECTOR) {
 		'setNodeID': function(node, id) {
 			node.a_attr['data-nodeID'] = id;
 			return node;
+		},
+		
+		/**
+		 * Retrieves the project ID of a JsTree node
+		 */
+		'getProjectID': function(node) {
+			return node && node.a_attr ? node.a_attr['data-projectID'] : null;
 		},
 		
 		/**
@@ -152,6 +166,14 @@ function JsTreeManager(SELECTOR) {
 		 */
 		'setMoveAction': function(action) {
 			moveAction = action;
+		},
+		
+		/**
+		 * Retrieves the node on which an event has been called
+		 */
+		'extractNode': function(data) {
+			var inst = $.jstree.reference(data.reference);
+		   return inst ? inst.get_node(data.reference) : null;
 		}
 	}
 	
