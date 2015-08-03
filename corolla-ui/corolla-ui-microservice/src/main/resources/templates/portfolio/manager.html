@@ -328,22 +328,32 @@
 								<thead>
 									<tr>
 										<th>Branch</th>
+										<th>Requirements</th>
+										<th>Test Cases</th>
 										<th>Edit</th>
-										<th>Switch</th>
 										<th>Merge</th>
 										<th>Delete</th>
 									</tr>
 								</thead>
-								<tr data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
-									<td>Master</td>
+								<tr th:each="branch : ${branches}">
 									<td>
-										<a href="#" class="btn btn-primary btn-xs">
-											<span class="glyphicon glyphicon-pencil"></span>
+										<span th:text="${branch.name}"></span>
+									</td>
+									<td>
+										<a href="#" class="btn btn-success btn-xs">
+											<span class="glyphicon glyphicon-duplicate"></span>
+											Requirements
+										</a>
+									</td>
+									<td>									
+										<a href="#" class="btn btn-warning btn-xs">
+											<span class="fa fa-flask"></span>
+											Test Cases
 										</a>
 									</td>
 									<td>
-										<a href="#" class="btn btn-info btn-xs">
-											<span class="fa fa-exchange"></span>
+										<a href="#" class="btn btn-primary btn-xs">
+											<span class="glyphicon glyphicon-pencil"></span>
 										</a>
 									</td>
 									<td>

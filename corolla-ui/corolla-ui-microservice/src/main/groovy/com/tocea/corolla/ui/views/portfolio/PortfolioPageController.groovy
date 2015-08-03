@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 
@@ -26,6 +27,9 @@ class PortfolioPageController {
 	
 	@Autowired
 	private IFolderNodeTypeDAO folderNodeTypeDAO;
+	
+	@Autowired
+	private IProjectBranchDAO branchDAO;
 	
 	@RequestMapping("/ui/portfolio")
 	public ModelAndView getPortfolio() {
@@ -61,6 +65,7 @@ class PortfolioPageController {
 		model.addObject "project", project
 		model.addObject "menu", MENU_PORTFOLIO_MANAGER
 		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
+		model.addObject "branches", branchDAO.findByProjectId(project.id)
 		
 		return model
 	}
