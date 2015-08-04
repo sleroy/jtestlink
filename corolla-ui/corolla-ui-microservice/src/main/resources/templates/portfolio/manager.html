@@ -27,9 +27,6 @@
 			<div class="row">
 				<div class="col-sm-6 col-md-4">
 					<div class="panel panel-primary treeview-box resizable">
-<!-- 						<div class="panel-heading"> -->
-<!-- 							<h4>Favorite products</h4> -->
-<!-- 						</div> -->
 						<div class="tab-header">
 		                	<img src="http://lorempixel.com/56/56/"/>	                	
 		                	<h3>Komea Dashboard</h3>
@@ -96,7 +93,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-8">
+				<div class="col-sm-6 col-md-8" th:if="${project != null}">
 					<div class="nav-tabs-custom">
 	                <ul class="nav nav-tabs">
 	                  <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
@@ -110,7 +107,7 @@
 	                    </a>
 	                    <ul class="dropdown-menu">
 	                      <li role="presentation">
-	                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/requirements/komea-dashboard}">
+	                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/requirements/}+${project.key}">
 	                      		<i class="glyphicon glyphicon-list-alt"></i>
 	                      		Manage requirements
 	                      	</a>
