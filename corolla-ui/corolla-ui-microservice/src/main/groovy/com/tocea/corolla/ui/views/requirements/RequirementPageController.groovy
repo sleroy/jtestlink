@@ -54,6 +54,11 @@ class RequirementPageController {
 		return "requirements"
 	}
 	
+	@ModelAttribute("theme")
+	public setTheme() {
+		return "cape-honey"
+	}
+	
 	@RequestMapping("/ui/requirements/{projectKey}")
 	public ModelAndView getRequirementsPage(@PathVariable projectKey) {
 			

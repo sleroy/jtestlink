@@ -224,7 +224,7 @@
 		<ul class="sidebar-menu" th:include="menu :: mainMenu" />
 		</section> <!-- /.sidebar --> </aside>
 		<!-- Content Wrapper. Contains page content -->
-		<div class="content-wrapper">
+		<div class="content-wrapper" th:classappend="${theme}">
 			<!-- Main content -->
 			<div layout:fragment="content" />
 		</div>
