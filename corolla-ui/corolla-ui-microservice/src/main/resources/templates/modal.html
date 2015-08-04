@@ -74,21 +74,21 @@
 									<th></th>
 								</tr>
 							</thead>
-							<tr th:each="user : ${users}" th:attr="data-id=${user.login}" th:class="${user.active ? '' : 'warning'}">
-								<td><img th:src="'http://www.gravatar.com/avatar/'+ ${user.gravatar} + '?s=48'" class="img-responsive"
-									src="" alt="" /></td>
-								<td><a data-toggle="tooltip" title="Edit this user" th:href="@{'/ui/admin/users/edit/' + ${user.login}}"
-									th:text="${user.login}">login</a></td>
-								<td th:text="${user.firstName}">First name</td>
-								<td th:text="${user.lastName}">Last name</td>
-								<td th:text="${user.email}">Email</td>
-								<td th:text="${user.role}">Role</td>
-								<td>
-									<button class="btn-pick btn btn-primary btn-xs" data-title="Select">
-										<span class="fa fa-crosshairs"></span>
-									</button>
-								</td>
-							</tr>
+<!-- 							<tr th:each="user : ${users}" th:attr="data-id=${user.login}" th:class="${user.active ? '' : 'warning'}"> -->
+<!-- 								<td><img th:src="'http://www.gravatar.com/avatar/'+ ${user.gravatar} + '?s=48'" class="img-responsive" -->
+<!-- 									src="" alt="" /></td> -->
+<!-- 								<td><a data-toggle="tooltip" title="Edit this user" th:href="@{'/ui/admin/users/edit/' + ${user.login}}" -->
+<!-- 									th:text="${user.login}">login</a></td> -->
+<!-- 								<td th:text="${user.firstName}">First name</td> -->
+<!-- 								<td th:text="${user.lastName}">Last name</td> -->
+<!-- 								<td th:text="${user.email}">Email</td> -->
+<!-- 								<td th:text="${user.role}">Role</td> -->
+<!-- 								<td> -->
+<!-- 									<button class="btn-pick btn btn-primary btn-xs" data-title="Select"> -->
+<!-- 										<span class="fa fa-crosshairs"></span> -->
+<!-- 									</button> -->
+<!-- 								</td> -->
+<!-- 							</tr> -->
 							<tfoot>
 								<tr>
 									<th></th>

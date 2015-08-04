@@ -147,12 +147,64 @@ function ChangeProjectModal() {
 function SelectUserModal() {
 	
 	var modalSelector = "#modal-select-user";
+	var selectAction = null;
+	var users = null;
+	
+	function display() {
+		
+		$(modalSelector+' table').dataTable();
+		$(modalSelector).modal('show');
+		
+		$(modalSelector+' .btn-pick').off("click");
+		$(modalSelector+' .btn-pick').click(function() {
+			var tr = $(this).closest('tr');
+			var id = tr.data('id');
+			if (id && selectAction) {				
+				selectAction(getUserByID(id), tr);
+			}
+		});
+	}
+	
+	function getUserByID(id) {
+		for(var i=0; i<users.length; i++) {
+			if (users[i].id == id) {
+				return users[i];
+			} 
+		}
+		return null;
+	}
+	
+	function addUser(user) {
+		var line = $('<tr></tr>');
+		line.data('id', user.id);
+		if (!user.active) line.addClass('warning');
+		line.append('<td><img src="http://www.gravatar.com/avatar/'+ user.gravatar +'?s=48=" class="img-responsive"></td>');
+		line.append('<td>'+user.login+'</td>');
+		line.append('<td>'+user.firstName+'</td>');
+		line.append('<td>'+user.lastName+'</td>');
+		line.append('<td>'+user.email+'</td>');
+		line.append('<td>'+user.role+'</td>');
+		line.append('<td><button class="btn-pick btn btn-primary btn-xs" data-title="Select"><span class="fa fa-crosshairs"></span></button></td>');
+		
+		$(modalSelector+' .table').append(line);
+	}
 	
 	return {
 		
 		'show': function() {
-			$(modalSelector+' table').dataTable();
-			$(modalSelector).modal('show');
+			
+			if (!users) {
+				restAPI.users.allwithrole(function(dto) {
+					$.each(dto.data, function(i, v) {
+						addUser(v);
+					});
+					users = dto.data;
+					display();
+				});
+			}else{
+				display();
+			}
+			
 		},
 
 		'hide': function() {
@@ -160,14 +212,7 @@ function SelectUserModal() {
 		},
 		
 		'onSelect': function(callback) {
-			$(modalSelector+' .btn-pick').off("click");
-			$(modalSelector+' .btn-pick').click(function() {
-				var tr = $(this).closest('tr');
-				var id = tr.data('id');
-				if (id) {
-					callback(id, tr);
-				}
-			});
+			selectAction = callback;
 		}
 	}
 	

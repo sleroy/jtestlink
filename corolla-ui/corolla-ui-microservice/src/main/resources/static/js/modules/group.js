@@ -101,10 +101,12 @@ function removeUserId(id) {
 
 function addUser() {
 	
-	selectUserModal.onSelect(function(login, line) {
+	selectUserModal.onSelect(function(user, line) {
 		
-		console.log(login);
+		console.log(user);
 		console.log(line);
+		
+		var login = user.login;
 
 		if ($.inArray(login, getUserIds()) == -1) {
 					

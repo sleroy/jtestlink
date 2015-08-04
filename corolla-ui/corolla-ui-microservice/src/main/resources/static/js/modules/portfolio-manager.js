@@ -208,3 +208,20 @@ function changeFolderType(typeID, node) {
 		jsTreeManager.setType(node, typeID);
 	});
 }
+
+function selectUser() {
+	
+	selectUserModal.show();
+	
+	selectUserModal.onSelect(function(user, line) {
+		
+		console.log(user);
+		console.log(line);
+		
+		$('input[name=ownerId]').val(user);
+		$('#ownerName').text(user.firstName+' '+user.lastName);
+		
+		selectUserModal.hide();
+	});
+	
+}

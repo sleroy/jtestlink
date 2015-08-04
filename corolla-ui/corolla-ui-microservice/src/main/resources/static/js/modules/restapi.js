@@ -14,6 +14,7 @@ function RestAPI() {
 			url: REST_PREFIX + url,
 			success: callback,
 			error: function(data, status) {
+				console.log('error when trying to access '+REST_PREFIX+url);
 				console.log(data);
 				console.log(status);
 			}
@@ -38,6 +39,14 @@ function RestAPI() {
 	return {
 		
 		"users": {
+			
+			"all": function(callback) {
+				call("users/all", callback);
+			},
+			
+			"allwithrole": function(callback) {
+				call("users/allwithrole", callback);
+			},
 			
 			"enable": function(id, callback) {
 				call("users/enable/"+id, callback);

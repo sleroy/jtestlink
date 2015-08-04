@@ -245,73 +245,9 @@
 		                  	</div>
 		                </div>
 		            </div>
-		            <div class="tab-pane" id="edit">
-	                  	<form class="project-form">
-			                <div class="row form-row">
-			                    <div class="col-sm-3 col-md-2">
-			                    	<span class="">Key*</span>
-			                    </div>
-			                    <div class="col-sm-9 col-md-10">
-			                    	<input name="key" type="text" class="form-control" placeholder="Key"/>
-			                    </div>
-			                </div>
-			                <div class="row form-row">
-			                    <div class="col-sm-3 col-md-2">
-			                    	<span class="">Name*</span>
-			                    </div>
-			                    <div class="col-sm-9 col-md-10">
-			                    	<input name="name" type="text" class="form-control" placeholder="Name"/>
-			                    </div>
-			                </div>
-			                <div class="row form-row">
-			                    <div class="col-sm-3 col-md-2"><span class="">Status</span></div>
-			                    <div class="col-sm-9 col-md-10">
-			                    	<select name="status" class="select2">
-			                    		<option>Active</option>
-			                    		<option>Closed</option>
-			                    	</select>
-			                    </div>
-			                </div>
-			                <div class="row form-row">
-			                    <div class="col-sm-3 col-md-2"><span class="">Category</span></div>
-			                    <div class="col-sm-9 col-md-10">
-			                    	<select name="status" class="select2">
-			                    		<option>New Development</option>
-			                    	</select>
-			                    </div>
-			                </div>
-			                <div class="row form-row">
-			                    <div class="col-sm-3 col-md-2"><span class="">Date Start</span></div>
-			                    <div class="col-sm-9 col-md-10">
-			                    	<input name="dateStart" type="text" class="form-control datepicker"/>
-			                    </div>
-			                </div>
-			                <div class="row form-row">
-			                    <div class="col-sm-3 col-md-2"><span class="">Date End</span></div>
-			                    <div class="col-sm-9 col-md-10">
-			                    	<input name="dateEnd" type="text" class="form-control datepicker"/>
-			                    </div>
-			                </div>
-			                <div class="row form-row">
-			                    <div class="col-sm-3 col-md-2"><span class="">Product Manager</span></div>
-			                    <div class="col-sm-9 col-md-10">
-			                    	<select name="status" class="select2">
-			                    		<option>Jon Snow</option>
-			                    		<option>Hodor</option>
-			                    	</select>
-			                    </div>
-			                </div>
-			                <div class="row form-row">
-			                    <div class="col-sm-3 col-md-2"><span class="">Icon</span></div>
-			                    <div class="col-sm-9 col-md-10"><input name="icon" type="file" class=""/></div>
-			                </div>
-			                <div class="text-editor">
-			                	<textarea class="textarea" placeholder="Description" style="height: 600px;"></textarea>
-			                </div>
-		                	<div class="box-footer">
-		                  		<button type="submit" class="btn btn-primary">Save</button>
-	                  		</div>
-	                  	</form>
+		            <div class="tab-pane" id="edit">	            	
+						<!-- Edit Project Form -->
+						<div th:replace="project_form :: projectForm"></div>
 	                  </div><!-- /.tab-pane -->
 	                  
 	                  <div class="tab-pane" id="branches">
