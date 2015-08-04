@@ -336,7 +336,7 @@
 										<span th:text="${branch.name}"></span>
 									</td>
 									<td>
-										<a href="#" class="btn btn-success btn-xs">
+										<a th:href="@{/ui/requirements/}+${project.key}+@{/}+${branch.name}" class="btn btn-success btn-xs">
 											<span class="glyphicon glyphicon-duplicate"></span>
 											Requirements
 										</a>
