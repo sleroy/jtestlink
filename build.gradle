@@ -75,17 +75,6 @@ sonarRunner {
     }
 }
 
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			repository(url: "http://zeus.tocea:8081/nexus/content/repositories/komea";)
-			{
-				authentication(userName: mavenUser, password: mavenPassword)
-			}
-		}
-	}
-}
-
 
 allprojects {
 
@@ -323,8 +312,20 @@ allprojects {
         reports { xml.enabled=true }
     }
 
+    uploadArchives {
+    	repositories {
+    		mavenDeployer {
+    			repository(url: "http://zeus.tocea:8081/nexus/content/repositories/corolla")
+    			{
+    				authentication(userName: mavenUser, password: mavenPassword)
+    			}
+    		}
+    	}
+    }
 
 }
+
+
 
 subprojects {
 
