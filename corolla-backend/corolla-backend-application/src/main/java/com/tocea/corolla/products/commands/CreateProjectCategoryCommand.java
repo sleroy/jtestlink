@@ -1,6 +1,7 @@
 package com.tocea.corolla.products.commands;
 
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
+
 import com.tocea.corolla.cqrs.annotations.Command;
 import com.tocea.corolla.products.domain.ProjectCategory;
 
