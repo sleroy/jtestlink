@@ -26,12 +26,13 @@
 			<div class="row">
 				<div class="col-sm-6 col-md-4">
 					<div class="panel panel-primary treeview-box resizable">
-						<div class="tab-header">
-		                	<img src="http://lorempixel.com/56/56/"/>	                	
-		                	<h3>Komea Dashboard</h3>
+						<div class="tab-header" th:if="${project != null}">
+		                	<img th:if="${project.image != null}" th:src="${project.image}" style="height: 56px;"/>	                	
+		                	<h3 th:text="${project.name}">#Project-Name</h3>
 		                	<div class="properties">
 		                		<a href="#" class="entity-key">
-		                			<i class="fa fa-key"></i> komea-dashboard
+		                			<i class="fa fa-key"></i>
+		                			<span th:text="${project.key}">#ProjectKey</span>
 		                		</a>
 		                	</div>
 		                	<br style="clear: both;"/>
@@ -184,40 +185,39 @@
 		                  	<div class="row">
 		                  		<div class="col-sm-3 col-md-2 field-name">Key</div>
 		                  		<div class="col-sm-9 col-md-10 entity-key">
-		                  			<img src="http://lorempixel.com/24/24/"/>
-		                  			komea-dashboard
+		                  			<img th:if="${project.image != null}" th:src="${project.image}" style="height: 24px;"/>
+		                  			<span th:text="${project.key}"></span>
 		                  		</div>
 		                  	</div>
 		                  	<div class="row">
 		                  		<div class="col-sm-3 col-md-2 field-name">Name</div>
-		                  		<div class="col-sm-9 col-md-10">Komea Dashboard</div>
+		                  		<div class="col-sm-9 col-md-10" th:text="${project.name}"></div>
 		                  	</div>
 		                  	<div class="row">
 		                  		<div class="col-sm-3 col-md-2 field-name">Status</div>
-		                  		<div class="col-sm-9 col-md-10"><span class="label label-success">Active</span></div>
+		                  		<div class="col-sm-9 col-md-10">
+		                  			<span class="label" th:classAppend="${status.closed}? 'label-warning' : 'label-success'" th:text="${status.name}">Active</span>
+		                  		</div>
 		                  	</div>
 		                  	<div class="row">
 		                  		<div class="col-sm-3 col-md-2 field-name">Category</div>
-		                  		<div class="col-sm-9 col-md-10">New development</div>
-		                  	</div>
-		                  	<div class="row">
-		                  		<div class="col-sm-3 col-md-2 field-name">Date Start</div>
-		                  		<div class="col-sm-9 col-md-10">20/06/2015</div>
-		                  	</div>
-		                  	<div class="row">
-		                  		<div class="col-sm-3 col-md-2 field-name">Date End</div>
-		                  		<div class="col-sm-9 col-md-10">20/08/2015</div>
-		                  	</div>
+		                  		<div class="col-sm-9 col-md-10">
+		                  			<span th:text="${category}? ${category.name} : '-'"></span>
+		                  		</div>
+		                  	</div>		                  	
 		                  	<div class="row">
 		                  		<div class="col-sm-3 col-md-2 field-name">Product Manager</div>
 		                  		<div class="col-sm-9 col-md-10">
-		                  			<img src="http://www.gravatar.com/avatar/?s=16"/>
-		                  			<a href="#">Hodor</a>
+		                  			<div th:if="${owner != null}">
+		                  				<img th:src="${#strings.isEmpty(owner.gravatar)} ? ${owner.gravatar} : 'http://www.gravatar.com/avatar/?s=16'"/>
+		                  				<a th:href="@{/ui/users/}+${owner.login}" th:text="${owner.firstName+' '+owner.lastName}">Hodor</a>
+		                  			</div>
+		                  			<span th:if="${owner == null}">-</span>
 		                  		</div>
 		                  	</div>
 		                  	<div class="row">
 		                  		<div class="col-sm-3 col-md-2 field-name">Description</div>
-		                  		<div class="col-sm-9 col-md-10">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit! memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro.
+		                  		<div class="col-sm-9 col-md-10" th:text="${project.description}">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit! memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro.
 	
 	Equitis Romani autem esse filium criminis loco poni ab accusatoribus neque his iudicantibus oportuit neque defendentibus nobis. Nam quod de pietate dixistis, est quidem ista nostra existimatio, sed iudicium certe parentis; quid nos opinemur, audietis ex iuratis; quid parentes sentiant, lacrimae matris incredibilisque maeror, squalor patris et haec praesens maestitia, quam cernitis, luctusque declarat.
 	

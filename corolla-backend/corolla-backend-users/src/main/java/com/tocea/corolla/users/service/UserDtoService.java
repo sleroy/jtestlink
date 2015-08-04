@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.tocea.corolla.users.dao;
+package com.tocea.corolla.users.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tocea.corolla.users.dao.IRoleDAO;
+import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.domain.User;
 import com.tocea.corolla.users.dto.UserDto;
 import com.tocea.corolla.users.dto.UserWithRoleDto;
@@ -18,7 +20,7 @@ import com.tocea.corolla.users.dto.UserWithRoleDto;
  *
  */
 @Service
-public class UserDtoService {
+public class UserDtoService implements IUserDtoService {
 
 	@Autowired
 	private IUserDAO	userDAO;

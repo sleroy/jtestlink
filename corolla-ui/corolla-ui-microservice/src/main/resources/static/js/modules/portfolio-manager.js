@@ -74,6 +74,8 @@ function initJsTree(data) {
 		});
 	}
 	
+	types['default'] = { 'icon' : 'fa fa-genderless' }
+	
 	$(PROJECTS_TREEVIEW).jstree({
 		"core" : {
 			"animation" : 0,

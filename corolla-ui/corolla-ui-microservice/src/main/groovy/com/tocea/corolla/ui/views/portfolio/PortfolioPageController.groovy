@@ -13,12 +13,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
+import com.tocea.corolla.products.dao.IProjectCategoryDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
+import com.tocea.corolla.products.dao.IProjectStatusDAO;
 import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
+import com.tocea.corolla.users.dao.IUserDAO;
+import com.tocea.corolla.users.dto.UserDto;
+import com.tocea.corolla.users.service.IUserDtoService
 
 @Controller
 @Slf4j
@@ -38,6 +43,15 @@ class PortfolioPageController {
 	
 	@Autowired
 	private IProjectBranchDAO branchDAO;
+	
+	@Autowired
+	private IProjectStatusDAO statusDAO;
+	
+	@Autowired
+	private IProjectCategoryDAO projectCategoryDAO;
+	
+	@Autowired
+	private IUserDAO userDAO;
 	
 	@Autowired
 	private IRevisionService revisionService;
@@ -72,10 +86,14 @@ class PortfolioPageController {
 			return new ModelAndView("redirect:/ui/portfolio/manager/")
 		}
 		
-		def commits = revisionService.getHistory(project.id, project.class)
+		def commits = revisionService.getHistory(project.id, project.class)				
+		def owner = project.ownerId ? userDAO.findOne(project.ownerId) : null
 		
 		def model = new ModelAndView(MANAGER_PAGE);
 		model.addObject "project", project
+		model.addObject "status", statusDAO.findOne(project.statusId)
+		model.addObject "category", project.categoryId ? projectCategoryDAO.findOne(project.categoryId) : null
+		model.addObject "owner", owner ? new UserDto(owner) : null
 		model.addObject "menu", MENU_PORTFOLIO_MANAGER
 		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
 		model.addObject "branches", branchDAO.findByProjectId(project.id)

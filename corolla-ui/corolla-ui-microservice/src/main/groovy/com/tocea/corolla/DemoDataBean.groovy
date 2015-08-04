@@ -191,9 +191,10 @@ public class DemoDataBean {
 				name: 'Corolla', 
 				description: 'A Java Coffee Maker',
 				statusId: statusActive.id,
-				image: new URL("http://lorempixel.com/24/24/")
+				ownerId: jsnow.id,
+				image: new URL("http://lorempixel.com/64/64/")
 		))		
-		corolla.description = 'Corolla is a tool to manage software requirements'
+		corolla.description = 'Corolla is an open source tool to manage software requirements, test cases and test campaigns'
 		this.editProject(corolla)
 		
 		def portfolio = portfolioDAO.find()

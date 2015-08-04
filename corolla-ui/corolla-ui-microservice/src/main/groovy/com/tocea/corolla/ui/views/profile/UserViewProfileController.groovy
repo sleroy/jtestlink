@@ -22,10 +22,10 @@ import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
-import com.tocea.corolla.users.dao.UserDtoService
 import com.tocea.corolla.users.domain.User
 import com.tocea.corolla.users.dto.UserProfileDto
 import com.tocea.corolla.users.exceptions.InvalidLoginException
+import com.tocea.corolla.users.service.UserDtoService;
 import com.tocea.corolla.users.validation.UserValidation
 
 /**

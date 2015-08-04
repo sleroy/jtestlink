@@ -27,13 +27,13 @@ public class PortfolioJsTree extends JsTreeNodeVisitor {
 			
 			String ID = ((ProjectNode) node).getProjectId();
 			result.getA_attr().put("data-projectID", ID);
-			result.setIcon("http://lorempixel.com/16/16/");
 
 			if (this.projects != null) {
 				Project project = ProjectUtils.findByID(ID, projects);
 				if (project != null) {
 					result.setText(project.getName());
 					result.getA_attr().put("data-key", project.getKey());
+					result.setIcon(project.getImage() != null ? project.getImage().toString() : "");
 				}
 			}
 			

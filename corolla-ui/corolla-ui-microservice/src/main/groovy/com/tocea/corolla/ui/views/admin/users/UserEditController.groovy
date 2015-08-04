@@ -24,11 +24,11 @@ import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
-import com.tocea.corolla.users.dao.UserDtoService
 import com.tocea.corolla.users.domain.Permission
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.dto.UserPasswordDto
 import com.tocea.corolla.users.exceptions.InvalidLoginException
+import com.tocea.corolla.users.service.UserDtoService;
 import com.tocea.corolla.users.validation.UserValidation
 
 /**

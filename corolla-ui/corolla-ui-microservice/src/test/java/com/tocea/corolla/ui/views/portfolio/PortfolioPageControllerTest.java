@@ -19,7 +19,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
+import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
 import com.tocea.corolla.products.domain.Project;
+import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.revisions.domain.ICommit;
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.ui.AbstractSpringTest;
@@ -46,10 +48,10 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	@Autowired
 	private IRevisionService revisionService;
 	
-	private Role basicRole;
-	
+	private Role basicRole;	
 	private User basicUser;
 	
+	private ProjectStatus projectStatus;
 	private Project existingProject;
 	
 	@Before
@@ -69,9 +71,16 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		basicUser.setPassword("pass");
 		basicUser.setEmail("simple@corolla.com");
 		
+		projectStatus = new ProjectStatus();
+		projectStatus.setName("Active");
+		projectStatus.setClosed(false);
+		
+		gate.dispatch(new CreateProjectStatusCommand(projectStatus));
+		
 		existingProject = new Project();
 		existingProject.setKey("COROLLA_TEST");
 		existingProject.setName("Corolla");
+		existingProject.setStatusId(projectStatus.getId());
 		
 		gate.dispatch(new CreateProjectCommand(existingProject));
 		

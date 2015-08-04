@@ -22,12 +22,12 @@ import com.tocea.corolla.users.commands.DisableUserCommand;
 import com.tocea.corolla.users.commands.EnableUserCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.dao.IUserDAO;
-import com.tocea.corolla.users.dao.UserDtoService;
 import com.tocea.corolla.users.domain.Permission;
 import com.tocea.corolla.users.dto.UserDto;
 import com.tocea.corolla.users.dto.UserWithRoleDto;
 import com.tocea.corolla.users.exceptions.InvalidLoginException;
 import com.tocea.corolla.users.exceptions.OperationForbidenWithThisLoginException;
+import com.tocea.corolla.users.service.UserDtoService;
 import com.tocea.corolla.users.validation.UserValidation;
 import com.tocea.corolla.utils.datatable.DataTableList;
 
