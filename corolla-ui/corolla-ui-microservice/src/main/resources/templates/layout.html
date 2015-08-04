@@ -78,7 +78,7 @@
 				<li>
 					<a href="#" class="pull-left selected-project toggle-change-project" th:if="${project != null}">
 						<img src="http://lorempixel.com/24/24/" alt="Komea" />
-						<span th:text="${project}"></span>
+						<span th:text="${project.name}"></span>
 					</a>
 				</li>
 			</ul>
@@ -224,14 +224,14 @@
 		<ul class="sidebar-menu" th:include="menu :: mainMenu" />
 		</section> <!-- /.sidebar --> </aside>
 		<!-- Content Wrapper. Contains page content -->
-		<div class="content-wrapper">
+		<div class="content-wrapper" th:classappend="${theme}">
 			<!-- Main content -->
 			<div layout:fragment="content" />
 		</div>
 		<!-- /.content-wrapper -->
 		<footer class="main-footer">
 		<div class="pull-right hidden-xs">
-			<b>Version</b> 0.1
+			<b>Version</b> 0.2
 		</div>
 		<strong>Copyright &copy; 2015 <a href="http://www.tocea.fr">Tocea</a></strong> </footer>
 		<!-- Control Sidebar -->
@@ -409,8 +409,8 @@
 	<!-- jsTree -->
 	<script th:src="@{/resources/jstree/dist/jstree.min.js}" src="../static/resources/jstree/dist/jstree.min.js" type="text/javascript" />
 	<!-- Corolla Modules -->
-	<script type="text/javascript" src="../static/js/modules/main.js" th:src="@{/js/modules/main.js}" />
 	<script type="text/javascript" src="../static/js/modules/restapi.js" th:src="@{/js/modules/restapi.js}" />
+	<script type="text/javascript" src="../static/js/modules/main.js" th:src="@{/js/modules/main.js}" />
 	<!-- Init Corolla Main Module -->
 	<script type="text/javascript">
 		$(document).ready(function() {

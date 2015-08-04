@@ -15,10 +15,9 @@
 		    </h1>
 		    <ol class="breadcrumb">
 		       <li><a href="/ui/portfolio/manager"><i class="glyphicon glyphicon-book"></i> Portfolio Manager</a></li>
-		       <li class="active">Komea Dashboard</li>
+		       <li class="active" th:if="${project != null}" th:text="${project.name}"></li>
 		    </ol> 
 	    </section>
-
 
 		<!-- Main -->
 		<div class="content">
@@ -27,9 +26,6 @@
 			<div class="row">
 				<div class="col-sm-6 col-md-4">
 					<div class="panel panel-primary treeview-box resizable">
-<!-- 						<div class="panel-heading"> -->
-<!-- 							<h4>Favorite products</h4> -->
-<!-- 						</div> -->
 						<div class="tab-header">
 		                	<img src="http://lorempixel.com/56/56/"/>	                	
 		                	<h3>Komea Dashboard</h3>
@@ -53,11 +49,11 @@
 													<i class="fa fa-briefcase"></i>
 													Project
 												</a>
-											</li>
-											<li>
-												<a href="#">
-													<i class="glyphicon glyphicon-folder-open"></i>
-													Folder
+											</li>																					
+											<li th:each="folderNodeType : ${folderNodeTypes}">
+												<a  href="#" th:attr="onclick='jsTreeManager.addFolder(\''+${folderNodeType.id}+'\', null)'">
+													<img th:src="${folderNodeType.icon}" />
+													<span th:text="${folderNodeType.name}"></span>
 												</a>
 											</li>
 										</ul>
@@ -68,12 +64,12 @@
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="expandTreeview()">
+										<a href="#" class="btn btn-default" onclick="jsTreeManager.expand()">
 											<span class="fa fa-expand"></span>
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="collapseTreeview()">
+										<a href="#" class="btn btn-default" onclick="jsTreeManager.collapse()">
 											<span class="fa fa-compress"></span>
 										</a>
 									</li>
@@ -96,7 +92,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-8">
+				<div class="col-sm-6 col-md-8" th:if="${project != null}">
 					<div class="nav-tabs-custom">
 	                <ul class="nav nav-tabs">
 	                  <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
@@ -110,7 +106,7 @@
 	                    </a>
 	                    <ul class="dropdown-menu">
 	                      <li role="presentation">
-	                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/requirements/komea-dashboard}">
+	                      	<a role="menuitem" tabindex="-1" th:href="@{/ui/requirements/}+${project.key}">
 	                      		<i class="glyphicon glyphicon-list-alt"></i>
 	                      		Manage requirements
 	                      	</a>
@@ -328,22 +324,32 @@
 								<thead>
 									<tr>
 										<th>Branch</th>
+										<th>Requirements</th>
+										<th>Test Cases</th>
 										<th>Edit</th>
-										<th>Switch</th>
 										<th>Merge</th>
 										<th>Delete</th>
 									</tr>
 								</thead>
-								<tr data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
-									<td>Master</td>
+								<tr th:each="branch : ${branches}">
 									<td>
-										<a href="#" class="btn btn-primary btn-xs">
-											<span class="glyphicon glyphicon-pencil"></span>
+										<span th:text="${branch.name}"></span>
+									</td>
+									<td>
+										<a th:href="@{/ui/requirements/}+${project.key}+@{/}+${branch.name}" class="btn btn-success btn-xs">
+											<span class="glyphicon glyphicon-duplicate"></span>
+											Requirements
+										</a>
+									</td>
+									<td>									
+										<a href="#" class="btn btn-warning btn-xs">
+											<span class="fa fa-flask"></span>
+											Test Cases
 										</a>
 									</td>
 									<td>
-										<a href="#" class="btn btn-info btn-xs">
-											<span class="fa fa-exchange"></span>
+										<a href="#" class="btn btn-primary btn-xs">
+											<span class="glyphicon glyphicon-pencil"></span>
 										</a>
 									</td>
 									<td>
@@ -375,30 +381,25 @@
 										<th>Actions</th>
 									</tr>
 								</thead>
-								<tr class="pointer" data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
-									<td class="toggle"><span class="badge">3</span></td>
-									<td class="toggle">24/06/2015 12:35</td>
-									<td class="toggle">Third commit</td>
-									<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-									<td><a href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a>
+								<tr th:each="commit : ${commits}">
+									<td class="toggle">
+										<span class="badge" th:text="${commit.id}">id</span>
 									</td>
-								</tr>
-								<tr class="pointer">
-									<td><span class="badge">2</span></td>
-									<td>23/06/2015 12:35</td>
-									<td>Second commit</td>
-									<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-									<td><a href="#" class="label label-warning">Restore</a> <a
-										href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a></td>
-								</tr>
-								<tr class="pointer">
-									<td><span class="badge">1</span></td>
-									<td>23/06/2015 11:25</td>
-									<td>Initial creation</td>
-									<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-									<td><a href="#" class="label label-warning">Restore</a> <a
-										href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a></td>
-								</tr>
+									<td class="toggle" th:text="${#dates.format(commit.getDate(), 'dd/MM/yyyy HH:mm')}">date</td>
+									<td class="toggle" th:text="${commit.type}"></td>
+									<td class="toggle">
+										<img src="http://www.gravatar.com/avatar/?s=16" alt="" />
+										<span th:text="${commit.author}"></span>
+									</td>
+									<td>
+										<a th:if="${commits[0].id} != ${commit.id}" href="#" class="label label-warning" style="margin-right: 5px;">
+											Restore
+										</a>
+										<a th:href="@{/ui/portfolio/manager/}+${project.key}+@{/revisions/}+${commit.id}" class="label label-primary">
+											Changelog
+										</a>
+									</td>
+								</tr>							
 							</table>
 						</div>
 	                  
@@ -528,9 +529,8 @@
 	</div>
 	
 	<div layout:fragment="footer">
-		<script type="text/javascript" th:src="@{/js/d3.min.js}" src="../static/js/d3.min.js" />
-		<script type="text/javascript" th:src="@{/js/modules/sunburst.js}" src="../static/js/modules/sunburst.js" />
-  		<script type="text/javascript" src="../../static/js/modules/portfolio.js" th:src="@{/js/modules/portfolio.js}" />
+		<script type="text/javascript" th:src="@{/js/modules/jstree-utils.js}" src="../static/js/modules/jstree-utils.js" />
+  		<script type="text/javascript" src="../../static/js/modules/portfolio.js" th:src="@{/js/modules/portfolio-manager.js}" />
   		<script type="text/javascript">
 			$(document).ready(function() {
 				tabRooting();

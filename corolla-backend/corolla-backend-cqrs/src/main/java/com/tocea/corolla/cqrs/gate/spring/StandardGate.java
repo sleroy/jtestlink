@@ -51,7 +51,7 @@ public class StandardGate implements Gate {
 
 			@Override
 			public void onFailure(final Throwable _cause) {
-				threadLocal.set(null);
+				throw new CommandExecutionException(_cause);
 
 			}
 

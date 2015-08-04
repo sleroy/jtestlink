@@ -5,6 +5,7 @@ package com.tocea.corolla.users.dao;
 
 import java.util.List;
 
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.tocea.corolla.users.domain.User;
@@ -16,6 +17,7 @@ import com.tocea.corolla.users.domain.User;
  *
  *
  */
+@JaversSpringDataAuditable
 public interface IUserDAO extends MongoRepository<User, String> {
 
 	//void deleteUserByLogin(String login);

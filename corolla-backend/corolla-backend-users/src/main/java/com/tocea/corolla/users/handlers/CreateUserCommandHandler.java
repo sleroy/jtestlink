@@ -6,7 +6,9 @@ package com.tocea.corolla.users.handlers;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.javers.core.Javers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
@@ -36,6 +38,9 @@ ICommandHandler<CreateUserCommand, User> {
 
 	@Autowired
 	private IRoleDAO				roleDAO;
+	
+	@Autowired
+	private PasswordEncoder			passwordEncoder;
 
 	@Autowired
 	private EmailValidationService	emailValidationService;
@@ -62,8 +67,11 @@ ICommandHandler<CreateUserCommand, User> {
 		if (!this.emailValidationService.validateEmail(user.getEmail())) {
 			throw new InvalidEmailAddressException(user.getEmail());
 		}
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		this.userDAO.save(user);
+		
 		return user;
 	}
 
