@@ -15,10 +15,9 @@
 		    </h1>
 		    <ol class="breadcrumb">
 		       <li><a href="/ui/portfolio/manager"><i class="glyphicon glyphicon-book"></i> Portfolio Manager</a></li>
-		       <li class="active">Komea Dashboard</li>
+		       <li class="active" th:if="${project != null}" th:text="${project.name}"></li>
 		    </ol> 
 	    </section>
-
 
 		<!-- Main -->
 		<div class="content">
@@ -382,30 +381,25 @@
 										<th>Actions</th>
 									</tr>
 								</thead>
-								<tr class="pointer" data-href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2">
-									<td class="toggle"><span class="badge">3</span></td>
-									<td class="toggle">24/06/2015 12:35</td>
-									<td class="toggle">Third commit</td>
-									<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-									<td><a href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a>
+								<tr th:each="commit : ${commits}">
+									<td class="toggle">
+										<span class="badge" th:text="${commit.id}">id</span>
 									</td>
-								</tr>
-								<tr class="pointer">
-									<td><span class="badge">2</span></td>
-									<td>23/06/2015 12:35</td>
-									<td>Second commit</td>
-									<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-									<td><a href="#" class="label label-warning">Restore</a> <a
-										href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a></td>
-								</tr>
-								<tr class="pointer">
-									<td><span class="badge">1</span></td>
-									<td>23/06/2015 11:25</td>
-									<td>Initial creation</td>
-									<td><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> jsnow</td>
-									<td><a href="#" class="label label-warning">Restore</a> <a
-										href="/ui/requirements/komea-dashboard/ADD_KPI/revisions/2" class="label label-primary">Changelog</a></td>
-								</tr>
+									<td class="toggle" th:text="${#dates.format(commit.getDate(), 'dd/MM/yyyy HH:mm')}">date</td>
+									<td class="toggle" th:text="${commit.type}"></td>
+									<td class="toggle">
+										<img src="http://www.gravatar.com/avatar/?s=16" alt="" />
+										<span th:text="${commit.author}"></span>
+									</td>
+									<td>
+										<a th:if="${commits[0].id} != ${commit.id}" href="#" class="label label-warning" style="margin-right: 5px;">
+											Restore
+										</a>
+										<a th:href="@{/ui/portfolio/manager/}+${project.key}+@{/revisions/}+${commit.id}" class="label label-primary">
+											Changelog
+										</a>
+									</td>
+								</tr>							
 							</table>
 						</div>
 	                  

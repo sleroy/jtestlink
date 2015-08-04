@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Collection;
+
 import javax.servlet.Filter;
 
 import org.junit.Before;
@@ -18,6 +20,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.domain.Project;
+import com.tocea.corolla.revisions.domain.ICommit;
+import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.ui.AbstractSpringTest;
 import com.tocea.corolla.ui.security.AuthUser;
 import com.tocea.corolla.users.domain.Role;
@@ -25,6 +29,9 @@ import com.tocea.corolla.users.domain.User;
 
 public class PortfolioPageControllerTest extends AbstractSpringTest {
 
+	private static final String PORTFOLIO_URL 			= "/ui/portfolio";
+	private static final String PORTFOLIO_MANAGER_URL 	= PORTFOLIO_URL+"/manager/";
+	
 	@Autowired
 	private WebApplicationContext context;
 	
@@ -35,6 +42,9 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	
 	@Autowired
 	private Gate gate;
+	
+	@Autowired
+	private IRevisionService revisionService;
 	
 	private Role basicRole;
 	
@@ -67,11 +77,21 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		
 	}
 	
+	private String buildRevisionPageURL(Project project, String commitID) {
+		
+		return 
+				new StringBuilder(PORTFOLIO_MANAGER_URL)
+				.append(project.getKey())
+				.append("/revisions/")
+				.append(commitID)
+				.toString();
+	}
+	
 	@Test
 	public void basicUserShouldAccessPortfolioView() throws Exception {
 		
 		mvc
-		.perform(get("/ui/portfolio").with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(PORTFOLIO_URL).with(user(new AuthUser(basicUser, basicRole))))
 		.andExpect(status().isOk());
 		
 	}
@@ -79,7 +99,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	@Test
 	public void anonymousUserShouldNotAccessPortfolioView() throws Exception {
 		
-		mvc.perform(get("/ui/portfolio"))
+		mvc.perform(get(PORTFOLIO_URL))
 			.andExpect(status().isFound())
 			.andExpect(redirectedUrlPattern("**/login"));
 		
@@ -89,7 +109,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	public void basicUserShouldAccessPortfolioManagerView() throws Exception {
 		
 		mvc
-		.perform(get("/ui/portfolio/manager").with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(PORTFOLIO_MANAGER_URL).with(user(new AuthUser(basicUser, basicRole))))
 		.andExpect(status().isOk());
 		
 	}
@@ -97,7 +117,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	@Test
 	public void anonymousUserShouldNotAccessPortfolioManagerView() throws Exception {
 		
-		mvc.perform(get("/ui/portfolio/manager"))
+		mvc.perform(get(PORTFOLIO_MANAGER_URL))
 			.andExpect(status().isFound())
 			.andExpect(redirectedUrlPattern("**/login"));
 		
@@ -108,7 +128,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		
 		mvc
 		.perform(
-				get("/ui/portfolio/manager/"+existingProject.getKey())
+				get(PORTFOLIO_MANAGER_URL+existingProject.getKey())
 				.with(user(new AuthUser(basicUser, basicRole))))
 		.andExpect(status().isOk());
 		
@@ -119,10 +139,60 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		 
 		mvc
 			.perform(
-					get("/ui/portfolio/manager/"+"blblbl")
+					get(PORTFOLIO_MANAGER_URL+"blblbl")
 					.with(user(new AuthUser(basicUser, basicRole))))
 			.andExpect(status().isFound())
-			.andExpect(redirectedUrl("/ui/portfolio/manager"));
+			.andExpect(redirectedUrl(PORTFOLIO_MANAGER_URL));
+		
+	}
+	
+	@Test
+	public void basicUserShouldAccessRequirementRevisionPage() throws Exception {
+		
+		Collection<ICommit> commits = revisionService.getHistory(existingProject.getId(), existingProject.getClass());
+		
+		String commitID = commits.iterator().next().getId();
+		
+		String URL = buildRevisionPageURL(existingProject, commitID);
+		
+		mvc
+			.perform(
+					get(URL).with(user(new AuthUser(basicUser, basicRole)))
+			)
+			.andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void shouldNotAccessRequirementRevisionPageWithInvalidProjectKey() throws Exception {
+		
+		Collection<ICommit> commits = revisionService.getHistory(existingProject.getId(), existingProject.getClass());
+		
+		String commitID = commits.iterator().next().getId();
+		
+		Project invalidProject = new Project();
+		invalidProject.setKey("blblbl");
+		
+		String URL = buildRevisionPageURL(invalidProject, commitID);
+		
+		mvc
+			.perform(
+					get(URL).with(user(new AuthUser(basicUser, basicRole)))
+			)
+			.andExpect(status().isNotFound());
+		
+	}
+	
+	@Test
+	public void shouldNotAccessRequirementRevisionPageWithInvalidCommitID() throws Exception {				
+		
+		String URL = buildRevisionPageURL(existingProject, "blblbl");
+		
+		mvc
+			.perform(
+					get(URL).with(user(new AuthUser(basicUser, basicRole)))
+			)
+			.andExpect(status().isNotFound());
 		
 	}
 	
