@@ -74,8 +74,8 @@ public class ProjectDetailsPageController {
 		return model
 	}
 	
-	@RequestMapping(value = "/ui/projects/{projectKey}/edit", method = RequestMethod.POST)
-	public ModelAndView editProject(@PathVariable projectKey, @Valid @ModelAttribute("project") Project project, BindingResult _result) {
+	@RequestMapping(value = "/ui/projects/{projectID}/edit", method = RequestMethod.POST)
+	public ModelAndView editProject(@PathVariable String projectID, @Valid @ModelAttribute("project") Project project, BindingResult _result) {
 		
 		project = _result.model.get("project")
 		
