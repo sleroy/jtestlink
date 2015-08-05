@@ -1,6 +1,7 @@
 package com.tocea.corolla.products.commands.handlers;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class EditProjectCommandHandler implements ICommandHandler<EditProjectCom
 	private IRevisionService revisionService;
 	
 	@Override
-	public Project handle(EditProjectCommand command) {
+	public Project handle(@Valid EditProjectCommand command) {
 		
 		Project project = command.getProject();
 		

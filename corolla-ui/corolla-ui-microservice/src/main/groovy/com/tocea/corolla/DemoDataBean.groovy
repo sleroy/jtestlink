@@ -27,13 +27,16 @@ import com.tocea.corolla.portfolio.domain.Portfolio
 import com.tocea.corolla.portfolio.domain.ProjectNode
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand
+import com.tocea.corolla.products.commands.CreateProjectCategoryCommand
 import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO
+import com.tocea.corolla.products.dao.IProjectCategoryDAO
 import com.tocea.corolla.products.dao.IProjectDAO
 import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Project
+import com.tocea.corolla.products.domain.ProjectCategory
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand
 import com.tocea.corolla.requirements.commands.EditRequirementCommand
@@ -89,6 +92,9 @@ public class DemoDataBean {
 	
 	@Autowired
 	def IProjectStatusDAO			projectStatusDAO
+	
+	@Autowired
+	def IProjectCategoryDAO			projectCategoryDAO
 	
 	@Autowired
 	def IProjectBranchDAO			projectBranchDAO
@@ -182,6 +188,13 @@ public class DemoDataBean {
 		 * Project Statuses
 		 */
 		def statusActive = this.newProjectStatus("Active")
+		def statusClosed = this.newProjectStatus("Closed", true)
+		
+		/**
+		 * Project Categories
+		 */
+		def category1 = gate.dispatch(new CreateProjectCategoryCommand(new ProjectCategory(name: "SF Management")))
+		def category2 = gate.dispatch(new CreateProjectCategoryCommand(new ProjectCategory(name: "Coffee Makers")))
 		
 		/*
 		 * Portfolio
@@ -191,6 +204,7 @@ public class DemoDataBean {
 				name: 'Corolla', 
 				description: 'A Java Coffee Maker',
 				statusId: statusActive.id,
+				categoryId: category1.id,
 				ownerId: jsnow.id,
 				image: new URL("http://lorempixel.com/64/64/")
 		))		
@@ -402,9 +416,9 @@ public class DemoDataBean {
 		return project
 	}
 	
-	public ProjectStatus newProjectStatus(name) {
+	public ProjectStatus newProjectStatus(name, closed=false) {
 		
-		def status = new ProjectStatus(name: name)
+		def status = new ProjectStatus(name: name, closed: closed)
 		this.gate.dispatch new CreateProjectStatusCommand(status)
 		
 		return status
@@ -453,6 +467,7 @@ public class DemoDataBean {
 		roleDAO.deleteAll()
 		groupDAO.deleteAll()
 		projectStatusDAO.deleteAll()	
+		projectCategoryDAO.deleteAll()
 		portfolioDAO.deleteAll()
 		
 	}

@@ -216,9 +216,8 @@ function selectUser() {
 	selectUserModal.onSelect(function(user, line) {
 		
 		console.log(user);
-		console.log(line);
-		
-		$('input[name=ownerId]').val(user);
+
+		$('input[name=ownerId]').val(user.id);
 		$('#ownerName').text(user.firstName+' '+user.lastName);
 		
 		selectUserModal.hide();

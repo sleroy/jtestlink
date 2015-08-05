@@ -3,13 +3,15 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <body>
 	<div th:fragment="projectForm">
-		<form class="project-form">
+		<form class="project-form" th:object="${project}" method="POST"
+			th:attr="action=@{${project.id} == null ? '/ui/portfolio/manager/create' : '/ui/portfolio/manager/'+${project.key}+'/edit'}">
+			<input type="hidden" name="id" id="id" th:value="${project.id}" />
 		   <div class="row form-row">
 		       <div class="col-sm-3 col-md-2">
 		       	<span class="">Key*</span>
 		       </div>
 		       <div class="col-sm-9 col-md-10">
-		       	<input name="key" type="text" class="form-control" placeholder="Key"/>
+		       	<input name="key" type="text" th:value="${project.key}" class="form-control" placeholder="Key"/>
 		       </div>
 		   </div>
 		   <div class="row form-row">
@@ -17,23 +19,23 @@
 		       	<span class="">Name*</span>
 		       </div>
 		       <div class="col-sm-9 col-md-10">
-		       	<input name="name" type="text" class="form-control" placeholder="Name"/>
+		       	<input name="name" type="text" th:value="${project.name}" class="form-control" placeholder="Name"/>
 		       </div>
 		   </div>
 		   <div class="row form-row">
 		       <div class="col-sm-3 col-md-2"><span class="">Status</span></div>
 		       <div class="col-sm-9 col-md-10">
-		       	<select name="status" class="select2">
-		       		<option>Active</option>
-		       		<option>Closed</option>
+		       	<select class="select2" th:field="*{statusId}">		       		
+		       		<option th:each="st : ${statuses}" th:value="${st.id}" th:text="${st.name}"></option>
 		       	</select>
 		       </div>
 		   </div>
 		   <div class="row form-row">
 		       <div class="col-sm-3 col-md-2"><span class="">Category</span></div>
 		       <div class="col-sm-9 col-md-10">
-		       	<select name="status" class="select2">
-		       		<option>New Development</option>
+		       	<select class="select2" th:field="*{categoryId}">
+		       		<option value="">None</option>
+		       		<option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
 		       	</select>
 		       </div>
 		   </div>
@@ -52,8 +54,8 @@
 		   <div class="row form-row">
 		       <div class="col-sm-3 col-md-2"><span class="">Product Manager</span></div>
 		       <div class="col-sm-9 col-md-10">
-		       		<input type="hidden" name="ownerId" value=""></input>
-		       		<span id="ownerName"></span>
+		       		<input type="hidden" name="ownerId" th:value="${project.ownerId}"></input>
+		       		<span id="ownerName" th:text="${owner != null ? owner.firstName+' '+owner.lastName : ''}"></span>
 		       		<button class="btn btn-success" onclick="selectUser(); return false;">Select user</button>
 		      </div>		     
 		   </div>
@@ -62,7 +64,7 @@
 		       <div class="col-sm-9 col-md-10"><input name="icon" type="file" class=""/></div>
 		   </div>
 		   <div class="text-editor">
-		   	<textarea class="textarea" placeholder="Description" style="height: 600px;"></textarea>
+		   	<textarea class="textarea" placeholder="Description" style="height: 600px;" th:field="*{description}"></textarea>
 		   </div>
 		  	<div class="box-footer">
 		    		<button type="submit" class="btn btn-primary">Save</button>
