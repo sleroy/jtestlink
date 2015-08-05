@@ -101,27 +101,7 @@ class PortfolioPageController {
 		return model
 	}
 	
-	@RequestMapping(value = "/ui/portfolio/manager/{projectKey}/edit", method = RequestMethod.POST)
-	public ModelAndView editProject(@PathVariable projectKey, @Valid @ModelAttribute("project") Project project, BindingResult _result) {
-		
-		project = _result.model.get("project")
-		
-		if (project == null) {
-			throw new ProjectNotFoundException()
-		}
-		
-		if (_result.hasErrors()) {
-			log.info "error found in project data : {}", _result.fieldErrors;
-			def model = buildManagerViewData(new ModelAndView(MANAGER_PAGE), project)
-			model.addObject "selectedTab", "edit"
-			return model
-		}
-		
-		gate.dispatch new EditProjectCommand(project);
-		
-		return new ModelAndView("redirect:/ui/portfolio/manager/"+project.key)
-		
-	}
+	
 	
 	private ModelAndView buildManagerViewData(ModelAndView model, Project project) {
 		

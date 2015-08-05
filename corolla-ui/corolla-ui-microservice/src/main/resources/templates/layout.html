@@ -412,7 +412,11 @@
 	<script type="text/javascript" src="../static/js/modules/restapi.js" th:src="@{/js/modules/restapi.js}" />
 	<script type="text/javascript" src="../static/js/modules/main.js" th:src="@{/js/modules/main.js}" />
 	<!-- Init Corolla Main Module -->
-	<script type="text/javascript">
+	<script type="text/javascript" th:inline="text">
+		var pageData = {
+				'projectKey': '[[${project} ? ${project.key}]]',
+				'branchName': '[[${branch} ? ${branch.name}]]'
+		}
 		$(document).ready(function() {
 			initMainJS()
 		});

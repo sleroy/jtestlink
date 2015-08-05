@@ -21,6 +21,7 @@ import com.tocea.corolla.portfolio.commands.MovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.commands.RemovePortfolioNodeCommand;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
+import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.portfolio.visitors.PortfolioJsTree;
 import com.tocea.corolla.products.dao.IProjectDAO;
@@ -67,13 +68,39 @@ public class PortfolioRestController {
 		
 		Portfolio portfolio = portfolioDAO.find();
 		
-		Collection<String> ids = PortfolioUtils.getProjectIDs(portfolio.getNodes());
+		return buildJsTree(portfolio.getNodes());
+	}
+	
+	@RequestMapping(value = "/jstree/{projectKey}")
+	@PreAuthorize("isAuthenticated()")
+	public Collection<JsTreeNodeDTO> getJsTreeSubtree(@PathVariable String projectKey) {
+		
+		Project project = projectDAO.findByKey(projectKey);
+		
+		if (project != null) {
+		
+			Portfolio portfolio = portfolioDAO.find();
+		
+			TreeNode node = treeManagementService.findNode(portfolio.getNodes(), new FindNodeByProjectIDPredicate(project.getId()));
+		
+			if (node != null) {
+				return buildJsTree(Lists.newArrayList(node.getNodes()));
+			}
+			
+		}
+		
+		return Lists.newArrayList();	
+	}
+	
+	private Collection<JsTreeNodeDTO> buildJsTree(Collection<TreeNode> treeNodes) {
+		
+		Collection<String> ids = PortfolioUtils.getProjectIDs(treeNodes);
 		
 		Collection<Project> projects = Lists.newArrayList(projectDAO.findAll(ids));
 		
 		Collection<JsTreeNodeDTO> nodes = Lists.newArrayList();
 		
-		for(TreeNode node : portfolio.getNodes()) {
+		for(TreeNode node : treeNodes) {
 			
 			PortfolioJsTree visitor = new PortfolioJsTree(projects);
 			node.accept(visitor);
@@ -81,7 +108,8 @@ public class PortfolioRestController {
 			
 		}
 
-		return nodes;		
+		return nodes;
+		
 	}
 	
 	@RequestMapping(value = "/move/{fromID}/{toID}")

@@ -5,17 +5,30 @@ var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
 function initPortfolio() {
 
 	/*
+	 * Initialize JsTree widget
+	 */
+	restAPI.folderNodeTypes.findAll(function(types, data) {
+		restAPI.portfolio.jstree(function(data) {
+			initJsTree(types, data);
+		});
+	});
+	
+}
+
+function initDetailsView() {
+	
+	/*
 	 * Initialize Bootstrap WYSIHTML5 widget
 	 */
 	$(".textarea").wysihtml5();
-
+	
 	/*
 	 * Initialize Select2 widget
 	 */
 	$('.select2').select2({
 		minimumResultsForSearch : Infinity
 	});
-
+	
 	/*
 	 * Initialize DatePicker widget
 	 */
@@ -29,26 +42,27 @@ function initPortfolio() {
 		AjaxPush : null,
 		AjaxPushAllTags : true
 	});
-
+	
 	/*
 	 * Initialize JsTree widget
 	 */
-	restAPI.folderNodeTypes.findAll(function(data) {
-		initJsTree(data);
+	restAPI.folderNodeTypes.findAll(function(types) {
+		restAPI.portfolio.subtree(pageData.projectKey, function(data) {
+			initJsTree(types, data);
+		});
 	});
-	
 }
 
 /*
  * Initialize JsTree widget
  */
-function initJsTree(data) {
+function initJsTree(typeData, data) {
 	
 	var types = {};
 	var folderActions = {};
 	var folderEditActions = {}
-	if (data) {
-		$.each(data, function(i,v) {
+	if (typeData) {
+		$.each(typeData, function(i,v) {
 			types[v.id] = { 'icon': v.icon }
 			folderActions[v.id] = {
 					label: v.name,
@@ -82,10 +96,7 @@ function initJsTree(data) {
 			"themes" : {
 				"stripes" : true
 			},
-			data: {
-				url: restAPI.portfolio.URL,
-				dataType: "json"
-			},
+			data: data,
 			'check_callback': jsTreeManager.callbackHandler
 		},
 		"plugins" : [ "dnd", "contextmenu", "types", "search" ],
