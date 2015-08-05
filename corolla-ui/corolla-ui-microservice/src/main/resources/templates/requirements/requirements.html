@@ -7,22 +7,18 @@
 	<div layout:fragment="content">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
-		<h1>
-			<i class="glyphicon glyphicon-duplicate"></i>
-			<span>Requirements</span>
-		</h1>
-		<ol class="breadcrumb">
-			<li>
-				<a th:href="@{/ui/portfolio/manager/}+${project.key}">
-					<i class="glyphicon glyphicon-book" />
-					<span th:text="${project.name}">Project</span>
-				</a>
-			</li>
-			<li>
-				<a href="#" th:text="${branch.name}">Branch</a>
-			</li>
-			<li class="active">Requirements</li>
-		</ol>
+			<ol class="breadcrumb">
+				<li>
+					<a th:href="@{/ui/portfolio/manager/}+${project.key}">
+						<i class="glyphicon glyphicon-book" />
+						<span th:text="${project.name}">Project</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" th:text="${branch.name}">Branch</a>
+				</li>
+				<li class="active">Requirements</li>
+			</ol>
 		</section>
 		<!-- Main -->
 		<div class="content">

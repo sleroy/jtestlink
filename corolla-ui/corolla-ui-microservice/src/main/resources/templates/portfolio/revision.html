@@ -8,11 +8,7 @@
 	<div layout:fragment="content">
 	
 		<!-- Content Header (Page header) -->
-	    <section class="content-header">
-	      	<h1>
-	      		<i class="fa fa-history"></i>
-	        	<span>Changelog</span>
-	      	</h1>
+	    <section class="content-header">    
 	      	<ol class="breadcrumb">	      		
 	        	<li>
 		        	<a th:href="@{/ui/portfolio/manager/}+${project.key}">
@@ -64,7 +60,7 @@
 	                    </tr>
 	                    <tr th:each="change : ${changes}">
 	                    	<td><b th:text="${change.getPropertyName()}"></b></td>
-	                    	<td class="updated" th:if="${previousCommit != null}" th:text="${change.getLeftValue()}"></td>
+	                    	<td th:if="${previousCommit != null}" th:text="${change.getLeftValue()}"></td>
 	                    	<td class="updated" th:text="${change.getRightValue()}"></td>
 	                    </tr>
 	                  </table>

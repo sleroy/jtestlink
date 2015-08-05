@@ -612,5 +612,22 @@ rect.parent, .grandparent rect {
 
 
 .cape-honey {
-	background-color: #FDE3A7;
+/* 	background-color: #CED3C2; */
+}
+
+
+.skin-green .main-header .navbar, .skin-green .main-header .logo {
+	background: rgba(90,176,19,1);
+	background: -moz-linear-gradient(left, rgba(90,176,19,1) 0%, rgba(95,176,25,1) 52%, rgba(82,156,17,1) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(90,176,19,1)), color-stop(52%, rgba(95,176,25,1)), color-stop(100%, rgba(82,156,17,1)));
+	background: -webkit-linear-gradient(left, rgba(90,176,19,1) 0%, rgba(95,176,25,1) 52%, rgba(82,156,17,1) 100%);
+	background: -o-linear-gradient(left, rgba(90,176,19,1) 0%, rgba(95,176,25,1) 52%, rgba(82,156,17,1) 100%);
+	background: -ms-linear-gradient(left, rgba(90,176,19,1) 0%, rgba(95,176,25,1) 52%, rgba(82,156,17,1) 100%);
+	background: linear-gradient(to right, rgba(90,176,19,1) 0%, rgba(95,176,25,1) 52%, rgba(82,156,17,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5ab013', endColorstr='#529c11', GradientType=1 );
+}
+
+.jstree {
+	min-height: 500px;
+	padding-bottom: 10px;
 }

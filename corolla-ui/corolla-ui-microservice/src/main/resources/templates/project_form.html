@@ -11,7 +11,8 @@
 		       	<span class="">Key*</span>
 		       </div>
 		       <div class="col-sm-9 col-md-10">
-		       	<input name="key" type="text" th:value="${project.key}" class="form-control" placeholder="Key"/>
+		       		<input name="key" type="text" th:value="${project.key}" class="form-control" placeholder="Key"/>
+		       		<span th:if="${#fields.hasErrors('key')}" th:errors="*{key}"></span>
 		       </div>
 		   </div>
 		   <div class="row form-row">
@@ -19,7 +20,8 @@
 		       	<span class="">Name*</span>
 		       </div>
 		       <div class="col-sm-9 col-md-10">
-		       	<input name="name" type="text" th:value="${project.name}" class="form-control" placeholder="Name"/>
+		       		<input name="name" type="text" th:value="${project.name}" class="form-control" placeholder="Name"/>
+		       		<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 		       </div>
 		   </div>
 		   <div class="row form-row">

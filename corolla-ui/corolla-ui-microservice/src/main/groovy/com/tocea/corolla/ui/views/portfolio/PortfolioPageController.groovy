@@ -109,10 +109,12 @@ class PortfolioPageController {
 		if (project == null) {
 			throw new ProjectNotFoundException()
 		}
-		log.info "key: {}", project.key	
+		
 		if (_result.hasErrors()) {
 			log.info "error found in project data : {}", _result.fieldErrors;
-			return buildManagerViewData(new ModelAndView(MANAGER_PAGE), project)
+			def model = buildManagerViewData(new ModelAndView(MANAGER_PAGE), project)
+			model.addObject "selectedTab", "edit"
+			return model
 		}
 		
 		gate.dispatch new EditProjectCommand(project);

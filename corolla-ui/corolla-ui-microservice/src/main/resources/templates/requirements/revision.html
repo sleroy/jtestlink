@@ -9,10 +9,6 @@
 	
 		<!-- Content Header (Page header) -->
 	    <section class="content-header">
-	      	<h1>
-	      		<i class="fa fa-history"></i>
-	        	<span>Changelog</span>
-	      	</h1>
 	      	<ol class="breadcrumb">	      		
 	        	<li>
 		        	<a th:href="@{/ui/portfolio/manager/}+${project.key}">
@@ -41,8 +37,8 @@
 	                <div class="box-body table-responsive no-padding">
 	                  <table class="table table-hover table-bordered revisions-comparison">
 	                    <tr>
-	                    	<td></td>
-	                      	<td th:if="${previousCommit != null}">
+	                    	<td class="col-xs-2"></td>
+	                      	<td class="col-xs-5" th:if="${previousCommit != null}">
 	                      		<h3>Version <span th:text="${previousCommit.getId()}"></span></h3>	      
 	                      		<b class="commit-msg"></b> <br/>              		
 	                      		<span class="label label-success time">
@@ -53,7 +49,7 @@
 	                      			<i class="fa fa-user"></i><span th:text="${previousCommit.getAuthor()}"></span>
 	                      		</span>
 	                      	</td>
-	                      	<td>
+	                      	<td class="col-xs-5">
 	                      		<h3>Version <span th:text="${commit.getId()}"></span></h3>	      
 	                      		<b class="commit-msg"></b> <br/>              		
 	                      		<span class="label label-success time">
@@ -66,9 +62,9 @@
 	                      	</td>
 	                    </tr>
 	                    <tr th:each="change : ${changes}">
-	                    	<td><b th:text="${change.getPropertyName()}"></b></td>
-	                    	<td class="updated" th:if="${previousCommit != null}" th:text="${change.getLeftValue()}"></td>
-	                    	<td class="updated" th:text="${change.getRightValue()}"></td>
+	                    	<td class="col-xs-2"><b th:text="${change.getPropertyName()}"></b></td>
+	                    	<td class="col-xs-5" th:if="${previousCommit != null}" th:text="${change.getLeftValue()}"></td>
+	                    	<td class="updated col-xs-5" th:text="${change.getRightValue()}"></td>
 	                    </tr>
 	                  </table>
 	                </div><!-- /.box-body -->
