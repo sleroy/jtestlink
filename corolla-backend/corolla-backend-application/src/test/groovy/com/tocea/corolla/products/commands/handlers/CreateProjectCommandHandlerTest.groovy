@@ -10,7 +10,9 @@ import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand
 import com.tocea.corolla.products.dao.IProjectDAO;
+import com.tocea.corolla.products.dao.IProjectStatusDAO;
 import com.tocea.corolla.products.domain.Project
+import com.tocea.corolla.products.domain.ProjectStatus
 import com.tocea.corolla.products.exceptions.InvalidProjectInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
 import com.tocea.corolla.products.exceptions.ProjectAlreadyExistException;
@@ -24,6 +26,7 @@ class CreateProjectCommandHandlerTest extends Specification {
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IProjectDAO projectDAO = Mock(IProjectDAO)	
+	def IProjectStatusDAO statusDAO = Mock(IProjectStatusDAO)
 	def CreateProjectCommandHandler handler
 	def IRevisionService revisionService = Mock(IRevisionService)
 	def Gate gate = Mock(Gate)
@@ -31,6 +34,7 @@ class CreateProjectCommandHandlerTest extends Specification {
 	def setup() {
 		handler = new CreateProjectCommandHandler(
 				projectDAO : projectDAO,
+				statusDAO : statusDAO,
 				revisionService : revisionService,
 				gate : gate
 		)
@@ -95,6 +99,28 @@ class CreateProjectCommandHandlerTest extends Specification {
 				it instanceof CreateProjectBranchCommand && it.branch.name //&& it.branch.projectId
 			})
 			
+		
+	}
+	
+	def "it should use the default status if the status of the project is not defined"() {
+		
+		given:
+			def project = new Project()
+			project.key = "my_project"
+			project.name = "My Awesome Project"
+			def defaultStatus =  new ProjectStatus(id: "55", name: "Active")
+			
+		when:
+			handler.handle new CreateProjectCommand(project)
+		
+		then:
+			notThrown(Exception.class)
+			
+		then:
+			statusDAO.getDefaultStatus() >> defaultStatus
+			
+		then:
+			1 * projectDAO.save { it.statusId == defaultStatus.id }
 		
 	}
 	

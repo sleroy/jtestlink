@@ -79,11 +79,7 @@ class PortfolioPageController {
 	@RequestMapping("/ui/portfolio/manager")
 	public ModelAndView getPortfolioManagerIndex() {
 		
-		def model = new ModelAndView(MANAGER_PAGE);
-		model.addObject "menu", MENU_PORTFOLIO_MANAGER
-		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
-		
-		return model
+		return buildManagerViewData(new ModelAndView(MANAGER_PAGE), null);
 	}
 	
 	@RequestMapping("/ui/portfolio/manager/{projectKey}")
@@ -102,19 +98,22 @@ class PortfolioPageController {
 	
 	private ModelAndView buildManagerViewData(ModelAndView model, Project project) {
 		
-		def commits = revisionService.getHistory(project.id, project.class)				
-		def owner = project.ownerId ? userDAO.findOne(project.ownerId) : null
+//		def commits = revisionService.getHistory(project.id, project.class)				
+//		def owner = project.ownerId ? userDAO.findOne(project.ownerId) : null
 			
 		model.addObject "project", project
-		model.addObject "status", statusDAO.findOne(project.statusId)
-		model.addObject "category", project.categoryId ? projectCategoryDAO.findOne(project.categoryId) : null
-		model.addObject "owner", owner ? new UserDto(owner) : null
+		model.addObject "status", project ? statusDAO.findOne(project.statusId) : null
 		model.addObject "menu", MENU_PORTFOLIO_MANAGER
 		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
-		model.addObject "branches", branchDAO.findByProjectId(project.id)
-		model.addObject "commits", commits
-		model.addObject "statuses", statusDAO.findAll()
-		model.addObject "categories", projectCategoryDAO.findAll()
+		model.addObject "newProject", new Project()
+		
+//		model.addObject "category", project.categoryId ? projectCategoryDAO.findOne(project.categoryId) : null
+//		model.addObject "owner", owner ? new UserDto(owner) : null
+//		model.addObject "menu", MENU_PORTFOLIO_MANAGER
+//		model.addObject "branches", branchDAO.findByProjectId(project.id)
+//		model.addObject "commits", commits
+//		model.addObject "statuses", statusDAO.findAll()
+//		model.addObject "categories", projectCategoryDAO.findAll()
 		
 		return model
 	}
