@@ -144,7 +144,6 @@ public class FolderNodeTypePageControllerTest extends AbstractSpringTest {
 	@Test
 	public void adminShouldEditFolderType() throws Exception {
 		
-		System.out.println("wtf existingType: "+existingType.getId()+ " - "+existingType.getName());
 		mvc
 		.perform(
 				post("/ui/admin/folder-node-types/edit/"+existingType.getId())

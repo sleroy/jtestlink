@@ -38,7 +38,6 @@ class PortfolioPageController {
 	
 	private static final String MANAGER_PAGE 			= "portfolio/manager"
 	private static final String PORTFOLIO_PAGE 			= "portfolio/portfolio"
-	private static final String REVISION_VIEW 			= "portfolio/revision"
 	private static final String MENU_PORTFOLIO 			= "portfolio"
 	private static final String MENU_PORTFOLIO_MANAGER 	= "portfolioManager"
 	
@@ -101,8 +100,6 @@ class PortfolioPageController {
 		return model
 	}
 	
-	
-	
 	private ModelAndView buildManagerViewData(ModelAndView model, Project project) {
 		
 		def commits = revisionService.getHistory(project.id, project.class)				
@@ -120,53 +117,6 @@ class PortfolioPageController {
 		model.addObject "categories", projectCategoryDAO.findAll()
 		
 		return model
-	}
-	
-	@RequestMapping("/ui/portfolio/manager/{projectKey}/revisions/{commitID}")
-	public ModelAndView getRevisionPage(@PathVariable projectKey, @PathVariable commitID) {
-		
-		def project = findProjectOrFail(projectKey)
-				
-		def commit = revisionService.findCommitByID(project.id, project.class, commitID)
-		
-		if (commit == null) {
-			throw new InvalidCommitInformationException("No commit associated to this ID");
-		}
-		
-		def previousCommit = revisionService.getPreviousCommit(project.id, project.class, commitID)	
-		
-		def version = revisionService.getSnapshot(commit)
-		def oldVersion = previousCommit != null ? revisionService.getSnapshot(previousCommit) : new Project(id: project.id)
-		
-		def changes = revisionService.compare oldVersion, version
-		
-		def model = new ModelAndView(REVISION_VIEW)
-		model.addObject "project", project
-		model.addObject "commit", commit
-		model.addObject "previousCommit", previousCommit
-		model.addObject "changes", changes
-		
-		return model			
-	}
-	
-	private Project findProjectOrFail(String projectKey) {
-		
-		def project = projectDAO.findByKey(projectKey)
-				
-		if (project == null) {
-			throw new ProjectNotFoundException();
-		}
-		
-		return project
-	}
-	
-	@ResponseStatus(value=HttpStatus.NOT_FOUND)
-	@ExceptionHandler([
-	       InvalidCommitInformationException.class, 
-	       ProjectNotFoundException.class
-	])
-	public void handlePageNotFoundException() {
-		
 	}
 	
 }

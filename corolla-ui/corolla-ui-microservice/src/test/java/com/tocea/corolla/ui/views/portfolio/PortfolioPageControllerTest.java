@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Collection;
-
 import javax.servlet.Filter;
 
 import org.junit.Before;
@@ -22,7 +20,6 @@ import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectStatus;
-import com.tocea.corolla.revisions.domain.ICommit;
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.ui.AbstractSpringTest;
 import com.tocea.corolla.ui.security.AuthUser;
@@ -86,16 +83,6 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		
 	}
 	
-	private String buildRevisionPageURL(Project project, String commitID) {
-		
-		return 
-				new StringBuilder(PORTFOLIO_MANAGER_URL)
-				.append(project.getKey())
-				.append("/revisions/")
-				.append(commitID)
-				.toString();
-	}
-	
 	@Test
 	public void basicUserShouldAccessPortfolioView() throws Exception {
 		
@@ -152,56 +139,6 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 					.with(user(new AuthUser(basicUser, basicRole))))
 			.andExpect(status().isFound())
 			.andExpect(redirectedUrl(PORTFOLIO_MANAGER_URL));
-		
-	}
-	
-	@Test
-	public void basicUserShouldAccessRequirementRevisionPage() throws Exception {
-		
-		Collection<ICommit> commits = revisionService.getHistory(existingProject.getId(), existingProject.getClass());
-		
-		String commitID = commits.iterator().next().getId();
-		
-		String URL = buildRevisionPageURL(existingProject, commitID);
-		
-		mvc
-			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
-			)
-			.andExpect(status().isOk());
-		
-	}
-	
-	@Test
-	public void shouldNotAccessRequirementRevisionPageWithInvalidProjectKey() throws Exception {
-		
-		Collection<ICommit> commits = revisionService.getHistory(existingProject.getId(), existingProject.getClass());
-		
-		String commitID = commits.iterator().next().getId();
-		
-		Project invalidProject = new Project();
-		invalidProject.setKey("blblbl");
-		
-		String URL = buildRevisionPageURL(invalidProject, commitID);
-		
-		mvc
-			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
-			)
-			.andExpect(status().isNotFound());
-		
-	}
-	
-	@Test
-	public void shouldNotAccessRequirementRevisionPageWithInvalidCommitID() throws Exception {				
-		
-		String URL = buildRevisionPageURL(existingProject, "blblbl");
-		
-		mvc
-			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
-			)
-			.andExpect(status().isNotFound());
 		
 	}
 	

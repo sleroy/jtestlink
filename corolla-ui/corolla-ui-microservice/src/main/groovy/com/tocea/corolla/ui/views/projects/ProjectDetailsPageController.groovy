@@ -34,7 +34,8 @@ import com.tocea.corolla.users.dto.UserDto
 @Slf4j
 public class ProjectDetailsPageController {
 
-	private static final String DETAILS_VIEW = "project/details"
+	private static final String DETAILS_VIEW 		= "project/details"
+	private static final String REVISION_VIEW 		= "portfolio/revision"
 	
 	@Autowired
 	private IProjectDAO projectDAO;
@@ -59,6 +60,11 @@ public class ProjectDetailsPageController {
 	
 	@Autowired
 	private Gate gate;
+	
+	@ModelAttribute("menu")
+	public String setMenu() {
+		return "projectDetails"
+	}
 
 	@RequestMapping(value="/ui/projects/{projectKey}")
 	public ModelAndView getProjectDetails(@PathVariable projectKey) {
@@ -84,7 +90,6 @@ public class ProjectDetailsPageController {
 		}
 		
 		if (_result.hasErrors()) {
-			log.info "error found in project data : {}", _result.fieldErrors;
 			def model = buildManagerViewData(new ModelAndView(DETAILS_VIEW), project)
 			model.addObject "selectedTab", "edit"
 			return model
@@ -96,6 +101,33 @@ public class ProjectDetailsPageController {
 		
 	}
 	
+	@RequestMapping("/ui/projects/{projectKey}/revisions/{commitID}")
+	public ModelAndView getRevisionPage(@PathVariable projectKey, @PathVariable commitID) {
+		
+		def project = findProjectOrFail(projectKey)
+				
+		def commit = revisionService.findCommitByID(project.id, project.class, commitID)
+		
+		if (commit == null) {
+			throw new InvalidCommitInformationException("No commit associated to this ID");
+		}
+		
+		def previousCommit = revisionService.getPreviousCommit(project.id, project.class, commitID)	
+		
+		def version = revisionService.getSnapshot(commit)
+		def oldVersion = previousCommit != null ? revisionService.getSnapshot(previousCommit) : new Project(id: project.id)
+		
+		def changes = revisionService.compare oldVersion, version
+		
+		def model = new ModelAndView(REVISION_VIEW)
+		model.addObject "project", project
+		model.addObject "commit", commit
+		model.addObject "previousCommit", previousCommit
+		model.addObject "changes", changes
+		
+		return model			
+	}
+	
 	private ModelAndView buildManagerViewData(ModelAndView model, Project project) {
 		
 		def commits = revisionService.getHistory(project.id, project.class)				
@@ -105,7 +137,6 @@ public class ProjectDetailsPageController {
 		model.addObject "status", statusDAO.findOne(project.statusId)
 		model.addObject "category", project.categoryId ? projectCategoryDAO.findOne(project.categoryId) : null
 		model.addObject "owner", owner ? new UserDto(owner) : null
-		model.addObject "menu", "projectDetails"
 		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
 		model.addObject "branches", branchDAO.findByProjectId(project.id)
 		model.addObject "commits", commits
@@ -113,6 +144,17 @@ public class ProjectDetailsPageController {
 		model.addObject "categories", projectCategoryDAO.findAll()
 		
 		return model
+	}
+	
+	private Project findProjectOrFail(String projectKey) {
+		
+		def project = projectDAO.findByKey(projectKey)
+				
+		if (project == null) {
+			throw new ProjectNotFoundException();
+		}
+		
+		return project
 	}
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND)

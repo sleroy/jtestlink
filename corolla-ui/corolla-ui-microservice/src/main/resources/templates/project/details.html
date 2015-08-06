@@ -216,7 +216,7 @@
 												th:text="${commit.author}" /></td>
 											<td><a th:if="${commits[0].id} != ${commit.id}" href="#" class="label label-warning"
 												style="margin-right: 5px;"> Restore </a> <a
-												th:href="@{/ui/portfolio/manager/}+${project.key}+@{/revisions/}+${commit.id}" class="label label-primary">
+												th:href="@{/ui/projects/}+${project.key}+@{/revisions/}+${commit.id}" class="label label-primary">
 													Changelog </a></td>
 										</tr>
 									</table>
