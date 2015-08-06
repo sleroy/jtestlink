@@ -74,18 +74,30 @@
 							<h3 class="box-title">Actions</h3>
 						</div>
 						<div class="box-body">
-							<a class="btn btn-app" href="/ui/requirements/corolla/Master">
-								<span class="fa fa-location-arrow"></span> Export PDF
-							</a>
-							<a class="btn btn-app" href="/ui/requirements/corolla/Master">
+							<a th:href="@{/ui/projects/}+${project.key}" class="btn btn-app"> 
+								<span class="glyphicon glyphicon-edit"></span> Details
+							</a>							
+							<a th:href="@{/ui/requirements/}+${project.key}" class="btn btn-app">
 								<span class="glyphicon glyphicon-duplicate"></span> Requirements
 							</a>
-							<a href="#" class="btn btn-app"> <span class="fa fa-flask">
-								</span> Test Cases
+							<a th:href="@{/ui/tests/}+${project.key}" href="#" class="btn btn-app"> 
+								<span class="fa fa-flask"></span> Test Cases
 							</a>
-							<a href="#" class="btn btn-app"> <span class="glyphicon glyphicon-edit">
-								</span> Edit
+							<a th:href="@{/ui/campaigns/}+${project.key}" href="#" class="btn btn-app"> 
+								<span class="glyphicon glyphicon-ok"></span> Test Campaigns
 							</a>
+							<a th:href="@{/ui/releases/}+${project.key}" href="#" class="btn btn-app"> 
+								<span class="glyphicon glyphicon-tags"></span> Releases
+							</a>
+							<a th:href="@{/ui/projects/}+${project.key}+@{#branches}" href="#" class="btn btn-app"> 
+								<span class="fa fa-share-alt"></span> Branches
+							</a>
+							<a th:href="@{/ui/projects/}+${project.key}+@{#activity}" href="#" class="btn btn-app"> 
+								<span class="fa fa-history"></span> Activity
+							</a>	
+							<a class="btn btn-app" href="/ui/requirements/corolla/Master">
+								<span class="fa fa-location-arrow"></span> Export PDF
+							</a>						
 							<a href="#" class="btn btn-app"> <span class="fa fa-trash">
 								</span> Delete
 							</a>						

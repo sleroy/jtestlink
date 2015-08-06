@@ -32,13 +32,13 @@
 			</a>
 		</li>
 		<li th:if="${project != null}">
-			<a th:href="@{/ui/portfolio/manager/}+${project.key}+@{#branches}">
+			<a th:href="@{/ui/projects/}+${project.key}+@{#branches}">
 				<i class="fa fa-share-alt"></i> 
 				<span>Branches</span>
 			</a>
 		</li>
 		<li th:if="${project != null}">
-			<a th:href="@{/ui/portfolio/manager/}+${project.key}+@{#activity}">
+			<a th:href="@{/ui/projects/}+${project.key}+@{#activity}">
 				<i class="fa fa-history"></i> 
 				<span>Activity</span>
 			</a>
