@@ -2,9 +2,9 @@ package com.tocea.corolla.requirements.commands;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 
-@Command
+@CommandOptions
 public class DeleteRequirementCommand {
 
 	@NotEmpty

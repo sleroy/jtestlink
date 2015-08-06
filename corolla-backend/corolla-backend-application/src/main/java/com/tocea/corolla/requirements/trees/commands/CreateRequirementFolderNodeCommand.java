@@ -5,11 +5,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.trees.domain.FolderNodeType;
 
-@Command
+@CommandOptions
 public class CreateRequirementFolderNodeCommand {
 
 	@NotNull

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.users.domain.Role;
 import com.tocea.corolla.users.dto.RoleDTO;
 
@@ -17,7 +17,7 @@ import com.tocea.corolla.users.dto.RoleDTO;
  * @author sleroy
  *
  */
-@Command
+@CommandOptions
 public class EditRoleCommand {
 	@NotNull
 	private Role	role;

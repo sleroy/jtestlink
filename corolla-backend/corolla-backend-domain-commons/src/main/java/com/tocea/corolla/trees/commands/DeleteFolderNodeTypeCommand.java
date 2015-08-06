@@ -2,9 +2,9 @@ package com.tocea.corolla.trees.commands;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 
-@Command
+@CommandOptions
 public class DeleteFolderNodeTypeCommand {
 
 	@NotBlank

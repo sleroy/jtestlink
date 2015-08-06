@@ -5,13 +5,13 @@ package com.tocea.corolla.users.commands;
 
 import javax.validation.constraints.NotNull;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 
 /**
  * @author sleroy
  *
  */
-@Command
+@CommandOptions
 public class DeleteRoleCommand {
 	@NotNull
 	private String	roleID;

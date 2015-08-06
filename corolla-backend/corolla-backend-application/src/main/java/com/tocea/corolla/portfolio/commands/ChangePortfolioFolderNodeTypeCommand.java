@@ -4,9 +4,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 
-@Command
+@CommandOptions
 public class ChangePortfolioFolderNodeTypeCommand {
 
 	@NotNull

@@ -2,10 +2,10 @@ package com.tocea.corolla.requirements.commands;
 
 import javax.validation.constraints.NotNull;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.requirements.domain.Requirement;
 
-@Command
+@CommandOptions
 public class CreateRequirementCommand {
 
 	@NotNull

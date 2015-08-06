@@ -2,10 +2,10 @@ package com.tocea.corolla.trees.commands;
 
 import javax.validation.constraints.NotNull;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.trees.domain.FolderNodeType;
 
-@Command
+@CommandOptions
 public class EditFolderNodeTypeCommand {
 
 	@NotNull

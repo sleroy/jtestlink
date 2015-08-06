@@ -2,10 +2,10 @@ package com.tocea.corolla.products.commands;
 
 import javax.validation.constraints.NotNull;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.products.domain.ProjectBranch;
 
-@Command
+@CommandOptions
 public class EditProjectBranchCommand {
 	
 	@NotNull
