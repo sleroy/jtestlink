@@ -18,14 +18,14 @@
  */
 package com.tocea.corolla.cqrs.handler;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 
 /**
  * 
  * @author Slawek
  *
  * @param <C> command
- * @param <R> result type - for asynchronous {@link Command}commands (asynchronous=true) should be {@link Void}
+ * @param <R> result type - for asynchronous {@link CommandOptions}commands (asynchronous=true) should be {@link Void}
  */
 public interface ICommandHandler<C, R> {
 
