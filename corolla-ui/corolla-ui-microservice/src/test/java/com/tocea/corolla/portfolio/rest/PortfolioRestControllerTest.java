@@ -157,6 +157,22 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 	}
 	
 	@Test
+	public void basicUserShouldAccessPortfolioJsTreeSubTree() throws Exception {
+		
+		mvc
+		.perform(get(PORTFOLIO_JSTREE_URL+"/"+existingProject.getKey()).with(user(new AuthUser(basicUser, basicRole))))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void anonymousUserShouldNotAccessPortfolioJsTreeSubTree() throws Exception {
+		
+		mvc.perform(get(PORTFOLIO_JSTREE_URL+"/"+existingProject.getKey()))
+			.andExpect(status().isFound())
+			.andExpect(redirectedUrlPattern("**/login"));
+	}
+	
+	@Test
 	public void managerUserShouldMovePortfolioNode() throws Exception {
 		
 		assertEquals(2, portfolioDAO.find().getNodes().size());
