@@ -13,6 +13,18 @@ function initPortfolio() {
 		});
 	});
 	
+	/**
+	 * Action triggered when clicking on a node
+	 */
+	jsTreeManager.setSelectAction(function(node, key) {
+		if (key) {
+			document.location = '/ui/portfolio/manager/' + key
+		}else{
+			$('.selected-node-text').text(node.text);
+			$('.selected-node-ID').val(jsTreeManager.getNodeID(node));
+		}
+	});
+	
 }
 
 function initDetailsView() {
@@ -50,6 +62,15 @@ function initDetailsView() {
 		restAPI.portfolio.subtree(pageData.projectKey, function(data) {
 			initJsTree(types, data);
 		});
+	});
+	
+	/**
+	 * Action triggered when clicking on a node
+	 */
+	jsTreeManager.setSelectAction(function(node, key) {
+		if (key) {
+			document.location = '/ui/projects/' + key
+		}
 	});
 }
 
@@ -160,15 +181,6 @@ function initJsTree(typeData, data) {
 			}
 		},
 		'types' : types
-	});
-	
-	/**
-	 * Action triggered when clicking on a node
-	 */
-	jsTreeManager.setSelectAction(function(node, key) {
-		if (key) {
-			document.location = '/ui/portfolio/manager/' + key
-		}
 	});
 	
 	/**

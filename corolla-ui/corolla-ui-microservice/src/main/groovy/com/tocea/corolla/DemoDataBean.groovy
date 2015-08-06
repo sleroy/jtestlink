@@ -187,8 +187,8 @@ public class DemoDataBean {
 		/**
 		 * Project Statuses
 		 */
-		def statusActive = this.newProjectStatus("Active")
-		def statusClosed = this.newProjectStatus("Closed", true)
+		def statusActive = this.gate.dispatch new CreateProjectStatusCommand(new ProjectStatus(name: "Active", defaultStatus: true))
+		def statusClosed = this.gate.dispatch new CreateProjectStatusCommand(new ProjectStatus(name: "Closed", closed: true))
 		
 		/**
 		 * Project Categories
@@ -414,14 +414,6 @@ public class DemoDataBean {
 		this.gate.dispatch new EditProjectCommand(project)
 		
 		return project
-	}
-	
-	public ProjectStatus newProjectStatus(name, closed=false) {
-		
-		def status = new ProjectStatus(name: name, closed: closed)
-		this.gate.dispatch new CreateProjectStatusCommand(status)
-		
-		return status
 	}
 	
 	public Requirement newRequirement(requirement) {

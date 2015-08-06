@@ -91,45 +91,46 @@
 							</a>						
 						</div>
 					</div>
-					<div class="box box-primary">
-						<div class="box-header">
-							<h3 class="box-title">Create new project</h3>
+					<form class="project-form" th:object="${newProject}" method="post" th:action="@{/ui/portfolio/manager/create}">
+						<div class="box box-primary">					
+							<div class="box-header">
+								<h3 class="box-title">Create new project</h3>
+							</div>
+							<div class="box-body">
+								
+									<div class="row form-row">
+										<input type="hidden" name="parentID" class="selected-node-ID" th:value="${newProject.parentID}" />
+								       <div class="col-sm-3 col-md-2">
+								       	<span>Parent</span>
+								       </div>			
+					   					<div class="col-sm-9 col-md-10">
+								       		<span class="selected-node-text"></span>
+								       </div>
+								     </div>
+									<div class="row form-row">
+								       <div class="col-sm-3 col-md-2">
+								       	<span class="">Key</span>
+								       </div>			
+					   					<div class="col-sm-9 col-md-10">
+								       		<input name="key" type="text" class="form-control" placeholder="Key" th:value="${newProject.key}"/>
+								       		<span th:if="${#fields.hasErrors('key')}" th:errors="*{key}"></span>
+								       </div>
+								     </div>
+									<div class="row form-row">
+								       <div class="col-sm-3 col-md-2">
+								       	<span class="">Name</span>
+								       </div>						       
+								       <div class="col-sm-9 col-md-10">
+								       		<input name="name" type="text" class="form-control" placeholder="Name" th:value="${newProject.name}"/>
+								       		<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+								       </div>
+								   </div>	
+							</div>
+							<div class="box-footer">
+				    			<button type="submit" class="btn btn-primary pull-right">Save</button>
+				   			</div>
 						</div>
-						<div class="box-body">
-							<form>
-								<div class="row form-row">
-							       <div class="col-sm-3 col-md-2">
-							       	<span class="">Parent</span>
-							       </div>			
-				   					<div class="col-sm-9 col-md-10">
-							       		<span>Corolla-Project</span>
-							       </div>
-							     </div>
-								<div class="row form-row">
-							       <div class="col-sm-3 col-md-2">
-							       	<span class="">Key</span>
-							       </div>			
-				   					<div class="col-sm-9 col-md-10">
-							       		<input name="key" type="text" class="form-control" placeholder="Key"/>
-<!-- 							       		<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span> -->
-							       </div>
-							     </div>
-								<div class="row form-row">
-							       <div class="col-sm-3 col-md-2">
-							       	<span class="">Name</span>
-							       </div>						       
-							       <div class="col-sm-9 col-md-10">
-							       		<input name="name" type="text" class="form-control" placeholder="Name"/>
-<!-- 							       		<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span> -->
-							       </div>
-							   </div>
-				   				
-							</form>
-						</div>
-						<div class="box-footer">
-			    			<button type="submit" class="btn btn-primary pull-right">Save</button>
-			   			</div>
-					</div>
+					</form>
 					
 				</div>
 			</div>

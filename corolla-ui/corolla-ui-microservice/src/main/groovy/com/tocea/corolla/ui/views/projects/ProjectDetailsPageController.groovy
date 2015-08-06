@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.dto.ProjectNodeDTO;
 import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectCategoryDAO;
