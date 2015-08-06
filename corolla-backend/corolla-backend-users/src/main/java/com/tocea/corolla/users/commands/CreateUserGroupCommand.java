@@ -2,10 +2,10 @@ package com.tocea.corolla.users.commands;
 
 import javax.validation.constraints.NotNull;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.users.domain.UserGroup;
 
-@Command
+@CommandOptions
 public class CreateUserGroupCommand {
 
 	@NotNull

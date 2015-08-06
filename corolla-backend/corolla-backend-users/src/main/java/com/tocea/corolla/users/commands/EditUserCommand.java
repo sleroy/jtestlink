@@ -5,12 +5,12 @@ package com.tocea.corolla.users.commands;
 
 import javax.validation.constraints.NotNull;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.users.domain.User;
 import com.tocea.corolla.users.dto.UserPasswordDto;
 import com.tocea.corolla.users.dto.UserProfileDto;
 
-@Command
+@CommandOptions
 public class EditUserCommand {
 	@NotNull
 	private User	user;

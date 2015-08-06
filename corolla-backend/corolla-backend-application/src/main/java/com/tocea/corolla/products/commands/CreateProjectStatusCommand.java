@@ -2,10 +2,10 @@ package com.tocea.corolla.products.commands;
 
 import javax.validation.constraints.NotNull;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.products.domain.ProjectStatus;
 
-@Command
+@CommandOptions
 public class CreateProjectStatusCommand {
 
 	@NotNull

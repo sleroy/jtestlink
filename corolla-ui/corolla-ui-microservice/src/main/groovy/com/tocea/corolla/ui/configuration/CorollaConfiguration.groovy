@@ -16,5 +16,6 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties(prefix = "corolla.settings")
 public class CorollaConfiguration {
 	def boolean	localAddressAllowed
+	
 
 }

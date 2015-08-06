@@ -1,8 +1,8 @@
 package com.tocea.corolla.requirements.commands;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 
-@Command
+@CommandOptions
 public class RestoreRequirementStateCommand {
 
 	private String requirementID;

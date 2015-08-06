@@ -1,9 +1,9 @@
 package com.tocea.corolla.requirements.trees.commands;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.products.domain.ProjectBranch;
 
-@Command
+@CommandOptions
 public class MoveRequirementTreeNodeCommand {
 
 	private ProjectBranch branch;

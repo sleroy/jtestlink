@@ -4,10 +4,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.products.domain.ProjectBranch;
 
-@Command
+@CommandOptions
 public class CreateRequirementTreeNodeCommand {
 
 	@NotNull

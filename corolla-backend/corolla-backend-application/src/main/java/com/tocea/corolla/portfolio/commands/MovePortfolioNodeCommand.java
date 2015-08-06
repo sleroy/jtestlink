@@ -1,8 +1,8 @@
 package com.tocea.corolla.portfolio.commands;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 
-@Command
+@CommandOptions
 public class MovePortfolioNodeCommand {
 
 	private Integer nodeID;

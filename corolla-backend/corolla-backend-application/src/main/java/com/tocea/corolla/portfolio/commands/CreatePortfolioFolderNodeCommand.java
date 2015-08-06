@@ -1,9 +1,9 @@
 package com.tocea.corolla.portfolio.commands;
 
-import com.tocea.corolla.cqrs.annotations.Command;
+import com.tocea.corolla.cqrs.annotations.CommandOptions;
 import com.tocea.corolla.trees.domain.FolderNodeType;
 
-@Command
+@CommandOptions
 public class CreatePortfolioFolderNodeCommand {
 
 	private String text;

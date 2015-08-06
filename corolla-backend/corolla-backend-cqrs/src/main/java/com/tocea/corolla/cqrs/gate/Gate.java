@@ -15,6 +15,8 @@
  */
 package com.tocea.corolla.cqrs.gate;
 
+import java.util.concurrent.Future;
+
 /**
  * Main access point to the Application.<br>
  * It handles:
@@ -24,13 +26,34 @@ package com.tocea.corolla.cqrs.gate;
  * </ul>
  *
  * @author Slawek
+ * @author sleroy
  *
  */
 public interface Gate {
 
+	/**
+	 * Dispatch a command and executes it sequentially.
+	 *
+	 * @param command
+	 *            the command.
+	 * @return the result of the command.
+	 */
 	public <R> R dispatch(Object command);
-
-	public <R> void dispatch(Object command,
-			ICommandCallback<R> _callBack);
-
+	
+	/**
+	 * Executes asynchronously .
+	 *
+	 * @param command
+	 * @return
+	 */
+	public void dispatchAsync(Object command);
+	
+	/**
+	 * Executes asynchronously and provides a way to obtain the result.
+	 *
+	 * @param command
+	 * @return
+	 */
+	public <R> Future<R> executeAsync(Object command);
+	
 }

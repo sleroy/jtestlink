@@ -1,9 +1,7 @@
 /**
  *
  */
-package com.tocea.corolla.cqrs.gate.spring;
-
-import com.tocea.corolla.cqrs.gate.CqrsException;
+package com.tocea.corolla.cqrs.gate;
 
 /**
  * @author sleroy
