@@ -13,7 +13,9 @@ import com.tocea.corolla.portfolio.commands.CreateProjectNodeCommand;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.dao.IProjectDAO;
+import com.tocea.corolla.products.dao.IProjectStatusDAO;
 import com.tocea.corolla.products.domain.Project;
+import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.products.exceptions.InvalidProjectInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
 import com.tocea.corolla.products.exceptions.ProjectAlreadyExistException;
@@ -25,6 +27,9 @@ public class CreateProjectCommandHandler implements ICommandHandler<CreateProjec
 
 	@Autowired
 	private IProjectDAO projectDAO;
+	
+	@Autowired
+	private IProjectStatusDAO statusDAO;
 	
 	@Autowired
 	private IRevisionService revisionService;
@@ -49,6 +54,14 @@ public class CreateProjectCommandHandler implements ICommandHandler<CreateProjec
 		
 		if (existingProject != null) {
 			throw new ProjectAlreadyExistException();
+		}
+		
+		// Use the default status if the status is not defined
+		if (StringUtils.isEmpty(project.getStatusId())) {
+			ProjectStatus defaultStatus = statusDAO.getDefaultStatus();
+			if (defaultStatus != null) {
+				project.setStatusId(defaultStatus.getId());
+			}
 		}
 		
 		// Store the project in the DB

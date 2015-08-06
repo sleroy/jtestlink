@@ -84,6 +84,10 @@ function RestAPI() {
 				call("portfolio/jstree", callback);
 			},
 			
+			"subtree": function(projectKey, callback) {
+				call("portfolio/jstree/"+projectKey, callback);
+			},
+			
 			"folders": {
 				
 				"add": function(text, typeID, parentID, callback) {

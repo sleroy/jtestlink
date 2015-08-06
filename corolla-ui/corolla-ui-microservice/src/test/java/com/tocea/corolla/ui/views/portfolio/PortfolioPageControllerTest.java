@@ -1,15 +1,17 @@
 package com.tocea.corolla.ui.views.portfolio;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Collection;
-
 import javax.servlet.Filter;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,20 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
+import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
+import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectStatus;
-import com.tocea.corolla.revisions.domain.ICommit;
 import com.tocea.corolla.revisions.services.IRevisionService;
+import com.tocea.corolla.trees.domain.TreeNode;
+import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.ui.AbstractSpringTest;
 import com.tocea.corolla.ui.security.AuthUser;
+import com.tocea.corolla.users.domain.Permission;
 import com.tocea.corolla.users.domain.Role;
 import com.tocea.corolla.users.domain.User;
 
@@ -33,6 +41,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 
 	private static final String PORTFOLIO_URL 			= "/ui/portfolio";
 	private static final String PORTFOLIO_MANAGER_URL 	= PORTFOLIO_URL+"/manager/";
+	private static final String CREATE_PROJECT_URL		= PORTFOLIO_MANAGER_URL+"create";
 	
 	@Autowired
 	private WebApplicationContext context;
@@ -46,10 +55,22 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	private Gate gate;
 	
 	@Autowired
+	private IProjectDAO projectDAO;
+	
+	@Autowired
+	private IPortfolioDAO portfolioDAO;
+	
+	@Autowired
+	private ITreeManagementService treeManagementService;
+	
+	@Autowired
 	private IRevisionService revisionService;
 	
 	private Role basicRole;	
+	private Role managerRole;
+	
 	private User basicUser;
+	private User managerUser;
 	
 	private ProjectStatus projectStatus;
 	private Project existingProject;
@@ -71,6 +92,15 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		basicUser.setPassword("pass");
 		basicUser.setEmail("simple@corolla.com");
 		
+		managerRole = new Role();
+		managerRole.setName("BASIC");
+		managerRole.setPermissions(Permission.PORTFOLIO_MANAGEMENT);
+		
+		managerUser = new User();
+		managerUser.setLogin("manager");
+		managerUser.setPassword("pass");
+		managerUser.setEmail("manager@corolla.com");
+		
 		projectStatus = new ProjectStatus();
 		projectStatus.setName("Active");
 		projectStatus.setClosed(false);
@@ -86,14 +116,9 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		
 	}
 	
-	private String buildRevisionPageURL(Project project, String commitID) {
-		
-		return 
-				new StringBuilder(PORTFOLIO_MANAGER_URL)
-				.append(project.getKey())
-				.append("/revisions/")
-				.append(commitID)
-				.toString();
+	@After
+	public void tearDown() {
+		projectDAO.deleteAll();
 	}
 	
 	@Test
@@ -118,8 +143,10 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	public void basicUserShouldAccessPortfolioManagerView() throws Exception {
 		
 		mvc
-		.perform(get(PORTFOLIO_MANAGER_URL).with(user(new AuthUser(basicUser, basicRole))))
-		.andExpect(status().isOk());
+			.perform(
+				get(PORTFOLIO_MANAGER_URL)
+				.with(user(new AuthUser(basicUser, basicRole))))
+			.andExpect(status().isOk());
 		
 	}
 	
@@ -156,52 +183,52 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	}
 	
 	@Test
-	public void basicUserShouldAccessRequirementRevisionPage() throws Exception {
+	public void managerUserShouldCreateProject() throws Exception {
 		
-		Collection<ICommit> commits = revisionService.getHistory(existingProject.getId(), existingProject.getClass());
-		
-		String commitID = commits.iterator().next().getId();
-		
-		String URL = buildRevisionPageURL(existingProject, commitID);
+		String key = "the_key";
+		String name = "a name";
+		Integer parentID = 1;
 		
 		mvc
 			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
-			)
-			.andExpect(status().isOk());
+				post(CREATE_PROJECT_URL)
+				.param("key", key)
+				.param("name", name)
+				.param("parentID", parentID.toString())
+				.with(user(new AuthUser(managerUser, managerRole))))
+			.andExpect(status().isFound());
+
+		Project project =projectDAO.findByKey(key);
+		
+		assertNotNull(project);
+		assertEquals(name, project.getName());
+		
+		TreeNode node = treeManagementService.findNode(portfolioDAO.find(), new FindNodeByIDPredicate(parentID));
+		
+		assertEquals(1, node.getNodes().size());
+		assertEquals(project.getId(), ((ProjectNode) node.getNodes().iterator().next()).getProjectId());
 		
 	}
 	
 	@Test
-	public void shouldNotAccessRequirementRevisionPageWithInvalidProjectKey() throws Exception {
+	public void basicUserShouldNotCreateProject() throws Exception {
 		
-		Collection<ICommit> commits = revisionService.getHistory(existingProject.getId(), existingProject.getClass());
+		long nbProjects = projectDAO.count();
 		
-		String commitID = commits.iterator().next().getId();
-		
-		Project invalidProject = new Project();
-		invalidProject.setKey("blblbl");
-		
-		String URL = buildRevisionPageURL(invalidProject, commitID);
+		String key = "the_key";
+		String name = "a name";
+		Integer parentID = 1;
 		
 		mvc
 			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
-			)
-			.andExpect(status().isNotFound());
-		
-	}
-	
-	@Test
-	public void shouldNotAccessRequirementRevisionPageWithInvalidCommitID() throws Exception {				
-		
-		String URL = buildRevisionPageURL(existingProject, "blblbl");
-		
-		mvc
-			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
-			)
-			.andExpect(status().isNotFound());
+				post(CREATE_PROJECT_URL)
+				.param("key", key)
+				.param("name", name)
+				.param("parentID", parentID.toString())
+				.with(user(new AuthUser(basicUser, basicRole))))
+			.andExpect(status().isForbidden());
+
+		assertEquals(nbProjects, projectDAO.count());
 		
 	}
 	

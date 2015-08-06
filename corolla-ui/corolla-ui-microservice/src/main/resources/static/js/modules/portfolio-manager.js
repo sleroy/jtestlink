@@ -5,17 +5,41 @@ var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
 function initPortfolio() {
 
 	/*
+	 * Initialize JsTree widget
+	 */
+	restAPI.folderNodeTypes.findAll(function(types, data) {
+		restAPI.portfolio.jstree(function(data) {
+			initJsTree(types, data);
+		});
+	});
+	
+	/**
+	 * Action triggered when clicking on a node
+	 */
+	jsTreeManager.setSelectAction(function(node, key) {
+		if (key) {
+			document.location = '/ui/portfolio/manager/' + key
+		}else{
+			showSelectedNode(node);
+		}
+	});
+	
+}
+
+function initDetailsView() {
+	
+	/*
 	 * Initialize Bootstrap WYSIHTML5 widget
 	 */
 	$(".textarea").wysihtml5();
-
+	
 	/*
 	 * Initialize Select2 widget
 	 */
 	$('.select2').select2({
 		minimumResultsForSearch : Infinity
 	});
-
+	
 	/*
 	 * Initialize DatePicker widget
 	 */
@@ -29,26 +53,36 @@ function initPortfolio() {
 		AjaxPush : null,
 		AjaxPushAllTags : true
 	});
-
+	
 	/*
 	 * Initialize JsTree widget
 	 */
-	restAPI.folderNodeTypes.findAll(function(data) {
-		initJsTree(data);
+	restAPI.folderNodeTypes.findAll(function(types) {
+		restAPI.portfolio.subtree(pageData.projectKey, function(data) {
+			initJsTree(types, data);
+		});
 	});
 	
+	/**
+	 * Action triggered when clicking on a node
+	 */
+	jsTreeManager.setSelectAction(function(node, key) {
+		if (key) {
+			document.location = '/ui/projects/' + key
+		}
+	});
 }
 
 /*
  * Initialize JsTree widget
  */
-function initJsTree(data) {
+function initJsTree(typeData, data) {
 	
 	var types = {};
 	var folderActions = {};
 	var folderEditActions = {}
-	if (data) {
-		$.each(data, function(i,v) {
+	if (typeData) {
+		$.each(typeData, function(i,v) {
 			types[v.id] = { 'icon': v.icon }
 			folderActions[v.id] = {
 					label: v.name,
@@ -82,10 +116,7 @@ function initJsTree(data) {
 			"themes" : {
 				"stripes" : true
 			},
-			data: {
-				url: restAPI.portfolio.URL,
-				dataType: "json"
-			},
+			data: data,
 			'check_callback': jsTreeManager.callbackHandler
 		},
 		"plugins" : [ "dnd", "contextmenu", "types", "search" ],
@@ -152,14 +183,18 @@ function initJsTree(data) {
 	});
 	
 	/**
-	 * Action triggered when clicking on a node
+	 * Action triggered when the treeview is fully loaded
 	 */
-	jsTreeManager.setSelectAction(function(node, key) {
-		if (key) {
-			document.location = '/ui/portfolio/manager/' + key
-		}
+	jsTreeManager.setLoadedAction(function() {
+		if (pageData && pageData.projectKey) {
+			var node = jsTreeManager.getNodeByProjectKey(pageData.projectKey);
+			if (node) {
+				jsTreeManager.toggleNode(node);
+				showSelectedNode(node);
+			}
+		}		
 	});
-	
+
 	/**
 	 * Action triggered when a new folder has been added in the JsTree
 	 */
@@ -207,6 +242,11 @@ function changeFolderType(typeID, node) {
 	restAPI.portfolio.folders.changeType(ID, typeID, function(data) {
 		jsTreeManager.setType(node, typeID);
 	});
+}
+
+function showSelectedNode(node) {
+	$('.selected-node-text').text(node.text);
+	$('.selected-node-ID').val(jsTreeManager.getNodeID(node));
 }
 
 function selectUser() {

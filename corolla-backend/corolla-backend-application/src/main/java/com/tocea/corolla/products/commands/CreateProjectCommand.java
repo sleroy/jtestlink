@@ -4,6 +4,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.tocea.corolla.cqrs.annotations.CommandOptions;
+import com.tocea.corolla.portfolio.dto.ProjectNodeDTO;
 import com.tocea.corolla.products.domain.Project;
 
 @CommandOptions
@@ -43,6 +44,13 @@ public class CreateProjectCommand {
 
 	public void setParentNodeID(Integer parentNodeID) {
 		this.parentNodeID = parentNodeID;
+	}
+	
+	public void fromProjectNodeDTO(ProjectNodeDTO projectNodeDTO) {
+		this.project = new Project();
+		this.project.setName(projectNodeDTO.getName());
+		this.project.setKey(projectNodeDTO.getKey());
+		setParentNodeID(projectNodeDTO.getParentID());
 	}
 	
 }

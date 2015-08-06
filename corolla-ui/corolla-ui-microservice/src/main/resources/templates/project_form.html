@@ -4,7 +4,7 @@
 <body>
 	<div th:fragment="projectForm">
 		<form class="project-form" th:object="${project}" method="POST"
-			th:attr="action=@{${project.id} == null ? '/ui/portfolio/manager/create' : '/ui/portfolio/manager/'+${project.key}+'/edit'}">
+			th:attr="action=@{${project.id} == null ? '/ui/portfolio/manager/create' : '/ui/projects/'+${project.id}+'/edit'}">
 			<input type="hidden" name="id" id="id" th:value="${project.id}" />
 		   <div class="row form-row">
 		       <div class="col-sm-3 col-md-2">

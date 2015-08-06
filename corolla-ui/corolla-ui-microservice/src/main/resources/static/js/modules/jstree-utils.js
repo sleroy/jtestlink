@@ -5,10 +5,35 @@ function JsTreeManager(SELECTOR) {
 	var createAction = null;
 	var selectAction = null;
 	var moveAction = null;
+	var loadedAction = null;
 	
 	function getNodeID(node) {
 		return node && node.a_attr ? node.a_attr['data-nodeID'] : null;
 	}
+	
+	function getProjectKey(node) {
+		return node && node.a_attr ? node.a_attr['data-key'] : null;
+	}
+	
+	function getNodeByProjectKey(nodes, key) {
+		for(var i=0; i<nodes.length; i++) {
+			if (getProjectKey(nodes[i]) == key) {
+				return nodes[i];
+			}else{
+				var match = getNodeByProjectKey(nodes[i].children, key);
+				if (match) {
+					return match;
+				}
+			}
+		}
+		return null;
+	}
+	
+	$(SELECTOR).on("loaded.jstree", function(e, data) {
+		if (loadedAction) {
+			loadedAction();
+		}
+	});
 	
 	$(SELECTOR).bind("rename_node.jstree", function (e, data) {
     	var node = data.node;
@@ -69,6 +94,14 @@ function JsTreeManager(SELECTOR) {
 		},
 		
 		/**
+		 * Retrieves a node in the JsTree from a project ID 
+		 */
+		'getNodeByProjectKey': function(key) {
+			var nodes = this.getNodes();
+			return getNodeByProjectKey(nodes, key);
+		},
+		
+		/**
 		 * Retrieves the node ID of a JsTree node
 		 */
 		'getNodeID': function(node) {
@@ -88,6 +121,13 @@ function JsTreeManager(SELECTOR) {
 		 */
 		'getProjectID': function(node) {
 			return node && node.a_attr ? node.a_attr['data-projectID'] : null;
+		},
+		
+		/**
+		 * Retrieves the project key of a JsTree node
+		 */
+		'getProjectKey': function(node) {
+			return getProjectKey(node);
 		},
 		
 		/**
@@ -123,6 +163,14 @@ function JsTreeManager(SELECTOR) {
 		 */
 		'editNode': function(node) {
 			$(SELECTOR).jstree(true).edit(node);
+		},
+		
+		/**
+		 * Toggles a node in the JsTree view
+		 */
+		'toggleNode': function(node) {
+			console.log(node);
+			$(SELECTOR).jstree(true).select_node(node);
 		},
 		
 		/**
@@ -166,6 +214,14 @@ function JsTreeManager(SELECTOR) {
 		 */
 		'setMoveAction': function(action) {
 			moveAction = action;
+		},
+		
+		/**
+		 * Registers a callback that will be triggered
+		 * when the JsTree will be fully loaded
+		 */
+		'setLoadedAction': function(action) {
+			loadedAction = action;
 		},
 		
 		/**

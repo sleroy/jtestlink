@@ -23,7 +23,6 @@ public interface IRoleDAO extends MongoRepository<Role, String> {
 	 * Returns the default role
 	 * @return the default  role.
 	 */
-	//@Query("SELECT r FROM Role r where r.defaultRole = true")
 	@Query("{ 'defaultRole': true }")
 	Role getDefaultRole();
 

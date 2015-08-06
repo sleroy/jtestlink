@@ -579,10 +579,10 @@
 		<script type="text/javascript" src="../../static/js/modules/jstree-utils.js" th:src="@{/js/modules/jstree-utils.js}" />
 		<script type="text/javascript" src="../../static/js/modules/requirements.js" th:src="@{/js/modules/requirements.js}" />
 		<script type="text/javascript" th:inline="text">
-			var pageData = {
-					'projectKey': '[[${project.key}]]',
-					'branchName': '[[${branch.name}]]'
-			}
+// 			var pageData = {
+// 					'projectKey': '[[${project.key}]]',
+// 					'branchName': '[[${branch.name}]]'
+// 			}
 			$(document).ready(function() {
 				initRequirementView();
 				tabRooting();
