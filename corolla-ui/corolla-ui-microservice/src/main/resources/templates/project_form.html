@@ -62,8 +62,11 @@
 		      </div>		     
 		   </div>
 		   <div class="row form-row">
-		       <div class="col-sm-3 col-md-2"><span class="">Icon</span></div>
-		       <div class="col-sm-9 col-md-10"><input name="icon" type="file" class=""/></div>
+		       <div class="col-sm-3 col-md-2"><span class="">Image</span></div>
+		       <div class="col-sm-9 col-md-10">
+		       		<input name="image" type="text" th:value="${project.image}" class="form-control" placeholder="URL"/>
+		       		<span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span>
+		       </div>
 		   </div>
 		   <div class="text-editor">
 		   	<textarea class="textarea" placeholder="Description" style="height: 600px;" th:field="*{description}"></textarea>
