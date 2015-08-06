@@ -125,23 +125,12 @@ class PortfolioPageController {
 	}
 	
 	private ModelAndView buildManagerViewData(ModelAndView model, Project project) {
-		
-//		def commits = revisionService.getHistory(project.id, project.class)				
-//		def owner = project.ownerId ? userDAO.findOne(project.ownerId) : null
 			
 		model.addObject "project", project
 		model.addObject "status", project ? statusDAO.findOne(project.statusId) : null
 		model.addObject "menu", MENU_PORTFOLIO_MANAGER
 		model.addObject "folderNodeTypes", folderNodeTypeDAO.findAll()
 		model.addObject "newProject", new ProjectNodeDTO()
-		
-//		model.addObject "category", project.categoryId ? projectCategoryDAO.findOne(project.categoryId) : null
-//		model.addObject "owner", owner ? new UserDto(owner) : null
-//		model.addObject "menu", MENU_PORTFOLIO_MANAGER
-//		model.addObject "branches", branchDAO.findByProjectId(project.id)
-//		model.addObject "commits", commits
-//		model.addObject "statuses", statusDAO.findAll()
-//		model.addObject "categories", projectCategoryDAO.findAll()
 		
 		return model
 	}

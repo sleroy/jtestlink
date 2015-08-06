@@ -20,8 +20,7 @@ function initPortfolio() {
 		if (key) {
 			document.location = '/ui/portfolio/manager/' + key
 		}else{
-			$('.selected-node-text').text(node.text);
-			$('.selected-node-ID').val(jsTreeManager.getNodeID(node));
+			showSelectedNode(node);
 		}
 	});
 	
@@ -184,6 +183,19 @@ function initJsTree(typeData, data) {
 	});
 	
 	/**
+	 * Action triggered when the treeview is fully loaded
+	 */
+	jsTreeManager.setLoadedAction(function() {
+		if (pageData && pageData.projectKey) {
+			var node = jsTreeManager.getNodeByProjectKey(pageData.projectKey);
+			if (node) {
+				jsTreeManager.toggleNode(node);
+				showSelectedNode(node);
+			}
+		}		
+	});
+
+	/**
 	 * Action triggered when a new folder has been added in the JsTree
 	 */
 	jsTreeManager.setCreateAction(function(node, text, typeID, parentID) {
@@ -230,6 +242,11 @@ function changeFolderType(typeID, node) {
 	restAPI.portfolio.folders.changeType(ID, typeID, function(data) {
 		jsTreeManager.setType(node, typeID);
 	});
+}
+
+function showSelectedNode(node) {
+	$('.selected-node-text').text(node.text);
+	$('.selected-node-ID').val(jsTreeManager.getNodeID(node));
 }
 
 function selectUser() {
