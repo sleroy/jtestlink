@@ -21,8 +21,10 @@ import org.springframework.web.context.WebApplicationContext;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
+import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
+import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.revisions.domain.ICommit;
 import com.tocea.corolla.revisions.services.IRevisionService;
@@ -52,11 +54,15 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 	@Autowired
 	private IProjectDAO projectDAO;
 	
+	@Autowired
+	private IProjectBranchDAO branchDAO;
+	
 	private Role basicRole;	
 	private User basicUser;
 	
 	private ProjectStatus projectStatus;
 	private Project existingProject;
+	private ProjectBranch existingBranch;
 	
 	@Before
 	public void setUp() {
@@ -88,6 +94,8 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		
 		gate.dispatch(new CreateProjectCommand(existingProject));
 		
+		existingBranch = branchDAO.findDefaultBranch(existingProject.getId());
+		
 	}
 	
 	private String buildProjectURL(Project project) {
@@ -118,7 +126,23 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 				.toString();
 	}
 	
+	private String buildCreateBranchURL(Project project, ProjectBranch origin) {
+		
+		return
+				new StringBuilder(buildProjectURL(project))
+				.append("/branches/add/")
+				.append(origin.getName())
+				.toString();
+	}
 	
+	private String buildEditBranchURL(Project project, ProjectBranch branch) {
+		
+		return
+				new StringBuilder(buildProjectURL(project))
+				.append("/branches/edit/")
+				.append(branch.getName())
+				.toString();
+	}
 	
 	@Test
 	public void basicUserShouldAccessProjectDetailsView() throws Exception {
@@ -264,4 +288,41 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 			.andExpect(status().isNotFound());
 		
 	}
+	
+	@Test
+	public void basicUserShouldCreateNewBranch() throws Exception {
+		
+		String newName = "TestBranch";
+
+		mvc
+		.perform(
+				post(buildCreateBranchURL(existingProject, existingBranch))
+				.param("name", newName)
+				.with(user(new AuthUser(basicUser, basicRole))))
+		.andExpect(status().isFound());
+		
+		ProjectBranch newBranch = branchDAO.findByNameAndProjectId(newName, existingProject.getId());
+		
+		assertNotNull(newBranch);
+	}
+	
+	@Test
+	public void basicUserShouldEditBranch() throws Exception {
+		
+		String newName = "EditedName";
+
+		mvc
+		.perform(
+				post(buildEditBranchURL(existingProject, existingBranch))
+				.param("id", existingBranch.getId())
+				.param("name", newName)
+				.param("projectId", existingBranch.getProjectId())
+				.with(user(new AuthUser(basicUser, basicRole))))
+		.andExpect(status().isFound());
+		
+		existingBranch = branchDAO.findOne(existingBranch.getId());
+		assertEquals(newName, existingBranch.getName());
+
+	}
+	
 }

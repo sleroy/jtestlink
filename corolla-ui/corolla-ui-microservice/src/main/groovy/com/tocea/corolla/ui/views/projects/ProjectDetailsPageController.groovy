@@ -5,7 +5,6 @@ import groovy.util.logging.Slf4j;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.portfolio.dto.ProjectNodeDTO;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand
+import com.tocea.corolla.products.commands.EditProjectBranchCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectCategoryDAO;
@@ -28,6 +28,8 @@ import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.dao.IProjectStatusDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectBranch
+import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
+import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
 import com.tocea.corolla.revisions.services.IRevisionService;
@@ -149,17 +151,43 @@ public class ProjectDetailsPageController {
 				
 		def project = findProjectOrFail(projectKey)
 		
-		if (project == null) {
-			throw new ProjectNotFoundException()
-		}
-		
 		if (_result.hasErrors()) {
 			return buildBranchFormData(project, branch, originBranchName)
 		}
 		
 		def origin = branchDAO.findByNameAndProjectId(originBranchName, project.id)
 		
-		gate.dispatch new CreateProjectBranchCommand(branch.name, origin)
+//		try {
+			gate.dispatch new CreateProjectBranchCommand(branch.name, origin)
+//		}catch(ProjectBranchAlreadyExistException e) {
+//			_result.addError("name", "This name is already used by another project branch")
+//			return buildBranchFormData(project, branch, originBranchName)
+//		}
+		
+		return new ModelAndView("redirect:/ui/projects/"+project.key+"#branches")
+	}
+	
+	@RequestMapping(value = "/ui/projects/{projectKey}/branches/edit/{branchName}")
+	public ModelAndView getEditBranchPage(@PathVariable projectKey, @PathVariable branchName) {
+		
+		def project = findProjectOrFail(projectKey)		
+		def branch = findProjectBranchOrFail(branchName, project)
+
+		return buildBranchFormData(project, branch, "")
+	}
+	
+	@RequestMapping(value = "/ui/projects/{projectKey}/branches/edit/{branchName}", method = RequestMethod.POST)
+	public ModelAndView editBranch(@PathVariable projectKey, @PathVariable branchName, @Valid @ModelAttribute("branch") ProjectBranch branch, BindingResult _result) {
+		
+		branch = _result.model.get("branch")
+				
+		def project = findProjectOrFail(projectKey)
+		
+		if (_result.hasErrors()) {
+			return buildBranchFormData(project, branch, "")
+		}
+		
+		branch = gate.dispatch new EditProjectBranchCommand(branch)
 		
 		return new ModelAndView("redirect:/ui/projects/"+project.key+"#branches")
 	}
@@ -201,6 +229,17 @@ public class ProjectDetailsPageController {
 		}
 		
 		return project
+	}
+	
+	private ProjectBranch findProjectBranchOrFail(String branchName, Project project) {
+		
+		def branch = branchDAO.findByNameAndProjectId(branchName, project.id)
+				
+		if (branch == null) {
+			throw new ProjectBranchNotFoundException();
+		}
+		
+		return branch;
 	}
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND)
