@@ -4,6 +4,8 @@ import groovy.util.logging.Slf4j;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -18,12 +20,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.portfolio.dto.ProjectNodeDTO;
+import com.tocea.corolla.products.commands.CreateProjectBranchCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectCategoryDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.dao.IProjectStatusDAO;
 import com.tocea.corolla.products.domain.Project;
+import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
 import com.tocea.corolla.revisions.services.IRevisionService;
@@ -37,6 +41,7 @@ public class ProjectDetailsPageController {
 
 	private static final String DETAILS_VIEW 		= "project/details"
 	private static final String REVISION_VIEW 		= "portfolio/revision"
+	private static final String BRANCH_FORM_VIEW	= "project/branch_form"
 	
 	@Autowired
 	private IProjectDAO projectDAO;
@@ -129,6 +134,36 @@ public class ProjectDetailsPageController {
 		return model			
 	}
 	
+	@RequestMapping("/ui/projects/{projectKey}/branches/add/{originBranchName}")
+	public ModelAndView getAddBranchPage(@PathVariable projectKey, @PathVariable originBranchName) {
+		
+		def project = findProjectOrFail(projectKey)
+
+		return buildBranchFormData(project, new ProjectBranch(), originBranchName)
+	}
+	
+	@RequestMapping(value = "/ui/projects/{projectKey}/branches/add/{originBranchName}", method = RequestMethod.POST)
+	public ModelAndView addBranch(@PathVariable projectKey, @PathVariable originBranchName, @Valid @ModelAttribute("branch") ProjectBranch branch, BindingResult _result) {
+		
+		branch = _result.model.get("branch")
+				
+		def project = findProjectOrFail(projectKey)
+		
+		if (project == null) {
+			throw new ProjectNotFoundException()
+		}
+		
+		if (_result.hasErrors()) {
+			return buildBranchFormData(project, branch, originBranchName)
+		}
+		
+		def origin = branchDAO.findByNameAndProjectId(originBranchName, project.id)
+		
+		gate.dispatch new CreateProjectBranchCommand(branch.name, origin)
+		
+		return new ModelAndView("redirect:/ui/projects/"+project.key+"#branches")
+	}
+	
 	private ModelAndView buildManagerViewData(ModelAndView model, Project project) {
 		
 		def commits = revisionService.getHistory(project.id, project.class)				
@@ -145,6 +180,16 @@ public class ProjectDetailsPageController {
 		model.addObject "categories", projectCategoryDAO.findAll()
 		
 		return model
+	}
+	
+	private ModelAndView buildBranchFormData(Project project, ProjectBranch branch, String originBranchName) {
+		
+		def model = new ModelAndView(BRANCH_FORM_VIEW)
+		model.addObject "project", project
+		model.addObject "branch", branch
+		model.addObject "originBranchName", originBranchName
+		
+		return model	
 	}
 	
 	private Project findProjectOrFail(String projectKey) {

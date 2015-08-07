@@ -165,33 +165,46 @@
 							</div>
 							<!-- /.tab-pane -->
 							<div class="tab-pane" id="branches">
-								<a href="#" class="btn btn-primary pull-right"> <span class="fa fa-plus" /> New Branch
-								</a> <br style="clear: both;" />
+<!-- 								<a th:href="@{/ui/projects/}+${project.key}+@{/branches/add}" class="btn btn-primary pull-right">  -->
+<!-- 									<span class="fa fa-plus" /> New Branch -->
+<!-- 								</a>  -->
+								<br style="clear: both;" />
 								<div class="table-responsive">
 									<table class="table table-hover table-striped" cellspacing="0" width="100%">
-										<thead>
-											<tr>
-												<th>Branch</th>
-												<th>Requirements</th>
-												<th>Test Cases</th>
-												<th>Edit</th>
-												<th>Merge</th>
-												<th>Delete</th>
-											</tr>
-										</thead>
 										<tr th:each="branch : ${branches}">
-											<td><span th:text="${branch.name}" /></td>
-											<td><a th:href="@{/ui/requirements/}+${project.key}+@{/}+${branch.name}" class="btn btn-success btn-xs">
+											<td class="col-md-6">
+												<span th:text="${branch.name}" style="font-weight: bold;"/>
+											</td>
+											<td>
+												<a th:href="@{/ui/requirements/}+${project.key}+@{/}+${branch.name}" class="btn btn-success">
 													<span class="glyphicon glyphicon-duplicate" /> Requirements
-											</a></td>
-											<td><a href="#" class="btn btn-warning btn-xs"> <span class="fa fa-flask" /> Test Cases
-											</a></td>
-											<td><a href="#" class="btn btn-primary btn-xs"> <span class="glyphicon glyphicon-pencil" />
-											</a></td>
-											<td><a href="#" class="btn btn-info btn-xs"> <span class="fa fa-flash" />
-											</a></td>
-											<td><a href="#" class="btn btn-danger btn-xs"> <span class="glyphicon glyphicon-trash" />
-											</a></td>
+												</a>
+											</td>
+											<td>
+												<a href="#" class="btn btn-warning"> 
+													<span class="fa fa-flask" /> Test Cases
+												</a>
+											</td>
+											<td>
+												<a th:href="@{/ui/projects/}+${project.key}+@{/branches/add/}+${branch.name}" class="btn btn-primary"> 
+													<span class="fa fa-plus" /> New Branch
+												</a> 
+											</td>
+											<td>
+												<a href="#" class="btn btn-info"> 
+													<span class="glyphicon glyphicon-pencil" /> Edit
+												</a>
+											</td>
+											<td>
+												<a href="#" class="btn btn-default"> 
+													<span class="fa fa-flash" /> Merge
+												</a>
+											</td>
+											<td>
+												<a href="#" class="btn btn-danger" th:if="${branch.defaultBranch == false}"> 
+													<span class="glyphicon glyphicon-trash" /> Delete
+												</a>
+											</td>
 										</tr>
 									</table>
 								</div>
