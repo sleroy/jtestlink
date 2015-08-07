@@ -38,7 +38,7 @@ public class EditProjectCommandHandler implements ICommandHandler<EditProjectCom
 		if (StringUtils.isEmpty(project.getId())) {
 			throw new InvalidProjectInformationException("No ID found");
 		}
-		
+
 		Project existingProject = projectDAO.findByKey(project.getKey());
 		
 		if (existingProject != null && !existingProject.getId().equals(project.getId())) {

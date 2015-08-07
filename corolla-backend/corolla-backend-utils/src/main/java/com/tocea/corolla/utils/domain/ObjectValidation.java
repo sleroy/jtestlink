@@ -16,7 +16,9 @@ import javax.validation.Validator;
  *
  */
 public class ObjectValidation {
-
+	
+	public final static String URL_SAFE_PATTERN = "[\\w[-]?]*";
+	
 	private final Validator	validator;
 
 	public ObjectValidation() {

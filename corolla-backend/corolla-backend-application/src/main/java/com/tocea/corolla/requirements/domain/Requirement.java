@@ -3,12 +3,16 @@ package com.tocea.corolla.requirements.domain;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.validation.constraints.Pattern;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.tocea.corolla.utils.domain.ObjectValidation;
 
 @Document
 public class Requirement implements Serializable {
@@ -18,6 +22,7 @@ public class Requirement implements Serializable {
 	private String id;
 	
 	@NotBlank
+	@Pattern(regexp=ObjectValidation.URL_SAFE_PATTERN)
 	private String key;
 	
 	@NotBlank
