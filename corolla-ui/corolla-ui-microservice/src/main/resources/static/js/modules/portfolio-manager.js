@@ -24,6 +24,8 @@ function initPortfolio() {
 		}
 	});
 	
+	initDeleteProjectModal();
+	
 }
 
 function initDetailsView() {
@@ -71,6 +73,8 @@ function initDetailsView() {
 			document.location = '/ui/projects/' + key
 		}
 	});
+	
+	initDeleteProjectModal();
 }
 
 /*
@@ -261,6 +265,30 @@ function selectUser() {
 		$('#ownerName').text(user.firstName+' '+user.lastName);
 		
 		selectUserModal.hide();
+	});
+	
+}
+
+function initDeleteProjectModal() {
+	
+	$('.projectDelete').on('click', function(e) {
+
+		e.preventDefault();
+		var projectKey = pageData.projectKey;
+		
+		deleteModal.set('projectKey', projectKey);
+		deleteModal.show();
+		
+	});
+	
+	deleteModal.onYesAction(function() {
+		
+		var id = deleteModal.get('projectKey');
+		
+		document.location = '/ui/projects/'+id+'/delete';
+		
+		deleteModal.hide();
+		
 	});
 	
 }
