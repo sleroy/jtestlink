@@ -95,6 +95,26 @@ function DeleteModal() {
 
 /**
  * Object for interacting with the modal
+ * saying that the user does not have the required permission
+ * to do an action
+ */
+function OperationForbiddenModal() {
+	
+	var modalSelector = "#forbiddenModal";
+	
+	return {
+		'show': function() {
+			$(modalSelector).modal('show');
+		},
+		
+		'hide': function() {
+			$(modalSelector).modal('hide');
+		}
+	}
+}
+
+/**
+ * Object for interacting with the modal
  * to quickly change project
  */
 function ChangeProjectModal() {
@@ -224,6 +244,7 @@ function SelectUserModal() {
 var deleteModal = new DeleteModal();
 var changeProjectModal = new ChangeProjectModal();
 var selectUserModal = new SelectUserModal();
+var operationForbiddenModal = new OperationForbiddenModal();
 
 $(document).ready(function() {
 	

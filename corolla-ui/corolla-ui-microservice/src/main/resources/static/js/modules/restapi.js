@@ -9,15 +9,20 @@ function RestAPI() {
 	
 	var REST_PREFIX = "/rest/";
 	
+	var errorHandler = function(data, status, errorThrown) {
+		console.log(data);
+		console.log(status);
+		console.log(errorThrown);
+		if (errorThrown == "Forbidden") {
+			operationForbiddenModal.show();
+		}
+	}
+	
 	var call = function(url, callback) {
 		$.ajax({
 			url: REST_PREFIX + url,
 			success: callback,
-			error: function(data, status) {
-				console.log('error when trying to access '+REST_PREFIX+url);
-				console.log(data);
-				console.log(status);
-			}
+			error: errorHandler
 		});
 	}
 	

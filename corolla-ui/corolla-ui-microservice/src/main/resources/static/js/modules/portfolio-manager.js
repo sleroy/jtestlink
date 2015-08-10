@@ -305,10 +305,11 @@ function initDeleteProjectBranchModal() {
 		
 		deleteModal.onYesAction(function() {
 			
+			deleteModal.hide();
+			
 			restAPI.projects.branches.delete(projectKey, branchName, function(data) {
 				console.log("branch "+branchName+" deleted.");
-				line.remove();
-				deleteModal.hide();
+				line.remove();				
 			});
 
 		});
