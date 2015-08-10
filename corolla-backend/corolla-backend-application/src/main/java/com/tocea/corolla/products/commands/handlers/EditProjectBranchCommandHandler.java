@@ -13,6 +13,7 @@ import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
+import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 
 @CommandHandler
 @Transactional
@@ -32,6 +33,12 @@ public class EditProjectBranchCommandHandler implements ICommandHandler<EditProj
 		
 		if (StringUtils.isEmpty(branch.getId())) {
 			throw new InvalidProjectBranchInformationException("No ID found");
+		}
+		
+		ProjectBranch withSameName = branchDAO.findByNameAndProjectId(branch.getName(), branch.getProjectId());
+		
+		if (withSameName != null && !withSameName.getId().equals(branch.getId())) {
+			throw new ProjectBranchAlreadyExistException();
 		}
 		
 		branchDAO.save(branch);

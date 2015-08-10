@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tocea.corolla.cqrs.gate.CommandExecutionException;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.portfolio.commands.RemovePortfolioNodeCommand
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
@@ -32,6 +34,7 @@ import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.dao.IProjectStatusDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectBranch
+import com.tocea.corolla.products.exceptions.ProjectAlreadyExistException;
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
@@ -169,12 +172,19 @@ public class ProjectDetailsPageController {
 		
 		def origin = branchDAO.findByNameAndProjectId(originBranchName, project.id)
 		
-//		try {
+		try {
+			
 			gate.dispatch new CreateProjectBranchCommand(branch.name, origin)
-//		}catch(ProjectBranchAlreadyExistException e) {
-//			_result.addError("name", "This name is already used by another project branch")
-//			return buildBranchFormData(project, branch, originBranchName)
-//		}
+			
+		}catch(CommandExecutionException ex) {
+			
+			if (ex.cause instanceof ProjectBranchAlreadyExistException) {
+				_result.rejectValue("name", "error.name", "This name is already used by another project branch")
+				return buildBranchFormData(project, branch, originBranchName)
+			}else{
+				throw ex
+			}
+		}
 		
 		return new ModelAndView("redirect:/ui/projects/"+project.key+"#branches")
 	}
@@ -199,7 +209,19 @@ public class ProjectDetailsPageController {
 			return buildBranchFormData(project, branch, "")
 		}
 		
-		branch = gate.dispatch new EditProjectBranchCommand(branch)
+		try {
+		
+			branch = gate.dispatch new EditProjectBranchCommand(branch)
+		
+		}catch(CommandExecutionException ex) {
+			
+			if (ex.cause instanceof ProjectBranchAlreadyExistException) {
+				_result.rejectValue("name", "error.name", "This name is already used by another project branch")
+				return buildBranchFormData(project, branch, "")
+			}else{
+				throw ex
+			}
+		}
 		
 		return new ModelAndView("redirect:/ui/projects/"+project.key+"#branches")
 	}

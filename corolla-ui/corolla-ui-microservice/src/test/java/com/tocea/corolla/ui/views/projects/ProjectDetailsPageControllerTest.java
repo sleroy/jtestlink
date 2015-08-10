@@ -22,6 +22,7 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
+import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
@@ -337,6 +338,22 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 	}
 	
 	@Test
+	public void shouldNotCreateBranchWithAlreadyExistingName() throws Exception {
+		
+		long nbBranches = branchDAO.count();
+		
+		mvc
+			.perform(
+				post(buildCreateBranchURL(existingProject, existingBranch))
+				.param("name", existingBranch.getName())
+				.with(user(new AuthUser(basicUser, basicRole))))
+			.andExpect(status().isOk());
+		
+		assertEquals(nbBranches, branchDAO.count());
+		
+	}
+	
+	@Test
 	public void basicUserShouldEditBranch() throws Exception {
 		
 		String newName = "EditedName";
@@ -352,6 +369,25 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		
 		existingBranch = branchDAO.findOne(existingBranch.getId());
 		assertEquals(newName, existingBranch.getName());
+
+	}
+	
+	@Test
+	public void shouldNotEditBranchWithNameOfAnotherBranch() throws Exception {
+		
+		ProjectBranch alreadyExistingBranch = gate.dispatch(new CreateProjectBranchCommand("Dev", existingProject));
+
+		mvc
+		.perform(
+				post(buildEditBranchURL(existingProject, existingBranch))
+				.param("id", existingBranch.getId())
+				.param("name", alreadyExistingBranch.getName())
+				.param("projectId", existingBranch.getProjectId())
+				.with(user(new AuthUser(basicUser, basicRole))))
+		.andExpect(status().isOk());
+		
+		existingBranch = branchDAO.findOne(existingBranch.getId());
+		assertNotEquals(alreadyExistingBranch.getName(), existingBranch.getName());
 
 	}
 	

@@ -10,10 +10,11 @@ import com.tocea.corolla.products.dao.IProjectBranchDAO
 import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
+import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.test.utils.FunctionalDocRule
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
-@FunctionalTestDoc(requirementName = "EDIT_PROJECT")
+@FunctionalTestDoc(requirementName = "EDIT_PROJECT_BRANCH")
 class EditProjectBranchCommandHandlerTest extends Specification {
 
 	@Rule
@@ -27,17 +28,37 @@ class EditProjectBranchCommandHandlerTest extends Specification {
 		)
 	}
 	
-	def "it should edit a project"() {
+	def "it should edit a project branch"() {
 		
 		given:
-			def branch = new ProjectBranch(id: 1, name: "old")
+			def branch = new ProjectBranch(id: "1", name: "old")
 		
 		when:
 			handler.handle new EditProjectBranchCommand(branch)
 	
 		then:
+			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> branch
+	
+		then:
 			notThrown(Exception.class)
 			1 * branchDAO.save(branch)		
+	}
+	
+	def "it should throw an exception if the name is already associated to another branch"() {
+		
+		given:
+			def branch = new ProjectBranch(id: "1", name: "old", projectId: "1")
+		
+		when:
+			handler.handle new EditProjectBranchCommand(branch)
+	
+		then:
+			branchDAO.findByNameAndProjectId(branch.name, branch.projectId) >> new ProjectBranch(id: 2, name: "other")
+			
+		then:		
+			0 * branchDAO.save(branch)
+			thrown(ProjectBranchAlreadyExistException.class)
+		
 	}
 
 	def "it should throw an exception if the branch is missing"() {
