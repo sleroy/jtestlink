@@ -133,6 +133,13 @@ function RestAPI() {
 					call("projects/"+projectKey+"/branches/"+branchName+"/delete", callback);
 				}
 		
+			},
+			
+			"tags": {
+				
+				"find": function(projectKey, callback) {
+					call("projects/"+projectKey+"/tags", callback);
+				}
 			}
 		},
 		

@@ -1,5 +1,7 @@
 package com.tocea.corolla.products.dao;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.tocea.corolla.products.domain.Project;
@@ -12,5 +14,12 @@ public interface IProjectDAO extends MongoRepository<Project, String> {
 	 * @return
 	 */
 	public Project findByKey(String key);
+	
+	/**
+	 * Search by tag
+	 * @param tags
+	 * @return
+	 */
+	public List<Project> findByTagsIgnoreCase(String tags);
 	
 }

@@ -1,5 +1,7 @@
 package com.tocea.corolla.products.rest;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.CommandExecutionException;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.DeleteProjectBranchCommand;
+import com.tocea.corolla.products.commands.EditProjectCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
@@ -50,6 +54,40 @@ public class ProjectRestController {
 	public Collection<Project> findAll(@RequestBody List<String> ids) {
 		
 		return (Collection<Project>) projectDAO.findAll(ids);
+	}
+	
+	@RequestMapping(value="/{projectKey}/tags")
+	public Collection<String> findTags(@PathVariable String projectKey) {
+		
+		Project project = projectDAO.findByKey(projectKey);
+		
+		if (project != null && project.getTags() != null) {			
+			return project.getTags();
+		}
+		
+		return Lists.newArrayList();
+	}
+	
+	@RequestMapping(value="/{projectKey}/tags/push", method = RequestMethod.POST)
+	@Secured({ Permission.PROJECT_MANAGEMENT })
+	public Collection<String> pushTags(@PathVariable String projectKey, @RequestBody String data) throws UnsupportedEncodingException {
+		
+		Project project = projectDAO.findByKey(projectKey);
+		
+		if (project != null) {
+			
+			data = data.replace("tags=", "");
+			data = URLDecoder.decode(data, "UTF-8");
+			List<String> tags = Lists.newArrayList(data.split(","));
+			
+			project.setTags(tags);
+			
+			gate.dispatch(new EditProjectCommand(project));
+			
+			return project.getTags();
+		}
+
+		return Lists.newArrayList();
 	}
 	
 	@RequestMapping(value = "/{projectKey}/branches/{branchName}/delete")

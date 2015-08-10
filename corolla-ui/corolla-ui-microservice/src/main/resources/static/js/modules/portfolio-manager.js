@@ -50,10 +50,12 @@ function initDetailsView() {
 	/*
 	 * Initialize TagManager widget
 	 */
-	$(".tm-input").tagsManager({
-		prefilled : [ "Komea", "Java", "Spring", "KPI Manager", "Dashboard" ],
-		AjaxPush : null,
-		AjaxPushAllTags : true
+	restAPI.projects.tags.find(pageData.projectKey, function(data) {
+		$(".tm-input").tagsManager({
+			prefilled : data,
+			AjaxPush : "/rest/projects/"+pageData.projectKey+"/tags/push",
+			AjaxPushAllTags : true
+		});
 	});
 	
 	/*

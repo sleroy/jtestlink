@@ -107,8 +107,9 @@ public class ProjectDetailsPageController {
 	public ModelAndView editProject(@PathVariable String projectID, @Valid @ModelAttribute("project") Project project, BindingResult _result) {
 		
 		project = _result.model.get("project")
+		def original = projectDAO.findOne(project.id)
 		
-		if (project == null) {
+		if (project == null || original == null) {
 			throw new ProjectNotFoundException()
 		}
 		
@@ -116,12 +117,13 @@ public class ProjectDetailsPageController {
 			def model = buildManagerViewData(new ModelAndView(DETAILS_VIEW), project)
 			model.addObject "selectedTab", "edit"
 			return model
-		}
+		}	
+		
+		project.tags = original.tags
 		
 		gate.dispatch new EditProjectCommand(project);
 		
-		return new ModelAndView("redirect:/ui/projects/"+project.key)
-		
+		return new ModelAndView("redirect:/ui/projects/"+project.key)		
 	}
 	
 	@RequestMapping("/ui/projects/{projectKey}/revisions/{commitID}")

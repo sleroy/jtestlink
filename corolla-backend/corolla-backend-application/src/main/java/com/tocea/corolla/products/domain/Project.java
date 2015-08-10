@@ -2,7 +2,10 @@ package com.tocea.corolla.products.domain;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -38,6 +41,9 @@ public class Project implements Serializable {
 	private String description;
 	
 	private URL image;
+	
+	@Embedded
+	private List<String> tags;
 
 	public String getId() {
 		return id;
@@ -101,6 +107,14 @@ public class Project implements Serializable {
 
 	public void setImage(URL image) {
 		this.image = image;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
 	}
 	
 }
