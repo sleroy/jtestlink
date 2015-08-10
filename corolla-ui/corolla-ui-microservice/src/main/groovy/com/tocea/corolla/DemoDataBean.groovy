@@ -36,6 +36,7 @@ import com.tocea.corolla.products.dao.IProjectCategoryDAO
 import com.tocea.corolla.products.dao.IProjectDAO
 import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Project
+import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.domain.ProjectCategory
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand
@@ -52,6 +53,7 @@ import com.tocea.corolla.trees.commands.CreateFolderNodeTypeCommand
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO
 import com.tocea.corolla.trees.domain.FolderNode
 import com.tocea.corolla.trees.domain.FolderNodeType
+import com.tocea.corolla.trees.domain.ITree
 import com.tocea.corolla.trees.domain.TreeNode
 import com.tocea.corolla.trees.utils.TreeNodeUtils;
 import com.tocea.corolla.users.commands.CreateRoleCommand
@@ -280,22 +282,76 @@ public class DemoDataBean {
 		 * Requirements
 		 */
 		def req_addUser = this.newRequirement(new Requirement(
-				key: 'ADD_USER',
+				key: 'USER_ADD',
 				projectBranchId: masterBranch.id,
 				name: 'Add a user',
 				description: 'Create a new user to Corolla from the administration panel'
 		))
 		def req_editUser = this.newRequirement(new Requirement(
-			key: 'EDIT_USER',
+			key: 'USER_EDIT',
 			projectBranchId: masterBranch.id,
 			name: 'Edit a user profile',
 			description: 'Edit a user\'s profile from the administration panel'
 		))
 		def req_deleteUser = this.newRequirement(new Requirement(
-			key: 'DELETE_USER',
+			key: 'USER_DELETE',
 			projectBranchId: masterBranch.id,
 			name: 'Delete a user',
 			description: "Delete a user from the administration panel"
+		))
+		def req_addProject = this.newRequirement(new Requirement(
+			key: 'PROJECT_ADD',
+			projectBranchId: masterBranch.id,
+			name: 'Add a project',
+			description: 'Anyone with the required permissions should be able to create a new project'
+		))
+		def req_editProject = this.newRequirement(new Requirement(
+			key: 'PROJECT_EDIT',
+			projectBranchId: masterBranch.id,
+			name: 'Edit a project',
+			description: 'Anyone with the required permissions should be able to edit a project to update its data (key, name, status...)'
+		))
+		def req_deleteProject = this.newRequirement(new Requirement(
+			key: 'PROJECT_DELETE',
+			projectBranchId: masterBranch.id,
+			name: 'Delete a project',
+			description: 'Anyone with the required permissions should be able to delete a project'
+		))
+		def req_viewPortfolio = this.newRequirement(new Requirement(
+			key: 'PORTFOLIO_VIEW',
+			projectBranchId: masterBranch.id,
+			name: 'Display the portfolio tree',
+			description: 'Anyone with the required permissions should be able to view the portfolio tree'
+		))
+		def req_moveNodePortfolio = this.newRequirement(new Requirement(
+			key: 'PORTFOLIO_NODE_MOVE',
+			projectBranchId: masterBranch.id,
+			name: 'Move a node in the portfolio tree',
+			description: 'Anyone with the required permissions should be able to move a node in the portfolio tree'
+		))
+		def req_createPortfolioFolder = this.newRequirement(new Requirement(
+			key: 'PORTFOLIO_NODE_FOLDER_CREATE',
+			projectBranchId: masterBranch.id,
+			name: 'Create a folder in the portfolio tree',
+			description: 'Anyone with the required permissions should be able to create a folder node in the portfolio tree'
+		))
+		def req_deletePortfolioNode = this.newRequirement(new Requirement(
+			key: 'PORTFOLIO_NODE_DELETE',
+			projectBranchId: masterBranch.id,
+			name: 'Delete a node in the portfolio tree',
+			description: 'Anyone with the required permissions should be able to delete a node in the portfolio tree'
+		))
+		def req_editPortfolioFolder = this.newRequirement(new Requirement(
+			key: 'PORTFOLIO_NODE_FOLDER_EDIT',
+			projectBranchId: masterBranch.id,
+			name: 'Edit a folder in the portfolio tree',
+			description: 'Anyone with the required permissions should be able to edit a folder node in the portfolio tree'
+		))
+		def req_changePortfolioFolderType = this.newRequirement(new Requirement(
+			key: 'PORTFOLIO_NODE_FOLDER_CHANGE_TYPE',
+			projectBranchId: masterBranch.id,
+			name: 'Change the type of a folder in the portfolio tree',
+			description: 'Anyone with the required permissions should be able to change the type of a folder node in the portfolio tree'
 		))
 		
 		/*
@@ -303,20 +359,31 @@ public class DemoDataBean {
 		 */
 		def tree = requirementsTreeDAO.findByBranchId(masterBranch.id)
 		
-		this.newRequirementTextNode(masterBranch, null, "USER MANAGEMENT", basicFolder)
-		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addUser.id).id, 4)
-		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editUser.id).id, 4)
-		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteUser.id).id, 4)
+		def userManagementFolder = this.newRequirementTextNode(masterBranch, null, "USER MANAGEMENT", basicFolder)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addUser.id).id, userManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editUser.id).id, userManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteUser.id).id, userManagementFolder.id)
+		
+		def portfolioManagementFolder = this.newRequirementTextNode(masterBranch, null, 'PORTFOLIO MANAGEMENT', basicFolder)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addProject.id).id, portfolioManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editProject.id).id, portfolioManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteProject.id).id, portfolioManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_viewPortfolio.id).id, portfolioManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_moveNodePortfolio.id).id, portfolioManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_createPortfolioFolder.id).id, portfolioManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deletePortfolioNode.id).id, portfolioManagementFolder.id)
+		this.moveRequirementNode(tree, masterBranch, req_editPortfolioFolder, portfolioManagementFolder.id)
+		this.moveRequirementNode(tree, masterBranch, req_changePortfolioFolderType, portfolioManagementFolder.id)
 		
 		/**
 		 * Create a new Branch derivated from Master
 		 */
-		def toceaBranch = gate.dispatch new CreateProjectBranchCommand("Tocea", masterBranch);		
+		def toceaBranch = gate.dispatch new CreateProjectBranchCommand("Develop", masterBranch);		
 		
 		/**
 		 * Edit a requirement then restore it to its previous state
 		 */
-		req_addUser = requirementDAO.findByKeyAndProjectBranchId("ADD_USER", masterBranch.id)
+		req_addUser = requirementDAO.findByKeyAndProjectBranchId("USER_ADD", masterBranch.id)
 		req_addUser.name = "Add an elephant"
 		this.gate.dispatch new EditRequirementCommand(req_addUser);		
 		def commits = revisionService.getHistory(req_addUser.id, Requirement.class);
@@ -424,16 +491,21 @@ public class DemoDataBean {
 		
 	}
 	
-	public void newRequirementTextNode(branch, parentID, text, type) {
+	public FolderNode newRequirementTextNode(branch, parentID, text, type) {
 		
-		this.gate.dispatch new CreateRequirementFolderNodeCommand(branch, parentID, text, type)
+		return this.gate.dispatch(new CreateRequirementFolderNodeCommand(branch, parentID, text, type))
 		
 	}
 	
-	public void moveRequirementNode(branch, nodeID, newParentID) {
+	public void moveRequirementNode(ProjectBranch branch, Integer nodeID, Integer newParentID) {
 		
 		this.gate.dispatch new MoveRequirementTreeNodeCommand(branch, nodeID, newParentID)
 		
+	}
+	
+	public void moveRequirementNode(ITree tree, ProjectBranch branch, Requirement requirement, Integer newParentID) {
+		
+		this.gate.dispatch new MoveRequirementTreeNodeCommand(branch, findRequirementTreeNode(tree, requirement.id).id, newParentID)
 	}
 	
 	public TreeNode findRequirementTreeNode(tree, requirementID) {
