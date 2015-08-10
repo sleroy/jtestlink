@@ -19,6 +19,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
+import com.tocea.corolla.portfolio.domain.Portfolio;
+import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
@@ -28,8 +31,10 @@ import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.revisions.domain.ICommit;
 import com.tocea.corolla.revisions.services.IRevisionService;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.ui.AbstractSpringTest;
 import com.tocea.corolla.ui.security.AuthUser;
+import com.tocea.corolla.users.domain.Permission;
 import com.tocea.corolla.users.domain.Role;
 import com.tocea.corolla.users.domain.User;
 
@@ -57,8 +62,16 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 	@Autowired
 	private IProjectBranchDAO branchDAO;
 	
+	@Autowired
+	private ITreeManagementService treeManagementService;
+	
+	@Autowired
+	private IPortfolioDAO portfolioDAO;
+	
 	private Role basicRole;	
 	private User basicUser;
+	private Role managerRole;
+	private User managerUser;
 	
 	private ProjectStatus projectStatus;
 	private Project existingProject;
@@ -80,6 +93,15 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		basicUser.setLogin("simple");
 		basicUser.setPassword("pass");
 		basicUser.setEmail("simple@corolla.com");
+		
+		managerRole = new Role();
+		managerRole.setName("MANAGER");
+		managerRole.setPermissions(Permission.PORTFOLIO_MANAGEMENT);
+		
+		managerUser = new User();
+		managerUser.setLogin("manager");
+		managerUser.setPassword("pass");
+		managerUser.setEmail("manager@corolla.com");
 		
 		projectStatus = new ProjectStatus();
 		projectStatus.setName("Active");
@@ -141,6 +163,14 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 				new StringBuilder(buildProjectURL(project))
 				.append("/branches/edit/")
 				.append(branch.getName())
+				.toString();
+	}
+	
+	private String buildDeleteProjectURL(Project project) {
+		
+		return
+				new StringBuilder(buildProjectURL(project))
+				.append("/delete")
 				.toString();
 	}
 	
@@ -322,6 +352,42 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		
 		existingBranch = branchDAO.findOne(existingBranch.getId());
 		assertEquals(newName, existingBranch.getName());
+
+	}
+	
+	@Test
+	public void basicUserShouldNotDeleteProject() throws Exception {
+		
+		mvc
+			.perform(
+				get(buildDeleteProjectURL(existingProject)).
+				with(user(new AuthUser(basicUser, basicRole)))
+			)
+			.andExpect(status().isForbidden());
+		
+		assertNotNull(projectDAO.findOne(existingProject.getId()));
+		
+	}
+	
+	@Test
+	public void managerUserShouldDeleteProject() throws Exception {
+		
+		mvc
+			.perform(
+				get(buildDeleteProjectURL(existingProject)).
+				with(user(new AuthUser(managerUser, managerRole)))
+			)
+			.andExpect(status().isFound());
+
+		String deletedID = existingProject.getId();
+		Portfolio portfolio = portfolioDAO.find();
+		
+		// The project should have been deleted
+		assertNull(projectDAO.findOne(deletedID));
+		// The project branches should have been deleted
+		assertEquals(0, branchDAO.findByProjectId(deletedID).size());
+		// The project node in the portfolio should have been deleted
+		assertNull(treeManagementService.findNode(portfolio, new FindNodeByProjectIDPredicate(deletedID)));
 
 	}
 	

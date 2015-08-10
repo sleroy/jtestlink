@@ -52,10 +52,11 @@ public class DeleteProjectCommandHandler implements ICommandHandler<DeleteProjec
 			throw new ProjectNotFoundException();
 		}
 		
+		// Delete the project from the database
 		projectDAO.delete(project);
 		
-		Collection<ProjectBranch> branches = branchDAO.findByProjectId(project.getId());
-		
+		// Invoke the commands to delete the project branches associated to this project
+		Collection<ProjectBranch> branches = branchDAO.findByProjectId(project.getId());		
 		for(ProjectBranch branch : branches) {
 			gate.dispatch(new DeleteProjectBranchCommand(branch));
 		}

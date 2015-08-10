@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.commands.RemovePortfolioNodeCommand
+import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
 import com.tocea.corolla.portfolio.dto.ProjectNodeDTO;
+import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand
 import com.tocea.corolla.products.commands.EditProjectBranchCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
@@ -34,7 +38,9 @@ import com.tocea.corolla.products.exceptions.ProjectNotFoundException
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
+import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.users.dao.IUserDAO;
+import com.tocea.corolla.users.domain.Permission;
 import com.tocea.corolla.users.dto.UserDto
 
 @Controller
@@ -64,7 +70,13 @@ public class ProjectDetailsPageController {
 	private IUserDAO userDAO;
 	
 	@Autowired
+	private IPortfolioDAO portfolioDAO;
+	
+	@Autowired
 	private IRevisionService revisionService;
+	
+	@Autowired
+	private ITreeManagementService treeManagementService;
 	
 	@Autowired
 	private Gate gate;
@@ -190,6 +202,18 @@ public class ProjectDetailsPageController {
 		branch = gate.dispatch new EditProjectBranchCommand(branch)
 		
 		return new ModelAndView("redirect:/ui/projects/"+project.key+"#branches")
+	}
+	
+	@RequestMapping(value = "/ui/projects/{projectKey}/delete")
+	@Secured([Permission.PORTFOLIO_MANAGEMENT])
+	public ModelAndView deleteProject(@PathVariable projectKey) {
+		
+		Project project = findProjectOrFail(projectKey)
+		def node = treeManagementService.findNode(portfolioDAO.find(), new FindNodeByProjectIDPredicate(project.id))
+		
+		gate.dispatch new RemovePortfolioNodeCommand(node.id)
+		
+		return new ModelAndView("redirect:/ui/portfolio/manager")
 	}
 	
 	private ModelAndView buildManagerViewData(ModelAndView model, Project project) {

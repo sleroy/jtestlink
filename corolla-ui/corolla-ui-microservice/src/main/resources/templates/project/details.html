@@ -59,9 +59,11 @@
 											class="glyphicon glyphicon-inbox" /> Archive project
 									</a></li>
 									<li role="presentation" class="divider" />
-									<li role="presentation"><a role="menuitem" tabindex="-1" href="#"> <i
-											class="glyphicon glyphicon-remove" /> Delete project
-									</a></li>
+									<li role="presentation">
+										<a role="menuitem" tabindex="-1" th:href="@{/ui/projects/}+${project.key}+@{/delete}"> 
+											<i class="glyphicon glyphicon-remove" /> Delete project
+										</a>
+									</li>
 								</ul></li>
 							<li class="pull-right dropdown"><a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
 									<i class="fa fa-location-arrow" /> Export

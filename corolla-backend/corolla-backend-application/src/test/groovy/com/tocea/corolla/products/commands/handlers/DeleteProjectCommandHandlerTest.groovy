@@ -6,6 +6,10 @@ import org.mockito.Mockito;
 import spock.lang.Specification;
 
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.portfolio.commands.RemovePortfolioNodeCommand
+import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
+import com.tocea.corolla.portfolio.domain.Portfolio
+import com.tocea.corolla.portfolio.domain.ProjectNode
 import com.tocea.corolla.products.commands.DeleteProjectBranchCommand
 import com.tocea.corolla.products.commands.DeleteProjectCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
@@ -15,6 +19,7 @@ import com.tocea.corolla.products.domain.ProjectBranch
 import com.tocea.corolla.products.exceptions.*;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
+import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 @FunctionalTestDoc(requirementName = "ADD_PROJECT")
@@ -30,10 +35,10 @@ class DeleteProjectCommandHandlerTest extends Specification {
 	
 	def setup() {
 		handler = new DeleteProjectCommandHandler(
-				projectDAO : projectDAO,
-				revisionService : revisionService,
-				branchDAO : branchDAO,
-				gate : gate
+				projectDAO 				: projectDAO,
+				revisionService 		: revisionService,
+				branchDAO 				: branchDAO,
+				gate 					: gate
 		)
 	}
 	
@@ -49,12 +54,13 @@ class DeleteProjectCommandHandlerTest extends Specification {
 			handler.handle new DeleteProjectCommand(project.id)
 			
 		then:
-			projectDAO.findOne(project.id) >> project
+			projectDAO.findOne(project.id) >> project			
 		
 		then:
 			1 * projectDAO.delete(_)
 			branchDAO.findByProjectId(project.id) >> []
 			notThrown(Exception.class)
+			
 	}
 	
 	def "it should invoke the commands to delete the branches attached to the project"() {
@@ -76,7 +82,7 @@ class DeleteProjectCommandHandlerTest extends Specification {
 		then:
 			notThrown(Exception.class)
 			2 * gate.dispatch { it instanceof DeleteProjectBranchCommand }
-		
+				
 	}
 	
 	def "it should throw an exception if the project ID is empty"() {
