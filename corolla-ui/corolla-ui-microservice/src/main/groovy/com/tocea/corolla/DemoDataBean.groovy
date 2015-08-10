@@ -129,20 +129,7 @@ public class DemoDataBean {
 		/*
 		 * Admin role
 		 */
-		final Role roleAdmin = this.newRole("Administrator", "Administrator role", [
-			Permission.ADMIN,
-			Permission.ADMIN_ROLES,
-			Permission.ADMIN_CONFIG,
-			Permission.ADMIN_USERS ,
-			Permission.REQUIREMENT,
-			Permission.APPLICATION,
-			Permission.TESTSUITE,
-			Permission.TESTCAMP,
-			Permission.REST,
-			Permission.PROJECT_WRITE,
-			Permission.PROJECT_READ,
-			Permission.PORTFOLIO_MANAGEMENT]
-		)
+		final Role roleAdmin = this.newRole("Administrator", "Administrator role", Permission.list())
 		roleAdmin.roleProtected = true
 		this.gate.dispatch new EditRoleCommand(roleAdmin)
 

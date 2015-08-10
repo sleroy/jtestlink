@@ -120,6 +120,17 @@ function RestAPI() {
 		
 		},
 		
+		"projects": {
+			
+			"branches": {
+				
+				"delete": function(projectKey, branchName, callback) {
+					call("projects/"+projectKey+"/branches/"+branchName+"/delete", callback);
+				}
+		
+			}
+		},
+		
 		"requirements": {
 			
 			"jstree": function(projectKey, branchName, callback) {

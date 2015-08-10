@@ -74,7 +74,12 @@ function initDetailsView() {
 		}
 	});
 	
+	/**
+	 * Init modals
+	 */
 	initDeleteProjectModal();
+	initDeleteProjectBranchModal();
+	
 }
 
 /*
@@ -276,18 +281,37 @@ function initDeleteProjectModal() {
 		e.preventDefault();
 		var projectKey = pageData.projectKey;
 		
-		deleteModal.set('projectKey', projectKey);
 		deleteModal.show();
+		
+		deleteModal.onYesAction(function() {		
+			document.location = '/ui/projects/'+projectKey+'/delete';			
+			deleteModal.hide();			
+		});
 		
 	});
 	
-	deleteModal.onYesAction(function() {
+}
+
+function initDeleteProjectBranchModal() {
+	
+	$('.branchDelete').on('click', function(e) {
+
+		e.preventDefault();
+		var line = $(this).closest('tr');
+		var projectKey = pageData.projectKey;
+		var branchName = line.data('branchname');
 		
-		var id = deleteModal.get('projectKey');
+		deleteModal.show();
 		
-		document.location = '/ui/projects/'+id+'/delete';
-		
-		deleteModal.hide();
+		deleteModal.onYesAction(function() {
+			
+			restAPI.projects.branches.delete(projectKey, branchName, function(data) {
+				console.log("branch "+branchName+" deleted.");
+				line.remove();
+				deleteModal.hide();
+			});
+
+		});
 		
 	});
 	

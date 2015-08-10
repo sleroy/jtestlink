@@ -31,6 +31,14 @@ public class Permission {
 	public static final String PROJECT_WRITE 		= "ROLE_PROJECT_WRITE";
 	public static final String PROJECT_READ 		= "ROLE_PROJECT_READ";
 	
+	/**
+	 * For managing a project (edit project's data, create/delete branches...)
+	 */
+	public static final String PROJECT_MANAGEMENT	= "ROLE_PROJECT_MANAGEMENT";
+	
+	/**
+	 * For managing the portfolio tree (create/move/edit/delete nodes, create projects, etc..)
+	 */
 	public static final String PORTFOLIO_MANAGEMENT = "ROLE_PORTFOLIO_MANAGEMENT";
 	
 	/**

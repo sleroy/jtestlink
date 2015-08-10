@@ -173,7 +173,7 @@
 								<br style="clear: both;" />
 								<div class="table-responsive">
 									<table class="table table-hover table-striped" cellspacing="0" width="100%">
-										<tr th:each="branch : ${branches}">
+										<tr th:each="branch : ${branches}" th:attr="data-branchName=${branch.name}">
 											<td class="col-md-6">
 												<span th:text="${branch.name}" style="font-weight: bold;"/>
 											</td>
@@ -204,7 +204,7 @@
 											</td>
 											
 											<td>
-												<a href="#" class="btn btn-danger" th:if="${branch.defaultBranch == false}"> 
+												<a href="#" class="branchDelete btn btn-danger" th:if="${branch.defaultBranch == false}"> 
 													<span class="glyphicon glyphicon-trash" /> Delete
 												</a>
 											</td>
