@@ -1,11 +1,9 @@
 package com.tocea.corolla.revisions.services;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
@@ -153,12 +151,12 @@ public class JaversRevisionService implements IRevisionService {
 					change.setPropertyName(valueChange.getPropertyName());
 					change.setPropertyType(valueChange.getProperty().getType());
 					try {
-						change.setRightValue(BeanUtils.getProperty(currentVersion, change.getPropertyName()));
+						change.setRightValue(PropertyUtils.getProperty(currentVersion, change.getPropertyName()));
 					} catch (Exception e) {
 						change.setRightValue(null);
 					}
 					try {
-						change.setLeftValue(BeanUtils.getProperty(oldVersion, change.getPropertyName()));
+						change.setLeftValue(PropertyUtils.getProperty(oldVersion, change.getPropertyName()));
 					} catch (Exception e) {
 						change.setLeftValue(null);
 					}

@@ -38,6 +38,7 @@ import com.tocea.corolla.products.exceptions.ProjectAlreadyExistException;
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
+import com.tocea.corolla.products.utils.ProjectChangeFormatter;
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
@@ -80,6 +81,9 @@ public class ProjectDetailsPageController {
 	
 	@Autowired
 	private ITreeManagementService treeManagementService;
+	
+	@Autowired
+	private ProjectChangeFormatter changeFormatter;
 	
 	@Autowired
 	private Gate gate;
@@ -149,6 +153,7 @@ public class ProjectDetailsPageController {
 		model.addObject "commit", commit
 		model.addObject "previousCommit", previousCommit
 		model.addObject "changes", changes
+		model.addObject "changeFormatter", changeFormatter
 		
 		return model			
 	}
