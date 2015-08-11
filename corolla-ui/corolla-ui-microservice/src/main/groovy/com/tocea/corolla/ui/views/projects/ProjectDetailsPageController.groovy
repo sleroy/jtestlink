@@ -51,7 +51,7 @@ import com.tocea.corolla.users.dto.UserDto
 public class ProjectDetailsPageController {
 
 	private static final String DETAILS_VIEW 		= "project/details"
-	private static final String REVISION_VIEW 		= "portfolio/revision"
+	private static final String REVISION_VIEW 		= "project/revision"
 	private static final String BRANCH_FORM_VIEW	= "project/branch_form"
 	
 	@Autowired
