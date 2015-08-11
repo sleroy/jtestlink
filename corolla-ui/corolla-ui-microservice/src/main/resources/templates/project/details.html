@@ -230,10 +230,15 @@
 											<td class="toggle" th:text="${commit.type}" />
 											<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> <span
 												th:text="${commit.author}" /></td>
-											<td><a th:if="${commits[0].id} != ${commit.id}" href="#" class="label label-warning"
-												style="margin-right: 5px;"> Restore </a> <a
-												th:href="@{/ui/projects/}+${project.key}+@{/revisions/}+${commit.id}" class="label label-primary">
-													Changelog </a></td>
+											<td>
+												<a th:if="${commits[0].id} != ${commit.id}" 
+												th:href="@{/ui/projects/}+${project.key}+@{/revisions/}+${commit.id}+@{/restore}" 
+												class="label label-warning" style="margin-right: 5px;"> 
+												Restore </a> 
+												<a th:href="@{/ui/projects/}+${project.key}+@{/revisions/}+${commit.id}" class="label label-primary">
+													Changelog 
+												</a>
+											</td>
 										</tr>
 									</table>
 								</div>

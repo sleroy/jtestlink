@@ -28,6 +28,7 @@ import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand
 import com.tocea.corolla.products.commands.EditProjectBranchCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
+import com.tocea.corolla.products.commands.RestoreProjectStateCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectCategoryDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
@@ -108,6 +109,7 @@ public class ProjectDetailsPageController {
 	}
 	
 	@RequestMapping(value = "/ui/projects/{projectID}/edit", method = RequestMethod.POST)
+	@Secured([Permission.PROJECT_MANAGEMENT])
 	public ModelAndView editProject(@PathVariable String projectID, @Valid @ModelAttribute("project") Project project, BindingResult _result) {
 		
 		project = _result.model.get("project")
@@ -156,6 +158,17 @@ public class ProjectDetailsPageController {
 		model.addObject "changeFormatter", changeFormatter
 		
 		return model			
+	}
+	
+	@RequestMapping("/ui/projects/{projectKey}/revisions/{commitID}/restore")
+	@Secured([Permission.PROJECT_MANAGEMENT])
+	public ModelAndView restoreProjectState(@PathVariable projectKey, @PathVariable commitID) {
+		
+		def project = findProjectOrFail(projectKey)
+				
+		gate.dispatch new RestoreProjectStateCommand(project, commitID)
+		
+		return new ModelAndView("redirect:/ui/projects/"+project.key+"#revisions")
 	}
 	
 	@RequestMapping("/ui/projects/{projectKey}/branches/add/{originBranchName}")
