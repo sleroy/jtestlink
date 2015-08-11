@@ -1,4 +1,5 @@
 var PROJECTS_TREEVIEW = '.projects-tree-view';
+var TREE_SEARCH_BAR = '.tree-search';
 
 var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
 
@@ -241,6 +242,11 @@ function initJsTree(typeData, data) {
 		});
 	});
 
+	$(TREE_SEARCH_BAR).change(function() {
+		var value = $(TREE_SEARCH_BAR).val();
+		jsTreeManager.search(value);
+	});
+	
 }
 
 /**
