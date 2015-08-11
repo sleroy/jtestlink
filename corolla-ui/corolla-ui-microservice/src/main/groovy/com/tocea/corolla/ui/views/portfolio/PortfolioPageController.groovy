@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.common.base.Function
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.portfolio.dto.ProjectNodeDTO
 import com.tocea.corolla.products.commands.CreateProjectCommand
@@ -28,6 +32,7 @@ import com.tocea.corolla.products.dao.IProjectStatusDAO;
 import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.exceptions.InvalidProjectInformationException
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
+import com.tocea.corolla.products.utils.ProjectUtils;
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
@@ -72,10 +77,13 @@ class PortfolioPageController {
 	@RequestMapping("/ui/portfolio")
 	public ModelAndView getPortfolio() {
 		
+		def projects = projectDAO.findAll();		
+		def tags = ProjectUtils.extractTags(projects);
+
 		def model = new ModelAndView(PORTFOLIO_PAGE)
-		model.addObject "menu", MENU_PORTFOLIO
-		
-		model.addObject "projects", projectDAO.findAll();
+		model.addObject "menu", MENU_PORTFOLIO		
+		model.addObject "projects", projects;
+		model.addObject "tags", tags;
 		
 		return model
 	}

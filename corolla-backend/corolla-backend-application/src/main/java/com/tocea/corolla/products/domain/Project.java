@@ -14,6 +14,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.google.common.collect.Lists;
 import com.tocea.corolla.utils.domain.ObjectValidation;
 
 @Document
@@ -43,7 +44,7 @@ public class Project implements Serializable {
 	private URL image;
 	
 	@Embedded
-	private List<String> tags;
+	private List<String> tags = Lists.newArrayList();
 
 	public String getId() {
 		return id;

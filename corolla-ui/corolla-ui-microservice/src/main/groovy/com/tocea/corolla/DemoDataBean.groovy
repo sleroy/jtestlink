@@ -211,7 +211,8 @@ public class DemoDataBean {
 				key: 'komea', 
 				name: 'Komea Dashboard', 
 				description: 'Tool for measuring and managing key performance indicators in a software factory',
-				statusId: statusActive.id
+				statusId: statusActive.id,
+				tags: ["Komea", "Dashboard", "software factory"]
 		), komeaFolderNode.id)
 		
 		def komeaRedmine = this.gate.dispatch new CreateProjectCommand(new Project(
