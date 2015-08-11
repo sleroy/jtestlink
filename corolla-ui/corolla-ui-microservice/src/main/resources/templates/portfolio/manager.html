@@ -40,15 +40,16 @@
 											class="caret" />
 									</a>
 										<ul class="dropdown-menu">
-											<li><a href="#"> <i class="fa fa-briefcase" /> Project
-											</a></li>
 											<li th:each="folderNodeType : ${folderNodeTypes}"><a href="#"
 												th:attr="onclick='jsTreeManager.addFolder(\''+${folderNodeType.id}+'\', null)'"> <img
 													th:src="${folderNodeType.icon}" src="" alt="" /> <span th:text="${folderNodeType.name}" />
 											</a></li>
 										</ul></li>
-									<li><a href="#" class="btn btn-default"> <span class="glyphicon glyphicon-filter" />
-									</a></li>
+									<li>
+										<a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-portoflio-tree-filter"> 
+											<span class="glyphicon glyphicon-filter" />
+										</a>
+									</li>
 									<li><a href="#" class="btn btn-default" onclick="jsTreeManager.expand()"> <span class="fa fa-expand" />
 									</a></li>
 									<li><a href="#" class="btn btn-default" onclick="jsTreeManager.collapse()"> <span
@@ -143,7 +144,40 @@
 				   			</div>
 						</div>
 					</form>
-					
+					<!-- Change Project Modal -->
+					<div id="modal-portoflio-tree-filter" class="modal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title">Filters</h4>
+								</div>
+								<div class="modal-body">
+									<div class="row form-row">
+								       <div class="col-sm-3 col-md-2">
+								       	<span class="">Category</span>
+								       </div>
+								       <div class="col-sm-9 col-md-10">
+								       		<select class="select2" id="filter_categoryId">
+									       		<option value="">None</option>
+<!-- 									       		<option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option> -->
+									       	</select>
+								       </div>
+								   </div>
+								</div>
+								<div class="modal-footer">
+									<a type="button" class="btn btn-primary" th:href="@{/ui/portfolio}">Apply</a>
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+								<!--/modal-footer-collapse -->
+							</div>
+							<!-- /.modal-content -->
+						</div>
+						<!-- /.modal-dialog -->
+					</div>
+					<!-- /.modal -->
 				</div>
 			</div>
 		</div>

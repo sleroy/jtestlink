@@ -140,6 +140,12 @@ function RestAPI() {
 				"find": function(projectKey, callback) {
 					call("projects/"+projectKey+"/tags", callback);
 				}
+			},
+			
+			"categories": {
+				
+				"URL": REST_PREFIX+"projects/categories/all"
+				
 			}
 		},
 		

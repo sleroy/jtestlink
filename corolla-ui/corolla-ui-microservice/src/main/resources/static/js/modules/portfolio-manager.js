@@ -27,6 +27,8 @@ function initPortfolio() {
 	
 	initDeleteProjectModal();
 	
+	initTreeFilters();
+	
 }
 
 function initDetailsView() {
@@ -242,6 +244,10 @@ function initJsTree(typeData, data) {
 		});
 	});
 
+	/**
+	 * Action triggered when the user types something
+	 * in the treeview's search bar
+	 */
 	$(TREE_SEARCH_BAR).change(function() {
 		var value = $(TREE_SEARCH_BAR).val();
 		jsTreeManager.search(value);
@@ -322,6 +328,26 @@ function initDeleteProjectBranchModal() {
 
 		});
 		
+	});
+	
+}
+
+function initTreeFilters() {
+	
+	$('#filter_categoryId').select2({
+		ajax: {
+			url: restAPI.projects.categories.URL,
+			dataType: 'json',
+			processResults: function(data, page) {
+				var items = [{ id: 0, text: 'none' }];
+				$.each(data, function(i, v) {
+					items.push({ id: v.id, text: v.name });
+				});
+				return { 
+					results: items 
+				}
+			}
+		}
 	});
 	
 }
