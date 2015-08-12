@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.servlet.Filter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,6 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
-import com.tocea.corolla.products.commands.EditProjectCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
@@ -84,6 +84,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		existingProject.setKey("COROLLA_TEST");
 		existingProject.setName("Corolla");
 		existingProject.setStatusId(projectStatus.getId());
+		existingProject.setTags(Lists.newArrayList("tag1", "tag2"));
 		
 		gate.dispatch(new CreateProjectCommand(existingProject));
 		
@@ -92,14 +93,37 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		
 	}
 	
+	private String buildProjectURL(Project project) {
+		
+		return 
+				new StringBuilder(PROJECTS_URL)
+				.append(project.getKey())
+				.toString();
+	}
+	
 	private String buildDeleteBranchURL(Project project, ProjectBranch branch) {
 		
 		return
-				new StringBuilder(PROJECTS_URL)
-				.append(project.getKey())
+				new StringBuilder(buildProjectURL(project))
 				.append("/branches/")
 				.append(branch.getName())
 				.append("/delete")
+				.toString();
+	}
+	
+	private String buildProjectTagsURL(Project project) {
+		
+		return
+				new StringBuilder(buildProjectURL(project))
+				.append("/tags")
+				.toString();
+	}
+	
+	private String buildProjectTagsPushURL(Project project) {
+		
+		return
+				new StringBuilder(buildProjectTagsURL(project))
+				.append("/push")
 				.toString();
 	}
 	
@@ -188,10 +212,6 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	@Test
 	public void shouldRetrieveAllTags() throws Exception {
 		
-		existingProject.setTags(Lists.newArrayList("tag1", "tag2"));
-		
-		gate.dispatch(new EditProjectCommand(existingProject));
-		
 		Project project2 = new Project();
 		project2.setKey("P2");
 		project2.setName("Project 2");
@@ -218,4 +238,88 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 			)
 			.andExpect(redirectedUrlPattern("**/login"));
 	}
+	
+	@Test
+	public void shouldRetrieveProjectTags() throws Exception {
+		
+		mvc
+			.perform(
+					get(buildProjectTagsURL(existingProject))
+					.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(existingProject.getTags().size())));
+		
+	}
+	
+	@Test
+	public void shouldReturnAnEmptyListOfTagsOnInvalidProjectKey() throws Exception {
+		
+		Project invalidProject = new Project();
+		invalidProject.setKey("invalid_key");
+		
+		mvc
+			.perform(
+					get(buildProjectTagsURL(invalidProject))
+					.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(0)));
+		
+	}
+	
+	@Test
+	public void anonymousUserShouldNotRetrieveProjectTags() throws Exception {
+		
+		mvc
+			.perform(
+				get(buildProjectTagsURL(existingProject))
+			)
+			.andExpect(redirectedUrlPattern("**/login"));
+		
+	}
+	
+	@Test
+	public void managerUserShouldPushProjectTags() throws Exception {
+		
+		List<String> newTags = Lists.newArrayList("newTags_1", "newTags_2", "newTags_3");
+		
+		mvc
+			.perform(
+				post(buildProjectTagsPushURL(existingProject))
+				.content("tags="+StringUtils.join(newTags, ","))
+				.with(user(AuthUserUtils.projectManager()))
+			)
+			.andExpect(status().isOk());
+
+		existingProject = projectDAO.findOne(existingProject.getId());
+		
+		assertEquals(newTags.size(), existingProject.getTags().size());
+		
+		for(String newTag : newTags) {
+			assert existingProject.getTags().contains(newTag);
+		}
+		
+	}
+	
+	@Test
+	public void basicUserShouldNotPushProjectTags() throws Exception {
+		
+		List<String> newTags = Lists.newArrayList("newTags_1", "newTags_2", "newTags_3");
+		List<String> originTags = Lists.newArrayList(existingProject.getTags());
+		
+		mvc
+			.perform(
+				post(buildProjectTagsPushURL(existingProject))
+				.content("tags="+StringUtils.join(newTags, ","))
+				.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isForbidden());
+
+		existingProject = projectDAO.findOne(existingProject.getId());
+		
+		assertEquals(originTags, existingProject.getTags());
+		
+	}
+	
 }
