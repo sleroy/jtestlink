@@ -366,4 +366,20 @@ function initTreeFilters() {
 		}
 	});
 	
+	$('#filter_ownerId').select2({
+		ajax: {
+			url: restAPI.users.URL,
+			dataType: 'json',
+			processResults: function(data, page) {
+				var items = [{ id: 0, text: 'All' }];
+				$.each(data.data, function(i, v) {
+					items.push({ id: v.id, text: v.firstName+' '+v.lastName });
+				});
+				return { 
+					results: items 
+				}
+			}
+		}
+	});
+	
 }

@@ -1,10 +1,13 @@
 package com.tocea.corolla.products.rest;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,6 +29,7 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
+import com.tocea.corolla.products.commands.EditProjectCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
@@ -38,6 +42,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 
 	private static final String PROJECTS_URL 		= "/rest/projects/";
 	private static final String PROJECTS_ALL_URL	= PROJECTS_URL+"all";
+	private static final String TAGS_URL			= PROJECTS_URL+"/tags";
 	
 	@Autowired
 	private WebApplicationContext context;
@@ -60,8 +65,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	private Project existingProject;
 	private ProjectBranch masterBranch;
 	private ProjectBranch devBranch;
-	
-	
+		
 	@Before
 	public void setUp() {
 		
@@ -179,5 +183,39 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		
 		assertNotNull(branchDAO.findOne(masterBranch.getId()));
 		
+	}
+	
+	@Test
+	public void shouldRetrieveAllTags() throws Exception {
+		
+		existingProject.setTags(Lists.newArrayList("tag1", "tag2"));
+		
+		gate.dispatch(new EditProjectCommand(existingProject));
+		
+		Project project2 = new Project();
+		project2.setKey("P2");
+		project2.setName("Project 2");
+		project2.setTags(Lists.newArrayList("tag2", "tag3"));
+		
+		gate.dispatch(new CreateProjectCommand(project2));
+		
+		mvc
+			.perform(
+					get(TAGS_URL)
+					.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(3)));
+		
+	}
+	
+	@Test
+	public void anonymousUserShouldNotRetrieveAllTags() throws Exception {
+		
+		mvc
+			.perform(
+					get(TAGS_URL)
+			)
+			.andExpect(redirectedUrlPattern("**/login"));
 	}
 }

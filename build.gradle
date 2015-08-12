@@ -196,6 +196,9 @@ allprojects {
 
 		testCompile "org.springframework.security:spring-security-test:$SPRING_SECU"
 		
+		testCompile "com.jayway.jsonpath:json-path:$TEST_JAYWAY_JSONPATH"
+		testCompile "com.jayway.jsonpath:json-path-assert:$TEST_JAYWAY_JSONPATH"
+		
     }
 
     configurations.all {

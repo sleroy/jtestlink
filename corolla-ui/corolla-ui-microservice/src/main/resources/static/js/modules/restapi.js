@@ -45,6 +45,8 @@ function RestAPI() {
 		
 		"users": {
 			
+			"URL": REST_PREFIX+"users/all",
+			
 			"all": function(callback) {
 				call("users/all", callback);
 			},
