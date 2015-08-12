@@ -1,3 +1,17 @@
+/*
+ * Corolla - A Tool to manage software requirements and test cases 
+ * Copyright (C) 2015 Tocea
+ * 
+ * This file is part of Corolla.
+ * 
+ * Corolla is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, 
+ * or any later version.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.tocea.corolla.products.utils;
 
 import java.util.Collection;
@@ -9,16 +23,31 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.products.domain.Project;
 
+/**
+ * Define a list of utility methods
+ * that can be applied on Project objects
+ * @author dmichel
+ *
+ */
 public class ProjectUtils {
 	
+	/**
+	 * Retrieves a specific project from its ID
+	 * in a collection of Project instances
+	 * @param ID
+	 * @param projects
+	 * @return a Project instance of null if no project could have been found
+	 */
 	public static Project findByID(final String ID, Collection<Project> projects) {
 		
 		Collection<Project> match = Collections2.filter(projects, new Predicate<Project>() {
 			@Override
 			public boolean apply(Project project) {
-				return project.getId().equals(ID);
-			}
-			
+				if (project != null && project.getId() != null) {
+					return project.getId().equals(ID);
+				}
+				return false;
+			}			
 		});
 		
 		return match.isEmpty() ? null : Lists.newArrayList(match).get(0);
