@@ -146,6 +146,11 @@ function RestAPI() {
 				
 				"URL": REST_PREFIX+"projects/categories/all"
 				
+			},
+			
+			"statuses": {
+				
+				"URL": REST_PREFIX+"projects/status/all"
 			}
 		},
 		

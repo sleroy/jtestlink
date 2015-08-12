@@ -339,7 +339,23 @@ function initTreeFilters() {
 			url: restAPI.projects.categories.URL,
 			dataType: 'json',
 			processResults: function(data, page) {
-				var items = [{ id: 0, text: 'none' }];
+				var items = [{ id: 0, text: 'All' }];
+				$.each(data, function(i, v) {
+					items.push({ id: v.id, text: v.name });
+				});
+				return { 
+					results: items 
+				}
+			}
+		}
+	});
+	
+	$('#filter_statusId').select2({
+		ajax: {
+			url: restAPI.projects.statuses.URL,
+			dataType: 'json',
+			processResults: function(data, page) {
+				var items = [{ id: 0, text: 'All' }];
 				$.each(data, function(i, v) {
 					items.push({ id: v.id, text: v.name });
 				});
