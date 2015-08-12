@@ -1,14 +1,11 @@
 package com.tocea.corolla.portfolio.commands.handlers;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.annotations.CommandHandler;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
@@ -19,9 +16,7 @@ import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.portfolio.exceptions.ProjectNodeAlreadyExistException;
 import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
-import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.exceptions.MissingProjectInformationException;
-import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 
 @CommandHandler
@@ -54,12 +49,8 @@ public class CreateProjectNodeCommandHandler implements ICommandHandler<CreatePr
 			portfolio = gate.dispatch(new CreatePortfolioCommand());		
 		}
 		
-		List<TreeNode> nodes = Lists.newArrayList(portfolio.getNodes());
-		
 		ProjectNode sameNode = (ProjectNode) treeManagementService.findNode(portfolio, new FindNodeByProjectIDPredicate(projectID));
-		
-		//ProjectNode sameNode = PortfolioUtils.findNodeByProjectId(projectID, nodes);
-		
+
 		if (sameNode != null) {
 			throw new ProjectNodeAlreadyExistException();
 		}
