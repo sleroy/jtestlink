@@ -1,3 +1,17 @@
+/*
+ * Corolla - A Tool to manage software requirements and test cases 
+ * Copyright (C) 2015 Tocea
+ * 
+ * This file is part of Corolla.
+ * 
+ * Corolla is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, 
+ * or any later version.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.tocea.corolla.cqrs.gate.spring;
 
 import java.io.IOException;
@@ -69,7 +83,7 @@ public class CommandTraceSerializationService implements ICommandExecutionListen
 				objectMapper.writeValue(configuration.getTraceFile(), trace);
 			}
 		} catch (final IOException e) {
-			LOGGER.error("Could not create the trace, already existing");
+			LOGGER.error("Could not create the trace, already existing -> {}", e);
 		}
 	}
 	
@@ -94,7 +108,7 @@ public class CommandTraceSerializationService implements ICommandExecutionListen
 			final CommandTrace trace = objectMapper.readValue(configuration.getTraceFile(), CommandTrace.class);
 			trace.addCommand(_command);
 			objectMapper.writeValue(configuration.getTraceFile(), trace);
-		} catch (final Throwable e) {
+		} catch (final Exception e) {
 			LOGGER.error("Error during the serialization of the command {} -> {}", configuration.getTraceFile(),
 			        _command, e);
 		}
