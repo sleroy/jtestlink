@@ -230,6 +230,10 @@ function JsTreeManager(SELECTOR) {
 		'extractNode': function(data) {
 			var inst = $.jstree.reference(data.reference);
 		   return inst ? inst.get_node(data.reference) : null;
+		},
+		
+		'search': function(kw) {
+			$(SELECTOR).jstree(true).search(kw);
 		}
 	}
 	

@@ -8,6 +8,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
 import org.javers.core.diff.changetype.ValueChange;
+import org.javers.core.diff.changetype.container.ListChange;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.core.metamodel.property.Property;
 import org.javers.repository.jql.QueryBuilder;
@@ -120,25 +121,52 @@ public class JaversRevisionService implements IRevisionService {
 	}
 	
 	@Override
-	public List<IChange> compare(Object oldVersion, Object currentVersion) {
+	public List<IChange> compare(final Object oldVersion, final Object currentVersion) {
 		
 		Diff diff = javers.compare(oldVersion, currentVersion);
 
 		List<ValueChange> changes = diff.getChangesByType(ValueChange.class);
 		
-		if (changes == null) {
-			return Lists.newArrayList();
+		List<IChange> results = Lists.newArrayList();
+		
+		if (changes != null) {
+			results.addAll(Lists.transform(changes, new Function<ValueChange, IChange>() {
+	
+				@Override
+				public IChange apply(ValueChange valueChange) {
+					return new Change(valueChange);
+				}
+				
+			}));
 		}
 		
-		return Lists.transform(changes, new Function<ValueChange, IChange>() {
-
-			@Override
-			public IChange apply(ValueChange valueChange) {
-				return new Change(valueChange);
-			}
-			
-		});	
+		List<ListChange> listChanges = diff.getChangesByType(ListChange.class);
 		
+		if (listChanges != null) {
+			results.addAll(Lists.transform(listChanges, new Function<ListChange, IChange>() {
+	
+				@Override
+				public IChange apply(ListChange valueChange) {
+					Change change = new Change();
+					change.setPropertyName(valueChange.getPropertyName());
+					change.setPropertyType(valueChange.getProperty().getType());
+					try {
+						change.setRightValue(PropertyUtils.getProperty(currentVersion, change.getPropertyName()));
+					} catch (Exception e) {
+						change.setRightValue(null);
+					}
+					try {
+						change.setLeftValue(PropertyUtils.getProperty(oldVersion, change.getPropertyName()));
+					} catch (Exception e) {
+						change.setLeftValue(null);
+					}
+					return change;
+				}
+				
+			}));
+		}
+		
+		return results;
 	}
 
 	@Override

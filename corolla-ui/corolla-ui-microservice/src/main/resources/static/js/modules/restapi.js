@@ -45,6 +45,8 @@ function RestAPI() {
 		
 		"users": {
 			
+			"URL": REST_PREFIX+"users/all",
+			
 			"all": function(callback) {
 				call("users/all", callback);
 			},
@@ -137,9 +139,22 @@ function RestAPI() {
 			
 			"tags": {
 				
+				"URL": REST_PREFIX+"projects/tags",
+				
 				"find": function(projectKey, callback) {
 					call("projects/"+projectKey+"/tags", callback);
 				}
+			},
+			
+			"categories": {
+				
+				"URL": REST_PREFIX+"projects/categories/all"
+				
+			},
+			
+			"statuses": {
+				
+				"URL": REST_PREFIX+"projects/status/all"
 			}
 		},
 		

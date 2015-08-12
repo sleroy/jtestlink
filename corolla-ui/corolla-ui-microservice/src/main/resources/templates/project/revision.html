@@ -60,8 +60,8 @@
 	                    </tr>
 	                    <tr th:each="change : ${changes}">
 	                    	<td><b th:text="${change.getPropertyName()}"></b></td>
-	                    	<td th:if="${previousCommit != null}" th:text="${change.getLeftValue()}"></td>
-	                    	<td class="updated" th:text="${change.getRightValue()}"></td>
+	                    	<td th:if="${previousCommit != null}" th:text="${changeFormatter.format(change, 'L')}"></td>
+	                    	<td class="updated" th:text="${changeFormatter.format(change, 'R')}"></td>
 	                    </tr>
 	                  </table>
 	                </div><!-- /.box-body -->

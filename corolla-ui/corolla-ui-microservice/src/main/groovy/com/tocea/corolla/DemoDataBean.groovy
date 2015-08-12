@@ -211,7 +211,8 @@ public class DemoDataBean {
 				key: 'komea', 
 				name: 'Komea Dashboard', 
 				description: 'Tool for measuring and managing key performance indicators in a software factory',
-				statusId: statusActive.id
+				statusId: statusActive.id,
+				tags: ["Komea", "Dashboard", "software factory"]
 		), komeaFolderNode.id)
 		
 		def komeaRedmine = this.gate.dispatch new CreateProjectCommand(new Project(
@@ -341,6 +342,54 @@ public class DemoDataBean {
 			name: 'Change the type of a folder in the portfolio tree',
 			description: 'Anyone with the required permissions should be able to change the type of a folder node in the portfolio tree'
 		))
+		def req_viewProjectVersions = this.newRequirement(new Requirement(
+			key: 'PROJECT_REVISIONS_VIEW',
+			projectBranchId: masterBranch.id,
+			name: 'View the list of revisions of a project',
+			description: 'Anyone who has access to a project should be able to view the list of all the revisions of a project'
+		))
+		def req_viewChangelogProjectRevision = this.newRequirement(new Requirement(
+			key: 'PROJECT_REVISIONS_CHANGELOG',
+			projectBranchId: masterBranch.id,
+			name: "View the changelog of a project's revision",
+			description: 'Anyone who has access to a project should be able to view the list of changes made to a project in a specific revision'
+		))
+		def req_restoreProjectState = this.newRequirement(new Requirement(
+			key: 'PROJECT_REVISIONS_RESTORE',
+			projectBranchId: masterBranch.id,
+			name: "Restore a project to a previous state",
+			description: 'Anyone who has write permissions on a project shoud be able to restore a project to a previous revision'
+		))
+		def req_addTagToProject = this.newRequirement(new Requirement(
+			key: 'PROJECT_TAGS_ADD',
+			projectBranchId: masterBranch.id,
+			name: "Attach a tag to a project",
+			description: 'Anyone who has write permissions on a project shoud be able to attach a tag to the project'
+		))
+		def req_removeTagToProject = this.newRequirement(new Requirement(
+			key: 'PROJECT_TAGS_REMOVE',
+			projectBranchId: masterBranch.id,
+			name: "Remove a tag from a project",
+			description: 'Anyone who has write permissions on a project shoud be able to remove a tag from a project'
+		))
+		def req_createProjectBranch = this.newRequirement(new Requirement(
+			key: 'PROJECT_BRANCHES_CREATE',
+			projectBranchId: masterBranch.id,
+			name: "Create a project branch",
+			description: "Anyone who has write permissions on a project shoud be able to create a new project branch from an existing branch"
+		))
+		def req_editProjectBranch = this.newRequirement(new Requirement(
+			key: 'PROJECT_BRANCHES_EDIT',
+			projectBranchId: masterBranch.id,
+			name: "Edit a project branch",
+			description: "Anyone who has write permissions on a project shoud be able to edit a project branch"
+		))
+		def req_deleteProjectBranch = this.newRequirement(new Requirement(
+			key: 'PROJECT_BRANCHES_DELETE',
+			projectBranchId: masterBranch.id,
+			name: "Delete a project branch",
+			description: "Anyone who has write permissions on a project shoud be able to delete a project branch"
+		))
 		
 		/*
 		 * Requirements Tree
@@ -353,8 +402,7 @@ public class DemoDataBean {
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteUser.id).id, userManagementFolder.id)
 		
 		def portfolioManagementFolder = this.newRequirementTextNode(masterBranch, null, 'PORTFOLIO MANAGEMENT', basicFolder)
-		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addProject.id).id, portfolioManagementFolder.id)
-		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editProject.id).id, portfolioManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addProject.id).id, portfolioManagementFolder.id)		
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteProject.id).id, portfolioManagementFolder.id)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_viewPortfolio.id).id, portfolioManagementFolder.id)
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_moveNodePortfolio.id).id, portfolioManagementFolder.id)
@@ -362,6 +410,20 @@ public class DemoDataBean {
 		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deletePortfolioNode.id).id, portfolioManagementFolder.id)
 		this.moveRequirementNode(tree, masterBranch, req_editPortfolioFolder, portfolioManagementFolder.id)
 		this.moveRequirementNode(tree, masterBranch, req_changePortfolioFolderType, portfolioManagementFolder.id)
+		
+		def projectManagementFolder = this.newRequirementTextNode(masterBranch, null, 'PROJECT MANAGEMENT', basicFolder)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editProject.id).id, projectManagementFolder.id)
+		def projectRevisionsManagementFolder = this.newRequirementTextNode(masterBranch, projectManagementFolder.id, 'PROJECT REVISIONS MANAGEMENT', basicFolder)
+				this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_viewProjectVersions.id).id, projectRevisionsManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_viewChangelogProjectRevision.id).id, projectRevisionsManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_restoreProjectState.id).id, projectRevisionsManagementFolder.id)
+		def projectTagsManagementFolder = this.newRequirementTextNode(masterBranch, projectManagementFolder.id, 'PROJECT TAGS MANAGEMENT', basicFolder)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_addTagToProject.id).id, projectTagsManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_removeTagToProject.id).id, projectTagsManagementFolder.id)
+		def projectBranchesManagementFolder = this.newRequirementTextNode(masterBranch, projectManagementFolder.id, 'PROJECT TAGS MANAGEMENT', basicFolder)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_createProjectBranch.id).id, projectBranchesManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_editProjectBranch.id).id, projectBranchesManagementFolder.id)
+		this.moveRequirementNode(masterBranch, this.findRequirementTreeNode(tree, req_deleteProjectBranch.id).id, projectBranchesManagementFolder.id)
 		
 		/**
 		 * Create a new Branch derivated from Master

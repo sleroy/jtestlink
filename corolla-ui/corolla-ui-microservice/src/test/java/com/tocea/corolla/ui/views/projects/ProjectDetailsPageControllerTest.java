@@ -1,6 +1,9 @@
 package com.tocea.corolla.ui.views.projects;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -8,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.servlet.Filter;
 
@@ -25,6 +29,7 @@ import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
+import com.tocea.corolla.products.commands.EditProjectCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
@@ -32,12 +37,9 @@ import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.revisions.domain.ICommit;
 import com.tocea.corolla.revisions.services.IRevisionService;
+import com.tocea.corolla.tests.utils.AuthUserUtils;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.ui.AbstractSpringTest;
-import com.tocea.corolla.ui.security.AuthUser;
-import com.tocea.corolla.users.domain.Permission;
-import com.tocea.corolla.users.domain.Role;
-import com.tocea.corolla.users.domain.User;
 
 public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 
@@ -69,11 +71,6 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 	@Autowired
 	private IPortfolioDAO portfolioDAO;
 	
-	private Role basicRole;	
-	private User basicUser;
-	private Role managerRole;
-	private User managerUser;
-	
 	private ProjectStatus projectStatus;
 	private Project existingProject;
 	private ProjectBranch existingBranch;
@@ -85,24 +82,6 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 				.webAppContextSetup(context)
 				.addFilters(springSecurityFilterChain)
 				.build();
-		
-		basicRole = new Role();
-		basicRole.setName("BASIC");
-		basicRole.setPermissions("");
-		
-		basicUser = new User();
-		basicUser.setLogin("simple");
-		basicUser.setPassword("pass");
-		basicUser.setEmail("simple@corolla.com");
-		
-		managerRole = new Role();
-		managerRole.setName("MANAGER");
-		managerRole.setPermissions(Permission.PORTFOLIO_MANAGEMENT);
-		
-		managerUser = new User();
-		managerUser.setLogin("manager");
-		managerUser.setPassword("pass");
-		managerUser.setEmail("manager@corolla.com");
 		
 		projectStatus = new ProjectStatus();
 		projectStatus.setName("Active");
@@ -149,6 +128,15 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 				.toString();
 	}
 	
+	private String buildRestoreStateURL(Project project, String commitID) {
+		
+		return
+				new StringBuilder(buildRevisionPageURL(project, commitID))
+				.append("/restore")
+				.toString();
+		
+	}
+	
 	private String buildCreateBranchURL(Project project, ProjectBranch origin) {
 		
 		return
@@ -179,7 +167,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 	public void basicUserShouldAccessProjectDetailsView() throws Exception {
 		
 		mvc
-		.perform(get(buildProjectURL(existingProject)).with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(buildProjectURL(existingProject)).with(user(AuthUserUtils.basicUser())))
 		.andExpect(status().isOk());
 		
 	}
@@ -200,12 +188,12 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		invalidProject.setKey("not_existing_key");
 		
 		mvc
-		.perform(get(buildProjectURL(invalidProject)).with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(buildProjectURL(invalidProject)).with(user(AuthUserUtils.basicUser())))
 		.andExpect(status().isNotFound());
 	}
 	
 	@Test
-	public void basicUserShouldEditProjectData() throws Exception {
+	public void managerUserShouldEditProjectData() throws Exception {
 		
 		String newKey = "key_blblbl";
 		String newName = "name blblbl";
@@ -216,7 +204,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 				.param("id", existingProject.getId())
 				.param("key", newKey)
 				.param("name", newName)
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(AuthUserUtils.projectManager())))
 		.andExpect(status().isFound());
 		
 		existingProject = projectDAO.findOne(existingProject.getId());
@@ -260,7 +248,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 				.param("key", newKey)
 				.param("name", newName)
 				.param("statusId", projectStatus.getId())
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(AuthUserUtils.projectManager())))
 		.andExpect(status().isOk());
 		
 		Project project = projectDAO.findOne(existingProject.getId());
@@ -281,7 +269,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		
 		mvc
 			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
+					get(URL).with(user(AuthUserUtils.basicUser()))
 			)
 			.andExpect(status().isOk());
 		
@@ -301,7 +289,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		
 		mvc
 			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
+					get(URL).with(user(AuthUserUtils.basicUser()))
 			)
 			.andExpect(status().isNotFound());
 		
@@ -314,7 +302,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		
 		mvc
 			.perform(
-					get(URL).with(user(new AuthUser(basicUser, basicRole)))
+					get(URL).with(user(AuthUserUtils.basicUser()))
 			)
 			.andExpect(status().isNotFound());
 		
@@ -329,7 +317,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		.perform(
 				post(buildCreateBranchURL(existingProject, existingBranch))
 				.param("name", newName)
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(AuthUserUtils.basicUser())))
 		.andExpect(status().isFound());
 		
 		ProjectBranch newBranch = branchDAO.findByNameAndProjectId(newName, existingProject.getId());
@@ -346,7 +334,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 			.perform(
 				post(buildCreateBranchURL(existingProject, existingBranch))
 				.param("name", existingBranch.getName())
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(AuthUserUtils.basicUser())))
 			.andExpect(status().isOk());
 		
 		assertEquals(nbBranches, branchDAO.count());
@@ -364,7 +352,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 				.param("id", existingBranch.getId())
 				.param("name", newName)
 				.param("projectId", existingBranch.getProjectId())
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(AuthUserUtils.basicUser())))
 		.andExpect(status().isFound());
 		
 		existingBranch = branchDAO.findOne(existingBranch.getId());
@@ -383,7 +371,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 				.param("id", existingBranch.getId())
 				.param("name", alreadyExistingBranch.getName())
 				.param("projectId", existingBranch.getProjectId())
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(AuthUserUtils.basicUser())))
 		.andExpect(status().isOk());
 		
 		existingBranch = branchDAO.findOne(existingBranch.getId());
@@ -397,7 +385,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 				get(buildDeleteProjectURL(existingProject)).
-				with(user(new AuthUser(basicUser, basicRole)))
+				with(user(AuthUserUtils.basicUser()))
 			)
 			.andExpect(status().isForbidden());
 		
@@ -411,7 +399,7 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 				get(buildDeleteProjectURL(existingProject)).
-				with(user(new AuthUser(managerUser, managerRole)))
+				with(user(AuthUserUtils.portfolioManager()))
 			)
 			.andExpect(status().isFound());
 
@@ -425,6 +413,56 @@ public class ProjectDetailsPageControllerTest extends AbstractSpringTest {
 		// The project node in the portfolio should have been deleted
 		assertNull(treeManagementService.findNode(portfolio, new FindNodeByProjectIDPredicate(deletedID)));
 
+	}
+	
+	@Test
+	public void managerUserShouldRestoreProjectToPreviousState() throws Exception {
+		
+		String oldName = existingProject.getName();
+		String newName = "newName";
+		
+		existingProject.setName(newName);
+		gate.dispatch(new EditProjectCommand(existingProject));		
+		assertEquals(newName, projectDAO.findOne(existingProject.getId()).getName());
+				
+		Collection<ICommit> commits = revisionService.getHistory(existingProject.getId(), existingProject.getClass());
+		
+		Iterator<ICommit> it = commits.iterator();
+		it.next();		
+		String commitID = it.next().getId();
+		
+		String URL = buildRestoreStateURL(existingProject, commitID);
+		
+		mvc
+			.perform(get(URL).with(user(AuthUserUtils.projectManager())))
+			.andExpect(status().isFound());
+		
+		assertEquals(oldName, projectDAO.findOne(existingProject.getId()).getName());
+		
+	}
+	
+	@Test
+	public void basicUserShouldNotRestoreProjectToPreviousState() throws Exception {
+		
+		String newName = "newName";
+		
+		existingProject.setName(newName);
+		gate.dispatch(new EditProjectCommand(existingProject));
+		
+		Collection<ICommit> commits = revisionService.getHistory(existingProject.getId(), existingProject.getClass());
+		
+		Iterator<ICommit> it = commits.iterator();
+		it.next();		
+		String commitID = it.next().getId();
+		
+		String URL = buildRestoreStateURL(existingProject, commitID);
+		
+		mvc
+			.perform(get(URL).with(user(AuthUserUtils.basicUser())))
+			.andExpect(status().isForbidden());
+		
+		assertEquals(newName, projectDAO.findOne(existingProject.getId()).getName());
+		
 	}
 	
 }

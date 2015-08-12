@@ -1,38 +1,48 @@
 package com.tocea.corolla.products.rest;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
 
 import javax.servlet.Filter;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
+import com.tocea.corolla.products.commands.EditProjectCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.domain.ProjectStatus;
+import com.tocea.corolla.tests.utils.AuthUserUtils;
 import com.tocea.corolla.ui.AbstractSpringTest;
-import com.tocea.corolla.ui.security.AuthUser;
-import com.tocea.corolla.users.domain.Permission;
-import com.tocea.corolla.users.domain.Role;
-import com.tocea.corolla.users.domain.User;
 
 public class ProjectRestControllerTest extends AbstractSpringTest {
 
-	private static final String PROJECTS_URL 	= "/rest/projects/";
+	private static final String PROJECTS_URL 		= "/rest/projects/";
+	private static final String PROJECTS_ALL_URL	= PROJECTS_URL+"all";
+	private static final String TAGS_URL			= PROJECTS_URL+"/tags";
 	
 	@Autowired
 	private WebApplicationContext context;
@@ -51,17 +61,11 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	@Autowired
 	private Gate gate;
 	
-	private Role basicRole;	
-	private User basicUser;
-	private Role managerRole;
-	private User managerUser;
-	
 	private ProjectStatus projectStatus;
 	private Project existingProject;
 	private ProjectBranch masterBranch;
 	private ProjectBranch devBranch;
-	
-	
+		
 	@Before
 	public void setUp() {
 		
@@ -69,24 +73,6 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				.webAppContextSetup(context)
 				.addFilters(springSecurityFilterChain)
 				.build();
-		
-		basicRole = new Role();
-		basicRole.setName("BASIC");
-		basicRole.setPermissions("");
-		
-		basicUser = new User();
-		basicUser.setLogin("simple");
-		basicUser.setPassword("pass");
-		basicUser.setEmail("simple@corolla.com");
-		
-		managerRole = new Role();
-		managerRole.setName("MANAGER");
-		managerRole.setPermissions(Permission.PROJECT_MANAGEMENT);
-		
-		managerUser = new User();
-		managerUser.setLogin("manager");
-		managerUser.setPassword("pass");
-		managerUser.setEmail("manager@corolla.com");
 		
 		projectStatus = new ProjectStatus();
 		projectStatus.setName("Active");
@@ -118,12 +104,52 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	}
 	
 	@Test
+	public void basicUserShouldListAllProjects() throws Exception {
+			
+		mvc
+			.perform(
+					get(PROJECTS_ALL_URL)
+					.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void anonymousUserShouldNotListAllProjects() throws Exception {
+		
+		mvc
+			.perform(
+				get(PROJECTS_ALL_URL)
+			)
+			.andExpect(redirectedUrlPattern("**/login"));
+		
+	}
+	
+	@Test
+	public void basicUserShouldListAllProjectsFromCollectionOfIDs() throws Exception {
+		
+		List<String> ids = Lists.newArrayList(existingProject.getId());
+		Gson gson = new Gson();
+		
+		mvc
+			.perform(
+				post(PROJECTS_ALL_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(gson.toJson(ids))
+				.with(user(AuthUserUtils.basicUser()))
+		)
+		.andExpect(status().isOk());
+		
+	}
+	
+	@Test
 	public void projectManagerUserShouldDeleteBranch() throws Exception {
 		
 		mvc
 			.perform(
 					get(buildDeleteBranchURL(existingProject, devBranch)).
-				with(user(new AuthUser(managerUser, managerRole)))
+				with(user(AuthUserUtils.projectManager()))
 			)
 			.andExpect(status().isOk());
 			
@@ -137,7 +163,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(buildDeleteBranchURL(existingProject, devBranch)).
-				with(user(new AuthUser(basicUser, basicRole)))
+				with(user(AuthUserUtils.basicUser()))
 			)
 			.andExpect(status().isForbidden());
 			
@@ -151,11 +177,45 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 				get(buildDeleteBranchURL(existingProject, masterBranch))
-				.with(user(new AuthUser(managerUser, managerRole)))
+				.with(user(AuthUserUtils.projectManager()))
 			)
 			.andExpect(status().isNotAcceptable());
 		
 		assertNotNull(branchDAO.findOne(masterBranch.getId()));
 		
+	}
+	
+	@Test
+	public void shouldRetrieveAllTags() throws Exception {
+		
+		existingProject.setTags(Lists.newArrayList("tag1", "tag2"));
+		
+		gate.dispatch(new EditProjectCommand(existingProject));
+		
+		Project project2 = new Project();
+		project2.setKey("P2");
+		project2.setName("Project 2");
+		project2.setTags(Lists.newArrayList("tag2", "tag3"));
+		
+		gate.dispatch(new CreateProjectCommand(project2));
+		
+		mvc
+			.perform(
+					get(TAGS_URL)
+					.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(3)));
+		
+	}
+	
+	@Test
+	public void anonymousUserShouldNotRetrieveAllTags() throws Exception {
+		
+		mvc
+			.perform(
+					get(TAGS_URL)
+			)
+			.andExpect(redirectedUrlPattern("**/login"));
 	}
 }

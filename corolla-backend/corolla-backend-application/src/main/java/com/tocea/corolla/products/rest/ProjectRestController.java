@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +28,7 @@ import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException;
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException;
+import com.tocea.corolla.products.utils.ProjectUtils;
 import com.tocea.corolla.users.domain.Permission;
 
 @RestController
@@ -43,17 +45,25 @@ public class ProjectRestController {
 	private Gate gate;
 	
 	@RequestMapping(value = "/all")
-	@Secured({ Permission.REST })
+	@PreAuthorize("isAuthenticated()")
 	public Collection<Project> findAll() {
 		
 		return projectDAO.findAll();
 	}
 	
 	@RequestMapping(value = "/all", method = RequestMethod.POST)
-	@Secured({ Permission.REST })
+	@PreAuthorize("isAuthenticated()")
 	public Collection<Project> findAll(@RequestBody List<String> ids) {
 		
 		return (Collection<Project>) projectDAO.findAll(ids);
+	}
+	
+	@RequestMapping(value="/tags")
+	@PreAuthorize("isAuthenticated()")
+	public Collection<String> findAllTags() {
+		
+		Collection<Project> projects = projectDAO.findAll();
+		return Lists.newArrayList(ProjectUtils.extractTags(projects));
 	}
 	
 	@RequestMapping(value="/{projectKey}/tags")

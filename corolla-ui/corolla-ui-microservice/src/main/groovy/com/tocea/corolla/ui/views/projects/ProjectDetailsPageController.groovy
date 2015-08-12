@@ -28,6 +28,7 @@ import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand
 import com.tocea.corolla.products.commands.EditProjectBranchCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
+import com.tocea.corolla.products.commands.RestoreProjectStateCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectCategoryDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
@@ -38,6 +39,7 @@ import com.tocea.corolla.products.exceptions.ProjectAlreadyExistException;
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
+import com.tocea.corolla.products.utils.ProjectChangeFormatter;
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
@@ -51,7 +53,7 @@ import com.tocea.corolla.users.dto.UserDto
 public class ProjectDetailsPageController {
 
 	private static final String DETAILS_VIEW 		= "project/details"
-	private static final String REVISION_VIEW 		= "portfolio/revision"
+	private static final String REVISION_VIEW 		= "project/revision"
 	private static final String BRANCH_FORM_VIEW	= "project/branch_form"
 	
 	@Autowired
@@ -82,6 +84,9 @@ public class ProjectDetailsPageController {
 	private ITreeManagementService treeManagementService;
 	
 	@Autowired
+	private ProjectChangeFormatter changeFormatter;
+	
+	@Autowired
 	private Gate gate;
 	
 	@ModelAttribute("menu")
@@ -104,6 +109,7 @@ public class ProjectDetailsPageController {
 	}
 	
 	@RequestMapping(value = "/ui/projects/{projectID}/edit", method = RequestMethod.POST)
+	@Secured([Permission.PROJECT_MANAGEMENT])
 	public ModelAndView editProject(@PathVariable String projectID, @Valid @ModelAttribute("project") Project project, BindingResult _result) {
 		
 		project = _result.model.get("project")
@@ -149,8 +155,20 @@ public class ProjectDetailsPageController {
 		model.addObject "commit", commit
 		model.addObject "previousCommit", previousCommit
 		model.addObject "changes", changes
+		model.addObject "changeFormatter", changeFormatter
 		
 		return model			
+	}
+	
+	@RequestMapping("/ui/projects/{projectKey}/revisions/{commitID}/restore")
+	@Secured([Permission.PROJECT_MANAGEMENT])
+	public ModelAndView restoreProjectState(@PathVariable projectKey, @PathVariable commitID) {
+		
+		def project = findProjectOrFail(projectKey)
+				
+		gate.dispatch new RestoreProjectStateCommand(project, commitID)
+		
+		return new ModelAndView("redirect:/ui/projects/"+project.key+"#revisions")
 	}
 	
 	@RequestMapping("/ui/projects/{projectKey}/branches/add/{originBranchName}")

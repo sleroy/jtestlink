@@ -23,7 +23,7 @@ public class Change implements IChange {
 		this.leftValue = valueChange.getLeft();
 		this.rightValue = valueChange.getRight();
 	}
-
+	
 	public String getPropertyName() {
 		return propertyName;
 	}
