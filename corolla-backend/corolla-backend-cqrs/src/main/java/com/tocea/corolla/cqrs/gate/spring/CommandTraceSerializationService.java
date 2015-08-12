@@ -14,6 +14,13 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tocea.corolla.cqrs.gate.conf.CorollaCqrsConfiguration;
 
+/**
+ * This command listener provides a facility to log and serialize every actions
+ * executed by Corolla in order to replay them in tests.
+ *
+ * @author sleroy
+ *         
+ */
 @Service
 public class CommandTraceSerializationService implements ICommandExecutionListener {
 	public static class CommandTrace {
@@ -89,7 +96,7 @@ public class CommandTraceSerializationService implements ICommandExecutionListen
 			objectMapper.writeValue(configuration.getTraceFile(), trace);
 		} catch (final Throwable e) {
 			LOGGER.error("Error during the serialization of the command {} -> {}", configuration.getTraceFile(),
-			        _command, e.getMessage());
+			        _command, e);
 		}
 	}
 	
