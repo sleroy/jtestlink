@@ -40,8 +40,6 @@ import com.tocea.corolla.utils.domain.ObjectValidation;
 @Service
 public class SequentialCommandExecutorService {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SequentialCommandExecutorService.class);
-	
 	@Autowired
 	private HandlersProvider handlersProvider;
 	
@@ -97,7 +95,7 @@ public class SequentialCommandExecutorService {
 			// Notify listeners
 			notifyListenersSuccess(command, result);
 			
-		} catch (final Throwable e) {
+		} catch (final Exception e) {
 			notifyListenersFailure(command, e);
 			throw new CommandExecutionException(command, e);
 			
