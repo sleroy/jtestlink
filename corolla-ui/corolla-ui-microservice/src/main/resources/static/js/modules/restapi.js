@@ -139,6 +139,8 @@ function RestAPI() {
 			
 			"tags": {
 				
+				"URL": REST_PREFIX+"projects/tags",
+				
 				"find": function(projectKey, callback) {
 					call("projects/"+projectKey+"/tags", callback);
 				}

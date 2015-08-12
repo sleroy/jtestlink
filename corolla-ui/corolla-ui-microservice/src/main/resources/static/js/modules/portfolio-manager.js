@@ -382,4 +382,20 @@ function initTreeFilters() {
 		}
 	});
 	
+	$('#filter_tags').select2({
+		ajax: {
+			url: restAPI.projects.tags.URL,
+			dataType: 'json',
+			processResults: function(data, page) {
+				var items = [];
+				$.each(data, function(i, v) {
+					items.push({ id: v, text: v });
+				});
+				return { 
+					results: items 
+				}
+			}
+		}
+	});
+	
 }
