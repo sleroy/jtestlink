@@ -40,6 +40,7 @@ import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectBranch;
+import com.tocea.corolla.products.dto.ProjectFilterDTO;
 import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException;
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException;
 import com.tocea.corolla.products.utils.ProjectUtils;
@@ -70,6 +71,13 @@ public class ProjectRestController {
 	public Collection<Project> findAll(@RequestBody List<String> ids) {
 		
 		return (Collection<Project>) projectDAO.findAll(ids);
+	}
+	
+	@RequestMapping(value = "/filter", method = RequestMethod.POST)
+	@PreAuthorize("isAuthenticated()")
+	public Collection<Project> filterProjects(@RequestBody ProjectFilterDTO filter) {
+		
+		return projectDAO.findProjects(filter.getCategoryIds(), filter.getStatusIds(), filter.getOwnerIds(), filter.getTags());
 	}
 	
 	@RequestMapping(value="/tags")

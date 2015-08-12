@@ -11,11 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.Filter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.domain.ProjectStatus;
+import com.tocea.corolla.products.dto.ProjectFilterDTO;
 import com.tocea.corolla.tests.utils.AuthUserUtils;
 import com.tocea.corolla.ui.AbstractSpringTest;
 
@@ -43,6 +46,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	private static final String PROJECTS_URL 		= "/rest/projects/";
 	private static final String PROJECTS_ALL_URL	= PROJECTS_URL+"all";
 	private static final String TAGS_URL			= PROJECTS_URL+"/tags";
+	private static final String FILTER_URL			= PROJECTS_URL+"/filter";
 	
 	@Autowired
 	private WebApplicationContext context;
@@ -91,6 +95,11 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		masterBranch = branchDAO.findDefaultBranch(existingProject.getId());	
 		devBranch = gate.dispatch(new CreateProjectBranchCommand("Dev", existingProject));
 		
+	}
+	
+	@After
+	public void tearDown() {
+		this.cleanDB();
 	}
 	
 	private String buildProjectURL(Project project) {
@@ -319,6 +328,29 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		existingProject = projectDAO.findOne(existingProject.getId());
 		
 		assertEquals(originTags, existingProject.getTags());
+		
+	}
+	
+	@Test
+	public void basicUserShouldFilterProjectList() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+		filter.setCategoryIds(new ArrayList<String>());
+		filter.setOwnerIds(new ArrayList<String>());
+		filter.setStatusIds(new ArrayList<String>());
+		filter.setTags(new ArrayList<String>());
+		
+		Gson gson = new Gson();
+		
+		mvc
+			.perform(
+				post(FILTER_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(gson.toJson(filter))
+				.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk());
+//			.andExpect(jsonPath("$", hasSize(1)));
 		
 	}
 	
