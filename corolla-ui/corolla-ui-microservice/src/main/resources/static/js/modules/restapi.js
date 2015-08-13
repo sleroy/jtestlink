@@ -41,6 +41,18 @@ function RestAPI() {
 		});
 	}
 	
+	var postJSON = function(url, data, callback) {
+		$.ajax({
+			url			: REST_PREFIX + url,
+			method		: 'post',
+			contentType	: "application/json; charset=utf-8",
+			dataType	: "json",
+			data		: JSON.stringify(data),
+			success 	: callback,
+			error		: errorHandler
+		});	
+	}
+	
 	return {
 		
 		"users": {
@@ -155,7 +167,13 @@ function RestAPI() {
 			"statuses": {
 				
 				"URL": REST_PREFIX+"projects/status/all"
+			
+			},
+			
+			"filter": function(filterDTO, callback) {
+				postJSON("projects/filter/keys", filterDTO, callback);
 			}
+			
 		},
 		
 		"requirements": {

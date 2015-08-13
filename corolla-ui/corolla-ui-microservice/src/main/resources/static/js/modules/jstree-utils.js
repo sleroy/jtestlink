@@ -169,8 +169,35 @@ function JsTreeManager(SELECTOR) {
 		 * Toggles a node in the JsTree view
 		 */
 		'toggleNode': function(node) {
-			console.log(node);
 			$(SELECTOR).jstree(true).select_node(node);
+		},
+		
+		/**
+		 * Hide a node in the JsTree view
+		 */
+		'hideNode': function(node) {
+			$(SELECTOR).jstree(true).hide_node(node);
+		},
+		
+		/**
+		 * Hide all nodes in the JsTree view
+		 */
+		'hideAll': function() {
+			$(SELECTOR).jstree(true).hide_all();
+		},
+		
+		/**
+		 * Show a specific node in the JsTree view
+		 */
+		'showNode': function(node) {
+			$(SELECTOR).jstree(true).show_node(node);
+		},
+		
+		/**
+		 * Show all nodes in the JsTree view
+		 */
+		'showAll': function() {
+			$(SELECTOR).jstree(true).show_all();
 		},
 		
 		/**
@@ -232,6 +259,9 @@ function JsTreeManager(SELECTOR) {
 		   return inst ? inst.get_node(data.reference) : null;
 		},
 		
+		/**
+		 * Search a keyword in the text of each node
+		 */
 		'search': function(kw) {
 			$(SELECTOR).jstree(true).search(kw);
 		}

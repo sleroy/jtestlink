@@ -105,14 +105,14 @@ public class ProjectRestController {
 		return Collections2.filter(projects, new ProjectUtils.DuplicateRemover());		
 	}
 	
-	@RequestMapping(value = "/filter/ids", method = RequestMethod.POST)
+	@RequestMapping(value = "/filter/keys", method = RequestMethod.POST)
 	@PreAuthorize("isAuthenticated()")
 	public Collection<String> filterProjectsAndRetrieveOnlyIDs(@RequestBody ProjectFilterDTO filter) {	
 		
 		return Collections2.transform(filterProjects(filter), new Function<Project, String>() {
 			@Override
 			public String apply(Project input) {
-				return (input != null) ? input.getId() : "";
+				return (input != null) ? input.getKey() : "";
 			}			
 		});
 	}

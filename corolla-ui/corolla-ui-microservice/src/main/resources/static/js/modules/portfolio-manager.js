@@ -1,5 +1,10 @@
-var PROJECTS_TREEVIEW = '.projects-tree-view';
-var TREE_SEARCH_BAR = '.tree-search';
+var PROJECTS_TREEVIEW 	= '.projects-tree-view';
+var TREE_SEARCH_BAR 	= '.tree-search';
+var FILTER_CATEGORIES 	= "#filter_categoryId";
+var FILTER_STATUSES		= '#filter_statusId';
+var FILTER_OWNERS		= '#filter_ownerId';
+var FILTER_TAGS			= '#filter_tags';
+var FILTER_MODAL		= '#modal-portoflio-tree-filter';
 
 var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
 
@@ -332,9 +337,12 @@ function initDeleteProjectBranchModal() {
 	
 }
 
+/**
+ * Initialize the filter modal
+ */
 function initTreeFilters() {
 	
-	$('#filter_categoryId').select2({
+	$(FILTER_CATEGORIES).select2({
 		ajax: {
 			url: restAPI.projects.categories.URL,
 			dataType: 'json',
@@ -350,7 +358,7 @@ function initTreeFilters() {
 		}
 	});
 	
-	$('#filter_statusId').select2({
+	$(FILTER_STATUSES).select2({
 		ajax: {
 			url: restAPI.projects.statuses.URL,
 			dataType: 'json',
@@ -366,7 +374,7 @@ function initTreeFilters() {
 		}
 	});
 	
-	$('#filter_ownerId').select2({
+	$(FILTER_OWNERS).select2({
 		ajax: {
 			url: restAPI.users.URL,
 			dataType: 'json',
@@ -382,7 +390,7 @@ function initTreeFilters() {
 		}
 	});
 	
-	$('#filter_tags').select2({
+	$(FILTER_TAGS).select2({
 		ajax: {
 			url: restAPI.projects.tags.URL,
 			dataType: 'json',
@@ -398,4 +406,40 @@ function initTreeFilters() {
 		}
 	});
 	
+}
+
+/**
+ * Filter the JsTree widget
+ */
+function filterTree() {
+	
+	var filter = {
+			'categoryIds'	: $(FILTER_CATEGORIES).val(),
+			'statusIds'		: $(FILTER_STATUSES).val(),
+			'ownerIds'		: $(FILTER_OWNERS).val(),
+			'tags'			: $(FILTER_TAGS).val()
+	}
+	
+	console.log(filter);
+	
+	restAPI.projects.filter(filter, function(data) {
+		jsTreeManager.showAll();
+		var nodes = jsTreeManager.getNodes();
+		filterNodes(data, nodes);
+		$(FILTER_MODAL).modal('hide');
+	});
+	
+}
+
+function filterNodes(keys, nodes) {
+	$.each(nodes, function(i, node) {
+		console.log(node);
+		var key = jsTreeManager.getProjectKey(node);
+		if (key && $.inArray(key, keys) == -1) {
+			jsTreeManager.hideNode(node);
+		}
+		if (node.children && node.children.length > 0) {
+			filterNodes(keys, node.children);
+		}
+	});
 }

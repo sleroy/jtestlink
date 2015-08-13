@@ -47,7 +47,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	private static final String PROJECTS_ALL_URL	= PROJECTS_URL+"all";
 	private static final String TAGS_URL			= PROJECTS_URL+"/tags";
 	private static final String FILTER_URL			= PROJECTS_URL+"/filter";
-	private static final String FILTER_IDS_URL		= FILTER_URL+"/ids";
+	private static final String FILTER_IDS_URL		= FILTER_URL+"/keys";
 	
 	@Autowired
 	private WebApplicationContext context;
