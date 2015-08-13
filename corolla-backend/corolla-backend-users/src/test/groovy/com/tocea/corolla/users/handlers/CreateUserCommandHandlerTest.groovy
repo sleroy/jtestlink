@@ -218,7 +218,7 @@ class CreateUserCommandHandlerTest extends Specification{
 	 */
 	def "test user with primary key"() {
 		given:
-		def primaryKeyUser = new User(id:1)
+		def primaryKeyUser = new User(id:"1")
 
 		when:
 		final CreateUserCommand command = new CreateUserCommand()

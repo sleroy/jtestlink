@@ -1,12 +1,22 @@
-/**
- *
+/*
+ * Corolla - A Tool to manage software requirements and test cases 
+ * Copyright (C) 2015 Tocea
+ * 
+ * This file is part of Corolla.
+ * 
+ * Corolla is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, 
+ * or any later version.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tocea.corolla.users.handlers;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import org.javers.core.Javers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -57,7 +67,7 @@ ICommandHandler<CreateUserCommand, User> {
 		if (user == null) {
 			throw new MissingUserInformationException("No data provided to create user");
 		}
-		if (user.getId() != null && user.getId() != "") {
+		if (user.getId() != null && !user.getId().equals("")) {
 			throw new InvalidUserInformationException("No ID expected");
 		}
 		this.checkUserLogin(user);
