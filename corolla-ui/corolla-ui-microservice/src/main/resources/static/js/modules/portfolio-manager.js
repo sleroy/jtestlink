@@ -138,7 +138,7 @@ function initJsTree(typeData, data) {
 			data: data,
 			'check_callback': jsTreeManager.callbackHandler
 		},
-		"plugins" : [ "dnd", "contextmenu", "types", "search" ],
+		"plugins" : [ "dnd", "contextmenu", "types", "search", "state" ],
 		"contextmenu" : {
 			"items" : {
 				"add" : {
