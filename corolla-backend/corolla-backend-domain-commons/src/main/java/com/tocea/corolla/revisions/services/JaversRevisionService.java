@@ -153,11 +153,13 @@ public class JaversRevisionService implements IRevisionService {
 					try {
 						change.setRightValue(PropertyUtils.getProperty(currentVersion, change.getPropertyName()));
 					} catch (Exception e) {
+						LOGGER.error("[RevisionService] Cannot set right value : {}", e);
 						change.setRightValue(null);
 					}
 					try {
 						change.setLeftValue(PropertyUtils.getProperty(oldVersion, change.getPropertyName()));
 					} catch (Exception e) {
+						LOGGER.error("[RevisionService] Cannot set left value : {}", e);
 						change.setLeftValue(null);
 					}
 					return change;
