@@ -187,15 +187,9 @@ public class JaversRevisionService implements IRevisionService {
 		try {
 			
 			object = clazz.newInstance();
-			
-			if (cdoSnapshot != null) {
 				
-				for(Property prop : cdoSnapshot.getProperties()) {
-									
-					PropertyUtils.setProperty(object, prop.getName(), cdoSnapshot.getPropertyValue(prop.getName()));
-					
-				}
-				
+			for(Property prop : cdoSnapshot.getProperties()) {							
+				PropertyUtils.setProperty(object, prop.getName(), cdoSnapshot.getPropertyValue(prop.getName()));			
 			}
 		
 		} catch (Exception e) {
