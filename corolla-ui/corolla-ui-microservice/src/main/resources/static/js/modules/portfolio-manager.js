@@ -433,7 +433,6 @@ function filterTree() {
 
 function filterNodes(keys, nodes) {
 	$.each(nodes, function(i, node) {
-		console.log(node);
 		var key = jsTreeManager.getProjectKey(node);
 		if (key && $.inArray(key, keys) == -1) {
 			jsTreeManager.hideNode(node);
@@ -442,4 +441,12 @@ function filterNodes(keys, nodes) {
 			filterNodes(keys, node.children);
 		}
 	});
+}
+
+/**
+ * Clear filters
+ * Redraw the original tree view
+ */
+function clearFilters() {
+	jsTreeManager.showAll();
 }
