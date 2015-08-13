@@ -1,10 +1,24 @@
-/**
- *
+/*
+ * Corolla - A Tool to manage software requirements and test cases 
+ * Copyright (C) 2015 Tocea
+ * 
+ * This file is part of Corolla.
+ * 
+ * Corolla is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, 
+ * or any later version.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.tocea.corolla.users.domain;
 
 import java.lang.reflect.Field;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
@@ -52,7 +66,8 @@ public class Permission {
 			try {
 				permissions.add((String) f.get(null));
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger	LOGGER = LoggerFactory.getLogger(Permission.class);
+				LOGGER.error("A permission cannot be listed -> {}", e);
 			}
 		}
 		
