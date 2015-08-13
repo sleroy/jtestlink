@@ -1,3 +1,17 @@
+/*
+ * Corolla - A Tool to manage software requirements and test cases 
+ * Copyright (C) 2015 Tocea
+ * 
+ * This file is part of Corolla.
+ * 
+ * Corolla is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, 
+ * or any later version.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.tocea.corolla.requirements.utils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -7,7 +21,6 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.tocea.corolla.requirements.domain.Requirement;
 
 public class RequirementUtils {
@@ -65,12 +78,15 @@ public class RequirementUtils {
 
 			@Override
 			public boolean apply(Requirement requirement) {
-				return requirement.getKey().equals(key);
+				if (requirement != null) {
+					return requirement.getKey().equals(key);
+				}
+				return false;
 			}
 			
 		});
 		
-		return match.size() > 0 ? Lists.newArrayList(match).get(0) : null;	
+		return match.isEmpty() ? null : match.iterator().next();	
 	}
 	
 	/**
@@ -85,12 +101,15 @@ public class RequirementUtils {
 
 			@Override
 			public boolean apply(Requirement requirement) {
-				return requirement.getId().equals(ID);
+				if (requirement != null) {
+					return requirement.getId().equals(ID);
+				}
+				return false;
 			}
 			
 		});
 		
-		return match.size() > 0 ? Lists.newArrayList(match).get(0) : null;	
+		return match.isEmpty() ? null : match.iterator().next();	
 	}
 	
 }
