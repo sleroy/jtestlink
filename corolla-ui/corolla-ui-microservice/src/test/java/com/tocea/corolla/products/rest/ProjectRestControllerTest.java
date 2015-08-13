@@ -11,13 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.Filter;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +28,14 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand;
+import com.tocea.corolla.products.commands.CreateProjectCategoryCommand;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
 import com.tocea.corolla.products.dao.IProjectBranchDAO;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectBranch;
+import com.tocea.corolla.products.domain.ProjectCategory;
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.products.dto.ProjectFilterDTO;
 import com.tocea.corolla.tests.utils.AuthUserUtils;
@@ -47,6 +47,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	private static final String PROJECTS_ALL_URL	= PROJECTS_URL+"all";
 	private static final String TAGS_URL			= PROJECTS_URL+"/tags";
 	private static final String FILTER_URL			= PROJECTS_URL+"/filter";
+	private static final String FILTER_IDS_URL		= FILTER_URL+"/ids";
 	
 	@Autowired
 	private WebApplicationContext context;
@@ -65,10 +66,16 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	@Autowired
 	private Gate gate;
 	
-	private ProjectStatus projectStatus;
+	private List<ProjectStatus> statuses;
+	private List<ProjectCategory> categories;
+	
 	private Project existingProject;
+	private Project otherProject;
+	
 	private ProjectBranch masterBranch;
 	private ProjectBranch devBranch;
+	
+	private List<String> userIds;
 		
 	@Before
 	public void setUp() {
@@ -78,28 +85,61 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				.addFilters(springSecurityFilterChain)
 				.build();
 		
-		projectStatus = new ProjectStatus();
-		projectStatus.setName("Active");
-		projectStatus.setClosed(false);
+		userIds = Lists.newArrayList("user1", "user2", "user3");
 		
-		gate.dispatch(new CreateProjectStatusCommand(projectStatus));
+		ProjectStatus status1 = new ProjectStatus();
+		status1.setName("Active");
+		status1.setClosed(false);
+		
+		ProjectStatus status2 = new ProjectStatus();
+		status2.setName("Closed");
+		status2.setClosed(true);
+		
+		ProjectStatus status3 = new ProjectStatus();
+		status3.setName("Unknown");
+		status3.setClosed(false);
+		
+		statuses = Lists.newArrayList(status1, status2, status3);
+		
+		for(ProjectStatus status : statuses) {
+			gate.dispatch(new CreateProjectStatusCommand(status));
+		}	
+		
+		ProjectCategory cat1 = new ProjectCategory();
+		cat1.setName("cat1");
+		ProjectCategory cat2 = new ProjectCategory();
+		cat2.setName("cat2");
+		ProjectCategory cat3 = new ProjectCategory();
+		cat3.setName("cat3");
+		
+		categories = Lists.newArrayList(cat1, cat2, cat3);
+		
+		for(ProjectCategory cat : categories) {
+			gate.dispatch(new CreateProjectCategoryCommand(cat));
+		}
 		
 		existingProject = new Project();
 		existingProject.setKey("COROLLA_TEST");
 		existingProject.setName("Corolla");
-		existingProject.setStatusId(projectStatus.getId());
+		existingProject.setStatusId(status1.getId());
 		existingProject.setTags(Lists.newArrayList("tag1", "tag2"));
+		existingProject.setCategoryId(cat1.getId());
 		
 		gate.dispatch(new CreateProjectCommand(existingProject));
 		
 		masterBranch = branchDAO.findDefaultBranch(existingProject.getId());	
 		devBranch = gate.dispatch(new CreateProjectBranchCommand("Dev", existingProject));
 		
-	}
-	
-	@After
-	public void tearDown() {
-		this.cleanDB();
+		otherProject = new Project();
+		otherProject.setKey("OTHER_PROJECT");
+		otherProject.setName("Another project");
+		otherProject.setStatusId(status2.getId());
+		otherProject.setCategoryId(cat2.getId());
+		otherProject.setTags(Lists.newArrayList("tag2", "tag3"));
+		otherProject.setOwnerId(userIds.get(0));
+		
+		gate.dispatch(new CreateProjectCommand(otherProject));
+		
 	}
 	
 	private String buildProjectURL(Project project) {
@@ -332,25 +372,172 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	}
 	
 	@Test
-	public void basicUserShouldFilterProjectList() throws Exception {
+	public void basicUserShouldFilterProjectListWithEmptyFilter() throws Exception {
 		
 		ProjectFilterDTO filter = new ProjectFilterDTO();
-		filter.setCategoryIds(new ArrayList<String>());
-		filter.setOwnerIds(new ArrayList<String>());
-		filter.setStatusIds(new ArrayList<String>());
-		filter.setTags(new ArrayList<String>());
+
+		mvc
+			.perform(
+				post(FILTER_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+				.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(2)));
 		
-		Gson gson = new Gson();
+	}
+	
+	@Test
+	public void basicUserShouldFilterProjectListByTags() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+		filter.setTags(Lists.newArrayList("tag1", "not_existing_tag"));
 		
 		mvc
 			.perform(
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(gson.toJson(filter))
+				.content((new Gson()).toJson(filter))
 				.with(user(AuthUserUtils.basicUser()))
 			)
-			.andExpect(status().isOk());
-//			.andExpect(jsonPath("$", hasSize(1)));
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)));
+		
+	}
+	
+	@Test
+	public void basicUserShouldFilterProjectListByCategories() throws Exception {		
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+		filter.setCategoryIds(Lists.newArrayList(
+				categories.get(0).getId(), 
+				categories.get(2).getId()
+		));
+
+		mvc
+			.perform(
+				post(FILTER_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+				.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)));
+		
+	}
+	
+	@Test
+	public void basicUserShouldFilterProjectListByStatuses() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+		filter.setStatusIds(Lists.newArrayList(
+				statuses.get(0).getId(), 
+				statuses.get(2).getId()
+		));
+
+		mvc
+			.perform(
+				post(FILTER_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+				.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)));
+		
+	}
+	
+	@Test
+	public void basicUserShouldFilterProjectListByOwners() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+		filter.setOwnerIds(Lists.newArrayList(userIds.get(0), userIds.get(1)));
+
+		mvc
+			.perform(
+				post(FILTER_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+				.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)));
+		
+	}
+	
+	@Test
+	public void basicUserShouldFilterProjectsOnMultipleCriteria() throws Exception {
+		
+		Project project = new Project();
+		project.setKey("NEW_PROJECT");
+		project.setName("Another project");
+		project.setStatusId(statuses.get(0).getId());
+		project.setTags(Lists.newArrayList("newTag"));
+		project.setOwnerId(userIds.get(0));
+		
+		gate.dispatch(new CreateProjectCommand(project));
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+		filter.setTags(Lists.newArrayList("newTag", "not_existing_tag"));
+		filter.setOwnerIds(Lists.newArrayList(otherProject.getOwnerId()));
+
+		mvc
+			.perform(
+				post(FILTER_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+				.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(2)));
+		
+	}
+	
+	@Test
+	public void anonymousUserShouldNotFilterProjects() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+
+		mvc
+			.perform(
+				post(FILTER_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+			)
+			.andExpect(redirectedUrlPattern("**/login"));
+		
+	}
+	
+	@Test
+	public void basicUserShouldFilterProjectsAndRetrieveOnlyIDs() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+
+		mvc
+			.perform(
+				post(FILTER_IDS_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+				.with(user(AuthUserUtils.basicUser()))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(2)));
+		
+	}
+	
+	@Test
+	public void anonymousUserShouldNotFilterProjectsAndRetrieveOnlyIDs() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+
+		mvc
+			.perform(
+				post(FILTER_IDS_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+			)
+			.andExpect(redirectedUrlPattern("**/login"));
 		
 	}
 	

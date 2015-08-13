@@ -15,12 +15,14 @@
 package com.tocea.corolla.products.utils;
 
 import java.util.Collection;
+import java.util.Set;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tocea.corolla.products.domain.Project;
 
 /**
@@ -71,4 +73,29 @@ public class ProjectUtils {
 		return ImmutableSet.copyOf(itTags).asList();
 	}
 
+	/**
+	 * Predicate used to remove duplicates
+	 * in a collection of projects
+	 *
+	 */
+	public static class DuplicateRemover implements Predicate<Project> {
+
+		private final Set<String> ids = Sets.newHashSet();
+		
+		@Override
+		public boolean apply(Project project) {
+			
+			if (project != null) {
+				
+				if (!ids.contains(project.getId())) {
+					ids.add(project.getId());
+					return true;
+				}
+			}
+			
+			return false;
+		}
+
+	}
+	
 }

@@ -19,6 +19,7 @@ import java.net.URLDecoder;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.CommandExecutionException;
 import com.tocea.corolla.cqrs.gate.Gate;
@@ -77,7 +80,41 @@ public class ProjectRestController {
 	@PreAuthorize("isAuthenticated()")
 	public Collection<Project> filterProjects(@RequestBody ProjectFilterDTO filter) {
 		
-		return projectDAO.findProjects(filter.getCategoryIds(), filter.getStatusIds(), filter.getOwnerIds(), filter.getTags());
+		Collection<Project> projects = Lists.newArrayList();
+		
+		if (filter.isEmpty()) {
+			projects.addAll(projectDAO.findAll());
+		}
+		
+		if (CollectionUtils.isNotEmpty(filter.getTags())) {
+			projects.addAll(projectDAO.filterByTags(filter.getTags()));
+		}
+		
+		if (CollectionUtils.isNotEmpty(filter.getCategoryIds())) {
+			projects.addAll(projectDAO.filterByCategories(filter.getCategoryIds()));
+		}
+		
+		if (CollectionUtils.isNotEmpty(filter.getStatusIds())) {
+			projects.addAll(projectDAO.filterByStatuses(filter.getStatusIds()));
+		}
+		
+		if (CollectionUtils.isNotEmpty(filter.getOwnerIds())) {
+			projects.addAll(projectDAO.filterByOwner(filter.getOwnerIds()));
+		}
+		
+		return Collections2.filter(projects, new ProjectUtils.DuplicateRemover());		
+	}
+	
+	@RequestMapping(value = "/filter/ids", method = RequestMethod.POST)
+	@PreAuthorize("isAuthenticated()")
+	public Collection<String> filterProjectsAndRetrieveOnlyIDs(@RequestBody ProjectFilterDTO filter) {	
+		
+		return Collections2.transform(filterProjects(filter), new Function<Project, String>() {
+			@Override
+			public String apply(Project input) {
+				return (input != null) ? input.getId() : "";
+			}			
+		});
 	}
 	
 	@RequestMapping(value="/tags")

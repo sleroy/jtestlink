@@ -24,11 +24,12 @@ public abstract class AbstractSpringTest {
 	
 	@After
 	public void cleanDB() {
-		for (String collectionName : mongoTemplate.getCollectionNames()) {
-            if (!collectionName.startsWith("system.")) {
-                mongoTemplate.getCollection(collectionName).findAndRemove(null);
-            }
-        }
+//		for (String collectionName : mongoTemplate.getCollectionNames()) {
+//            if (!collectionName.startsWith("system.")) {
+//                mongoTemplate.getCollection(collectionName).findAndRemove(null);
+//            }
+//        }
+		mongoTemplate.getDb().dropDatabase();
 	}
 	
 }

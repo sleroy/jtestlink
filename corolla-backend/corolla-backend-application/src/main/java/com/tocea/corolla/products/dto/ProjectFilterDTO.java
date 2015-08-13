@@ -2,6 +2,8 @@ package com.tocea.corolla.products.dto;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 public class ProjectFilterDTO {
 
 	private List<String> categoryIds;
@@ -14,6 +16,14 @@ public class ProjectFilterDTO {
 	
 	public ProjectFilterDTO() {
 		
+	}
+	
+	public boolean isEmpty() {
+		return 
+				CollectionUtils.isEmpty(categoryIds)
+				&& CollectionUtils.isEmpty(statusIds)
+				&& CollectionUtils.isEmpty(ownerIds)
+				&& CollectionUtils.isEmpty(tags);
 	}
 
 	public List<String> getCategoryIds() {

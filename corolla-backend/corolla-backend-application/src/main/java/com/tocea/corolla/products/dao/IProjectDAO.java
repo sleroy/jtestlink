@@ -31,21 +31,35 @@ public interface IProjectDAO extends MongoRepository<Project, String> {
 	Project findByKey(String key);
 	
 	/**
-	 * Search by tag
+	 * Search by tags
 	 * @param tags
 	 * @return
 	 */
-	List<Project> findByTagsIgnoreCase(String tags);
+	@Query("{ 'tags' : { $in: ?0 } }")
+	List<Project> filterByTags(List<String> tags);
 	
 	/**
-	 * Search through all projects
-	 * by category, status, owner and tags
+	 * Search by categories
 	 * @param categoryIds
-	 * @param statusIds
-	 * @param tags
 	 * @return
 	 */
-	@Query("{ 'categoryId' : { $in: ?0 }, 'statusId' : { $in: ?1 }, 'ownerId': { $in: ?2 }, 'tags' : { $in: ?3 } }")
-	public List<Project> findProjects(List<String> categoryIds, List<String> statusIds, List<String> ownerId, List<String> tags);
+	@Query("{ 'categoryId' : { $in: ?0 } }")
+	List<Project> filterByCategories(List<String> categoryIds);
+	
+	/**
+	 * Search by statuses
+	 * @param statusIds
+	 * @return
+	 */
+	@Query("{ 'statusId' : { $in: ?0 } }")
+	List<Project> filterByStatuses(List<String> statusIds);
+	
+	/**
+	 * Search by owners
+	 * @param ownerIds
+	 * @return
+	 */
+	@Query("{ 'ownerId' : { $in: ?0 } }")
+	List<Project> filterByOwner(List<String> ownerIds);
 	
 }
