@@ -46,27 +46,30 @@
 											</a></li>
 										</ul></li>
 									<li>
-										<a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-portoflio-tree-filter"> 
+										<a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-portoflio-tree-filter" title="Filter"> 
 											<span class="glyphicon glyphicon-filter" />
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="clearFilters()"> 
+										<a href="#" class="btn btn-default" onclick="clearFilters()" data-toggle="tooltip" title="Clear filters"> 
 											<span class="fa fa-undo" />
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="jsTreeManager.expand()"> 
+										<a href="#" class="btn btn-default" onclick="jsTreeManager.expand()" data-toggle="tooltip" title="Expand"> 
 											<span class="fa fa-expand" />
 										</a>
 									</li>
 									<li>
-										<a href="#" class="btn btn-default" onclick="jsTreeManager.collapse()"> 
+										<a href="#" class="btn btn-default" onclick="jsTreeManager.collapse()" data-toggle="tooltip" title="Collapse"> 
 											<span class="fa fa-compress" />
 										</a>
 									</li>
-									<li><a href="/ui/portfolio" class="btn btn-default"> <span class="glyphicon glyphicon-th" />
-									</a></li>
+									<li>
+										<a href="/ui/portfolio" class="btn btn-default" data-toggle="tooltip" title="Portfolio"> 
+											<span class="glyphicon glyphicon-th" />	
+										</a>
+									</li>
 									<li style="width: 45%;">
 										<div class="input-group">
 											<span class="input-group-addon"> <i class="glyphicon glyphicon-search" />

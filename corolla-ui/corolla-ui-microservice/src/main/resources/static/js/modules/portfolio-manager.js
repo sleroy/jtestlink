@@ -13,7 +13,7 @@ function initPortfolio() {
 	/*
 	 * Initialize JsTree widget
 	 */
-	restAPI.folderNodeTypes.findAll(function(types, data) {
+	restAPI.folderNodeTypes.findAll(function(types) {
 		restAPI.portfolio.jstree(function(data) {
 			initJsTree(types, data);
 		});
@@ -24,7 +24,7 @@ function initPortfolio() {
 	 */
 	jsTreeManager.setSelectAction(function(node, key) {
 		if (key) {
-			document.location = '/ui/portfolio/manager/' + key
+			document.location = '/ui/portfolio/manager/' + key;
 		}else{
 			showSelectedNode(node);
 		}
@@ -53,7 +53,7 @@ function initDetailsView() {
 	/*
 	 * Initialize DatePicker widget
 	 */
-	$('.datepicker').datepicker()
+	$('.datepicker').datepicker();
 
 	/*
 	 * Initialize TagManager widget
@@ -80,7 +80,7 @@ function initDetailsView() {
 	 */
 	jsTreeManager.setSelectAction(function(node, key) {
 		if (key) {
-			document.location = '/ui/projects/' + key
+			document.location = '/ui/projects/' + key;
 		}
 	});
 	
@@ -99,10 +99,10 @@ function initJsTree(typeData, data) {
 	
 	var types = {};
 	var folderActions = {};
-	var folderEditActions = {}
+	var folderEditActions = {};
 	if (typeData) {
 		$.each(typeData, function(i,v) {
-			types[v.id] = { 'icon': v.icon }
+			types[v.id] = { 'icon': v.icon };
 			folderActions[v.id] = {
 					label: v.name,
 					icon: v.icon,
@@ -110,7 +110,7 @@ function initJsTree(typeData, data) {
 						var node = jsTreeManager.extractNode(data);
 					    jsTreeManager.addFolder(v.id, node);
 					}
-			}
+			};
 			folderEditActions[v.id] = {
 					label: v.name,
 					icon: v.icon,
@@ -123,11 +123,11 @@ function initJsTree(typeData, data) {
 					    var currentType = v.id;
 						return jsTreeManager.getType(node) == currentType;
 					}
-			}
+			};
 		});
 	}
 	
-	types['default'] = { 'icon' : 'fa fa-genderless' }
+	types['default'] = { 'icon' : 'fa fa-genderless' };
 	
 	$(PROJECTS_TREEVIEW).jstree({
 		"core" : {
@@ -149,14 +149,6 @@ function initJsTree(typeData, data) {
 							label: "Folder",
 							icon: "glyphicon glyphicon-folder-open",
 							submenu: folderActions
-						},
-						'add_project': {
-							label: "Project",
-							icon: "fa fa-briefcase",
-							action : function(data) {
-								var node = jsTreeManager.extractNode(data);
-								//...
-							}
 						}
 					}			
 				},
@@ -418,9 +410,7 @@ function filterTree() {
 			'statusIds'		: $(FILTER_STATUSES).val(),
 			'ownerIds'		: $(FILTER_OWNERS).val(),
 			'tags'			: $(FILTER_TAGS).val()
-	}
-	
-	console.log(filter);
+	};
 	
 	restAPI.projects.filter(filter, function(data) {
 		jsTreeManager.showAll();
