@@ -20,6 +20,7 @@ import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.InvalidProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
+import com.tocea.corolla.products.exceptions.ProjectBranchCloningException;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
 import com.tocea.corolla.requirements.domain.Requirement;
@@ -101,7 +102,13 @@ public class CreateProjectBranchCommandHandler implements ICommandHandler<Create
 		
 			for(Requirement requirement : originRequirements) {
 
-				Requirement clone = RequirementUtils.clone(requirement, newBranch.getId());
+				Requirement clone = null;
+				
+				try {
+					clone = RequirementUtils.clone(requirement, newBranch.getId());
+				} catch (Exception e) {
+					throw new ProjectBranchCloningException(e);
+				}
 				
 				gate.dispatch(new CreateRequirementCommand(clone));
 				

@@ -1,5 +1,6 @@
 package com.tocea.corolla.requirements.utils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -15,18 +16,16 @@ public class RequirementUtils {
 	 * Clones a requirement instance
 	 * @param requirement
 	 * @return
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws InstantiationException 
+	 * @throws IllegalAccessException 
 	 */
-	public static Requirement clone(Requirement requirement) {
+	public static Requirement clone(Requirement requirement) throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
 		
-		Requirement clone = null;
-		
-		try {
-			clone = (Requirement) BeanUtils.cloneBean(requirement);
-			clone.setId(null);
-			clone.setProjectBranchId(null);
-		} catch (Exception e) {			
-			e.printStackTrace();
-		}
+		Requirement clone = (Requirement) BeanUtils.cloneBean(requirement);
+		clone.setId(null);
+		clone.setProjectBranchId(null);
 		
 		return clone;
 		
@@ -37,8 +36,12 @@ public class RequirementUtils {
 	 * @param requirement
 	 * @param projectBranchID
 	 * @return
+	 * @throws NoSuchMethodException 
+	 * @throws InvocationTargetException 
+	 * @throws InstantiationException 
+	 * @throws IllegalAccessException 
 	 */
-	public static Requirement clone(Requirement requirement, String projectBranchID) {
+	public static Requirement clone(Requirement requirement, String projectBranchID) throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
 		
 		Requirement clone = clone(requirement);
 		

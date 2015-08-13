@@ -15,6 +15,7 @@ import com.tocea.corolla.cqrs.handler.ICommandHandler;
 import com.tocea.corolla.products.commands.MergeProjectBranchCommand;
 import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationException;
+import com.tocea.corolla.products.exceptions.ProjectBranchMergeException;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand;
 import com.tocea.corolla.requirements.commands.EditRequirementCommand;
 import com.tocea.corolla.requirements.dao.IRequirementDAO;
@@ -75,7 +76,12 @@ public class MergeProjectBranchCommandHandler implements ICommandHandler<MergePr
 				
 				// the requirement exists in the origin branch but not in the destination branch
 				// So, we have to clone it and create it in the destination branch
-				Requirement clone = RequirementUtils.clone(req, destination.getId());				
+				Requirement clone = null;
+				try {
+					clone = RequirementUtils.clone(req, destination.getId());
+				} catch (Exception e) {
+					throw new ProjectBranchMergeException(e);
+				}				
 				this.gate.dispatch(new CreateRequirementCommand(clone));			
 				
 			}else{
