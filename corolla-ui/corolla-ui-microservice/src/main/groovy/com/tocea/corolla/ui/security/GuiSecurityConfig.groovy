@@ -87,7 +87,7 @@ public class GuiSecurityConfig extends WebSecurityConfigurerAdapter {
 		LOGGER.info("Web-- Defining Web Security")
 		http.authorizeRequests().antMatchers("/resources/**", "/js/**", "/public/**", "/images/**", "/css/**", "/pictures/**", "/fonts/**", "/login", "/logout","/", "/favicon.ico").permitAll().
 				antMatchers("/ui/**").authenticated().
-				antMatchers("/api/**").hasRole("REST")
+				antMatchers("/api/**").authenticated()
 
 		//anyRequest().permitAll()
 		http.formLogin().loginPage("/login").defaultSuccessUrl("/home").and().logout().logoutUrl("/logout")

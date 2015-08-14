@@ -17,30 +17,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tocea.corolla.users.dao;
+package com.tocea.corolla.products.dao;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 
-import com.tocea.corolla.users.domain.UserGroup;
+import com.tocea.corolla.products.domain.ProjectPermission;
 
-public interface IUserGroupDAO extends MongoRepository<UserGroup, String> {
+public interface IProjectPermissionDAO extends MongoRepository<ProjectPermission, String> {
 
-	/*
-	 * Find a user group by its name
-	 * @param name
-	 * @return UserGroup
-	 */
-	UserGroup findByName(String name);
-	
 	/**
-	 * Find all user groups of a user
-	 * @param userId
+	 * Retrieve all the permission defined
+	 * for a specific project
+	 * @param projectId
 	 * @return
 	 */
-	@Query("{ 'userIds': ?0 }")
-	List<UserGroup> findByUserId(String userId);
+	List<ProjectPermission> findByProjectId(String projectId);
+	
+	/**
+	 * Retrieve the permission of a specific entity
+	 * @param entityId
+	 * @param entityType
+	 * @return
+	 */
+	ProjectPermission findByProjectIdAndEntityIdAndEntityType(String projectId, String entityId, ProjectPermission.EntityType entityType);
 	
 }

@@ -17,30 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tocea.corolla.users.dao;
+package com.tocea.corolla.products.exceptions;
 
-import java.util.List;
+import com.tocea.corolla.utils.domain.CorollaDomainException;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+public class InvalidProjectPermissionInformationException extends CorollaDomainException {
 
-import com.tocea.corolla.users.domain.UserGroup;
-
-public interface IUserGroupDAO extends MongoRepository<UserGroup, String> {
-
-	/*
-	 * Find a user group by its name
-	 * @param name
-	 * @return UserGroup
-	 */
-	UserGroup findByName(String name);
-	
-	/**
-	 * Find all user groups of a user
-	 * @param userId
-	 * @return
-	 */
-	@Query("{ 'userIds': ?0 }")
-	List<UserGroup> findByUserId(String userId);
+	public InvalidProjectPermissionInformationException(String message) {
+		super(message);
+	}
 	
 }

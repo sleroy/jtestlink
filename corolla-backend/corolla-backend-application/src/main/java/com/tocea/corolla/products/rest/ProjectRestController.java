@@ -144,7 +144,8 @@ public class ProjectRestController {
 	}
 	
 	@RequestMapping(value="/{projectKey}/tags/push", method = RequestMethod.POST)
-	@Secured({ Permission.PROJECT_MANAGEMENT })
+//	@Secured({ Permission.PROJECT_MANAGEMENT })
+	@PreAuthorize("@projectSecurityService.hasPermission(#projectKey, '"+Permission.PROJECT_MANAGEMENT+"')")
 	public Collection<String> pushTags(@PathVariable String projectKey, @RequestBody String data) throws UnsupportedEncodingException {
 		
 		Project project = projectDAO.findByKey(projectKey);

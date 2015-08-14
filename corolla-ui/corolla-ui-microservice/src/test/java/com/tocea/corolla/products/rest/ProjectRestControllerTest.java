@@ -38,6 +38,7 @@ import com.tocea.corolla.products.domain.ProjectBranch;
 import com.tocea.corolla.products.domain.ProjectCategory;
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.products.dto.ProjectFilterDTO;
+import com.tocea.corolla.tests.utils.AuthUserService;
 import com.tocea.corolla.tests.utils.AuthUserUtils;
 import com.tocea.corolla.ui.AbstractSpringTest;
 
@@ -56,6 +57,9 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	private Filter springSecurityFilterChain;
 	
 	private MockMvc mvc;
+	
+	@Autowired
+	private AuthUserService authUserService;
 	
 	@Autowired
 	private IProjectDAO projectDAO;
@@ -337,7 +341,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 			.perform(
 				post(buildProjectTagsPushURL(existingProject))
 				.content("tags="+StringUtils.join(newTags, ","))
-				.with(user(AuthUserUtils.projectManager()))
+				.with(user(authUserService.projectManager(existingProject)))
 			)
 			.andExpect(status().isOk());
 
