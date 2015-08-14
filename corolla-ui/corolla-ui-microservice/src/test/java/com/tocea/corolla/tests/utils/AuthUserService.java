@@ -2,8 +2,6 @@ package com.tocea.corolla.tests.utils;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,21 +30,6 @@ public class AuthUserService {
 	@Autowired
 	private Gate gate;
 	
-	@PostConstruct
-	public void setUp() {
-		
-		if (roleDAO.getDefaultRole() == null) {
-			
-			Role role = new Role();
-			role.setName("DEFAULT");
-			role.setDefaultRole(true);
-			role.setPermissions("");
-			
-			gate.dispatch(new CreateRoleCommand(role));
-		}
-
-	}
-	
 	public AuthUser projectManager(Project project) {
 		
 		Role managerRole = new Role();
@@ -72,6 +55,16 @@ public class AuthUserService {
 	private void createUserIfNecessary(User user) {
 		
 		if (userDAO.findUserByLogin(user.getLogin()) == null) {
+			
+			if (roleDAO.getDefaultRole() == null) {
+				
+				Role role = new Role();
+				role.setName("DEFAULT");
+				role.setDefaultRole(true);
+				role.setPermissions("");
+				
+				gate.dispatch(new CreateRoleCommand(role));
+			}
 			
 			gate.dispatch(new CreateUserCommand(user));
 		}

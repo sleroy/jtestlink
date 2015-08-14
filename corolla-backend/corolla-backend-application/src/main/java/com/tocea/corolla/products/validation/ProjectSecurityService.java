@@ -74,8 +74,6 @@ public class ProjectSecurityService {
 		
 		String userLogin = getUserName();
 		
-		System.out.println(userLogin);
-		
 		if (StringUtils.isEmpty(userLogin)) {
 			return null;
 		}
