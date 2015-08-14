@@ -24,8 +24,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
@@ -35,20 +33,17 @@ import com.tocea.corolla.products.dao.IProjectPermissionDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectPermission;
 import com.tocea.corolla.users.dao.IRoleDAO;
-import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.dao.IUserGroupDAO;
 import com.tocea.corolla.users.domain.Role;
 import com.tocea.corolla.users.domain.User;
 import com.tocea.corolla.users.domain.UserGroup;
+import com.tocea.corolla.users.service.AuthenticationUserService;
 
 @Component("projectSecurityService")
 public class ProjectSecurityService {
 
 	@Autowired
 	private IProjectDAO projectDAO;
-	
-	@Autowired
-	private IUserDAO userDAO;
 	
 	@Autowired
 	private IRoleDAO roleDAO;
@@ -59,32 +54,12 @@ public class ProjectSecurityService {
 	@Autowired
 	private IProjectPermissionDAO projectPermissionDAO;
 	
-	private String getUserName() {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (auth != null && auth.getPrincipal() != null) {						
-			return ((org.springframework.security.core.userdetails.User)auth.getPrincipal()).getUsername();			
-		}
-		
-		return null;
-	}
-	
-	private User getUser() {
-		
-		String userLogin = getUserName();
-		
-		if (StringUtils.isEmpty(userLogin)) {
-			return null;
-		}
-		
-		return userDAO.findUserByLogin(userLogin);
-		
-	}
+	@Autowired
+	private AuthenticationUserService authService;
 	
 	public boolean hasPermission(String projectKey, String right) {
 		
-		User user = getUser();
+		User user = authService.getAuthenticatedUser();
 		
 		if (user == null) {
 			return false;

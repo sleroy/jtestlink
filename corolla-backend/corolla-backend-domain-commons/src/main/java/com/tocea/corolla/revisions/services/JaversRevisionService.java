@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.javers.core.Javers;
 import org.javers.core.diff.Diff;
 import org.javers.core.diff.changetype.ValueChange;
@@ -34,9 +35,6 @@ import org.javers.repository.jql.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Function;
@@ -47,6 +45,7 @@ import com.tocea.corolla.revisions.domain.IChange;
 import com.tocea.corolla.revisions.domain.ICommit;
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
 import com.tocea.corolla.revisions.exceptions.SnapshotBuildFailureException;
+import com.tocea.corolla.users.service.AuthenticationUserService;
 
 @Service
 public class JaversRevisionService implements IRevisionService {
@@ -58,34 +57,19 @@ public class JaversRevisionService implements IRevisionService {
 	@Autowired
 	private Javers javers;
 	
-	/**
-	 * Retrieves the name of the current user
-	 * @return
-	 */
-	private String getUsername() {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if (auth != null) {
-			
-			User user = (User) auth.getPrincipal();
-			
-			if (user != null) {
-				
-				return user.getUsername();
-			}
-			
-		}
-		
-		return DEFAULT_USER;	
-	}
+	@Autowired
+	private AuthenticationUserService authService;
 	
 	@Override
 	public void commit(Object obj) {
 		
-		String username = getUsername();
-		LOGGER.info("new commit transaction for user "+username);
+		String username = authService.getAuthenticatedLogin();
 		
+		if (StringUtils.isEmpty(username)) {
+			username = DEFAULT_USER;
+		}
+		
+		LOGGER.info("new commit transaction for user "+username);		
 		javers.commit(username, obj);
 	}
 	

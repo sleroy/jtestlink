@@ -15,6 +15,7 @@ import com.tocea.corolla.requirements.exceptions.*;
 import com.tocea.corolla.revisions.domain.Commit
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule
+import com.tocea.corolla.users.service.AuthenticationUserService;
 import com.tocea.corolla.utils.functests.FunctionalTestDoc
 
 class JaversRevisionServiceTest extends Specification {
@@ -22,6 +23,7 @@ class JaversRevisionServiceTest extends Specification {
 	@Rule
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def Javers javers = Mock(Javers)
+	def AuthenticationUserService authService = Mock(AuthenticationUserService)
 	def IRevisionService revisionService
 	
 	class DomainObject {
@@ -30,7 +32,8 @@ class JaversRevisionServiceTest extends Specification {
 	
 	def setup() {
 		revisionService = new JaversRevisionService(
-				javers: javers
+				javers: javers,
+				authService: authService
 		)
 	}
 	
