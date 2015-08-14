@@ -173,4 +173,89 @@ public class ProjectSecurityServiceTest extends Specification {
 		
 	}
 	
+	def "it should retrieve the full list of the IDs of the projects on which the current user has access"() {
+		
+		given:
+			def user = new User(id: "1", login: "jsnow")
+			def group = new UserGroup(id: "1", userIds: [user.id])
+			def permissions = [
+			      new ProjectPermission(
+			    		  projectId: "1", 
+			    		  entityId: "2",
+			    		  entityType: ProjectPermission.EntityType.USER,
+			    		  roleIds: []
+			      ),
+			      new ProjectPermission(
+			    		  projectId: "2", 
+			    		  entityId: user.id,
+			    		  entityType: ProjectPermission.EntityType.USER,
+			    		  roleIds: []
+			      ),
+			      new ProjectPermission(
+			    		  projectId: "3", 
+			    		  entityId: group.id,
+			    		  entityType: ProjectPermission.EntityType.GROUP,
+			    		  roleIds: []
+			      ),
+			      new ProjectPermission(
+			    		  projectId: "4", 
+			    		  entityId: "18",
+			    		  entityType: ProjectPermission.EntityType.GROUP,
+			    		  roleIds: []
+			      )
+			]	
+					
+		when:
+			def result = securityService.allowedProjectIds()
+			
+		then:
+			authService.getAuthenticatedUser() >> user
+			projectPermissionDAO.findByEntityIdAndEntityType(user.id, ProjectPermission.EntityType.USER) >> [permissions[1]]
+			groupDAO.findByUserId(user.id) >> [group]
+			projectPermissionDAO.findByEntityIdAndEntityType(group.id, ProjectPermission.EntityType.GROUP) >> [permissions[2]]	
+			
+		then:
+			result != null
+			result.size() == 2
+			result.containsAll "2", "3"
+			notThrown(Exception.class)
+		
+	}
+	
+	def "the list of allowed projects should not contain duplicates values"() {
+		
+		given:
+			def user = new User(id: "1", login: "jsnow")
+			def group = new UserGroup(id: "1", userIds: [user.id])
+			def permissions = [
+			      new ProjectPermission(
+			    		  projectId: "1", 
+			    		  entityId: user.id,
+			    		  entityType: ProjectPermission.EntityType.USER,
+			    		  roleIds: []
+			      ),
+			      new ProjectPermission(
+			    		  projectId: "1", 
+			    		  entityId: group.id,
+			    		  entityType: ProjectPermission.EntityType.GROUP,
+			    		  roleIds: []
+			      )
+			]	
+					
+		when:
+			def result = securityService.allowedProjectIds()
+			
+		then:
+			authService.getAuthenticatedUser() >> user
+			projectPermissionDAO.findByEntityIdAndEntityType(user.id, ProjectPermission.EntityType.USER) >> [permissions[0]]
+			groupDAO.findByUserId(user.id) >> [group]
+			projectPermissionDAO.findByEntityIdAndEntityType(group.id, ProjectPermission.EntityType.GROUP) >> [permissions[1]]	
+			
+		then:
+			result != null
+			result.size() == 1
+			result.contains "1"
+		
+	}
+	
 }

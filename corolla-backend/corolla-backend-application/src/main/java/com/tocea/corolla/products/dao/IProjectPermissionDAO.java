@@ -43,4 +43,13 @@ public interface IProjectPermissionDAO extends MongoRepository<ProjectPermission
 	 */
 	ProjectPermission findByProjectIdAndEntityIdAndEntityType(String projectId, String entityId, ProjectPermission.EntityType entityType);
 	
+	/**
+	 * Retrieve the permissions of a specific entity
+	 * through all the projects
+	 * @param entityId
+	 * @param entityType
+	 * @return
+	 */
+	List<ProjectPermission> findByEntityIdAndEntityType(String entityId, ProjectPermission.EntityType entityType);
+	
 }

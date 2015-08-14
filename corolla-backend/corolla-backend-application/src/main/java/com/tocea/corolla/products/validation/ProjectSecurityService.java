@@ -27,11 +27,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.dao.IProjectPermissionDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectPermission;
+import com.tocea.corolla.products.domain.ProjectPermission.EntityType;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.dao.IUserGroupDAO;
 import com.tocea.corolla.users.domain.Role;
@@ -40,7 +45,7 @@ import com.tocea.corolla.users.domain.UserGroup;
 import com.tocea.corolla.users.service.AuthenticationUserService;
 
 @Component("projectSecurityService")
-public class ProjectSecurityService {
+public class ProjectSecurityService implements IProjectSecurityService {
 
 	@Autowired
 	private IProjectDAO projectDAO;
@@ -57,6 +62,7 @@ public class ProjectSecurityService {
 	@Autowired
 	private AuthenticationUserService authService;
 	
+	@Override
 	public boolean hasPermission(String projectKey, String right) {
 		
 		User user = authService.getAuthenticatedUser();
@@ -82,7 +88,7 @@ public class ProjectSecurityService {
 		List<ProjectPermission> permissions = projectPermissionDAO.findByProjectId(project.getId());
 		
 		for(ProjectPermission permission : permissions) {
-			if (permission.getEntityType() == ProjectPermission.EntityType.USER) {
+			if (permission.getEntityType() == EntityType.USER) {
 				
 				if (permission.getEntityId().equals(user.getId())) {
 					if (checkPermission(permission, right)) {
@@ -117,6 +123,42 @@ public class ProjectSecurityService {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public List<String> allowedProjectIds() {
+	
+		User user = authService.getAuthenticatedUser();
+		
+		List<String> ids = Lists.newArrayList();
+		
+		if (user != null) {
+					
+			List<ProjectPermission> permissions = projectPermissionDAO.findByEntityIdAndEntityType(user.getId(), EntityType.USER);					
+			ids.addAll(Collections2.transform(permissions, new ProjectPermissionToProjectIdFunction()));
+			
+			List<UserGroup> groups = groupDAO.findByUserId(user.getId());
+			
+			for(UserGroup group : groups) {
+				permissions = projectPermissionDAO.findByEntityIdAndEntityType(group.getId(), EntityType.GROUP);
+				ids.addAll(Collections2.transform(permissions, new ProjectPermissionToProjectIdFunction()));
+			}
+
+		}
+		
+		return ImmutableSet.copyOf(Iterables.filter(ids, Predicates.not(Predicates.isNull()))).asList();		
+	}
+	
+	private static class ProjectPermissionToProjectIdFunction implements Function<ProjectPermission, String> {
+		
+		@Override
+		public String apply(ProjectPermission permission) {
+			if (permission != null) {
+				return permission.getProjectId();
+			}
+			return null;
+		}
+		
 	}
 	
 }
