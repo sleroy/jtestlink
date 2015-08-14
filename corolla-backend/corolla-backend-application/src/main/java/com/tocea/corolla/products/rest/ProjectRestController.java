@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,6 +84,7 @@ public class ProjectRestController {
 	
 	@RequestMapping(value = "/filter", method = RequestMethod.POST)
 	@PreAuthorize("isAuthenticated()")
+	@Transactional(readOnly=true)
 	public Collection<Project> filterProjects(@RequestBody ProjectFilterDTO filter) {
 		
 		Collection<Project> projects = Lists.newArrayList();
