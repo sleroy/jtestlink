@@ -170,7 +170,7 @@ public class ProjectRestController {
 	
 	@RequestMapping(value = "/{projectKey}/branches/{branchName}/delete")
 	@Secured({ Permission.PROJECT_MANAGEMENT })
-	public void deleteBranch(@PathVariable String projectKey, @PathVariable String branchName) throws Throwable {
+	public void deleteBranch(@PathVariable String projectKey, @PathVariable String branchName) {
 		
 		Project project = projectDAO.findByKey(projectKey);
 		
