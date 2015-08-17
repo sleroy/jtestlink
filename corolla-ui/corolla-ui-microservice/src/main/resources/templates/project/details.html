@@ -31,6 +31,7 @@
 							<li><a href="#branches" data-toggle="tab">Branches</a></li>
 							<li><a href="#revisions" data-toggle="tab">Revisions</a></li>
 							<li><a href="#activity" data-toggle="tab">Activity</a></li>
+							<li><a href="#members" data-toggle="tab">Members</a></li>
 							<li class="pull-right dropdown"><a class="dropdown-toggle btn btn-app" data-toggle="dropdown" href="#">
 									<i class="fa fa-paw" /> Actions
 							</a>
@@ -228,8 +229,10 @@
 											<td class="toggle"><span class="badge" th:text="${commit.id}">id</span></td>
 											<td class="toggle" th:text="${#dates.format(commit.getDate(), 'dd/MM/yyyy HH:mm')}">date</td>
 											<td class="toggle" th:text="${commit.type}" />
-											<td class="toggle"><img src="http://www.gravatar.com/avatar/?s=16" alt="" /> <span
-												th:text="${commit.author}" /></td>
+											<td class="toggle">
+												<img src="http://www.gravatar.com/avatar/?s=16" alt="" /> 
+												<span th:text="${commit.author}" />
+											</td>
 											<td>
 												<a th:if="${commits[0].id} != ${commit.id}" 
 												th:href="@{/ui/projects/}+${project.key}+@{/revisions/}+${commit.id}+@{/restore}" 
@@ -317,6 +320,41 @@
 											</h3>
 										</div></li>
 								</ul>
+							</div>
+							<div class="tab-pane" id="members">
+								<div class="table-responsive">
+									<table class="table table-hover table-striped" cellspacing="0" width="100%">
+										<thead>
+											<tr>
+												<th class="col-md-3">User/Group</th>
+												<th class="col-md-2">Type</th>
+												<th class="col-md-5">Roles</th>
+												<th class="col-md-2">Actions</th>
+											</tr>
+										</thead>	
+										<tr th:each="permission : ${permissions}">
+											<td class="toggle">											
+												<span th:text="${permission.entityName}">Jon Snow</span>
+											</td>
+											<td>											
+												<span class="badge" th:text="${permission.entityType}"></span>
+											</td>
+											<td>
+												<ul th:each="role : ${permission.roles}">
+													<li th:text="${role.name}"></li>
+												</ul>
+											</td>
+											<td>
+												<a class="btn btn-xs btn-info" shape="rect" href="#"> 
+													<span class="glyphicon glyphicon-pencil"></span> Edit
+												</a>
+												<a class="btn btn-xs btn-danger" shape="rect" href="#"> 
+													<span class="glyphicon glyphicon-trash"></span> Remove
+												</a>
+											</td>
+										</tr>								
+									</table>
+								</div>
 							</div>
 						</div>
 						<!-- /.tab-content -->

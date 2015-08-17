@@ -1,3 +1,22 @@
+/*
+ * Corolla - A Tool to manage software requirements and test cases 
+ * Copyright (C) 2015 Tocea
+ * 
+ * This file is part of Corolla.
+ * 
+ * Corolla is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, 
+ * or any later version.
+ * 
+ * Corolla is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.tocea.corolla.ui.views.projects;
 
 import groovy.util.logging.Slf4j;
@@ -39,6 +58,7 @@ import com.tocea.corolla.products.exceptions.ProjectAlreadyExistException;
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
+import com.tocea.corolla.products.services.IProjectPermissionDTOService;
 import com.tocea.corolla.products.utils.ProjectChangeFormatter;
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
 import com.tocea.corolla.revisions.services.IRevisionService;
@@ -73,6 +93,9 @@ public class ProjectDetailsPageController {
 	
 	@Autowired
 	private IUserDAO userDAO;
+	
+	@Autowired
+	private IProjectPermissionDTOService permissionDTOService;
 	
 	@Autowired
 	private IPortfolioDAO portfolioDAO;
@@ -272,6 +295,7 @@ public class ProjectDetailsPageController {
 		model.addObject "commits", commits
 		model.addObject "statuses", statusDAO.findAll()
 		model.addObject "categories", projectCategoryDAO.findAll()
+		model.addObject "permissions", permissionDTOService.getProjectPermissionDTOList(project.id)
 		
 		return model
 	}

@@ -29,6 +29,7 @@ import com.tocea.corolla.portfolio.utils.PortfolioUtils;
 import com.tocea.corolla.products.commands.CreateProjectBranchCommand
 import com.tocea.corolla.products.commands.CreateProjectCategoryCommand
 import com.tocea.corolla.products.commands.CreateProjectCommand
+import com.tocea.corolla.products.commands.CreateProjectPermissionCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand
 import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO
@@ -139,8 +140,7 @@ public class DemoDataBean {
 		final Role roleGuest = this.newRole("Guest", "Guest", [], true)
 		final Role roleTester = this.newRole("Tester", "Tester", [Permission.REST])
 		final Role roleTestManager = this.newRole("Test manager", "Test Manager", [Permission.REST])
-		final Role roleApplicationManager = this.newRole(	"Application manager",
-				"Application manager", [Permission.REST])
+		final Role roleProjectManager = this.newRole("Project manager", "Project manager", [Permission.PROJECT_MANAGEMENT])
 
 		/*
 		 * Users
@@ -157,7 +157,7 @@ public class DemoDataBean {
 				roleTestManager)
 		this.newUser(	"Gandalf", "LeGris", "gandalf.legris@lotr.com",
 				"gandalf",
-				"saroumaneisg..", roleApplicationManager)
+				"saroumaneisg..", roleProjectManager)
 		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
 				"saroumane",
 				"fuckSauron..", roleAdmin)
@@ -438,6 +438,11 @@ public class DemoDataBean {
 		this.gate.dispatch new EditRequirementCommand(req_addUser);		
 		def commits = revisionService.getHistory(req_addUser.id, Requirement.class);
 		this.gate.dispatch new RestoreRequirementStateCommand(req_addUser.id, commits[1].id);
+		
+		/**
+		 * Permissions
+		 */
+		this.gate.dispatch(new CreateProjectPermissionCommand(corolla, scarreau, [roleProjectManager.id, roleTestManager.id]));
 		
 	}
 
