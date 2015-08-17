@@ -223,6 +223,7 @@ function initJsTree(typeData, data) {
 	 * Action triggered when the treeview is fully loaded
 	 */
 	jsTreeManager.setLoadedAction(function() {
+		jsTreeManager.clearSelection();
 		if (pageData && pageData.projectKey) {
 			var node = jsTreeManager.getNodeByProjectKey(pageData.projectKey);
 			if (node) {

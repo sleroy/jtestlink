@@ -29,7 +29,7 @@ function JsTreeManager(SELECTOR) {
 		return null;
 	}
 	
-	$(SELECTOR).on("loaded.jstree", function(e, data) {
+	$(SELECTOR).on("state_ready.jstree", function(e, data) {
 		if (loadedAction) {
 			loadedAction();
 		}
@@ -170,6 +170,13 @@ function JsTreeManager(SELECTOR) {
 		 */
 		'toggleNode': function(node) {
 			$(SELECTOR).jstree(true).select_node(node);
+		},
+		
+		/**
+		 * Clear the selected nodes
+		 */
+		'clearSelection': function() {
+			$(SELECTOR).jstree(true).deselect_all();
 		},
 		
 		/**
