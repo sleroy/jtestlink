@@ -8,6 +8,7 @@ var FILTER_MODAL			= '#modal-portoflio-tree-filter';
 var FORM_INPUT_OWNER_ID		= 'input[name=ownerId]';
 var FORM_SHOW_OWNER_NAME	= '#ownerName';
 var FORM_BTN_CLEAR_OWNER	= '#clearOwnerBtn';
+var FORM_INPUT_IMAGE		= 'input[name=image]';
 
 var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
 
@@ -102,6 +103,18 @@ function initDetailsView() {
 	if (ownerID == '' || ownerID == 0) {
 		clearSelectUser();
 	}
+	
+	/**
+	 * Image Popover
+	 */
+	$(FORM_INPUT_IMAGE).popover({
+		placement: 'bottom',
+		content: function() {
+			return '<img src="'+$(FORM_INPUT_IMAGE).val()+'" alt="Invalid image" />';
+		},
+		trigger: 'hover',
+		html:true
+	});
 	
 }
 
