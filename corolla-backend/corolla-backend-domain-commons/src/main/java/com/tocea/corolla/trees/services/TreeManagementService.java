@@ -105,12 +105,7 @@ public class TreeManagementService implements ITreeManagementService {
 			throw new InvalidTreeNodeInformationException("The given node ID does not match any node of this tree");
 		}
 		
-		if (newParentID == null) {
-			
-			tree = removeNode(tree, nodeID);
-			tree = insertNode(tree, newParentID, node);
-			
-		}else{
+		if (newParentID != null) {
 			
 			TreeNode newParentNode = findNodeByID(nodes, nodeID);
 			
@@ -121,11 +116,11 @@ public class TreeManagementService implements ITreeManagementService {
 			if (TreeNodeUtils.hasNodeWithId(newParentID, node, true)) {
 				throw new InvalidTreeNodeInformationException("Cannot move a tree node inside one of its own children");
 			}
-			
-			tree = removeNode(tree, nodeID);
-			tree = insertNode(tree, newParentID, node);
-			
+
 		}
+		
+		tree = removeNode(tree, nodeID);
+		tree = insertNode(tree, newParentID, node);
 		
 		return tree;
 	}
