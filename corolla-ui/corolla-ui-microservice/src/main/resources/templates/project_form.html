@@ -41,24 +41,16 @@
 		       	</select>
 		       </div>
 		   </div>
-<!-- 		   <div class="row form-row"> -->
-<!-- 		       <div class="col-sm-3 col-md-2"><span class="">Date Start</span></div> -->
-<!-- 		       <div class="col-sm-9 col-md-10"> -->
-<!-- 		       	<input name="dateStart" type="text" class="form-control datepicker"/> -->
-<!-- 		       </div> -->
-<!-- 		   </div> -->
-<!-- 		   <div class="row form-row"> -->
-<!-- 		       <div class="col-sm-3 col-md-2"><span class="">Date End</span></div> -->
-<!-- 		       <div class="col-sm-9 col-md-10"> -->
-<!-- 		       	<input name="dateEnd" type="text" class="form-control datepicker"/> -->
-<!-- 		       </div> -->
-<!-- 		   </div> -->
 		   <div class="row form-row">
 		       <div class="col-sm-3 col-md-2"><span class="">Product Manager</span></div>
 		       <div class="col-sm-9 col-md-10">
-		       		<input type="hidden" name="ownerId" th:value="${project.ownerId}"></input>
-		       		<span id="ownerName" th:text="${owner != null ? owner.firstName+' '+owner.lastName : ''}"></span>
-		       		<button class="btn btn-success" onclick="selectUser(); return false;">Select user</button>
+		       		<input type="hidden" name="ownerId" th:value="${project.ownerId}"></input>		       		
+		       		<button class="btn btn-default" onclick="selectUser(); return false;">
+		       			<span id="ownerName" th:text="${owner != null ? owner.firstName+' '+owner.lastName : ''}"></span>
+		       		</button>
+		       		<button id="clearOwnerBtn" class="btn btn-xs btn-danger" onclick="clearSelectUser(); return false;">
+		       			<span class="glyphicon glyphicon-trash"></span>
+		       		</button>
 		      </div>		     
 		   </div>
 		   <div class="row form-row">

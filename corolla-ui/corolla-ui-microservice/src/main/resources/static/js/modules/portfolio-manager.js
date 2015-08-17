@@ -1,10 +1,13 @@
-var PROJECTS_TREEVIEW 	= '.projects-tree-view';
-var TREE_SEARCH_BAR 	= '.tree-search';
-var FILTER_CATEGORIES 	= "#filter_categoryId";
-var FILTER_STATUSES		= '#filter_statusId';
-var FILTER_OWNERS		= '#filter_ownerId';
-var FILTER_TAGS			= '#filter_tags';
-var FILTER_MODAL		= '#modal-portoflio-tree-filter';
+var PROJECTS_TREEVIEW 		= '.projects-tree-view';
+var TREE_SEARCH_BAR 		= '.tree-search';
+var FILTER_CATEGORIES 		= "#filter_categoryId";
+var FILTER_STATUSES			= '#filter_statusId';
+var FILTER_OWNERS			= '#filter_ownerId';
+var FILTER_TAGS				= '#filter_tags';
+var FILTER_MODAL			= '#modal-portoflio-tree-filter';
+var FORM_INPUT_OWNER_ID		= 'input[name=ownerId]';
+var FORM_SHOW_OWNER_NAME	= '#ownerName';
+var FORM_BTN_CLEAR_OWNER	= '#clearOwnerBtn';
 
 var jsTreeManager = new JsTreeManager(PROJECTS_TREEVIEW);
 
@@ -89,6 +92,16 @@ function initDetailsView() {
 	 */
 	initDeleteProjectModal();
 	initDeleteProjectBranchModal();
+	
+	/**
+	 * Hide clear button and display message
+	 * to select a user if the owner is not
+	 * defined
+	 */
+	var ownerID = $(FORM_INPUT_OWNER_ID).val();
+	if (ownerID == '' || ownerID == 0) {
+		clearSelectUser();
+	}
 	
 }
 
@@ -269,6 +282,10 @@ function showSelectedNode(node) {
 	$('.selected-node-ID').val(jsTreeManager.getNodeID(node));
 }
 
+/**
+ * Open the modal view for selecting a user
+ * @returns
+ */
 function selectUser() {
 	
 	selectUserModal.show();
@@ -277,11 +294,24 @@ function selectUser() {
 		
 		console.log(user);
 
-		$('input[name=ownerId]').val(user.id);
-		$('#ownerName').text(user.firstName+' '+user.lastName);
+		$(FORM_INPUT_OWNER_ID).val(user.id);
+		$(FORM_SHOW_OWNER_NAME).text(user.firstName+' '+user.lastName);
+		$(FORM_BTN_CLEAR_OWNER).show();
 		
 		selectUserModal.hide();
 	});
+	
+}
+
+/**
+ * Clear the selected user value
+ * @returns
+ */
+function clearSelectUser() {
+	
+	$(FORM_SHOW_OWNER_NAME).text("Select user");
+	$(FORM_INPUT_OWNER_ID).val(0);	
+	$(FORM_BTN_CLEAR_OWNER).hide();
 	
 }
 

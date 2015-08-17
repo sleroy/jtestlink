@@ -117,7 +117,6 @@ function initJsTree(typeData, data) {
 	$(ITEMS_TREEVIEW).jstree({
 		"core": {
 			"animation" : 0,
-		    "check_callback" : true,
 		    "themes" : { "stripes" : true },
 		    'data' : data,
 		    'check_callback': jsTreeManager.callbackHandler
