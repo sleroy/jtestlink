@@ -5,6 +5,7 @@ package com.tocea.corolla.ui.views.admin.users
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
@@ -12,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView
 
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
-import com.tocea.corolla.users.domain.Permission
 import com.tocea.corolla.users.dto.UserDto
+import com.tocea.corolla.users.permissions.Permissions;
 import com.tocea.corolla.users.service.UserDtoService;
 import com.tocea.corolla.users.validation.UserValidation
 
@@ -21,10 +22,7 @@ import com.tocea.corolla.users.validation.UserValidation
  * @author sleroy
  *
  */
-@Secured([
-	Permission.ADMIN,
-	Permission.ADMIN_USERS
-])
+@PreAuthorize("@userAuthorization.hasAdminAccess()")
 @Controller
 public class UserAdminController {
 

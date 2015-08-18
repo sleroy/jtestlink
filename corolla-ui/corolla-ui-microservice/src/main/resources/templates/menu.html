@@ -74,11 +74,11 @@
 			</a>
 		</li> 
 		
-		<li class="header" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+		<li class="header" th:if="${@userAuthorization.hasAdminAccess()}">
 			ADMINISTRATION
 		</li>
 		
-		<li class="treeview"  th:classappend="${menu} == 'admin' ? 'active'" th:if="${#httpServletRequest.isUserInRole('ROLE_ADMIN')}">
+		<li class="treeview"  th:classappend="${menu} == 'admin' ? 'active'" th:if="${@userAuthorization.hasAdminAccess()}">
 	        <a href="/ui/admin">
 	          <i class="glyphicon glyphicon-cog"></i>
 	          <span>Administration</span> 

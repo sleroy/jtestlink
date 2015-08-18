@@ -22,7 +22,6 @@ package com.tocea.corolla.requirements.trees.rest;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +53,6 @@ import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.FolderNodeType;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.dto.JsTreeNodeDTO;
-import com.tocea.corolla.users.domain.Permission;
 
 @RestController
 @RequestMapping("/rest/requirements/tree")
@@ -79,7 +77,7 @@ public class RequirementsTreeRestController {
 	private Gate gate;
 	
 	@RequestMapping(value = "{projectKey}/{branchName}/")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("@userAuthorization.hasRequirementReadAccess(#projectKey)")
 	public RequirementsTree getTree(@PathVariable String projectKey, @PathVariable String branchName) {
 		
 		Project project = findProjectOrFail(projectKey);		
@@ -91,7 +89,7 @@ public class RequirementsTreeRestController {
 	}
 	
 	@RequestMapping(value = "{projectKey}/{branchName}/jstree")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("@userAuthorization.hasRequirementReadAccess(#projectKey)")
 	public Collection<JsTreeNodeDTO> getJsTree(@PathVariable String projectKey, @PathVariable String branchName) {
 		
 		Project project = findProjectOrFail(projectKey);		
@@ -117,7 +115,7 @@ public class RequirementsTreeRestController {
 	}
 	
 	@RequestMapping(value = "/{projectKey}/{branchName}/move/{fromID}/{toID}")
-	@Secured({ Permission.PROJECT_WRITE })
+	@PreAuthorize("@userAuthorization.hasRequirementWriteAccess(#projectKey)")
 	public RequirementsTree moveNode(@PathVariable String projectKey, @PathVariable String branchName, @PathVariable Integer fromID, @PathVariable Integer toID) {
 		
 		Project project = findProjectOrFail(projectKey);		
@@ -127,7 +125,7 @@ public class RequirementsTreeRestController {
 	}
 	
 	@RequestMapping(value = "/{projectKey}/{branchName}/folders/add/{parentID}/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
-	@Secured({ Permission.PROJECT_WRITE })
+	@PreAuthorize("@userAuthorization.hasRequirementWriteAccess(#projectKey)")
 	public FolderNode addTextNode(@PathVariable String projectKey, @PathVariable String branchName, @PathVariable Integer parentID, @PathVariable String folderNodeTypeID, @RequestBody String text) {
 		
 		Project project = findProjectOrFail(projectKey);		
@@ -139,14 +137,14 @@ public class RequirementsTreeRestController {
 	}
 	
 	@RequestMapping(value = "/{projectKey}/{branchName}/folders/add/{folderNodeTypeID}", method = RequestMethod.POST, consumes = "text/plain")
-	@Secured({ Permission.PROJECT_WRITE })
+	@PreAuthorize("@userAuthorization.hasRequirementWriteAccess(#projectKey)")
 	public FolderNode addTextNode(@PathVariable String projectKey, @PathVariable String branchName, @PathVariable String folderNodeTypeID, @RequestBody String text) {
 		
 		return addTextNode(projectKey, branchName, null, folderNodeTypeID, text);
 	}
 	
 	@RequestMapping(value = "/{projectKey}/{branchName}/remove/{nodeID}")
-	@Secured({ Permission.PROJECT_WRITE })
+	@PreAuthorize("@userAuthorization.hasRequirementWriteAccess(#projectKey)")
 	public RequirementsTree removeNode(@PathVariable String projectKey, @PathVariable String branchName, @PathVariable Integer nodeID) {
 		
 		Project project = findProjectOrFail(projectKey);		
@@ -156,7 +154,7 @@ public class RequirementsTreeRestController {
 	}
 	
 	@RequestMapping(value = "/{projectKey}/{branchName}/folders/edit/{nodeID}", method = RequestMethod.POST, consumes = "text/plain")
-	@Secured({ Permission.PROJECT_WRITE })
+	@PreAuthorize("@userAuthorization.hasRequirementWriteAccess(#projectKey)")
 	public RequirementsTree editTextNode(@PathVariable String projectKey, @PathVariable String branchName, @PathVariable Integer nodeID, @RequestBody String text) {
 		
 		Project project = findProjectOrFail(projectKey);		
@@ -166,7 +164,7 @@ public class RequirementsTreeRestController {
 	}
 	
 	@RequestMapping(value = "/{projectKey}/{branchName}/folders/edit/type/{nodeID}/{typeID}")
-	@Secured({ Permission.PROJECT_WRITE })
+	@PreAuthorize("@userAuthorization.hasRequirementWriteAccess(#projectKey)")
 	public FolderNode changeFolderNodeType(@PathVariable String projectKey, @PathVariable String branchName, @PathVariable Integer nodeID, @PathVariable String typeID) {
 		
 		Project project = findProjectOrFail(projectKey);		

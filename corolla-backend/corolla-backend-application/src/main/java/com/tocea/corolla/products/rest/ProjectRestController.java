@@ -27,7 +27,6 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -53,7 +52,6 @@ import com.tocea.corolla.products.dto.ProjectFilterDTO;
 import com.tocea.corolla.products.exceptions.ProjectBranchNotFoundException;
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException;
 import com.tocea.corolla.products.utils.ProjectUtils;
-import com.tocea.corolla.users.domain.Permission;
 
 @RestController
 @RequestMapping("/rest/projects")
@@ -133,7 +131,7 @@ public class ProjectRestController {
 	}
 	
 	@RequestMapping(value="/{projectKey}/tags")
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("@userAuthorization.canReadProject(#projectKey)")
 	public Collection<String> findTags(@PathVariable String projectKey) {
 		
 		Project project = projectDAO.findByKey(projectKey);
@@ -146,8 +144,7 @@ public class ProjectRestController {
 	}
 	
 	@RequestMapping(value="/{projectKey}/tags/push", method = RequestMethod.POST)
-//	@Secured({ Permission.PROJECT_MANAGEMENT })
-	@PreAuthorize("@projectSecurityService.hasPermission(#projectKey, '"+Permission.PROJECT_MANAGEMENT+"')")
+	@PreAuthorize("@userAuthorization.canEditProject(#projectKey)")
 	public Collection<String> pushTags(@PathVariable String projectKey, @RequestBody String data) throws UnsupportedEncodingException {
 		
 		Project project = projectDAO.findByKey(projectKey);
@@ -169,7 +166,7 @@ public class ProjectRestController {
 	}
 	
 	@RequestMapping(value = "/{projectKey}/branches/{branchName}/delete")
-	@Secured({ Permission.PROJECT_MANAGEMENT })
+	@PreAuthorize("@userAuthorization.canEditProject(#projectKey)")
 	public void deleteBranch(@PathVariable String projectKey, @PathVariable String branchName) {
 		
 		Project project = projectDAO.findByKey(projectKey);

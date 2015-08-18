@@ -2,7 +2,8 @@ package com.tocea.corolla.portfolio.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,16 +25,13 @@ import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.portfolio.predicates.FindNodeByProjectIDPredicate;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.domain.Project;
+import com.tocea.corolla.tests.utils.AuthUserService;
 import com.tocea.corolla.trees.commands.CreateFolderNodeTypeCommand;
 import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.FolderNodeType;
 import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.ui.AbstractSpringTest;
-import com.tocea.corolla.ui.security.AuthUser;
-import com.tocea.corolla.users.domain.Permission;
-import com.tocea.corolla.users.domain.Role;
-import com.tocea.corolla.users.domain.User;
 
 public class PortfolioRestControllerTest extends AbstractSpringTest {
 
@@ -62,14 +60,10 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 	@Autowired
 	private Gate gate;
 	
-	private Role basicRole;
-	private Role managerRole;
+	@Autowired
+	private AuthUserService authUserService;
 	
-	private User basicUser;
-	private User managerUser;
-	
-	private Project existingProject;
-	
+	private Project existingProject;	
 	private FolderNodeType folderNodeType;
 	private FolderNodeType otherFolderNodeType;
 	private ProjectNode corollaNode;
@@ -82,24 +76,6 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 				.webAppContextSetup(context)
 				.addFilters(springSecurityFilterChain)
 				.build();
-		
-		basicRole = new Role();
-		basicRole.setName("BASIC");
-		basicRole.setPermissions("");
-		
-		managerRole = new Role();
-		managerRole.setName("Manager");
-		managerRole.setPermissions(Permission.PORTFOLIO_MANAGEMENT);
-		
-		basicUser = new User();
-		basicUser.setLogin("simple");
-		basicUser.setPassword("pass");
-		basicUser.setEmail("simple@corolla.com");
-		
-		managerUser = new User();
-		managerUser.setLogin("manager");
-		managerUser.setPassword("pass");
-		managerUser.setEmail("manager@corolla.com");
 		
 		existingProject = new Project();
 		existingProject.setKey("COROLLA_TEST");
@@ -124,7 +100,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 	public void basicUserShouldAccessPortfolioTree() throws Exception {
 		
 		mvc
-		.perform(get(PORTFOLIO_URL).with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(PORTFOLIO_URL).with(user(authUserService.portfolioUser())))
 		.andExpect(status().isOk());
 		
 	}
@@ -142,7 +118,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 	public void basicUserShouldAccessPortfolioJsTree() throws Exception {
 		
 		mvc
-		.perform(get(PORTFOLIO_JSTREE_URL).with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(PORTFOLIO_JSTREE_URL).with(user(authUserService.portfolioUser())))
 		.andExpect(status().isOk());
 		
 	}
@@ -160,7 +136,10 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 	public void basicUserShouldAccessPortfolioJsTreeSubTree() throws Exception {
 		
 		mvc
-		.perform(get(PORTFOLIO_JSTREE_URL+"/"+existingProject.getKey()).with(user(new AuthUser(basicUser, basicRole))))
+		.perform(
+				get(PORTFOLIO_JSTREE_URL+"/"+existingProject.getKey())
+				.with(user(authUserService.projectUser(existingProject)))
+		)
 		.andExpect(status().isOk());
 	}
 	
@@ -184,7 +163,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 				.append(corollaFolder.getId());
 		
 		mvc
-		.perform(get(url.toString()).with(user(new AuthUser(managerUser, managerRole))))
+		.perform(get(url.toString()).with(user(authUserService.portfolioManager())))
 		.andExpect(status().isOk())
 		.andReturn();
 		
@@ -204,7 +183,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 				.append(corollaFolder.getId());
 		
 		mvc
-		.perform(get(url.toString()).with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(url.toString()).with(user(authUserService.portfolioUser())))
 		.andExpect(status().isForbidden());
 		
 	}
@@ -219,7 +198,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 				.append(corollaFolder.getId());
 		
 		mvc
-			.perform(get(url.toString()).with(user(new AuthUser(managerUser, managerRole))))
+			.perform(get(url.toString()).with(user(authUserService.portfolioManager())))
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -235,7 +214,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 				.append(corollaFolder.getId());
 		
 		mvc
-		.perform(get(url.toString()).with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(url.toString()).with(user(authUserService.portfolioUser())))
 		.andExpect(status().isForbidden());
 		
 	}
@@ -252,7 +231,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 					post(url.toString())
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(managerUser, managerRole))))
+					.with(user(authUserService.portfolioManager())))
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -273,7 +252,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 					post(url.toString())
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(basicUser, basicRole))))
+					.with(user(authUserService.portfolioUser())))
 			.andExpect(status().isForbidden())
 			.andReturn();
 		
@@ -298,7 +277,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 					post(url.toString())
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(managerUser, managerRole))))
+					.with(user(authUserService.portfolioManager())))
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -324,7 +303,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 					post(url.toString())
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(basicUser, basicRole))))
+					.with(user(authUserService.portfolioUser())))
 			.andExpect(status().isForbidden())
 			.andReturn();
 		
@@ -345,7 +324,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 					post(url.toString())
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(managerUser, managerRole))))
+					.with(user(authUserService.portfolioManager())))
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -365,7 +344,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 					post(url.toString())
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(basicUser, basicRole))))
+					.with(user(authUserService.portfolioUser())))
 			.andExpect(status().isForbidden())
 			.andReturn();
 		
@@ -385,7 +364,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(url.toString())
-					.with(user(new AuthUser(managerUser, managerRole))))
+					.with(user(authUserService.portfolioManager())))
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -407,7 +386,7 @@ public class PortfolioRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(url.toString())
-					.with(user(new AuthUser(basicUser, basicRole))))
+					.with(user(authUserService.portfolioUser())))
 			.andExpect(status().isForbidden())
 			.andReturn();
 		

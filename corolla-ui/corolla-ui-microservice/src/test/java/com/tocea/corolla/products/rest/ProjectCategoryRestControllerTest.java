@@ -22,7 +22,7 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectCategoryCommand;
 import com.tocea.corolla.products.dao.IProjectCategoryDAO;
 import com.tocea.corolla.products.domain.ProjectCategory;
-import com.tocea.corolla.tests.utils.AuthUserUtils;
+import com.tocea.corolla.tests.utils.AuthUserService;
 import com.tocea.corolla.ui.AbstractSpringTest;
 
 public class ProjectCategoryRestControllerTest extends AbstractSpringTest {
@@ -43,6 +43,9 @@ public class ProjectCategoryRestControllerTest extends AbstractSpringTest {
 	
 	@Autowired
 	private Gate gate;
+	
+	@Autowired
+	private AuthUserService authService;
 	
 	private Collection<ProjectCategory> existingCategories;
 	
@@ -82,7 +85,7 @@ public class ProjectCategoryRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(CATEGORIES_ALL_URL).
-				with(user(AuthUserUtils.basicUser()))
+				with(user(authService.basicUser()))
 			)
 			.andExpect(status().isOk());
 			

@@ -31,7 +31,7 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.trees.commands.DeleteFolderNodeTypeCommand;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 import com.tocea.corolla.trees.domain.FolderNodeType;
-import com.tocea.corolla.users.domain.Permission;
+import com.tocea.corolla.users.permissions.Permissions;
 
 @RestController
 @RequestMapping("/rest/trees/folders/types")
@@ -49,7 +49,7 @@ public class FolderNodeTypeRestController {
 		return folderNodeTypeDAO.findAll();
 	}
 	
-	@Secured(Permission.ADMIN)
+	@Secured(Permissions.ADMIN)
 	@RequestMapping(value = "/delete/{typeID}")
 	public FolderNodeType delete(@PathVariable String typeID) {
 		

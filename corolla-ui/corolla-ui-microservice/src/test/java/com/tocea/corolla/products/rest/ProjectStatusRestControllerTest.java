@@ -22,7 +22,7 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
 import com.tocea.corolla.products.dao.IProjectStatusDAO;
 import com.tocea.corolla.products.domain.ProjectStatus;
-import com.tocea.corolla.tests.utils.AuthUserUtils;
+import com.tocea.corolla.tests.utils.AuthUserService;
 import com.tocea.corolla.ui.AbstractSpringTest;
 
 public class ProjectStatusRestControllerTest extends AbstractSpringTest {
@@ -43,6 +43,9 @@ public class ProjectStatusRestControllerTest extends AbstractSpringTest {
 	
 	@Autowired
 	private Gate gate;
+	
+	@Autowired
+	private AuthUserService authService;
 	
 	private Collection<ProjectStatus> existingStatuses;
 	
@@ -82,7 +85,7 @@ public class ProjectStatusRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(STATUS_ALL_URL).
-				with(user(AuthUserUtils.basicUser()))
+				with(user(authService.basicUser()))
 			)
 			.andExpect(status().isOk());
 			

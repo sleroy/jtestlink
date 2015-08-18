@@ -42,7 +42,7 @@ public class AuthenticationUserService {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		if (auth != null && auth.getPrincipal() != null) {						
+		if (auth != null && auth.getPrincipal() != null && !(auth.getPrincipal() instanceof String)) {						
 			return ((org.springframework.security.core.userdetails.User)auth.getPrincipal()).getUsername();			
 		}
 		

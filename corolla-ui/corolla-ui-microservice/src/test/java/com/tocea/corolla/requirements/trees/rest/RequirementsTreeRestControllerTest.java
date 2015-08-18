@@ -28,6 +28,7 @@ import com.tocea.corolla.requirements.trees.commands.CreateRequirementFolderNode
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;
 import com.tocea.corolla.requirements.trees.domain.RequirementNode;
 import com.tocea.corolla.requirements.trees.domain.RequirementsTree;
+import com.tocea.corolla.tests.utils.AuthUserService;
 import com.tocea.corolla.trees.commands.CreateFolderNodeTypeCommand;
 import com.tocea.corolla.trees.domain.FolderNode;
 import com.tocea.corolla.trees.domain.FolderNodeType;
@@ -35,10 +36,6 @@ import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.ui.AbstractSpringTest;
-import com.tocea.corolla.ui.security.AuthUser;
-import com.tocea.corolla.users.domain.Permission;
-import com.tocea.corolla.users.domain.Role;
-import com.tocea.corolla.users.domain.User;
 
 public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 
@@ -64,11 +61,8 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 	@Autowired
 	private Gate gate;
 	
-	private Role basicRole;
-	private Role managerRole;
-	
-	private User basicUser;
-	private User managerUser;
+	@Autowired
+	private AuthUserService authService;
 	
 	private Project existingProject;
 	private ProjectBranch masterBranch;
@@ -87,24 +81,6 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 				.webAppContextSetup(context)
 				.addFilters(springSecurityFilterChain)
 				.build();
-		
-		basicRole = new Role();
-		basicRole.setName("BASIC");
-		basicRole.setPermissions("");
-		
-		managerRole = new Role();
-		managerRole.setName("Manager");
-		managerRole.setPermissions(Permission.PROJECT_WRITE);
-		
-		basicUser = new User();
-		basicUser.setLogin("simple");
-		basicUser.setPassword("pass");
-		basicUser.setEmail("simple@corolla.com");
-		
-		managerUser = new User();
-		managerUser.setLogin("manager");
-		managerUser.setPassword("pass");
-		managerUser.setEmail("manager@corolla.com");
 		
 		existingProject = new Project();
 		existingProject.setKey("COROLLA_TEST");
@@ -163,7 +139,7 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 		String URL = getTreeURL(existingProject, masterBranch);
 		
 		mvc
-			.perform(get(URL).with(user(new AuthUser(basicUser, basicRole))))
+			.perform(get(URL).with(user(authService.requirementsUser(existingProject))))
 			.andExpect(status().isOk());
 		
 	}
@@ -186,7 +162,10 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 		String URL = getJsTreeURL(existingProject, masterBranch);
 		
 		mvc
-			.perform(get(URL).with(user(new AuthUser(basicUser, basicRole))))
+			.perform(
+					get(URL)
+					.with(user(authService.requirementsUser(existingProject)))
+			)
 			.andExpect(status().isOk());
 		
 	}
@@ -218,7 +197,10 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 				.append(folder1.getId());
 		
 		mvc
-			.perform(get(url.toString()).with(user(new AuthUser(managerUser, managerRole))))
+			.perform(
+					get(url.toString())
+					.with(user(authService.requirementsManager(existingProject)))
+			)
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -240,7 +222,10 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 				.append(folder1.getId());
 		
 		mvc
-			.perform(get(url.toString()).with(user(new AuthUser(basicUser, basicRole))))
+			.perform(
+					get(url.toString())
+					.with(user(authService.requirementsUser(existingProject)))
+			)
 			.andExpect(status().isForbidden());
 		
 	}
@@ -258,7 +243,10 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 				.append(folder1.getId());
 		
 		mvc
-			.perform(get(url.toString()).with(user(new AuthUser(managerUser, managerRole))))
+			.perform(
+					get(url.toString())
+					.with(user(authService.requirementsManager(existingProject)))
+			)
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -277,7 +265,10 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 				.append(folder1.getId());
 		
 		mvc
-			.perform(get(url.toString()).with(user(new AuthUser(basicUser, basicRole))))
+			.perform(
+					get(url.toString())
+					.with(user(authService.requirementsUser(existingProject)))
+			)
 			.andExpect(status().isForbidden());
 		
 	}
@@ -297,7 +288,8 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 					post(url.toString())
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(managerUser, managerRole))))
+					.with(user(authService.requirementsManager(existingProject)))
+			)
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -323,7 +315,8 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 					post(url.toString())
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(basicUser, basicRole))))
+					.with(user(authService.requirementsUser(existingProject)))
+			)
 			.andExpect(status().isForbidden())
 			.andReturn();
 		
@@ -346,7 +339,8 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 					post(URL)
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(managerUser, managerRole))))
+					.with(user(authService.requirementsManager(existingProject)))
+			)
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -370,7 +364,8 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 					post(URL)
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(basicUser, basicRole))))
+					.with(user(authService.requirementsUser(existingProject)))
+			)
 			.andExpect(status().isForbidden())
 			.andReturn();
 		
@@ -393,7 +388,7 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 					post(URL)
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(managerUser, managerRole))))
+					.with(user(authService.requirementsManager(existingProject))))
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -415,7 +410,7 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 					post(URL)
 					.content(newText)
 					.contentType(MediaType.TEXT_PLAIN)
-					.with(user(new AuthUser(basicUser, basicRole))))
+					.with(user(authService.requirementsUser(existingProject))))
 			.andExpect(status().isForbidden())
 			.andReturn();
 		
@@ -438,7 +433,8 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(url.toString())
-					.with(user(new AuthUser(managerUser, managerRole))))
+					.with(user(authService.requirementsManager(existingProject)))
+			)
 			.andExpect(status().isOk())
 			.andReturn();
 		
@@ -462,7 +458,8 @@ public class RequirementsTreeRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(url.toString())
-					.with(user(new AuthUser(basicUser, basicRole))))
+					.with(user(authService.requirementsUser(existingProject)))
+			)
 			.andExpect(status().isForbidden())
 			.andReturn();
 		

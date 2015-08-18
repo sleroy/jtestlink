@@ -9,6 +9,7 @@ import javax.validation.Valid
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller
 import org.springframework.validation.BindingResult
 import org.springframework.validation.ObjectError
@@ -24,10 +25,10 @@ import com.tocea.corolla.users.commands.CreateUserCommand
 import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
-import com.tocea.corolla.users.domain.Permission
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.dto.UserPasswordDto
 import com.tocea.corolla.users.exceptions.InvalidLoginException
+import com.tocea.corolla.users.permissions.Permissions;
 import com.tocea.corolla.users.service.UserDtoService;
 import com.tocea.corolla.users.validation.UserValidation
 
@@ -35,10 +36,7 @@ import com.tocea.corolla.users.validation.UserValidation
  * @author sleroy
  *
  */
-@Secured([
-	Permission.ADMIN,
-	Permission.ADMIN_USERS
-])
+@PreAuthorize("@userAuthorization.hasAdminAccess()")
 @RequestMapping("/ui/admin/users/")
 @Controller
 @Slf4j

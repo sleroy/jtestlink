@@ -8,6 +8,7 @@ include "corolla-backend:corolla-backend-application"
 include "corolla-backend:corolla-backend-projects"
 include "corolla-backend:corolla-backend-utils"
 include "corolla-backend:corolla-backend-microservice"
+include "corolla-backend:corolla-backend-security"
 include "corolla-backend:plugins:corolla-backend-plugin-testlink"
 
 include "corolla-ui:corolla-ui-widgets"

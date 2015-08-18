@@ -30,18 +30,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.users.commands.DeleteUserGroupCommand;
-import com.tocea.corolla.users.domain.Permission;
+import com.tocea.corolla.users.permissions.Permissions;
 
 @RestController()
 @RequestMapping("/rest/groups")
-@Secured(Permission.REST)
+@Secured(Permissions.REST)
 @Transactional
 public class UserGroupRestController {
 
 	@Autowired
 	private Gate gate;
 	
-	@Secured({ Permission.ADMIN, Permission.ADMIN_USER_GROUPS })
+	@Secured({ Permissions.ADMIN })
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public void deleteUserGroup(@PathVariable final String id) {
 		

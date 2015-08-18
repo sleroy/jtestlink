@@ -1,3 +1,22 @@
+/*
+ * Corolla - A Tool to manage software requirements and test cases 
+ * Copyright (C) 2015 Tocea
+ * 
+ * This file is part of Corolla.
+ * 
+ * Corolla is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, 
+ * or any later version.
+ * 
+ * Corolla is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.tocea.corolla.ui.views.portfolio
 
 import javax.validation.Valid;
@@ -7,6 +26,7 @@ import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,8 +57,8 @@ import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException
 import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 import com.tocea.corolla.users.dao.IUserDAO;
-import com.tocea.corolla.users.domain.Permission;
 import com.tocea.corolla.users.dto.UserDto;
+import com.tocea.corolla.users.permissions.Permissions;
 import com.tocea.corolla.users.service.IUserDtoService
 
 @Controller
@@ -75,6 +95,7 @@ class PortfolioPageController {
 	private Gate gate;
 	
 	@RequestMapping("/ui/portfolio")
+	@PreAuthorize("isAuthenticated()")
 	public ModelAndView getPortfolio() {
 		
 		def projects = projectDAO.findAll();		
@@ -89,12 +110,14 @@ class PortfolioPageController {
 	}
 	
 	@RequestMapping("/ui/portfolio/manager")
+	@PreAuthorize("@userAuthorization.hasPortfolioReadAccess()")
 	public ModelAndView getPortfolioManagerIndex() {
 		
 		return buildManagerViewData(new ModelAndView(MANAGER_PAGE), null);
 	}
 	
 	@RequestMapping("/ui/portfolio/manager/{projectKey}")
+	@PreAuthorize("@userAuthorization.canReadProject(#projectKey)")
 	public ModelAndView getPortfolioManager(@PathVariable projectKey) {
 		
 		def project = projectDAO.findByKey(projectKey)
@@ -109,7 +132,7 @@ class PortfolioPageController {
 	}
 	
 	@RequestMapping(value="/ui/portfolio/manager/create")
-	@Secured([Permission.PORTFOLIO_MANAGEMENT])
+	@PreAuthorize("@userAuthorization.canCreateProjects()")
 	public ModelAndView createProject(@Valid @ModelAttribute("newProject") ProjectNodeDTO newProject, BindingResult _result) {
 		
 		newProject = _result.model.get("newProject")

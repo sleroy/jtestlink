@@ -4,6 +4,7 @@ import groovy.util.logging.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.WebDataBinder;
@@ -22,15 +23,12 @@ import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.users.commands.CreateRoleCommand;
 import com.tocea.corolla.users.commands.EditRoleCommand;
-import com.tocea.corolla.users.domain.Permission
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.dto.RoleDTO;
+import com.tocea.corolla.users.permissions.Permissions;
 
-@Secured([
-	Permission.ADMIN,
-	Permission.ADMIN_ROLES
-])
+@PreAuthorize("@userAuthorization.hasAdminAccess()")
 @Slf4j
 @Controller
 @RequestMapping("/ui/admin/roles")
@@ -51,7 +49,7 @@ public class RoleEditController {
 	
 	@ModelAttribute("permissions")
 	public List<String> permissions() {
-		return Permission.list()
+		return Permissions.list()
 	}
 	
 	@RequestMapping("/add")

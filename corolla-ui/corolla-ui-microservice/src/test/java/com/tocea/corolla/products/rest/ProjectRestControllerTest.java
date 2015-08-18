@@ -39,7 +39,6 @@ import com.tocea.corolla.products.domain.ProjectCategory;
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.products.dto.ProjectFilterDTO;
 import com.tocea.corolla.tests.utils.AuthUserService;
-import com.tocea.corolla.tests.utils.AuthUserUtils;
 import com.tocea.corolla.ui.AbstractSpringTest;
 
 public class ProjectRestControllerTest extends AbstractSpringTest {
@@ -186,7 +185,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(PROJECTS_ALL_URL)
-					.with(user(AuthUserUtils.basicUser()))
+					.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk());
 		
@@ -214,7 +213,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(PROJECTS_ALL_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(gson.toJson(ids))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 		)
 		.andExpect(status().isOk());
 		
@@ -226,7 +225,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(buildDeleteBranchURL(existingProject, devBranch)).
-				with(user(AuthUserUtils.projectManager()))
+				with(user(authUserService.projectManager(existingProject)))
 			)
 			.andExpect(status().isOk());
 			
@@ -240,7 +239,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(buildDeleteBranchURL(existingProject, devBranch)).
-				with(user(AuthUserUtils.basicUser()))
+				with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isForbidden());
 			
@@ -254,7 +253,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 				get(buildDeleteBranchURL(existingProject, masterBranch))
-				.with(user(AuthUserUtils.projectManager()))
+				.with(user(authUserService.projectManager(existingProject)))
 			)
 			.andExpect(status().isNotAcceptable());
 		
@@ -275,7 +274,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(TAGS_URL)
-					.with(user(AuthUserUtils.basicUser()))
+					.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(3)));
@@ -298,7 +297,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(buildProjectTagsURL(existingProject))
-					.with(user(AuthUserUtils.basicUser()))
+					.with(user(authUserService.projectUser(existingProject)))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(existingProject.getTags().size())));
@@ -314,10 +313,9 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(buildProjectTagsURL(invalidProject))
-					.with(user(AuthUserUtils.basicUser()))
+					.with(user(authUserService.projectUser(invalidProject)))
 			)
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(0)));
+			.andExpect(status().isForbidden());
 		
 	}
 	
@@ -365,7 +363,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 			.perform(
 				post(buildProjectTagsPushURL(existingProject))
 				.content("tags="+StringUtils.join(newTags, ","))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isForbidden());
 
@@ -385,7 +383,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(2)));
@@ -403,7 +401,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
@@ -424,7 +422,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
@@ -445,7 +443,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
@@ -463,7 +461,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
@@ -491,7 +489,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(2)));
@@ -523,7 +521,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_IDS_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(AuthUserUtils.basicUser()))
+				.with(user(authUserService.basicUser()))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(2)));

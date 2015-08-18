@@ -322,11 +322,16 @@
 								</ul>
 							</div>
 							<div class="tab-pane" id="members">
+								<a th:href="@{/projects/}+${project.key}+@{/members/add}" class="btn btn-primary pull-right">
+									<em class="glyphicon glyphicon-plus"></em>
+									Add Member
+								</a>
+								<br style="clear: both;"/>
 								<div class="table-responsive">
 									<table class="table table-hover table-striped" cellspacing="0" width="100%">
 										<thead>
 											<tr>
-												<th class="col-md-3">User/Group</th>
+												<th class="col-md-3">User / Group</th>
 												<th class="col-md-2">Type</th>
 												<th class="col-md-5">Roles</th>
 												<th class="col-md-2">Actions</th>

@@ -27,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -65,8 +66,8 @@ import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.users.dao.IUserDAO;
-import com.tocea.corolla.users.domain.Permission;
 import com.tocea.corolla.users.dto.UserDto
+import com.tocea.corolla.users.permissions.Permissions;
 
 @Controller
 @Slf4j
@@ -118,6 +119,7 @@ public class ProjectDetailsPageController {
 	}
 
 	@RequestMapping(value="/ui/projects/{projectKey}")
+	@PreAuthorize("@userAuthorization.canReadProject(#projectKey)")
 	public ModelAndView getProjectDetails(@PathVariable projectKey) {
 		
 		def project = projectDAO.findByKey(projectKey)
@@ -131,9 +133,9 @@ public class ProjectDetailsPageController {
 		return model
 	}
 	
-	@RequestMapping(value = "/ui/projects/{projectID}/edit", method = RequestMethod.POST)
-	@Secured([Permission.PROJECT_MANAGEMENT])
-	public ModelAndView editProject(@PathVariable String projectID, @Valid @ModelAttribute("project") Project project, BindingResult _result) {
+	@RequestMapping(value = "/ui/projects/{projectKey}/edit", method = RequestMethod.POST)
+	@PreAuthorize("@userAuthorization.canEditProject(#projectKey)")
+	public ModelAndView editProject(@PathVariable String projectKey, @Valid @ModelAttribute("project") Project project, BindingResult _result) {
 		
 		project = _result.model.get("project")
 		def original = projectDAO.findOne(project.id)
@@ -143,6 +145,7 @@ public class ProjectDetailsPageController {
 		}
 		
 		if (_result.hasErrors()) {
+			project.key = original.key
 			def model = buildManagerViewData(new ModelAndView(DETAILS_VIEW), project)
 			model.addObject "selectedTab", "edit"
 			return model
@@ -156,6 +159,7 @@ public class ProjectDetailsPageController {
 	}
 	
 	@RequestMapping("/ui/projects/{projectKey}/revisions/{commitID}")
+	@PreAuthorize("@userAuthorization.canReadProject(#projectKey)")
 	public ModelAndView getRevisionPage(@PathVariable projectKey, @PathVariable commitID) {
 		
 		def project = findProjectOrFail(projectKey)
@@ -184,7 +188,7 @@ public class ProjectDetailsPageController {
 	}
 	
 	@RequestMapping("/ui/projects/{projectKey}/revisions/{commitID}/restore")
-	@Secured([Permission.PROJECT_MANAGEMENT])
+	@PreAuthorize("@userAuthorization.canEditProject(#projectKey)")
 	public ModelAndView restoreProjectState(@PathVariable projectKey, @PathVariable commitID) {
 		
 		def project = findProjectOrFail(projectKey)
@@ -203,6 +207,7 @@ public class ProjectDetailsPageController {
 	}
 	
 	@RequestMapping(value = "/ui/projects/{projectKey}/branches/add/{originBranchName}", method = RequestMethod.POST)
+	@PreAuthorize("@userAuthorization.canEditProject(#projectKey)")
 	public ModelAndView addBranch(@PathVariable projectKey, @PathVariable originBranchName, @Valid @ModelAttribute("branch") ProjectBranch branch, BindingResult _result) {
 		
 		branch = _result.model.get("branch")
@@ -233,6 +238,7 @@ public class ProjectDetailsPageController {
 	}
 	
 	@RequestMapping(value = "/ui/projects/{projectKey}/branches/edit/{branchName}")
+	@PreAuthorize("@userAuthorization.canEditProject(#projectKey)")
 	public ModelAndView getEditBranchPage(@PathVariable projectKey, @PathVariable branchName) {
 		
 		def project = findProjectOrFail(projectKey)		
@@ -242,6 +248,7 @@ public class ProjectDetailsPageController {
 	}
 	
 	@RequestMapping(value = "/ui/projects/{projectKey}/branches/edit/{branchName}", method = RequestMethod.POST)
+	@PreAuthorize("@userAuthorization.canEditProject(#projectKey)")
 	public ModelAndView editBranch(@PathVariable projectKey, @PathVariable branchName, @Valid @ModelAttribute("branch") ProjectBranch branch, BindingResult _result) {
 		
 		branch = _result.model.get("branch")
@@ -270,7 +277,7 @@ public class ProjectDetailsPageController {
 	}
 	
 	@RequestMapping(value = "/ui/projects/{projectKey}/delete")
-	@Secured([Permission.PORTFOLIO_MANAGEMENT])
+	@PreAuthorize("@userAuthorization.canDeleteProjects()")
 	public ModelAndView deleteProject(@PathVariable projectKey) {
 		
 		Project project = findProjectOrFail(projectKey)

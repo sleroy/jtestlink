@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,14 +27,11 @@ import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectStatus;
 import com.tocea.corolla.revisions.services.IRevisionService;
+import com.tocea.corolla.tests.utils.AuthUserService;
 import com.tocea.corolla.trees.domain.TreeNode;
 import com.tocea.corolla.trees.predicates.FindNodeByIDPredicate;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.ui.AbstractSpringTest;
-import com.tocea.corolla.ui.security.AuthUser;
-import com.tocea.corolla.users.domain.Permission;
-import com.tocea.corolla.users.domain.Role;
-import com.tocea.corolla.users.domain.User;
 
 public class PortfolioPageControllerTest extends AbstractSpringTest {
 
@@ -66,11 +62,8 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	@Autowired
 	private IRevisionService revisionService;
 	
-	private Role basicRole;	
-	private Role managerRole;
-	
-	private User basicUser;
-	private User managerUser;
+	@Autowired
+	private AuthUserService authService;
 	
 	private ProjectStatus projectStatus;
 	private Project existingProject;
@@ -82,24 +75,6 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 				.webAppContextSetup(context)
 				.addFilters(springSecurityFilterChain)
 				.build();
-		
-		basicRole = new Role();
-		basicRole.setName("BASIC");
-		basicRole.setPermissions("");
-		
-		basicUser = new User();
-		basicUser.setLogin("simple");
-		basicUser.setPassword("pass");
-		basicUser.setEmail("simple@corolla.com");
-		
-		managerRole = new Role();
-		managerRole.setName("BASIC");
-		managerRole.setPermissions(Permission.PORTFOLIO_MANAGEMENT);
-		
-		managerUser = new User();
-		managerUser.setLogin("manager");
-		managerUser.setPassword("pass");
-		managerUser.setEmail("manager@corolla.com");
 		
 		projectStatus = new ProjectStatus();
 		projectStatus.setName("Active");
@@ -125,7 +100,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 	public void basicUserShouldAccessPortfolioView() throws Exception {
 		
 		mvc
-		.perform(get(PORTFOLIO_URL).with(user(new AuthUser(basicUser, basicRole))))
+		.perform(get(PORTFOLIO_URL).with(user(authService.portfolioUser())))
 		.andExpect(status().isOk());
 		
 	}
@@ -145,7 +120,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 				get(PORTFOLIO_MANAGER_URL)
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(authService.portfolioUser())))
 			.andExpect(status().isOk());
 		
 	}
@@ -165,7 +140,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		mvc
 		.perform(
 				get(PORTFOLIO_MANAGER_URL+existingProject.getKey())
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(authService.projectUser(existingProject))))
 		.andExpect(status().isOk());
 		
 	}
@@ -176,9 +151,8 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 		mvc
 			.perform(
 					get(PORTFOLIO_MANAGER_URL+"blblbl")
-					.with(user(new AuthUser(basicUser, basicRole))))
-			.andExpect(status().isFound())
-			.andExpect(redirectedUrl(PORTFOLIO_MANAGER_URL));
+					.with(user(authService.portfolioUser())))
+			.andExpect(status().isForbidden());
 		
 	}
 	
@@ -195,7 +169,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 				.param("key", key)
 				.param("name", name)
 				.param("parentID", parentID.toString())
-				.with(user(new AuthUser(managerUser, managerRole))))
+				.with(user(authService.projectCreator())))
 			.andExpect(status().isFound());
 
 		Project project =projectDAO.findByKey(key);
@@ -225,7 +199,7 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 				.param("key", key)
 				.param("name", name)
 				.param("parentID", parentID.toString())
-				.with(user(new AuthUser(basicUser, basicRole))))
+				.with(user(authService.portfolioUser())))
 			.andExpect(status().isForbidden());
 
 		assertEquals(nbProjects, projectDAO.count());

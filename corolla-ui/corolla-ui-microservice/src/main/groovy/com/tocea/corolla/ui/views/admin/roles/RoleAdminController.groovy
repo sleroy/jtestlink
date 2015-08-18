@@ -5,6 +5,7 @@ package com.tocea.corolla.ui.views.admin.roles
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,17 +16,14 @@ import com.tocea.corolla.cqrs.gate.Gate
 import com.tocea.corolla.users.commands.DuplicateRoleCommand
 import com.tocea.corolla.users.commands.MarksRoleAsDefaultCommand
 import com.tocea.corolla.users.dao.IRoleDAO
-import com.tocea.corolla.users.domain.Permission
+import com.tocea.corolla.users.permissions.Permissions;
 import com.tocea.corolla.users.validation.UserValidation
 
 /**
  * @author sleroy
  *
  */
-@Secured([
-	Permission.ADMIN,
-	Permission.ADMIN_ROLES
-])
+@PreAuthorize("@userAuthorization.hasAdminAccess()")
 @Controller
 public class RoleAdminController {
 

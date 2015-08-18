@@ -65,10 +65,10 @@ import com.tocea.corolla.users.commands.EditUserCommand
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.dao.IUserDAO
 import com.tocea.corolla.users.dao.IUserGroupDAO
-import com.tocea.corolla.users.domain.Permission
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.domain.User
 import com.tocea.corolla.users.domain.UserGroup
+import com.tocea.corolla.users.permissions.Permissions;
 
 /**
  * @author sleroy
@@ -122,6 +122,9 @@ public class DemoDataBean {
 
 	@Autowired
 	def Gate						gate
+	
+	@Autowired
+	def Permissions permissionList;
 
 	@SuppressWarnings("nls")
 	@PostConstruct
@@ -130,7 +133,7 @@ public class DemoDataBean {
 		/*
 		 * Admin role
 		 */
-		final Role roleAdmin = this.newRole("Administrator", "Administrator role", Permission.list())
+		final Role roleAdmin = this.newRole("Administrator", "Administrator role", permissionList.list())
 		roleAdmin.roleProtected = true
 		this.gate.dispatch new EditRoleCommand(roleAdmin)
 
@@ -138,10 +141,17 @@ public class DemoDataBean {
 		 * Roles
 		 */
 		final Role roleGuest = this.newRole("Guest", "Guest", [], true)
-		final Role roleTester = this.newRole("Tester", "Tester", [Permission.REST])
-		final Role roleTestManager = this.newRole("Test manager", "Test Manager", [Permission.REST])
-		final Role roleProjectManager = this.newRole("Project manager", "Project manager", [Permission.PROJECT_MANAGEMENT])
-
+		final Role roleTester = this.newRole("Tester", "Tester", [Permissions.REST])
+		final Role roleTestManager = this.newRole("Test manager", "Test Manager", [Permissions.REST])
+		final Role roleProjectManager = this.newRole(
+				"Project Manager", 
+				"Project manager", 
+				[Permissions.PROJECT_READ, 
+				 Permissions.PROJECT_EDIT,
+				 Permissions.REQUIREMENTS_READ,
+				 Permissions.REQUIREMENTS_WRITE]
+		)
+		
 		/*
 		 * Users
 		 */
@@ -443,6 +453,7 @@ public class DemoDataBean {
 		 * Permissions
 		 */
 		this.gate.dispatch(new CreateProjectPermissionCommand(corolla, scarreau, [roleProjectManager.id, roleTestManager.id]));
+		this.gate.dispatch(new CreateProjectPermissionCommand(corolla, jsnow, [roleProjectManager.id]))
 		
 	}
 

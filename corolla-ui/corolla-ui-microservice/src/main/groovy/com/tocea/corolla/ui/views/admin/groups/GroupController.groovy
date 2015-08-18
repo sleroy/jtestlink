@@ -1,3 +1,22 @@
+/*
+ * Corolla - A Tool to manage software requirements and test cases 
+ * Copyright (C) 2015 Tocea
+ * 
+ * This file is part of Corolla.
+ * 
+ * Corolla is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, 
+ * or any later version.
+ * 
+ * Corolla is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.tocea.corolla.ui.views.admin.groups
 
 import javax.validation.Valid;
@@ -6,6 +25,7 @@ import groovy.util.logging.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,12 +40,13 @@ import com.tocea.corolla.users.commands.CreateUserGroupCommand
 import com.tocea.corolla.users.commands.EditUserGroupCommand
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.dao.IUserGroupDAO;
-import com.tocea.corolla.users.domain.Permission;
 import com.tocea.corolla.users.domain.UserGroup
+import com.tocea.corolla.users.permissions.Permissions;
 import com.tocea.corolla.users.service.UserDtoService;
 
 @Controller
 @Slf4j
+@PreAuthorize("@userAuthorization.hasAdminAccess()")
 class GroupController {
 
 	def static final INDEX_PAGE = "admin/groups"
@@ -48,7 +69,6 @@ class GroupController {
 		return "admin"
 	}
 	
-	@Secured([Permission.ADMIN, Permission.ADMIN_USER_GROUPS])
 	@RequestMapping("/ui/admin/groups")
 	public ModelAndView getGroups() {
 		
@@ -59,7 +79,6 @@ class GroupController {
 		
 	}
 	
-	@Secured([Permission.ADMIN, Permission.ADMIN_USER_GROUPS])
 	@RequestMapping("/ui/admin/groups/add")
 	public ModelAndView getAddPage() {
 		
@@ -67,7 +86,6 @@ class GroupController {
 		
 	}
 	
-	@Secured([Permission.ADMIN, Permission.ADMIN_USER_GROUPS])
 	@RequestMapping(value = "/ui/admin/groups/add", method = RequestMethod.POST)
 	public ModelAndView addGroup(@Valid @ModelAttribute("group") UserGroup group, BindingResult _result) {
 		
@@ -83,7 +101,6 @@ class GroupController {
 		
 	}
 	
-	@Secured([Permission.ADMIN, Permission.ADMIN_USER_GROUPS])
 	@RequestMapping("/ui/admin/groups/edit/{id}")
 	public ModelAndView getEditPage(@PathVariable id) {
 		
@@ -93,7 +110,6 @@ class GroupController {
 		
 	}
 	
-	@Secured([Permission.ADMIN, Permission.ADMIN_USER_GROUPS])
 	@RequestMapping(value = "/ui/admin/groups/edit/{id}", method = RequestMethod.POST)
 	public ModelAndView editGroup(@PathVariable id, @Valid @ModelAttribute("group") UserGroup group, BindingResult _result) {
 		
