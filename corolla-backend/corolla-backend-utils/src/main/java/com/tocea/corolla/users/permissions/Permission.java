@@ -19,11 +19,23 @@
  */
 package com.tocea.corolla.users.permissions;
 
+/**
+ * Class that defines a permission
+ * that can be used in the authorization mechanism
+ * 
+ * @author dmichel
+ *
+ */
 public class Permission {
 
 	private String key;
 	private String group;
 	
+	/**
+	 * Constructor
+	 * @param key permission key used in the authorization mechanism
+	 * @param group group of the permission used for aggregating permissions
+	 */
 	public Permission(String key, String group) {
 		this.key = key;
 		this.group = group;

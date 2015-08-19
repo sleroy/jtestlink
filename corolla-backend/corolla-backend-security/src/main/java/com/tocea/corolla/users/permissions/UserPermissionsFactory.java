@@ -146,7 +146,7 @@ public class UserPermissionsFactory implements IUserPermissionsFactory {
 	 * @param role
 	 * @return
 	 */
-	private static Set<String> extractPermissions(Role role) {
+	private Set<String> extractPermissions(Role role) {
 		
 		Set<String> permissions = Sets.newHashSet();
 		

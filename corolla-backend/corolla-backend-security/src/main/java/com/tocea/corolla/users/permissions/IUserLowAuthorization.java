@@ -22,7 +22,12 @@ package com.tocea.corolla.users.permissions;
 import java.util.Iterator;
 import java.util.List;
 
-
+/**
+ * Validates permissions of the current authenticated user
+ * 
+ * @author dmichel
+ *
+ */
 public interface IUserLowAuthorization {
 	
 	/**

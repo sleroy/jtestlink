@@ -26,7 +26,6 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -67,7 +66,6 @@ import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 import com.tocea.corolla.trees.services.ITreeManagementService;
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.dto.UserDto
-import com.tocea.corolla.users.permissions.Permissions;
 
 @Controller
 @Slf4j

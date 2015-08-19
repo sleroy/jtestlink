@@ -22,6 +22,13 @@ package com.tocea.corolla.users.permissions;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Defines authorizations that can be granted
+ * to the current authenticated user
+ * 
+ * @author dmichel
+ *
+ */
 public interface IUserAuthorization {
 
 	/**
@@ -108,7 +115,7 @@ public interface IUserAuthorization {
 	boolean hasCustomPermission(String _permission);
 	
 	/**
-	 * Filter projects with a list of permissions
+	 * Filters projects with a list of permissions
 	 * that the current user need to have
 	 * @param _projects
 	 * @param permissions

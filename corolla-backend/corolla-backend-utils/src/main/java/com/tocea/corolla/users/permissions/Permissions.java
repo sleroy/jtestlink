@@ -51,6 +51,11 @@ public class Permissions {
 	public static final String REQUIREMENTS_WRITE	= "REQUIREMENT_WRITE";
 	public static final String REQUIREMENTS_REPORT	= "REQUIREMENT_REPORT";
 	
+	public static final String GROUP_ADMIN			= "ADMIN";
+	public static final String GROUP_PORTFOLIO		= "PORTFOLIO";
+	public static final String GROUP_PROJECT		= "PROJECT";
+	public static final String GROUP_REQUIREMENTS	= "REQUIREMENTS";
+	
 	private Collection<Permission> permissions;
 	
 	@PostConstruct
@@ -66,25 +71,25 @@ public class Permissions {
 		
 		permissions = Lists.newArrayList();
 		
-		permissions.add(new Permission(ADMIN, "ADMIN"));
-		permissions.add(new Permission(ADMIN_CONFIG, "ADMIN"));
+		permissions.add(new Permission(ADMIN, GROUP_ADMIN));
+		permissions.add(new Permission(ADMIN_CONFIG, GROUP_ADMIN));
 		
-		permissions.add(new Permission(PORTFOLIO_READ, "PORTFOLIO"));
-		permissions.add(new Permission(PORTFOLIO_WRITE, "PORTFOLIO"));
-		permissions.add(new Permission(PROJECT_CREATE, "PORTFOLIO"));
-		permissions.add(new Permission(PROJECT_DELETE, "PORTFOLIO"));
+		permissions.add(new Permission(PORTFOLIO_READ, GROUP_PORTFOLIO));
+		permissions.add(new Permission(PORTFOLIO_WRITE, GROUP_PORTFOLIO));
+		permissions.add(new Permission(PROJECT_CREATE, GROUP_PORTFOLIO));
+		permissions.add(new Permission(PROJECT_DELETE, GROUP_PORTFOLIO));
 		
-		permissions.add(new Permission(PROJECT_READ, "PROJECT"));
-		permissions.add(new Permission(PROJECT_EDIT, "PROJECT"));
+		permissions.add(new Permission(PROJECT_READ, GROUP_PROJECT));
+		permissions.add(new Permission(PROJECT_EDIT, GROUP_PROJECT));
 		
-		permissions.add(new Permission(REQUIREMENTS_READ, "REQUIREMENTS"));
-		permissions.add(new Permission(REQUIREMENTS_WRITE, "REQUIREMENTS"));
-		permissions.add(new Permission(REQUIREMENTS_REPORT, "REQUIREMENTS"));
+		permissions.add(new Permission(REQUIREMENTS_READ, GROUP_REQUIREMENTS));
+		permissions.add(new Permission(REQUIREMENTS_WRITE, GROUP_REQUIREMENTS));
+		permissions.add(new Permission(REQUIREMENTS_REPORT, GROUP_REQUIREMENTS));
 		
 	}
 	
 	/**
-	 * Retrieves the list of all existing permissions
+	 * Retrieves the list of all existing permission's keys
 	 * @return
 	 */
 	public List<String> list() {

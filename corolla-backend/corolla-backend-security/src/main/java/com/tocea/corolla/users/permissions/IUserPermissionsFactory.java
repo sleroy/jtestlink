@@ -24,6 +24,12 @@ import java.util.Set;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.users.domain.User;
 
+/**
+ * Builds a set of permissions that can be granted to an user
+ * for a given context (global permissions, project's permissions...)
+ * @author dmichel
+ *
+ */
 public interface IUserPermissionsFactory {
 
 	/**
