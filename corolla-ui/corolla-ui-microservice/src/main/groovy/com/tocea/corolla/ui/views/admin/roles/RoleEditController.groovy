@@ -44,6 +44,7 @@ import com.tocea.corolla.users.commands.EditRoleCommand;
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.dto.RoleDTO;
+import com.tocea.corolla.users.permissions.Permissions
 
 @PreAuthorize("@userAuthorization.hasAdminAccess()")
 @Slf4j
@@ -57,6 +58,9 @@ public class RoleEditController {
 	private IRoleDAO roleDAO
 	
 	@Autowired
+	private Permissions permissions;
+	
+	@Autowired
 	private Gate gate
 	
 	@ModelAttribute("menu")
@@ -66,7 +70,7 @@ public class RoleEditController {
 	
 	@ModelAttribute("permissions")
 	public List<String> permissions() {
-		return Permissions.list()
+		return permissions.list()
 	}
 	
 	@RequestMapping("/add")
