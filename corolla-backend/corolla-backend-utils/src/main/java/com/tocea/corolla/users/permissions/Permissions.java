@@ -15,15 +15,17 @@
 package com.tocea.corolla.users.permissions;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * Defines permissions employed in authorization mechanism.
@@ -31,7 +33,7 @@ import com.google.common.collect.Lists;
  * @author sleroy
  *
  */
-@Component
+@Component("permissions")
 public class Permissions {
 	
 	public static final String	REST				= "ROLE_REST";
@@ -89,17 +91,66 @@ public class Permissions {
 	}
 	
 	/**
+	 * Retrieves the list of all existing permissions
+	 * @return
+	 */
+	public Collection<Permission> list() {
+		
+		return Lists.newArrayList(permissions);		
+	}
+	
+	/**
 	 * Retrieves the list of all existing permission's keys
 	 * @return
 	 */
-	public List<String> list() {
+	public Collection<String> keys() {
 		
-		return Lists.newArrayList(Collections2.transform(permissions, new Function<Permission, String>() {
+		return Lists.newArrayList(Collections2.transform(permissions, new PermissionKeyExtractor()));		
+	}
+	
+	/**
+	 * Retrieves all existing permissions groups
+	 * @return
+	 */
+	public Collection<String> findGroups() {
+		
+		Set<String> groups = Sets.newHashSet();
+		
+		for(Permission permission : permissions) {
+			groups.add(permission.getGroup());
+		}
+		
+		return groups;
+	}
+	
+	/**
+	 * Find permissions by group
+	 * @param group
+	 * @return
+	 */
+	public Collection<String> findByGroup(final String group) {
+		
+		Collection<Permission> matchingPermissions = Lists.newArrayList(Collections2.filter(permissions, new Predicate<Permission>() {
 			@Override
-			public String apply(Permission permission) {
-				return permission != null ? permission.getKey() : null;
-			}			
+			public boolean apply(Permission permission) {
+				return permission != null && group.equals(permission.getGroup());
+			}
 		}));
+		
+		return Collections2.transform(matchingPermissions, new PermissionKeyExtractor());
+	}
+	
+	/**
+	 * Used for transforming a collection of Permissions to a collection of Strings
+	 * @author dmichel
+	 *
+	 */
+	private static class PermissionKeyExtractor implements Function<Permission, String> {
+		
+		@Override
+		public String apply(Permission permission) {
+			return permission != null ? permission.getKey() : null;
+		}	
 		
 	}
 	

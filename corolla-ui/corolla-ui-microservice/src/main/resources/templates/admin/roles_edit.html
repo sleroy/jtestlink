@@ -41,11 +41,16 @@
 										<label class="col-md-2 control-label" for="permissions">Permissions</label>
 										<div class="col-md-4">
 											<div class="control-group">
-												<div class="permission-cb " th:each="permission : ${permissions}">
-													<input type="checkbox" name="permissions" th:value="${permission}" th:checked="${#lists.contains(role.permissions, permission)}" /> 
-													<span th:text="${permission}" />
+												<div class="row">
+													<div class="col-md-12" style="margin-top: 20px" th:each="permissionGroup : ${@permissions.findGroups()}">
+														<strong th:text="${permissionGroup}"></strong>
+														<div class="permission-cb " th:each="permission : ${@permissions.findByGroup(permissionGroup)}">
+															<input type="checkbox" name="permissions" th:value="${permission}" th:checked="${#lists.contains(role.permissions, permission)}" /> 
+															<span th:text="${permission}" />
+														</div>														
+													</div>
 												</div>
-											</div>
+											</div>										
 										</div>
 									</div>
 									<!-- Button (Double) -->

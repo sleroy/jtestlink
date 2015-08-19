@@ -44,6 +44,7 @@ import com.tocea.corolla.users.commands.EditRoleCommand;
 import com.tocea.corolla.users.dao.IRoleDAO
 import com.tocea.corolla.users.domain.Role
 import com.tocea.corolla.users.dto.RoleDTO;
+import com.tocea.corolla.users.permissions.Permission
 import com.tocea.corolla.users.permissions.Permissions
 
 @PreAuthorize("@userAuthorization.hasAdminAccess()")
@@ -66,11 +67,6 @@ public class RoleEditController {
 	@ModelAttribute("menu")
 	public String setMenu() {
 		return "admin"
-	}
-	
-	@ModelAttribute("permissions")
-	public List<String> permissions() {
-		return permissions.list()
 	}
 	
 	@RequestMapping("/add")

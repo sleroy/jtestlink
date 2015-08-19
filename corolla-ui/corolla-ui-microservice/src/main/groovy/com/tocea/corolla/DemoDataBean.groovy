@@ -124,7 +124,7 @@ public class DemoDataBean {
 	def Gate						gate
 	
 	@Autowired
-	def Permissions permissionList;
+	def Permissions					permissionService
 
 	@SuppressWarnings("nls")
 	@PostConstruct
@@ -133,7 +133,7 @@ public class DemoDataBean {
 		/*
 		 * Admin role
 		 */
-		final Role roleAdmin = this.newRole("Administrator", "Administrator role", permissionList.list())
+		final Role roleAdmin = this.newRole("Administrator", "Administrator role", permissionService.keys())
 		roleAdmin.roleProtected = true
 		this.gate.dispatch new EditRoleCommand(roleAdmin)
 
@@ -141,7 +141,6 @@ public class DemoDataBean {
 		 * Roles
 		 */
 		final Role roleGuest = this.newRole("Guest", "Guest", [], true)
-		final Role roleTester = this.newRole("Tester", "Tester", [Permissions.REST])
 		final Role roleTestManager = this.newRole("Test manager", "Test Manager", [Permissions.REST])
 		final Role roleProjectManager = this.newRole(
 				"Project Manager", 
@@ -150,6 +149,26 @@ public class DemoDataBean {
 				 Permissions.PROJECT_EDIT,
 				 Permissions.REQUIREMENTS_READ,
 				 Permissions.REQUIREMENTS_WRITE]
+		)
+		final Role roleRequirementManager = this.newRole(
+				"Requirement Manager",
+				"Requirement Manager",
+				[Permissions.REQUIREMENTS_READ,
+				 Permissions.REQUIREMENTS_WRITE,
+				 Permissions.REQUIREMENTS_REPORT]
+		)
+		final Role rolePortfolioManager = this.newRole(
+				"Portfolio Manager",
+				"Portfolio Manager",
+				[Permissions.PORTFOLIO_READ,
+				 Permissions.PORTFOLIO_WRITE,
+				 Permissions.PROJECT_CREATE,
+				 Permissions.PROJECT_DELETE]
+		)
+		final Role roleProjectGuest = this.newRole(
+				"Project Guest",
+				"Project Guest",
+				[Permissions.PROJECT_READ, Permissions.REQUIREMENTS_READ]
 		)
 		
 		/*
@@ -160,14 +179,14 @@ public class DemoDataBean {
 		def scarreau = this.newUser(	"Sébastien", "Carreau", "sebastien.carreau@tocea.com", "scarreau",
 				"scarreau", roleAdmin)
 		this.newUser(	"Jack", "Pirate", "jack.pirate@email.com", "jpirate",
-				"password", roleGuest)
+				"password", rolePortfolioManager)
 		this.newUser(	"Ichigo", "Kurosaki", "ichigo.kurosaki@email.com",
-				"ikurosaki", "password", roleTester)
+				"ikurosaki", "password", roleGuest)
 		this.newUser(	"James", "Bond", "james.bond@mi6.com", "jbond", "007",
 				roleTestManager)
 		this.newUser(	"Gandalf", "LeGris", "gandalf.legris@lotr.com",
 				"gandalf",
-				"saroumaneisg..", roleProjectManager)
+				"saroumaneisg..", rolePortfolioManager)
 		this.newUser(	"Saroumane", "LeBlanch", "saroumane.leblanc@lotr.com",
 				"saroumane",
 				"fuckSauron..", roleAdmin)
