@@ -24,7 +24,6 @@ import javax.validation.Valid;
 import groovy.util.logging.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -41,7 +40,6 @@ import com.tocea.corolla.users.commands.EditUserGroupCommand
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.dao.IUserGroupDAO;
 import com.tocea.corolla.users.domain.UserGroup
-import com.tocea.corolla.users.permissions.Permissions;
 import com.tocea.corolla.users.service.UserDtoService;
 
 @Controller

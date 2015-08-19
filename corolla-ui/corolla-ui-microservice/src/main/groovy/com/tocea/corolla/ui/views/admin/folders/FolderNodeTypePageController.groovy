@@ -24,7 +24,6 @@ import groovy.util.logging.Slf4j;
 import javax.validation.Valid
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -39,7 +38,6 @@ import com.tocea.corolla.trees.commands.CreateFolderNodeTypeCommand
 import com.tocea.corolla.trees.commands.EditFolderNodeTypeCommand
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 import com.tocea.corolla.trees.domain.FolderNodeType
-import com.tocea.corolla.users.permissions.Permissions;
 
 @Controller
 @Slf4j

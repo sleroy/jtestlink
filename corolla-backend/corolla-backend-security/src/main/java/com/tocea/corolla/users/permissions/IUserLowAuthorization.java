@@ -25,10 +25,29 @@ import java.util.List;
 
 public interface IUserLowAuthorization {
 	
+	/**
+	 * Checks if the current user has a given permission
+	 * @param permission
+	 * @return
+	 */
 	boolean hasPermission(String permission);
 
+	/**
+	 * Checks if the current user has a given permission
+	 * relative to a given project
+	 * @param projectKey
+	 * @param permission
+	 * @return
+	 */
 	boolean hasProjectPermission(String projectKey, String permission);
 	
+	/**
+	 * Filters projects with a list of permissions
+	 * that the current user need to have
+	 * @param _projects
+	 * @param permissions
+	 * @return
+	 */
 	Iterator<String> filterAllowedProjects(Iterator<String> _projects,
 			List<String> permissions);
 	

@@ -24,30 +24,96 @@ import java.util.List;
 
 public interface IUserAuthorization {
 
+	/**
+	 * Checks if the current user can view the portfolio tree
+	 * @return
+	 */
 	boolean hasPortfolioReadAccess();
 
+	/**
+	 * Checks if the current user has write access on the portfolio tree
+	 * (create/move/delete nodes...)
+	 * @return
+	 */
 	boolean hasPortfolioWriteAccess();
 
+	/**
+	 * Checks if the current user has the right to create projects
+	 * @return
+	 */
 	boolean canCreateProjects();
 
+	/**
+	 * Checks if the current user has the right to delete projects
+	 * @return
+	 */
 	boolean canDeleteProjects();
 
+	/**
+	 * Checks if the current user can edit a project
+	 * @param projectKey
+	 * @return
+	 */
 	boolean canEditProject(String projectKey);
 
+	/**
+	 * Checks if the current user can view project's data
+	 * @param projectKey
+	 * @return
+	 */
 	boolean canReadProject(String projectKey);
 
+	/**
+	 * Checks if the current user can view the requirements
+	 * of a specific project
+	 * @param projectKey
+	 * @return
+	 */
 	boolean hasRequirementReadAccess(String projectKey);
 
+	/**
+	 * Checks if the current user can edit the requirements
+	 * of a specific project
+	 * @param projectKey
+	 * @return
+	 */
 	boolean hasRequirementWriteAccess(String projectKey);
 
+	/**
+	 * Checks if the current user can generate requirements reports
+	 * in a specific project
+	 * @param projectKey
+	 * @return
+	 */
 	boolean hasRequirementReportAccess(String projectKey);
 
+	/**
+	 * Checks if the current user is admin
+	 * @return
+	 */
 	boolean hasAdminAccess();
 
+	/**
+	 * Checks if the current user has the right to access
+	 * system configuration
+	 * @return
+	 */
 	boolean hasSystemConfigurationAccess();
 	
+	/**
+	 * Checks custom permissions
+	 * @param _permission
+	 * @return
+	 */
 	boolean hasCustomPermission(String _permission);
 	
+	/**
+	 * Filter projects with a list of permissions
+	 * that the current user need to have
+	 * @param _projects
+	 * @param permissions
+	 * @return
+	 */
 	Iterator<String> filterAllowedProjects(Iterator<String> _projects, List<String> permissions);
 	
 }

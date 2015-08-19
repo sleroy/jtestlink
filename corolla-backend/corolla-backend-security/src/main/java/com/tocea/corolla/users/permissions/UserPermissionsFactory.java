@@ -40,6 +40,11 @@ import com.tocea.corolla.users.domain.Role;
 import com.tocea.corolla.users.domain.User;
 import com.tocea.corolla.users.domain.UserGroup;
 
+/**
+ * 
+ * @author dmichel
+ *
+ */
 @Component
 public class UserPermissionsFactory implements IUserPermissionsFactory {
 
@@ -99,6 +104,11 @@ public class UserPermissionsFactory implements IUserPermissionsFactory {
 		return permissions;
 	}
 	
+	/**
+	 * Retrieves the ids of the user's groups
+	 * @param user
+	 * @return
+	 */
 	private Collection<String> getUserGroupIds(User user) {
 		
 		List<UserGroup> groups = groupDAO.findByUserId(user.getLogin());
@@ -111,6 +121,11 @@ public class UserPermissionsFactory implements IUserPermissionsFactory {
 		});
 	}
 	
+	/**
+	 * Extracts permissions from ProjectPermission objects
+	 * @param projectPermission
+	 * @return
+	 */
 	private Set<String> extractPermissions(ProjectPermission projectPermission) {
 		
 		Set<String> permissions = Sets.newHashSet();
@@ -126,12 +141,17 @@ public class UserPermissionsFactory implements IUserPermissionsFactory {
 		return permissions;
 	}
 	
-	private Set<String> extractPermissions(Role role) {
+	/**
+	 * Reads role's permissions
+	 * @param role
+	 * @return
+	 */
+	private static Set<String> extractPermissions(Role role) {
 		
 		Set<String> permissions = Sets.newHashSet();
 		
 		if (role != null && StringUtils.isNotEmpty(role.getPermissions())) {
-			for (String permission :role.getPermissions().split(", ")) {
+			for (String permission : role.getPermissions().split(", ")) {
 				permissions.add(permission);
 			}
 		}

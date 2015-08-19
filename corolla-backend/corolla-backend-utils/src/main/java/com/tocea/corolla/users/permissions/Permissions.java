@@ -35,17 +35,6 @@ import com.google.common.collect.Lists;
 public class Permissions {
 	
 	public static final String	REST				= "ROLE_REST";
-//	public static final String	REQUIREMENT			= "ROLE_REQUIREMENT";
-//	public static final String	APPLICATION			= "ROLE_APPLICATION";
-//	public static final String	TESTSUITE			= "ROLE_TESTSUITE";
-//	public static final String	TESTCAMP			= "ROLE_TESTCAMP";
-	// Need fine-grained permissions
-	
-//	public static final String	ADMIN_USERS			= "ROLE_ADMIN_USERS";
-//	public static final String	ADMIN_USER_GROUPS	= "ROLE_ADMIN_USER_GROUPS";
-//	public static final String	ADMIN_ROLES			= "ROLE_ADMIN_ROLES";
-//	
-//	
 
 	public static final String	ADMIN				= "ADMIN";
 	public static final String	ADMIN_CONFIG		= "ADMIN_CONFIG";
@@ -70,6 +59,9 @@ public class Permissions {
 		loadStaticPermissions();
 	}
 	
+	/**
+	 * Loads static permissions
+	 */
 	private void loadStaticPermissions() {
 		
 		permissions = Lists.newArrayList();
@@ -92,7 +84,7 @@ public class Permissions {
 	}
 	
 	/**
-	 * Retrieve the list of all existing permissions
+	 * Retrieves the list of all existing permissions
 	 * @return
 	 */
 	public List<String> list() {

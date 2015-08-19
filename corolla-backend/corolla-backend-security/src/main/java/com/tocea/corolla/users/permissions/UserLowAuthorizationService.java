@@ -32,6 +32,11 @@ import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.users.service.AuthenticationUserService;
 
+/**
+ * 
+ * @author dmichel
+ *
+ */
 @Service
 public class UserLowAuthorizationService implements IUserLowAuthorization {
 	
