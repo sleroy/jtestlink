@@ -79,6 +79,8 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	private ProjectBranch devBranch;
 	
 	private List<String> userIds;
+	
+	private List<Project> projects;
 		
 	@Before
 	public void setUp() {
@@ -142,6 +144,8 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		otherProject.setOwnerId(userIds.get(0));
 		
 		gate.dispatch(new CreateProjectCommand(otherProject));
+		
+		projects = Lists.newArrayList(existingProject, otherProject);
 		
 	}
 	
@@ -383,7 +387,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(authUserService.basicUser()))
+				.with(user(authUserService.projectUser(projects)))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(2)));
@@ -394,14 +398,14 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 	public void basicUserShouldFilterProjectListByTags() throws Exception {
 		
 		ProjectFilterDTO filter = new ProjectFilterDTO();
-		filter.setTags(Lists.newArrayList("tag1", "not_existing_tag"));
+		filter.setTags(Lists.newArrayList("tag1", "not_existing_tag"));		
 		
 		mvc
 			.perform(
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(authUserService.basicUser()))
+				.with(user(authUserService.projectUser(projects)))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
@@ -422,7 +426,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(authUserService.basicUser()))
+				.with(user(authUserService.projectUser(projects)))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
@@ -443,7 +447,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(authUserService.basicUser()))
+				.with(user(authUserService.projectUser(projects)))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
@@ -461,7 +465,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(authUserService.basicUser()))
+				.with(user(authUserService.projectUser(projects)))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
@@ -480,6 +484,8 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 		
 		gate.dispatch(new CreateProjectCommand(project));
 		
+		projects.add(project);
+		
 		ProjectFilterDTO filter = new ProjectFilterDTO();
 		filter.setTags(Lists.newArrayList("newTag", "not_existing_tag"));
 		filter.setOwnerIds(Lists.newArrayList(otherProject.getOwnerId()));
@@ -489,7 +495,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(authUserService.basicUser()))
+				.with(user(authUserService.projectUser(projects)))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(2)));
@@ -521,7 +527,7 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				post(FILTER_IDS_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content((new Gson()).toJson(filter))
-				.with(user(authUserService.basicUser()))
+				.with(user(authUserService.projectUser(projects)))
 			)
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(2)));
@@ -540,6 +546,40 @@ public class ProjectRestControllerTest extends AbstractSpringTest {
 				.content((new Gson()).toJson(filter))
 			)
 			.andExpect(redirectedUrlPattern("**/login"));
+		
+	}
+	
+	@Test
+	public void filteredProjectsListShouldRespectUserPermissions() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+
+		mvc
+			.perform(
+				post(FILTER_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+				.with(user(authUserService.projectUser(existingProject)))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)));
+		
+	}
+	
+	@Test
+	public void filteredProjectsListKeysShouldRespectUserPermissions() throws Exception {
+		
+		ProjectFilterDTO filter = new ProjectFilterDTO();
+
+		mvc
+			.perform(
+				post(FILTER_IDS_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content((new Gson()).toJson(filter))
+				.with(user(authUserService.projectUser(existingProject)))
+			)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)));
 		
 	}
 	

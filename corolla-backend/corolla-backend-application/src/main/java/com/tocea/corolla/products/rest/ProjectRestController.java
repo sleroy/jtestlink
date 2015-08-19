@@ -86,6 +86,7 @@ public class ProjectRestController {
 	@RequestMapping(value = "/filter", method = RequestMethod.POST)
 	@PreAuthorize("isAuthenticated()")
 	@Transactional(readOnly=true)
+	@PostFilter("@userAuthorization.canReadProject(filterObject.key)")
 	public Collection<Project> filterProjects(@RequestBody ProjectFilterDTO filter) {
 		
 		Collection<Project> projects = Lists.newArrayList();
@@ -110,19 +111,22 @@ public class ProjectRestController {
 			projects.addAll(projectDAO.filterByOwner(filter.getOwnerIds()));
 		}
 		
-		return Collections2.filter(projects, new ProjectUtils.DuplicateRemover());		
+		return Lists.newArrayList(Collections2.filter(projects, new ProjectUtils.DuplicateRemover()));		
 	}
 	
 	@RequestMapping(value = "/filter/keys", method = RequestMethod.POST)
 	@PreAuthorize("isAuthenticated()")
+	@PostFilter("@userAuthorization.canReadProject(filterObject)")
 	public Collection<String> filterProjectsAndRetrieveOnlyIDs(@RequestBody ProjectFilterDTO filter) {	
 		
-		return Collections2.transform(filterProjects(filter), new Function<Project, String>() {
+		Iterable<String> keys = Collections2.transform(filterProjects(filter), new Function<Project, String>() {
 			@Override
 			public String apply(Project input) {
 				return (input != null) ? input.getKey() : "";
 			}			
 		});
+		
+		return Lists.newArrayList(keys);
 	}
 	
 	@RequestMapping(value="/tags")

@@ -1,5 +1,6 @@
 package com.tocea.corolla.tests.utils;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,11 @@ public class AuthUserService {
 	
 	public AuthUser projectUser(Project project) {
 		
+		return projectUser(Lists.newArrayList(project));		
+	}
+	
+	public AuthUser projectUser(Collection<Project> projects) {
+		
 		Role managerRole = new Role();
 		managerRole.setName("Project User");
 		managerRole.setPermissions(Permissions.PROJECT_READ);
@@ -69,10 +75,11 @@ public class AuthUserService {
 		
 		List<String> roleIds = Lists.newArrayList(managerRole.getId());
 		
-		gate.dispatch(new CreateProjectPermissionCommand(project, managerUser, roleIds));
+		for(Project project : projects) {
+			gate.dispatch(new CreateProjectPermissionCommand(project, managerUser, roleIds));
+		}
 		
-		return new AuthUser(managerUser, managerRole);
-		
+		return new AuthUser(managerUser, managerRole);		
 	}
 	
 	public AuthUser projectCreator() {
