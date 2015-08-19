@@ -64,13 +64,13 @@ public class ProjectUtils {
 	 */
 	public static Iterable<String> extractTags(Collection<Project> projects) {
 		
-		Iterable<String> itTags = null;
+		Set<String> tags = Sets.newHashSet();
 		
 		for(Project project : projects) {
-			itTags = itTags != null ? Iterables.concat(itTags, project.getTags()) : project.getTags();
+			tags.addAll(project.getTags());
 		}
 		
-		return ImmutableSet.copyOf(itTags).asList();
+		return tags;
 	}
 
 	/**

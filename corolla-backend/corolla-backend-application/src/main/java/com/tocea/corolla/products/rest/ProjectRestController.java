@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -68,6 +69,7 @@ public class ProjectRestController {
 	
 	@RequestMapping(value = "/all")
 	@PreAuthorize("isAuthenticated()")
+	@PostFilter("@userAuthorization.hasRequirementReadAccess(filterObject.key)")
 	public Collection<Project> findAll() {
 		
 		return projectDAO.findAll();
@@ -75,6 +77,7 @@ public class ProjectRestController {
 	
 	@RequestMapping(value = "/all", method = RequestMethod.POST)
 	@PreAuthorize("isAuthenticated()")
+	@PostFilter("@userAuthorization.hasRequirementReadAccess(filterObject.key)")
 	public Collection<Project> findAll(@RequestBody List<String> ids) {
 		
 		return (Collection<Project>) projectDAO.findAll(ids);

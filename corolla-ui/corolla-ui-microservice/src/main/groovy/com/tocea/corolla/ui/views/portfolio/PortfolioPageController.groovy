@@ -26,6 +26,7 @@ import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -41,6 +42,7 @@ import com.google.common.base.Function
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.portfolio.dto.ProjectNodeDTO
 import com.tocea.corolla.products.commands.CreateProjectCommand
@@ -58,6 +60,7 @@ import com.tocea.corolla.revisions.services.IRevisionService;
 import com.tocea.corolla.trees.dao.IFolderNodeTypeDAO;
 import com.tocea.corolla.users.dao.IUserDAO;
 import com.tocea.corolla.users.dto.UserDto;
+import com.tocea.corolla.users.permissions.IUserAuthorization;
 import com.tocea.corolla.users.permissions.Permissions;
 import com.tocea.corolla.users.service.IUserDtoService
 
@@ -94,12 +97,15 @@ class PortfolioPageController {
 	@Autowired
 	private Gate gate;
 	
+	@Autowired
+	private IUserAuthorization authorizationService;
+	
 	@RequestMapping("/ui/portfolio")
 	@PreAuthorize("isAuthenticated()")
 	public ModelAndView getPortfolio() {
 		
-		def projects = projectDAO.findAll();		
-		def tags = ProjectUtils.extractTags(projects);
+		def projects = findAllowedProjects()
+		def tags = ProjectUtils.extractTags(projects)
 
 		def model = new ModelAndView(PORTFOLIO_PAGE)
 		model.addObject "menu", MENU_PORTFOLIO		
@@ -107,6 +113,14 @@ class PortfolioPageController {
 		model.addObject "tags", tags;
 		
 		return model
+	}
+	
+	public Collection<Project> findAllowedProjects() {
+		
+		def projectsAll = projectDAO.findAll()
+		def allowedKeys = Lists.newArrayList(authorizationService.filterAllowedProjects(projectsAll*.key.iterator(), [Permissions.REQUIREMENTS_READ]));	
+		
+		return projectsAll.findAll { allowedKeys.contains(it.key) }
 	}
 	
 	@RequestMapping("/ui/portfolio/manager")
