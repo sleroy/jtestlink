@@ -23,7 +23,7 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +42,6 @@ import com.tocea.corolla.users.dto.UserDto;
 import com.tocea.corolla.users.dto.UserWithRoleDto;
 import com.tocea.corolla.users.exceptions.InvalidLoginException;
 import com.tocea.corolla.users.exceptions.OperationForbidenWithThisLoginException;
-import com.tocea.corolla.users.permissions.Permissions;
 import com.tocea.corolla.users.service.UserDtoService;
 import com.tocea.corolla.users.validation.UserValidation;
 import com.tocea.corolla.utils.datatable.DataTableList;
@@ -53,7 +52,6 @@ import com.tocea.corolla.utils.datatable.DataTableList;
  */
 @RestController()
 @RequestMapping("/rest/users")
-@Secured(Permissions.REST)
 public class UserRestController {
 
 	@Autowired
@@ -69,7 +67,7 @@ public class UserRestController {
 	@Autowired
 	private UserValidation	userValidation;
 
-	@Secured({ Permissions.ADMIN })
+	@PreAuthorize("@userAuthorization.hasAdminAccess()")
 	@RequestMapping(value = "/delete/{login}", method = RequestMethod.GET)
 	public void deleteUser(@PathVariable final String login,
 			final Principal _principal) {
@@ -84,7 +82,7 @@ public class UserRestController {
 
 	}
 
-	@Secured({ Permissions.ADMIN })
+	@PreAuthorize("@userAuthorization.hasAdminAccess()")
 	@RequestMapping(value = "/disable/{login}", method = RequestMethod.GET)
 	public void disableUser(@PathVariable final String login,
 			final Principal _principal) {
@@ -98,7 +96,7 @@ public class UserRestController {
 		this.gate.dispatch(new DisableUserCommand(login));
 	}
 
-	@Secured({ Permissions.ADMIN })
+	@PreAuthorize("@userAuthorization.hasAdminAccess()")
 	@RequestMapping(value = "/enable/{login}", method = RequestMethod.GET)
 	public void enableUser(@PathVariable final String login,
 			final Principal _principal) {
