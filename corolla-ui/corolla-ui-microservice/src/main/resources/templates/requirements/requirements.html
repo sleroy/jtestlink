@@ -17,7 +17,11 @@
 				<li>
 					<a href="#" th:text="${branch.name}">Branch</a>
 				</li>
-				<li class="active">Requirements</li>
+				<li th:if="${ requirement == null }" class="active">Requirements</li>
+				<li th:if="${ requirement != null }">
+					<a th:href="@{/ui/requirements/}+${project.key}+@{/}">Requirements</a>
+				</li>
+				<li th:if="${ requirement != null }" th:text="${requirement.name}" class="active"></li>
 			</ol>
 		</section>
 		<!-- Main -->
@@ -28,11 +32,12 @@
 						<!-- 						<div class="panel-heading"> -->
 						<!-- 							<h4>Favorite products</h4> -->
 						<!-- 						</div> -->
-						<div class="tab-header">
+						<div class="tab-header" th:if="${ requirement != null }">
 							<img src="http://lorempixel.com/56/56/" alt="" />
-							<h3>Add a KPI</h3>
+							<h3 th:text="${requirement.name}">Add a KPI</h3>
 							<div class="properties">
-								<a href="#" class="entity-key"> <i class="fa fa-key" /> ADD_KPI
+								<a href="#" class="entity-key"> 
+									<i class="fa fa-key" /> <span th:text="${requirement.key}">ADD_KPI</span>
 								</a>
 							</div>
 							<br style="clear: both;" />
@@ -92,8 +97,14 @@
 				<div class="col-sm-6 col-md-8" th:if="${requirement != null}">
 					<div class="nav-tabs-custom">
 						<ul class="nav nav-tabs">
-							<li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-							<li><a href="#requirements" data-toggle="tab" class="toggle-sunburst">Requirements</a></li>
+							<li class="active">
+								<a href="#preview" data-toggle="tab">
+									<em class="glyphicon glyphicon-eye-open"></em>
+									Preview
+								</a>
+							</li>
+							<li><a href="#details" data-toggle="tab">Details</a></li>
+							<li><a href="#attachments" data-toggle="tab">Attachments</a></li>
 							<li><a href="#test-cases-panel" data-toggle="tab">Test Cases</a></li>
 							<li><a href="#comments" data-toggle="tab">Comments</a></li>
 							<li><a href="#activity" data-toggle="tab">Activity</a></li>
@@ -145,36 +156,37 @@
 								</ul></li>
 						</ul>
 						<div class="tab-content">
-							<div class="tab-pane" id="requirements">
+							<div class="tab-pane" id="attachments">
 								<div class="table-responsive">
-									<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+									<table id="attachments-table" class="table table-hover table-striped" cellspacing="0" width="100%">
 										<thead>
 											<tr>
-												<th>Key</th>
-												<th>Name</th>
+												<th>File</th>
+												<th>Date</th>
+												<th>Size</th>
 												<th>Actions</th>
 											</tr>
 										</thead>
 										<tr>
-											<td><a href="#" class="label label-default">ADD_KPI</a></td>
-											<td>Add a KPI</td>
-											<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
+											<td><a href="#">note.pdf</a></td>
+											<td>25/06/2015 11:30</td>
+											<td>49.98 Mo</td>
+											<td><a href="#" class="label label-danger">Delete</a></td>
 										</tr>
 										<tr>
-											<td><a href="#" class="label label-default">EDIT_KPI</a></td>
-											<td>Edit a KPI</td>
-											<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
-										</tr>
-										<tr>
-											<td><a href="#" class="label label-default">DELETE_KPI</a></td>
-											<td>Delete a KPI</td>
-											<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
+											<td><a href="#">image.png</a></td>
+											<td>25/06/2015 11:28</td>
+											<td>4.78 Mo</td>
+											<td><a href="#" class="label label-danger">Delete</a></td>
 										</tr>
 									</table>
 								</div>
 							</div>
 							<!-- /.tab-pane -->
-							<div class="details-view tab-pane active" id="details">
+							<div class="details-view tab-pane active" id="preview" style="padding: 20px;">
+								<div th:replace="requirements/sample :: requirementSample" />
+							</div>
+							<div class="details-view tab-pane" id="details">
 								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 									<div class="panel panel-default">
 										<div class="panel-heading" role="tab" id="headingOne">
@@ -188,49 +200,17 @@
 											<div class="panel-body">
 												<div class="row">
 													<div class="col-sm-3 col-md-2 field-name">Key</div>
-													<div class="col-sm-9 col-md-10 entity-key">ADD_KPI</div>
+													<div class="col-sm-9 col-md-10 entity-key" th:text="${requirement.key}">ADD_KPI</div>
 												</div>
 												<div class="row">
 													<div class="col-sm-3 col-md-2 field-name">Name</div>
-													<div class="col-sm-9 col-md-10">Add a KPI</div>
+													<div class="col-sm-9 col-md-10" th:text="${requirement.name}">Add a KPI</div>
 												</div>
-												<div class="row">
-													<div class="col-sm-3 col-md-2 field-name">Description</div>
-													<div class="col-sm-9 col-md-10">u autem, Fanni, quod mihi tantum tribui dicis quantum ego nec
-														adgnosco nec postulo, facis amice; sed, ut mihi videris, non recte iudicas de Catone; aut enim nemo, quod
-														quidem magis credo, aut si quisquam, ille sapiens fuit. Quo modo, ut alia omittam, mortem filii tulit!
-														memineram Paulum, videram Galum, sed hi in pueris, Cato in perfecto et spectato viro. Equitis Romani autem
-														esse filium criminis loco poni ab accusatoribus neque his iudicantibus oportuit neque defendentibus nobis.
-														Nam quod de pietate dixistis, est quidem ista nostra existimatio, sed iudicium certe parentis; quid nos
-														opinemur, audietis ex iuratis; quid parentes sentiant, lacrimae matris incredibilisque maeror, squalor
-														patris et haec praesens maestitia, quam cernitis, luctusque declarat. Accedat huc suavitas quaedam oportet
-														sermonum atque morum, haudquaquam mediocre condimentum amicitiae. Tristitia autem et in omni re severitas
-														habet illa quidem gravitatem, sed amicitia remissior esse debet et liberior et dulcior et ad omnem
-														comitatem facilitatemque proclivior. Procedente igitur mox tempore cum adventicium nihil inveniretur,
-														relicta ora maritima in Lycaoniam adnexam Isauriae se contulerunt ibique densis intersaepientes itinera
-														praetenturis provincialium et viatorum opibus pascebantur. Dum haec in oriente aguntur, Arelate hiemem
-														agens Constantius post theatralis ludos atque circenses ambitioso editos apparatu diem sextum idus
-														Octobres, qui imperii eius annum tricensimum terminabat, insolentiae pondera gravius librans, siquid
-														dubium deferebatur aut falsum, pro liquido accipiens et conperto, inter alia excarnificatum Gerontium
-														Magnentianae comitem partis exulari maerore multavit. In his tractibus navigerum nusquam visitur flumen
-														sed in locis plurimis aquae suapte natura calentes emergunt ad usus aptae multiplicium medelarum. verum
-														has quoque regiones pari sorte Pompeius Iudaeis domitis et Hierosolymis captis in provinciae speciem
-														delata iuris dictione formavit. Non ergo erunt homines deliciis diffluentes audiendi, si quando de
-														amicitia, quam nec usu nec ratione habent cognitam, disputabunt. Nam quis est, pro deorum fidem atque
-														hominum! qui velit, ut neque diligat quemquam nec ipse ab ullo diligatur, circumfluere omnibus copiis
-														atque in omnium rerum abundantia vivere? Haec enim est tyrannorum vita nimirum, in qua nulla fides, nulla
-														caritas, nulla stabilis benevolentiae potest esse fiducia, omnia semper suspecta atque sollicita, nullus
-														locus amicitiae. Eodem tempore Serenianus ex duce, cuius ignavia populatam in Phoenice Celsen ante
-														rettulimus, pulsatae maiestatis imperii reus iure postulatus ac lege, incertum qua potuit suffragatione
-														absolvi, aperte convictus familiarem suum cum pileo, quo caput operiebat, incantato vetitis artibus ad
-														templum misisse fatidicum, quaeritatum expresse an ei firmum portenderetur imperium, ut cupiebat, et
-														cunctum. At nunc si ad aliquem bene nummatum tumentemque ideo honestus advena salutatum introieris,
-														primitus tamquam exoptatus suscipieris et interrogatus multa coactusque mentiri, miraberis numquam antea
-														visus summatem virum tenuem te sic enixius observantem, ut paeniteat ob haec bona tamquam praecipua non
-														vidisse ante decennium Romam. Montius nos tumore inusitato quodam et novo ut rebellis et maiestati
-														recalcitrantes Augustae per haec quae strepit incusat iratus nimirum quod contumacem praefectum, quid
-														rerum ordo postulat ignorare dissimulantem formidine tenus iusserim custodiri.</div>
-												</div>
+<!-- 												<div class="row"> -->
+<!-- 													<div class="col-sm-3 col-md-2 field-name">Description</div> -->
+<!-- 													<div class="col-sm-9 col-md-10">         -->
+<!-- 													</div> -->
+<!-- 												</div> -->
 											</div>
 										</div>
 									</div>
@@ -251,34 +231,36 @@
 									<div class="panel panel-default">
 										<div class="panel-heading" role="tab" id="headingOne">
 											<h4 class="panel-title">
-												<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAttachments"
-													aria-expanded="true" aria-controls="collapseAttachments"> <i class="fa fa-paperclip" /> Attachments
+												<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseChildren"
+													aria-expanded="true" aria-controls="collapseAttachments"> <i class="fa fa-paperclip" /> Children
 												</a>
 											</h4>
 										</div>
-										<div id="collapseAttachments" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+										<div id="collapseChildren" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 											<div class="panel-body">
 												<div class="table-responsive">
-													<table id="attachments-table" class="table table-hover table-striped" cellspacing="0" width="100%">
+													<table id="relationships-table" class="table table-hover table-striped" cellspacing="0" width="100%">
 														<thead>
 															<tr>
-																<th>File</th>
-																<th>Date</th>
-																<th>Size</th>
+																<th>Key</th>
+																<th>Name</th>
 																<th>Actions</th>
 															</tr>
 														</thead>
 														<tr>
-															<td><a href="#">note.pdf</a></td>
-															<td>25/06/2015 11:30</td>
-															<td>49.98 Mo</td>
-															<td><a href="#" class="label label-danger">Delete</a></td>
+															<td><a href="#" class="label label-default">ADD_KPI</a></td>
+															<td>Add a KPI</td>
+															<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
 														</tr>
 														<tr>
-															<td><a href="#">image.png</a></td>
-															<td>25/06/2015 11:28</td>
-															<td>4.78 Mo</td>
-															<td><a href="#" class="label label-danger">Delete</a></td>
+															<td><a href="#" class="label label-default">EDIT_KPI</a></td>
+															<td>Edit a KPI</td>
+															<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
+														</tr>
+														<tr>
+															<td><a href="#" class="label label-default">DELETE_KPI</a></td>
+															<td>Delete a KPI</td>
+															<td><a href="#" class="label label-info">Open</a> <a href="#" class="label label-danger">Delete</a></td>
 														</tr>
 													</table>
 												</div>

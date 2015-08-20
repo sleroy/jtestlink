@@ -321,7 +321,7 @@ public class DemoDataBean {
 			key: 'PROJECT_ADD',
 			projectBranchId: masterBranch.id,
 			name: 'Add a project',
-			description: 'Anyone with the required permissions should be able to create a new project'
+			description: 'Anyone with the required permissions should be able to create a new project that can contains requirements and test cases'
 		))
 		def req_editProject = this.newRequirement(new Requirement(
 			key: 'PROJECT_EDIT',
@@ -333,7 +333,7 @@ public class DemoDataBean {
 			key: 'PROJECT_DELETE',
 			projectBranchId: masterBranch.id,
 			name: 'Delete a project',
-			description: 'Anyone with the required permissions should be able to delete a project'
+			description: 'Anyone with the required permissions should be able to delete a project and all attached requirements and test cases'
 		))
 		def req_viewPortfolio = this.newRequirement(new Requirement(
 			key: 'PORTFOLIO_VIEW',
