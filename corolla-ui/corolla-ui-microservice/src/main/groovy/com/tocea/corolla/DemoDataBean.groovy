@@ -473,6 +473,7 @@ public class DemoDataBean {
 		 */
 		this.gate.dispatch(new CreateProjectPermissionCommand(corolla, scarreau, [roleProjectManager.id, roleTestManager.id]));
 		this.gate.dispatch(new CreateProjectPermissionCommand(corolla, jsnow, [roleProjectManager.id]))
+		this.gate.dispatch(new CreateProjectPermissionCommand(komea, jsnow, [roleProjectManager.id]))
 		
 	}
 
