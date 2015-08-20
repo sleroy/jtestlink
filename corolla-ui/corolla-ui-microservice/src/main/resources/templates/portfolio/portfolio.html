@@ -18,11 +18,11 @@
 				specific project or you can click on a tag to display all associated projects. To manage the projects(create, delete, etc...), please go to \'Portfolio Management\' from sidebar menu.')"></div>
 			<br style="clear: both;"/>
 			<div class="tiles-container row">
-				<div class="toolbar col-sm-2 col-md-1">
+				<div class="toolbar col-sm-3 col-md-2">
 					<span class="label label-info active" data-filter="*">All</span> 
 					<span th:each="tag : ${tags}" th:text="${tag}" class="label label-info"></span>
 				</div>
-				<div class="col-sm-10 col-md-11">
+				<div class="col-sm-9 col-md-10">
 					<form class="search-bar" action="">
 						<div class="input-group">
 							<input id="query" type="text" class="form-control" placeholder="Search..." /> <span class="input-group-btn">
