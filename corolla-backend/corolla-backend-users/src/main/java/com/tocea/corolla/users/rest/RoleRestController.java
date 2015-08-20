@@ -23,7 +23,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +36,6 @@ import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.users.commands.DeleteRoleCommand;
 import com.tocea.corolla.users.dao.IRoleDAO;
 import com.tocea.corolla.users.exceptions.InvalidRoleException;
-import com.tocea.corolla.users.permissions.Permissions;
 
 /**
  * @author sleroy
@@ -44,7 +43,6 @@ import com.tocea.corolla.users.permissions.Permissions;
  */
 @RestController()
 @RequestMapping("/rest/roles")
-@Secured(Permissions.REST)
 @Transactional
 public class RoleRestController {
 	
@@ -53,7 +51,7 @@ public class RoleRestController {
 	@Autowired
 	private Gate		gate;
 	
-	@Secured({ Permissions.ADMIN })
+	@PreAuthorize("@userAuthorization.hasAdminAccess()")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public void deleteUser(@PathVariable final String id) {
 		if (roleDao.findOne(id) == null) {

@@ -22,7 +22,7 @@ package com.tocea.corolla.users.rest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,18 +30,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.users.commands.DeleteUserGroupCommand;
-import com.tocea.corolla.users.permissions.Permissions;
 
 @RestController()
 @RequestMapping("/rest/groups")
-@Secured(Permissions.REST)
 @Transactional
 public class UserGroupRestController {
 
 	@Autowired
 	private Gate gate;
 	
-	@Secured({ Permissions.ADMIN })
+	@PreAuthorize("@userAuthorization.hasAdminAccess()")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public void deleteUserGroup(@PathVariable final String id) {
 		
