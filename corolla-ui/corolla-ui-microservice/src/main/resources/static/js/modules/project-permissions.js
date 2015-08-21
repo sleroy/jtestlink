@@ -25,49 +25,55 @@ function selectEntity(entityType) {
 	
 	if (entityType == 'USER') {
 		
-		$(SELECT_ENTITY_ID).select2({
-			ajax: {
-				url: restAPI.users.URL,
-				dataType: 'json',
-				processResults: function(data, page) {
-					var items = [];
-					$.each(data.data, function(i, v) {
-						items.push({ 
-							id: v.id, 
-							text: v.firstName+' '+v.lastName 
-						});
-					});
-					return { 
-						results: items 
-					}
-				},
-				cache: true
-			}
+		restAPI.users.all(function(data) {
+			var items = [];
+			$.each(data.data, function(i, v) {
+				items.push({ 
+					id: v.id, 
+					text: v.firstName+' '+v.lastName 
+				});
+			});
+			updateSelect2(SELECT_ENTITY_ID, items);
+			setEntityID();
 		});
 		
 	}else{
 		
-		$(SELECT_ENTITY_ID).select2({
-			ajax: {
-				url: restAPI.userGroups.URL,
-				dataType: 'json',
-				processResults: function(data, page) {
-					var items = [];
-					$.each(data, function(i, v) {
-						items.push({ 
-							id: v.id, 
-							text: v.name 
-						});
-					});
-					return { 
-						results: items 
-					}
-				},
-				cache: true
-			}
+		restAPI.userGroups.all(function(data) {
+			var items = [];
+			$.each(data, function(i, v) {
+				items.push({ 
+					id: v.id, 
+					text: v.name 
+				});
+			});
+			updateSelect2(SELECT_ENTITY_ID, items);
+			setEntityID();
 		});
 		
 	}
 	
 }
 
+function setEntityID() {
+	
+	var originValue = $(SELECT_ENTITY_ID).data('originvalue');
+	if (originValue) {
+		console.log(originValue);
+		$(SELECT_ENTITY_ID).val(originValue);
+		$(SELECT_ENTITY_ID).trigger('change');
+	}	
+	
+}
+
+function updateSelect2(selector, items) {
+	
+	$(selector).html('');
+	$(selector).trigger('change');
+	
+	$(selector).select2({
+		data: items
+	});
+	$(selector).trigger('change');
+	
+}

@@ -40,11 +40,13 @@ import com.tocea.corolla.cqrs.gate.CommandExecutionException;
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.products.commands.CreateProjectPermissionCommand
 import com.tocea.corolla.products.dao.IProjectDAO;
+import com.tocea.corolla.products.dao.IProjectPermissionDAO;
 import com.tocea.corolla.products.domain.Project;
 import com.tocea.corolla.products.domain.ProjectPermission;
 import com.tocea.corolla.products.domain.ProjectPermission.EntityType;
 import com.tocea.corolla.products.exceptions.ProjectNotFoundException
 import com.tocea.corolla.products.exceptions.ProjectPermissionAlreadyExistException;
+import com.tocea.corolla.products.exceptions.ProjectPermissionNotFoundException
 import com.tocea.corolla.users.dao.IRoleDAO;
 
 @Controller
@@ -55,6 +57,9 @@ public class ProjectMembersPageController {
 		
 	@Autowired
 	private IProjectDAO projectDAO;
+	
+	@Autowired
+	private IProjectPermissionDAO permissionDAO;
 	
 	@Autowired
 	private IRoleDAO roleDAO;
@@ -101,6 +106,21 @@ public class ProjectMembersPageController {
 		return new ModelAndView("redirect:/ui/projects/"+project.key+"#members")
 	}
 	
+	@RequestMapping(value = "/ui/projects/{projectKey}/members/edit/{permissionID}")
+	@PreAuthorize("@userAuthorization.canEditProject(#projectKey)")
+	public ModelAndView getEditPage(@PathVariable String projectKey, @PathVariable String permissionID) {
+		
+		def project = findProjectOrFail(projectKey)	
+		def permission = permissionDAO.findOne(permissionID)
+		
+		if (permission == null) {
+			throw new ProjectPermissionNotFoundException();
+		}
+		
+		return buildFormData(project, permission)
+		
+	}
+	
 	private ModelAndView buildFormData(Project project, ProjectPermission permission) {
 		
 		def roles = roleDAO.findAll()
@@ -126,7 +146,10 @@ public class ProjectMembersPageController {
 	}
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND)
-	@ExceptionHandler([ProjectNotFoundException.class])
+	@ExceptionHandler([
+	      ProjectNotFoundException.class,
+	      ProjectPermissionNotFoundException.class
+	])
 	public void handlePageNotFoundException() {
 		
 	}
