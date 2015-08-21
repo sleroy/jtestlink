@@ -34,7 +34,7 @@ public class ProjectPermission {
 	public enum EntityType {
 		USER, GROUP
 	}
-	
+
 	@Id
 	@Field("_id")
 	private String id;

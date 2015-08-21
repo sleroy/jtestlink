@@ -35,6 +35,7 @@ import com.tocea.corolla.products.commands.EditProjectCommand
 import com.tocea.corolla.products.dao.IProjectBranchDAO
 import com.tocea.corolla.products.dao.IProjectCategoryDAO
 import com.tocea.corolla.products.dao.IProjectDAO
+import com.tocea.corolla.products.dao.IProjectPermissionDAO
 import com.tocea.corolla.products.dao.IProjectStatusDAO
 import com.tocea.corolla.products.domain.Project
 import com.tocea.corolla.products.domain.ProjectBranch
@@ -101,6 +102,9 @@ public class DemoDataBean {
 	
 	@Autowired
 	def IProjectBranchDAO			projectBranchDAO
+	
+	@Autowired
+	def IProjectPermissionDAO		projectPermissionDAO
 	
 	@Autowired
 	def IRequirementDAO				requirementDAO
@@ -610,6 +614,7 @@ public class DemoDataBean {
 	@PreDestroy
 	public void destroy() {
 		
+		projectPermissionDAO.deleteAll()
 		folderNodeTypeDAO.deleteAll()
 		requirementsTreeDAO.deleteAll()
 		requirementDAO.deleteAll()

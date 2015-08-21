@@ -47,6 +47,8 @@ public class CreateProjectPermissionCommandHandler implements ICommandHandler<Cr
 			throw new InvalidProjectPermissionInformationException("No ID expected");
 		}
 		
+		permission.setId(null);
+			
 		ProjectPermission samePermission = permissionDAO.findByProjectIdAndEntityIdAndEntityType(permission.getProjectId(), permission.getEntityId(), permission.getEntityType());
 		
 		if (samePermission != null) {

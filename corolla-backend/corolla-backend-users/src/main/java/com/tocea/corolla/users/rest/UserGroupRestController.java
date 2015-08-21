@@ -19,6 +19,8 @@
  */
 package com.tocea.corolla.users.rest;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.users.commands.DeleteUserGroupCommand;
+import com.tocea.corolla.users.dao.IUserGroupDAO;
+import com.tocea.corolla.users.domain.UserGroup;
 
 @RestController()
 @RequestMapping("/rest/groups")
@@ -37,14 +41,23 @@ import com.tocea.corolla.users.commands.DeleteUserGroupCommand;
 public class UserGroupRestController {
 
 	@Autowired
+	private IUserGroupDAO groupDAO;
+	
+	@Autowired
 	private Gate gate;
 	
 	@PreAuthorize("@userAuthorization.hasAdminAccess()")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public void deleteUserGroup(@PathVariable final String id) {
 		
-		this.gate.dispatch(new DeleteUserGroupCommand(id));
+		this.gate.dispatch(new DeleteUserGroupCommand(id));		
+	}
+	
+	@PreAuthorize("isAuthenticated()")
+	@RequestMapping(value = "/all")
+	public List<UserGroup> findAll() {
 		
+		return groupDAO.findAll();	
 	}
 	
 }

@@ -90,9 +90,16 @@ function RestAPI() {
 		
 		"userGroups": {
 			
+			"URL": REST_PREFIX+"groups/all",
+			
+			"all": function(callback) {
+				call("groups/all", callback);
+			},
+			
 			"delete": function(id, callback) {
 				call("groups/delete/"+id, callback);
 			}
+			
 		},
 		
 		"portfolio": {

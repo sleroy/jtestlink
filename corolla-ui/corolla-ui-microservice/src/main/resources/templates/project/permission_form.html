@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout">
+<body>
+	<!-- Main -->
+	<div class="content" layout:fragment="content">
+		<!-- content -->
+		<div class="row">
+			<!-- main col left -->
+			<div class="col-sm-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>Define Project Permission</h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<form class="form-horizontal" th:object="${permission}"
+								th:attr="action=@{${#strings.isEmpty(permission.id)} ? '/ui/projects/'+${project.key}+'/members/add/' : '/ui/projects/'+${project.key}+'/members/edit/' + ${permission.id}}"
+								method="post" id="form" action="">
+								<fieldset>
+									<input type="hidden" name="id" id="id" th:value="${permission.id}" />
+									<input type="hidden" name="projectId" th:value="${permission.projectId}" />
+									<!-- EntityType input-->
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="entityType">Type</label>
+										<div class="col-md-4">
+											<select name="entityType" class="select2" style="width: 100%;">
+												<option th:each="type : ${entityTypes}" th:value="${type}" th:text="${type}"></option>
+											</select>
+											<span th:if="${#fields.hasErrors('entityType')}" th:errors="*{entityType}"></span>
+										</div>
+									</div>	
+									<!-- EntityID input-->
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="entityId">User / Group</label>
+										<div class="col-md-4">
+											<select name="entityId" class="select2" style="width: 100%;"></select>
+											<span th:if="${#fields.hasErrors('entityId')}" th:errors="*{entityId}"></span>
+										</div>
+									</div>	
+									<!-- Roles input-->
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="entityId">Roles</label>
+										<div class="col-md-4">
+											<select name="roleIds" class="select2" multiple="multiple" style="width: 100%;">
+												<option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
+											</select>
+											<span th:if="${#fields.hasErrors('roleIds')}" th:errors="*{roleIds}"></span>
+										</div>
+									</div>																								
+									<!-- Button (Double) -->
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="saveButton" />										
+										<div class="col-md-2">
+											<button id="saveButton" name="saveButton" class="btn btn-primary">Save</button>
+										</div>
+										<div class="col-md-2">
+											<a th:href="@{/ui/projects/}+${project.key}+@{#members}" id="cancelButton" name="cancelButton" class="btn btn-default">Cancel</a>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/row-->
+	<div layout:fragment="footer">
+		<script type="text/javascript" th:src="@{/js/modules/project-permissions.js}" />
+		<script type="text/javascript">
+			$(document).ready(function() {
+				initProjectMemberForm();
+			});
+		</script>
+	</div>
+</body>
+</html>
