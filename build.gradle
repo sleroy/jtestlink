@@ -381,3 +381,14 @@ task wrapper(type: Wrapper) {
 
 }
 
+task insertArtifactBuildNumber() {
+	println "insert artifact build number..."
+	Properties props = new Properties() 
+	File propsFile = new File('corolla-ui/corolla-ui-microservice/src/main/resources/artifact.properties')
+	propsFile.createNewFile()
+	props.setProperty('artifactBuildNumber', version)
+	props.store(propsFile.newWriter(), null)
+	props.load(propsFile.newDataInputStream())
+}
+
+insertArtifactBuildNumber.shouldRunAfter "build"
