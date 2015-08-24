@@ -15,6 +15,7 @@ configurations { providedRuntime }
 
 dependencies {
 	compile project(":corolla-ui:corolla-ui-widgets")
+	compile project(":plugins:corolla-requirement-vote")
 
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")

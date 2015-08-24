@@ -6,6 +6,7 @@ dependencies {
 	compile project(":corolla-backend:corolla-backend-projects")
 	compile project(":corolla-backend:corolla-backend-users")
 	compile project(":corolla-backend:corolla-backend-utils")
+	compile project(":corolla-backend:corolla-backend-plugins")
 	
 	compile "commons-io:commons-io:$APACHE_COMMONIO"
 	

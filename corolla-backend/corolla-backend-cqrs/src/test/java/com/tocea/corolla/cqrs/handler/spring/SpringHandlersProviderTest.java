@@ -48,15 +48,15 @@ public class SpringHandlersProviderTest {
 	}
 	
 	@Test
-	public void testOnApplicationEvent() throws Exception {
-		initHandlers();
-	}
+		public void testInitializeCommands() throws Exception {
+			initHandlers();
+		}
 	
 	private void initHandlers() {
 		Mockito.when(beanFactory.getBeanNamesForType(ICommandHandler.class)).thenReturn(new String[] { BEAN });
 		final GenericBeanDefinition value = new GenericBeanDefinition();
 		value.setBeanClass(FakeCommandHandler.class);
 		Mockito.when(beanFactory.getBeanDefinition(BEAN)).thenReturn(value);
-		springHandlersProvider.onApplicationEvent();
+		springHandlersProvider.initializeCommands();
 	}
 }

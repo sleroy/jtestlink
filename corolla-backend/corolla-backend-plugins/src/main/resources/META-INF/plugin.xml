@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pluginDefinition>
+	<author>Sylvain Leroy</author>
+	<category>Internal</category>
+	<conditions />
+	<description>This plugin offers a vote mechanism for the requirements.</description>
+	<hasAdminSection>true</hasAdminSection>
+	<key>requirement-vote-plugin</key>
+	<name>Requirement vote plugin</name>
+	<resources>
+		<jsResources>plugin.js</jsResources>
+		<cssResources>plugin.css</cssResources>
+	</resources>
+<!-- 	<sideMenuItems> -->
+<!-- 		<header>Idea Box</header> -->
+<!-- 		<actions> -->
+<!-- 			<key>ideapost</key> -->
+<!-- 			<glyphicon>glyphicon-share</glyphicon> -->
+<!-- 			<name>Post an idea</name> -->
+<!-- 			<uri>uri://</uri> -->
+<!-- 		</actions> -->
+<!-- 	</sideMenuItems> -->
+	<projectMenuItems>
+		<glyphicon>glyphicon-thumbs-up</glyphicon>
+		<name>Requirement voting</name>
+		<uri>voting</uri>
+	</projectMenuItems>
+	<url>http://sleroy/demoPlugin</url>
+</pluginDefinition>

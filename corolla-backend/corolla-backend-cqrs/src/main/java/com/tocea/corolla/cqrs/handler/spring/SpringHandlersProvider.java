@@ -34,18 +34,18 @@ import com.tocea.corolla.cqrs.handler.ICommandHandler;
 /**
  * This class retrieves the appropriate {@link CommandHandler} based on the type
  * of the command.
- * 
+ *
  * @author sleroy
- *        
+ *
  */
 @Component
 public class SpringHandlersProvider implements HandlersProvider {
-	
+
 	@Autowired
 	private ConfigurableListableBeanFactory beanFactory;
-	
+
 	private final Map<Class<?>, String> handlers = new HashMap<Class<?>, String>();
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public ICommandHandler<Object, Object> getHandler(final Object command) {
@@ -58,7 +58,7 @@ public class SpringHandlersProvider implements HandlersProvider {
 	}
 	
 	@PostConstruct
-	public void onApplicationEvent() {
+	public void initializeCommands() {
 		handlers.clear();
 		final String[] commandHandlersNames = beanFactory.getBeanNamesForType(ICommandHandler.class);
 		for (final String beanName : commandHandlersNames) {
@@ -71,7 +71,7 @@ public class SpringHandlersProvider implements HandlersProvider {
 			}
 		}
 	}
-	
+
 	private ParameterizedType findByRawType(final Type[] genericInterfaces, final Class<?> expectedRawType) {
 		for (final Type type : genericInterfaces) {
 			if (type instanceof ParameterizedType) {
@@ -83,7 +83,7 @@ public class SpringHandlersProvider implements HandlersProvider {
 		}
 		throw new RuntimeException();
 	}
-	
+
 	private Class<?> getHandledCommandType(final Class<?> clazz) {
 		final Type[] genericInterfaces = clazz.getGenericInterfaces();
 		final ParameterizedType type = findByRawType(genericInterfaces, ICommandHandler.class);

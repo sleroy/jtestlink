@@ -1,4 +1,4 @@
 dependencies {
 	compile project(":corolla-backend:corolla-backend-utils")
-	compile "com.fasterxml.jackson.core:jackson-databind:$JACKSON"
+	
 }

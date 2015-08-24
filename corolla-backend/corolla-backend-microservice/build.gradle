@@ -12,7 +12,13 @@
 //configurations { providedRuntime }
 
 dependencies {
-
+	compile project(":corolla-backend:corolla-backend-cqrs")
+	compile project(":corolla-backend:corolla-backend-domain-commons")
+	compile project(":corolla-backend:corolla-backend-plugins")
+	compile project(":corolla-backend:corolla-backend-application")
+	compile project(":corolla-backend:corolla-backend-projects")
+	compile project(":corolla-backend:corolla-backend-users")
+	compile project(":corolla-backend:corolla-backend-utils")
 
 }
 //

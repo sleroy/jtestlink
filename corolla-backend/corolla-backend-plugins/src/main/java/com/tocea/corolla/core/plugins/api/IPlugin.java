@@ -1,26 +1,28 @@
 package com.tocea.corolla.core.plugins.api;
 
+import java.io.Closeable;
+
 import com.tocea.corolla.core.plugins.model.PluginDefinition;
 
 /**
  * This interface is a wrapper above a plugin to provide its information.
  *
  * @author sleroy
- *        
+ *
  */
-public interface IPlugin {
+public interface IPlugin extends Closeable {
 	/**
 	 * Returns the plugin definition.
 	 *
 	 * @return the plugin definition.
 	 */
 	PluginDefinition getDefinition();
+
 	
+
 	/**
-	 * Returns the plugin classloader.
-	 *
-	 * @return the plugin classloader.
+	 * Initializes the plugin.
 	 */
-	ClassLoader getPluginClassLoader();
-	
+	void initialize();
+
 }

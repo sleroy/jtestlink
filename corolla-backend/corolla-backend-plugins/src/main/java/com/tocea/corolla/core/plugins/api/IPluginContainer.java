@@ -1,12 +1,15 @@
 package com.tocea.corolla.core.plugins.api;
 
-import java.util.List;
+import java.io.Closeable;
+import java.util.Collection;
 
-public interface IPluginContainer {
+public interface IPluginContainer extends Closeable {
 	/**
 	 * Returns the list of plugins.
 	 *
 	 * @return the list of plugins declared inside Corolla;
 	 */
-	List<IPlugin> getPlugins();
+	Collection<IPlugin> getPlugins();
+
+
 }

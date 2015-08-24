@@ -20,8 +20,6 @@ package com.tocea.corolla.cqrs.gate.spring;
 
 import java.util.concurrent.Future;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,34 +33,35 @@ import com.tocea.corolla.cqrs.gate.Gate;
  */
 @Service
 public class SpringGate implements Gate {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(SpringGate.class);
-
+	
+	// private static final Logger LOGGER =
+	// LoggerFactory.getLogger(SpringGate.class);
+	
 	@Autowired
 	private SequentialCommandExecutorService sequentialCommandExecutorService;
-
+	
 	@Autowired
 	private AsynchronousCommandExecutorService asynchronousCommandExecutorService;
-
+	
 	/**
 	 * Executes sequentially.
 	 */
 	@Override
 	public <R> R dispatch(final Object _command) {
-
+		
 		return sequentialCommandExecutorService.run(_command);
-
+		
 	}
-
+	
+	@Override
+	public void dispatchAsync(final Object _command) {
+		executeAsync(_command); // Ignore result silently
+		
+	}
+	
 	@Override
 	public <R> Future<R> executeAsync(final Object command) {
 		return asynchronousCommandExecutorService.submitCommand(command);
 	}
-
-	@Override
-	public void dispatchAsync(final Object _command) {
-		executeAsync(_command); // Ignore result silently
-
-	}
-
+	
 }

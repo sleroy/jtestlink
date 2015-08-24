@@ -14,5 +14,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(isolation=Isolation.SERIALIZABLE, readOnly=false, propagation=Propagation.REQUIRED)
 public interface IWriteService {
-
+	//
 }
