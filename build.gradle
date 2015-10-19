@@ -67,11 +67,12 @@ sonarRunner {
     //        maxHeapSize = '1024m'
     //    }
     sonarProperties {
-        property "sonar.host.url", "http://192.168.1.1:9000"
-        property "sonar.jdbc.url", "jdbc:mysql://192.168.1.1:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance"
+        property "sonar.host.url", sonarURL
+        property "sonar.jdbc.url", sonarJDBC
         property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-        property "sonar.jdbc.username", "sonar"
-        property "sonar.jdbc.password", "sonar"
+        property "sonar.jdbc.username", sonarUser
+        property "sonar.jdbc.password", sonarPassword
+        property "sonar.branch", getGitBranch()
     }
 }
 
