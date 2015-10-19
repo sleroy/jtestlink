@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tocea.corolla.cqrs.gate.conf.CorollaCqrsConfiguration;
+import com.tocea.corolla.cqrs.gate.spring.api.ICommandExecutionListener;
 
 /**
  * This command listener provides a facility to log and serialize every actions

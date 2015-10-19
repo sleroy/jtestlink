@@ -28,7 +28,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
 
 import com.sun.corba.se.impl.activation.CommandHandler;
-import com.tocea.corolla.cqrs.gate.spring.HandlersProvider;
+import com.tocea.corolla.cqrs.gate.spring.api.HandlersProvider;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 
 /**

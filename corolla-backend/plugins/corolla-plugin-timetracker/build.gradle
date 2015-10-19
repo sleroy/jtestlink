@@ -1,0 +1,6 @@
+dependencies {
+	compile project(":corolla-backend:corolla-backend-domain-commons")
+	compile project(":corolla-backend:corolla-backend-projects")
+	compile project(":corolla-backend:corolla-backend-users")
+	compile project(":corolla-backend:corolla-backend-utils")
+}

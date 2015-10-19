@@ -8,6 +8,7 @@ import spock.lang.Specification;
 import com.tocea.corolla.products.commands.RestoreProjectStateCommand
 import com.tocea.corolla.products.dao.IProjectDAO;
 import com.tocea.corolla.products.domain.Project
+import com.tocea.corolla.requirements.commands.handlers.RestoreProjectStateCommandHandler;
 import com.tocea.corolla.revisions.exceptions.InvalidCommitInformationException;
 import com.tocea.corolla.revisions.services.IRevisionService
 import com.tocea.corolla.test.utils.FunctionalDocRule

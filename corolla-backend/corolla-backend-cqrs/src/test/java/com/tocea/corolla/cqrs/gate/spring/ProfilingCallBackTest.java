@@ -3,6 +3,7 @@ package com.tocea.corolla.cqrs.gate.spring;
 import org.junit.Test;
 
 import com.tocea.corolla.cqrs.gate.spring.CommandProfilingService.ProfilingCallBack;
+import com.tocea.corolla.cqrs.gate.spring.api.ICommandCallback;
 
 public class ProfilingCallBackTest {
 	

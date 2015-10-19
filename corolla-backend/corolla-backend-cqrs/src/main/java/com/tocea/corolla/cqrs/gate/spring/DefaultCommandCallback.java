@@ -1,5 +1,6 @@
 package com.tocea.corolla.cqrs.gate.spring;
 
+import com.tocea.corolla.cqrs.gate.spring.api.ICommandCallback;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 
 /**

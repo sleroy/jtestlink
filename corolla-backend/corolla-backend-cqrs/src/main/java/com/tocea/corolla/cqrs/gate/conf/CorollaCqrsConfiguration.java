@@ -23,6 +23,7 @@ public class CorollaCqrsConfiguration {
 	private int			queueCapacity		= 25;
 	private boolean		tracingEnabled	= false;
 	private File		traceFile			= new File("command.trace");
+	private final int	keepAliveSeconds	= 60;
 
 	public int getCorePoolSize() {
 
@@ -31,6 +32,10 @@ public class CorollaCqrsConfiguration {
 
 	public int getHistoryCapacity() {
 		return historyCapacity;
+	}
+
+	public int getKeepAliveSeconds() {
+		return keepAliveSeconds;
 	}
 
 	public int getMaxPoolSize() {
@@ -96,9 +101,9 @@ public class CorollaCqrsConfiguration {
 	@Override
 	public String toString() {
 		return "CorollaCqrsConfiguration [loggingEnabled=" + loggingEnabled + ", profilingEnabled=" + profilingEnabled
-		        + ", historyCapacity=" + historyCapacity + ", forceSync=" + forceSync + ", corePoolSize=" + corePoolSize
-		        + ", maxPoolSize=" + maxPoolSize + ", queueCapacity=" + queueCapacity + ", logCommands="
-		        + tracingEnabled + ", logFile=" + traceFile + "]";
+				+ ", historyCapacity=" + historyCapacity + ", forceSync=" + forceSync + ", corePoolSize=" + corePoolSize
+				+ ", maxPoolSize=" + maxPoolSize + ", queueCapacity=" + queueCapacity + ", logCommands="
+				+ tracingEnabled + ", logFile=" + traceFile + "]";
 	}
 
 }

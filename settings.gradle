@@ -9,6 +9,7 @@ include "corolla-backend:corolla-backend-projects"
 include "corolla-backend:corolla-backend-utils"
 include "corolla-backend:corolla-backend-microservice"
 include "corolla-backend:plugins:corolla-backend-plugin-testlink"
+include "corolla-backend:plugins:corolla-plugin-timetracker"
 
 include "corolla-ui:corolla-ui-widgets"
 include "corolla-ui:corolla-ui-microservice"

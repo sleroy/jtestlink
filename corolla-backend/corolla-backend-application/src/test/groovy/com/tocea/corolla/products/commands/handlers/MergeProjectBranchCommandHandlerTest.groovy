@@ -13,6 +13,7 @@ import com.tocea.corolla.products.exceptions.MissingProjectBranchInformationExce
 import com.tocea.corolla.products.exceptions.ProjectBranchAlreadyExistException;
 import com.tocea.corolla.requirements.commands.CreateRequirementCommand
 import com.tocea.corolla.requirements.commands.EditRequirementCommand
+import com.tocea.corolla.requirements.commands.handlers.MergeProjectBranchCommandHandler;
 import com.tocea.corolla.requirements.dao.IRequirementDAO
 import com.tocea.corolla.requirements.domain.Requirement
 import com.tocea.corolla.requirements.trees.dao.IRequirementsTreeDAO;

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tocea.corolla.cqrs.gate.conf.CorollaCqrsConfiguration;
+import com.tocea.corolla.cqrs.gate.spring.api.ICommandExecutionListener;
 
 @Service
 public class CommandLoggingService implements ICommandExecutionListener {

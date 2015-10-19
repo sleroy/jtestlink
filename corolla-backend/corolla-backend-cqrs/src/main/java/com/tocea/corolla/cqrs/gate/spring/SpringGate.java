@@ -18,14 +18,13 @@
  */
 package com.tocea.corolla.cqrs.gate.spring;
 
-import java.util.concurrent.Future;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tocea.corolla.cqrs.gate.Gate;
+import com.tocea.corolla.cqrs.gate.IEventBusService;
 
 /**
  * This class defines the gate where the commands are dispatched for execution.
@@ -41,28 +40,22 @@ public class SpringGate implements Gate {
 	@Autowired
 	private SequentialCommandExecutorService sequentialCommandExecutorService;
 
-	@Autowired
-	private AsynchronousCommandExecutorService asynchronousCommandExecutorService;
+	private IEventBusService eventBusService;
 
 	/**
 	 * Executes sequentially.
 	 */
 	@Override
 	public <R> R dispatch(final Object _command) {
-
 		return sequentialCommandExecutorService.run(_command);
 
 	}
 
-	@Override
-	public <R> Future<R> executeAsync(final Object command) {
-		return asynchronousCommandExecutorService.submitCommand(command);
-	}
 
 	@Override
-	public void dispatchAsync(final Object _command) {
-		executeAsync(_command); // Ignore result silently
-
+	public void dispatchEvent(final Object _event) {
+		LOGGER.trace("Received event {}", _event);
+		eventBusService.dispatchEvent(_event);
 	}
 
 }

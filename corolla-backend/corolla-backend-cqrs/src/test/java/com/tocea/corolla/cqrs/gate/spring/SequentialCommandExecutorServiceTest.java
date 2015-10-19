@@ -17,6 +17,9 @@ import com.tocea.corolla.cqrs.gate.CommandExecutionException;
 import com.tocea.corolla.cqrs.gate.CommandHandlerNotFoundException;
 import com.tocea.corolla.cqrs.gate.InvalidCommandException;
 import com.tocea.corolla.cqrs.gate.conf.CorollaCqrsConfiguration;
+import com.tocea.corolla.cqrs.gate.spring.api.HandlersProvider;
+import com.tocea.corolla.cqrs.gate.spring.api.ICommandExecutionListener;
+import com.tocea.corolla.cqrs.gate.spring.api.ICommandProfilingService;
 import com.tocea.corolla.cqrs.handler.ICommandHandler;
 
 @RunWith(MockitoJUnitRunner.class)
