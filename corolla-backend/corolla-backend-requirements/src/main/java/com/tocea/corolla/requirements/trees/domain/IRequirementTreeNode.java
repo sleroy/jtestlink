@@ -17,12 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Corolla.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.tocea.corolla.trees.dao;
+package com.tocea.corolla.requirements.trees.domain;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-
-import com.tocea.corolla.trees.domain.FolderNodeType;
-
-public interface IFolderNodeTypeDAO extends MongoRepository<FolderNodeType, String>{
+public interface IRequirementTreeNode {
 	//
 }

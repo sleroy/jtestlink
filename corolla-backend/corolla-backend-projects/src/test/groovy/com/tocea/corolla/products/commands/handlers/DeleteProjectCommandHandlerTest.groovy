@@ -23,14 +23,12 @@ class DeleteProjectCommandHandlerTest extends Specification {
 	def FunctionalDocRule rule	= new FunctionalDocRule()
 	def IProjectDAO projectDAO = Mock(IProjectDAO)
 	def DeleteProjectCommandHandler handler
-	def IRevisionService revisionService = Mock(IRevisionService)
 	def IProjectBranchDAO branchDAO = Mock(IProjectBranchDAO)
 	def Gate gate = Mock(Gate)
 	
 	def setup() {
 		handler = new DeleteProjectCommandHandler(
 				projectDAO 				: projectDAO,
-				revisionService 		: revisionService,
 				branchDAO 				: branchDAO,
 				gate 					: gate
 				)

@@ -21,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.tocea.corolla.cqrs.gate.Gate;
 import com.tocea.corolla.portfolio.dao.IPortfolioDAO;
+import com.tocea.corolla.portfolio.domain.Portfolio;
 import com.tocea.corolla.portfolio.domain.ProjectNode;
 import com.tocea.corolla.products.commands.CreateProjectCommand;
 import com.tocea.corolla.products.commands.CreateProjectStatusCommand;
@@ -200,10 +201,11 @@ public class PortfolioPageControllerTest extends AbstractSpringTest {
 
 		Project project =projectDAO.findByKey(key);
 		
-		assertNotNull(project);
+		assertNotNull("Project should exists", project);
 		assertEquals(name, project.getName());
-		
-		TreeNode node = treeManagementService.findNode(portfolioDAO.find(), new FindNodeByIDPredicate(parentID));
+                final Portfolio portfolioNode = portfolioDAO.find();
+		assertNotNull("Portfolio node should exists", portfolioNode);
+		TreeNode node = treeManagementService.findNode(portfolioNode, new FindNodeByIDPredicate(parentID));
 		
 		assertEquals(1, node.getNodes().size());
 		assertEquals(project.getId(), ((ProjectNode) node.getNodes().iterator().next()).getProjectId());

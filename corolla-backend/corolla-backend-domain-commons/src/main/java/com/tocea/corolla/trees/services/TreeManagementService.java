@@ -37,13 +37,35 @@ import com.tocea.corolla.trees.utils.TreeNodeUtils;
 @Service
 public class TreeManagementService implements ITreeManagementService {
 
-	private TreeNode findNodeByID(Collection<TreeNode> nodes, Integer nodeID) {
+	@Override
+	public TreeNode findNode(final Collection<TreeNode> nodes, final ITreeNodePredicate predicate) {
 		
-		return findNode(nodes, new FindNodeByIDPredicate(nodeID));
+		for(final TreeNode node : nodes) {			
+			
+			if (predicate.test(node)) {
+				return node;
+			}
+			
+			final TreeNode child = findNode(node.getNodes(), predicate);
+			
+			if (child != null) {
+				return child;
+			}
+		}
+		
+		return null;
+		
 	}
 	
 	@Override
-	public ITree insertNode(ITree tree, Integer parentID, TreeNode newNode) {
+	public TreeNode findNode(final ITree tree, final ITreeNodePredicate predicate) {
+            final Collection<TreeNode> treeChildreNodes = tree.getNodes();
+		
+		return findNode(treeChildreNodes, predicate);
+	}
+
+	@Override
+	public ITree insertNode(final ITree tree, final Integer parentID, final TreeNode newNode) {
 		
 		if (tree == null) {
 			throw new MissingTreeInformationException("No tree found");
@@ -53,14 +75,14 @@ public class TreeManagementService implements ITreeManagementService {
 			throw new MissingTreeNodeInformationException("The tree node to insert is null");
 		}
 		
-		Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
+		final Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
 
 		if (newNode.getId() == null) {
 			newNode.setId(TreeNodeUtils.getMaxNodeId(nodes)+1);
 		}
 		
 		if (newNode.getNodes() == null) {
-			newNode.setNodes((Collection<TreeNode>) new ArrayList<TreeNode>());
+			newNode.setNodes(new ArrayList<TreeNode>());
 		}
 		
 		if (parentID == null) {
@@ -69,13 +91,13 @@ public class TreeManagementService implements ITreeManagementService {
 			
 		}else{
 			
-			TreeNode parentNode = findNodeByID(nodes, parentID);
+			final TreeNode parentNode = findNodeByID(nodes, parentID);
 			
 			if (parentNode == null) {
 				throw new InvalidTreeNodeInformationException("The given parent ID does not match any of the nodes of this tree.");
 			}
 			
-			Collection<TreeNode> parentNodes = Lists.newArrayList(parentNode.getNodes());
+			final Collection<TreeNode> parentNodes = Lists.newArrayList(parentNode.getNodes());
 			parentNodes.add(newNode);
 			parentNode.setNodes(parentNodes);
 			
@@ -87,7 +109,7 @@ public class TreeManagementService implements ITreeManagementService {
 	}
 
 	@Override
-	public ITree moveNode(ITree tree, Integer nodeID, Integer newParentID) {
+	public ITree moveNode(ITree tree, final Integer nodeID, final Integer newParentID) {
 		
 		if (tree == null) {
 			throw new MissingTreeInformationException("No tree found");
@@ -97,9 +119,9 @@ public class TreeManagementService implements ITreeManagementService {
 			throw new MissingTreeNodeInformationException("No ID found");
 		}
 		
-		Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
+		final Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
 		
-		TreeNode node = findNodeByID(nodes, nodeID);
+		final TreeNode node = findNodeByID(nodes, nodeID);
 		
 		if (node == null) {
 			throw new InvalidTreeNodeInformationException("The given node ID does not match any node of this tree");
@@ -112,7 +134,7 @@ public class TreeManagementService implements ITreeManagementService {
 			
 		}else{
 			
-			TreeNode newParentNode = findNodeByID(nodes, nodeID);
+			final TreeNode newParentNode = findNodeByID(nodes, nodeID);
 			
 			if (newParentNode == null) {
 				throw new InvalidTreeNodeInformationException("The given parent node ID does not match any node of this tree");
@@ -129,9 +151,9 @@ public class TreeManagementService implements ITreeManagementService {
 		
 		return tree;
 	}
-
+	
 	@Override
-	public ITree removeNode(ITree tree, Integer nodeID) {
+	public ITree removeNode(final ITree tree, final Integer nodeID) {
 				
 		if (tree == null) {
 			throw new MissingTreeInformationException("No tree found");
@@ -141,15 +163,15 @@ public class TreeManagementService implements ITreeManagementService {
 			throw new MissingTreeNodeInformationException("No ID found");
 		}
 		
-		Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
+		final Collection<TreeNode> nodes = Lists.newArrayList(tree.getNodes());
 		
-		TreeNode node = findNodeByID(nodes, nodeID);
+		final TreeNode node = findNodeByID(nodes, nodeID);
 		
 		if (node == null) {
 			throw new InvalidTreeNodeInformationException("The given node ID does not match any node of this tree");
 		}
 		
-		TreeNode parentNode = TreeNodeUtils.getParentNodeOf(nodeID, nodes);
+		final TreeNode parentNode = TreeNodeUtils.getParentNodeOf(nodeID, nodes);
 		
 		if (parentNode == null) {
 			
@@ -166,30 +188,9 @@ public class TreeManagementService implements ITreeManagementService {
 		return tree; 
 	}
 	
-	@Override
-	public TreeNode findNode(ITree tree, ITreeNodePredicate predicate) {
+	private TreeNode findNodeByID(final Collection<TreeNode> nodes, final Integer nodeID) {
 		
-		return findNode(tree.getNodes(), predicate);
-	}
-	
-	@Override
-	public TreeNode findNode(Collection<TreeNode> nodes, ITreeNodePredicate predicate) {
-		
-		for(TreeNode node : nodes) {			
-			
-			if (predicate.test(node)) {
-				return node;
-			}
-			
-			TreeNode child = findNode(node.getNodes(), predicate);
-			
-			if (child != null) {
-				return child;
-			}
-		}
-		
-		return null;
-		
+		return findNode(nodes, new FindNodeByIDPredicate(nodeID));
 	}
 	
 }

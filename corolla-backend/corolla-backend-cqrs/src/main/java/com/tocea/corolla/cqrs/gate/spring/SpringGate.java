@@ -35,27 +35,26 @@ import com.tocea.corolla.cqrs.gate.IEventBusService;
 @Service
 public class SpringGate implements Gate {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SpringGate.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringGate.class);
 
-	@Autowired
-	private SequentialCommandExecutorService sequentialCommandExecutorService;
+    @Autowired
+    private SequentialCommandExecutorService sequentialCommandExecutorService;
+    @Autowired
+    private IEventBusService eventBusService;
 
-	private IEventBusService eventBusService;
+    /**
+     * Executes sequentially.
+     */
+    @Override
+    public <R> R dispatch(final Object _command) {
+        return sequentialCommandExecutorService.run(_command);
 
-	/**
-	 * Executes sequentially.
-	 */
-	@Override
-	public <R> R dispatch(final Object _command) {
-		return sequentialCommandExecutorService.run(_command);
+    }
 
-	}
-
-
-	@Override
-	public void dispatchEvent(final Object _event) {
-		LOGGER.trace("Received event {}", _event);
-		eventBusService.dispatchEvent(_event);
-	}
+    @Override
+    public void dispatchEvent(final Object _event) {
+        LOGGER.trace("Received event {}", _event);
+        eventBusService.dispatchEvent(_event);
+    }
 
 }
