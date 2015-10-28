@@ -13,6 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
 import com.tocea.corolla.cqrs.annotations.EventHandler;
 import com.tocea.corolla.cqrs.gate.IEventBusService;
 import com.tocea.corolla.cqrs.gate.conf.CorollaCqrsConfiguration;
@@ -22,7 +23,7 @@ import javax.annotation.PreDestroy;
 public class GuavaEventBusService implements ApplicationContextAware, IEventBusService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GuavaEventBusService.class);
-    private AsyncEventBus asyncEventBus;
+    private EventBus eventBus;
     private ApplicationContext applicationContext;
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
@@ -31,7 +32,7 @@ public class GuavaEventBusService implements ApplicationContextAware, IEventBusS
 
     @PreDestroy
     public void destroy() {
-        asyncEventBus = null;
+        eventBus = null;
         if (threadPoolTaskExecutor != null) {
             threadPoolTaskExecutor.shutdown();
         }
@@ -39,28 +40,33 @@ public class GuavaEventBusService implements ApplicationContextAware, IEventBusS
 
     @Override
     public void dispatchEvent(final Object _event) {
-        asyncEventBus.post(_event);
+        eventBus.post(_event);
     }
 
     @Override
     public void setApplicationContext(final ApplicationContext _applicationContext) throws BeansException {
         applicationContext = _applicationContext;
-        threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.setCorePoolSize(corollaCqrsConfiguation.getCorePoolSize());
-        threadPoolTaskExecutor.setMaxPoolSize(corollaCqrsConfiguation.getMaxPoolSize());
-        threadPoolTaskExecutor.setQueueCapacity(corollaCqrsConfiguation.getQueueCapacity());
-        threadPoolTaskExecutor.setKeepAliveSeconds(corollaCqrsConfiguation.getKeepAliveSeconds());
-        threadPoolTaskExecutor.setThreadGroupName("corolla-event-bus");
-        threadPoolTaskExecutor.setThreadNamePrefix("eventbus");
-        threadPoolTaskExecutor.initialize();
-        asyncEventBus = new AsyncEventBus(threadPoolTaskExecutor);
+        if (this.corollaCqrsConfiguation.isAsyncEventQueries()) {
+            // The event bus should handle async event processing.
+            threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+            threadPoolTaskExecutor.setCorePoolSize(corollaCqrsConfiguation.getCorePoolSize());
+            threadPoolTaskExecutor.setMaxPoolSize(corollaCqrsConfiguation.getMaxPoolSize());
+            threadPoolTaskExecutor.setQueueCapacity(corollaCqrsConfiguation.getQueueCapacity());
+            threadPoolTaskExecutor.setKeepAliveSeconds(corollaCqrsConfiguation.getKeepAliveSeconds());
+            threadPoolTaskExecutor.setThreadGroupName("corolla-event-bus");
+            threadPoolTaskExecutor.setThreadNamePrefix("eventbus");
+            threadPoolTaskExecutor.initialize();
+            eventBus = new AsyncEventBus(threadPoolTaskExecutor);
+        } else {
+            eventBus = new EventBus();
+        }
 
         final Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(EventHandler.class);
         for (final Entry<String, Object> beanEntry : beansWithAnnotation.entrySet()) {
             final String beanId = beanEntry.getKey();
             LOGGER.info("Registering an new event handler {}", beanId);
             final Object bean = beanEntry.getValue();
-            asyncEventBus.register(bean);
+            eventBus.register(bean);
 
         }
 
